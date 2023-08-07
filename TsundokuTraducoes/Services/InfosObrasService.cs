@@ -39,9 +39,14 @@ namespace TsundokuTraducoes.Api.Services
             return _infosObrasRepository.ObterObraPorSlug(slug);
         }
 
-        public ConteudoCapituloNovelDTO ObterCapituloPorSlug(string slug)
+        public ConteudoCapituloNovelDTO ObterCapituloNovelPorSlug(string slug)
         {
-            return _infosObrasRepository.ObterCapituloPorSlug(slug);
+            return _infosObrasRepository.ObterCapituloNovelPorSlug(slug);
+        }
+
+        public ConteudoCapituloComicDTO ObterCapituloComicPorSlug(string slugCapitulo)
+        {
+            return _infosObrasRepository.ObterCapituloComicPorSlug(slugCapitulo);
         }
     }
 }

@@ -6,9 +6,20 @@
 
   <ItemGroup>
     <Compile Remove="ArquivosEstaticos\**" />
+    <Compile Remove="wwwroot\images\MatadorDeGoblins\Volume-01\Capitulo-Ilustrações\**" />
     <Content Remove="ArquivosEstaticos\**" />
+    <Content Remove="wwwroot\images\MatadorDeGoblins\Volume-01\Capitulo-Ilustrações\**" />
     <EmbeddedResource Remove="ArquivosEstaticos\**" />
+    <EmbeddedResource Remove="wwwroot\images\MatadorDeGoblins\Volume-01\Capitulo-Ilustrações\**" />
     <None Remove="ArquivosEstaticos\**" />
+    <None Remove="wwwroot\images\MatadorDeGoblins\Volume-01\Capitulo-Ilustrações\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="DTOs\Admin\FiltrosDTO.cs" />
+    <Compile Remove="DTOs\Admin\InfosDTO.cs" />
+    <Compile Remove="DTOs\Admin\InfosObraDTO.cs" />
+    <Compile Remove="DTOs\Admin\InfosObraIndiceDTO.cs" />
   </ItemGroup>
 
   <ItemGroup>

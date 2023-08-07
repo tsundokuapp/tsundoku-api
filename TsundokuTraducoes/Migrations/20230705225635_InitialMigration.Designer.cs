@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TsundokuTraducoes.Api.Data;
 
@@ -10,9 +11,10 @@ using TsundokuTraducoes.Api.Data;
 namespace TsundokuTraducoes.Api.Migrations
 {
     [DbContext(typeof(TsundokuContext))]
-    partial class TsundokuContextModelSnapshot : ModelSnapshot
+    [Migration("20230705225635_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,19 +106,10 @@ namespace TsundokuTraducoes.Api.Migrations
                     b.Property<string>("Parte")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("QC")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Revisor")
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Slug")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Titulo")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Tradutor")
                         .HasColumnType("longtext");
 
                     b.Property<string>("UsuarioAlteracao")

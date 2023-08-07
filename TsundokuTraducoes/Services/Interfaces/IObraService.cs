@@ -13,5 +13,11 @@ namespace TsundokuTraducoes.Api.Services.Interfaces
         Result<Obra> AtualizarObra(ObraDTO obraDTO);
         Result<InformacaoObraDTO> RetornaInformacaoObraDTO(int? idObra = null);
         Result<bool> ExcluirObra(int idObra);
+        Result<ObraRecomendada> AdicionaObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO);
+        Result<ComentarioObraRecomendada> AdicionaComentarioObraRecomendada(ComentarioObraRecomendadaDTO obraRecomendadaDTO);
+        Result<ComentarioObraRecomendada> AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO);
+        Result<List<ObraRecomendada>> RetornaListaObraRecomendada();
+        Result<ObraRecomendada> RetornaObraRecomendadaPorId(int id);
+        Result<ComentarioObraRecomendada> RetornaComentarioObraRecomendadaPorId(int id);
     }
 }

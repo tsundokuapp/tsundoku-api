@@ -7,7 +7,8 @@ using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using TsundokuTraducoes.Api.Services.Interfaces;
 using TsundokuTraducoes.Api.Utilidades;
-using TsundokuTraducoes.Models;
+using Newtonsoft.Json;
+using System;
 
 namespace TsundokuTraducoes.Api.Services
 {
@@ -49,17 +50,20 @@ namespace TsundokuTraducoes.Api.Services
         public Result<Obra> AdicionaObra(ObraDTO obraDTO)
         {
             var obra = _mapper.Map<Obra>(obraDTO);
-            _repository.CarregaListaGeneros(obraDTO, obra, true);
-            _repository.InsereGenerosObra(obraDTO);
-
-            if (obraDTO.ImagemCapa != null)
+            if (obraDTO.ImagemCapaPrincipalFile != null)
             {
                 var uploadImagemCapa = new Imagens(_webHostEnvironment);
-                uploadImagemCapa.ProcessaUploadImagemCapaObra(obraDTO.ImagemCapa, obraDTO.Titulo, obra, obraDTO);
+                uploadImagemCapa.ProcessaImagemObra(obraDTO.ImagemCapaPrincipalFile, obraDTO.Titulo, obra, obraDTO);
             }
             else
             {
                 return Result.Fail("Erro ao adicionar a Obra, imagem da capa não enviada!");
+            }
+
+            if (obraDTO.ImagemBannerFile != null)
+            {
+                var uploadImagemCapa = new Imagens(_webHostEnvironment);
+                uploadImagemCapa.ProcessaImagemObra(obraDTO.ImagemBannerFile, obraDTO.Titulo, obra, obraDTO, true);
             }
 
             _repository.Adiciona(obra);
@@ -67,7 +71,8 @@ namespace TsundokuTraducoes.Api.Services
             {
                 return Result.Fail("Erro ao adicionar a Obra!");
             }
-                
+
+            _repository.InsereGenerosObra(obraDTO, obra, true);
             return Result.Ok().ToResult(obra);
         }
 
@@ -77,20 +82,34 @@ namespace TsundokuTraducoes.Api.Services
             if (obraEncontrada == null)
             {
                 return Result.Fail("Obra não encontrada!");
-            }
-            
+            }            
 
-            if (obraDTO.ImagemCapa != null)
+            if (obraDTO.ImagemCapaPrincipalFile != null)
             {
-                new Imagens(_webHostEnvironment).ProcessaUploadImagemCapaObra(obraDTO.ImagemCapa, obraDTO.Titulo, obraEncontrada, obraDTO);
+                new Imagens(_webHostEnvironment).ProcessaImagemObra(obraDTO.ImagemCapaPrincipalFile, obraDTO.Titulo, obraEncontrada, obraDTO);
+            }
+            else
+            {
+                obraDTO.ImagemCapaPrincipal = obraEncontrada.ImagemCapaPrincipal;
+            }
+
+            if (obraDTO.ImagemBannerFile != null)
+            {
+                new Imagens(_webHostEnvironment).ProcessaImagemObra(obraDTO.ImagemBannerFile, obraDTO.Titulo, obraEncontrada, obraDTO, true);
+            }
+            else
+            {
+                obraDTO.ImagemBanner = obraEncontrada.ImagemBanner;
             }
 
             obraEncontrada = _repository.AtualizaObra(obraDTO);
+
             if (!_repository.AlteracoesSalvas())
-            {
+            {   
                 return Result.Fail("Erro ao atualizar a obra!");
             }
 
+            _repository.InsereGenerosObra(obraDTO, obraEncontrada, false);
             return Result.Ok().ToResult(obraEncontrada);
         }   
 
@@ -111,6 +130,34 @@ namespace TsundokuTraducoes.Api.Services
             }
 
             return Result.Ok().WithSuccess("Obra excluída com sucesso!");
+        }
+
+        public Result<ObraRecomendada> AdicionaObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO)
+        {
+            var obraRecomendadaExistente = _repository.RetornaObraRecomendadaPorObraId(obraRecomendadaDTO.IdObra);
+            if (obraRecomendadaExistente != null)
+            {
+                return Result.Fail("Obra recomendada já cadastrada!");
+            }
+            
+            var retornoCargaListaMensagem = CarregaListaMensagemObraRecomendada(obraRecomendadaDTO);
+
+            if (retornoCargaListaMensagem.IsFailed)
+            {
+                return Result.Fail(retornoCargaListaMensagem.Errors[0].Message);
+            }
+
+            var obraRecomendada = _mapper.Map<ObraRecomendada>(obraRecomendadaDTO);
+            _repository.Adiciona(obraRecomendada);
+            
+            _repository.InsereListaComentariosObraRecomendada(obraRecomendadaDTO, obraRecomendada);
+
+            if (!_repository.AlteracoesSalvas())
+            {
+                return Result.Fail("Erro ao adicionar a Obra Recomendada!");
+            }
+
+            return Result.Ok().ToResult(obraRecomendada);
         }
 
         public Result<InformacaoObraDTO> RetornaInformacaoObraDTO(int? idObra = null)
@@ -140,6 +187,87 @@ namespace TsundokuTraducoes.Api.Services
 
                 return Result.Ok(informacaoObraDTO);
             }
-        }       
+        }
+
+        private Result CarregaListaMensagemObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO)
+        {
+            var listaComentarioObraRecomendadaDTO = new List<ComentarioObraRecomendadaDTO>();
+            if (!string.IsNullOrEmpty(obraRecomendadaDTO.ListaComentarioObraRecomendadaDTOJson))
+            {
+                obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO = JsonConvert.DeserializeObject<List<ComentarioObraRecomendadaDTO>>(obraRecomendadaDTO.ListaComentarioObraRecomendadaDTOJson);
+            }
+            else
+            {
+                Result.Fail("Não foi informado uma lista de comentário obra recomendada");
+            }
+
+            return Result.Ok();
+        }
+
+        public Result<ComentarioObraRecomendada> AdicionaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        {
+            var comentarioObraRecomendada = _mapper.Map<ComentarioObraRecomendada>(comentarioObraRecomendadaDTO);
+
+            _repository.Adiciona(comentarioObraRecomendada);
+            if (!_repository.AlteracoesSalvas())
+            {
+                return Result.Fail("Erro ao adicionar a Comentario Obra Recomendada!");
+            }
+
+            return Result.Ok().ToResult(comentarioObraRecomendada);
+        }
+
+        public Result<ComentarioObraRecomendada> AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        {
+            var comentarioObraRecomendada = _repository.RetornaComentarioObraRecomendadaPorId(comentarioObraRecomendadaDTO.Id);
+            if (comentarioObraRecomendada == null)
+            {
+                return Result.Fail("Obra não encontrada!");
+            }
+
+            comentarioObraRecomendada = _repository.AtualizaComentarioObraRecomendada(comentarioObraRecomendadaDTO);
+
+            if (!_repository.AlteracoesSalvas())
+            {
+                return Result.Fail("Erro ao adicionar a Comentario Obra Recomendada!");
+            }
+
+            return Result.Ok().ToResult(comentarioObraRecomendada);
+        }
+
+        public Result<List<ObraRecomendada>> RetornaListaObraRecomendada()
+        {
+            var listaObraRecomendada = _repository.RetornaListaObraRecomendada();
+            if (listaObraRecomendada == null)
+            {
+                return Result.Fail("Erro ao retornar todas as Obras!");
+            }
+
+            return Result.Ok().ToResult(listaObraRecomendada);
+        }
+
+        public Result<ObraRecomendada> RetornaObraRecomendadaPorId(int id)
+        {
+            var obraRecomendada = _repository.RetornaObraRecomendadaPorId(id);
+
+            if (obraRecomendada == null)
+            {
+                return Result.Fail("Obra Recomendada não encontrada!");
+            }
+
+            return obraRecomendada;
+        }
+
+        public Result<ComentarioObraRecomendada> RetornaComentarioObraRecomendadaPorId(int id)
+        {
+            var comentarioObraRecomendada = _repository.RetornaComentarioObraRecomendadaPorId(id);
+
+            if (comentarioObraRecomendada == null)
+            {
+                return Result.Fail("Comentário da Obra Recomendada não encontrado!");
+            }
+
+            return comentarioObraRecomendada;
+        }
     }
 }

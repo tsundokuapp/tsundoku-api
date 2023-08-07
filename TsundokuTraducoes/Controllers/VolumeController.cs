@@ -16,9 +16,9 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet]
-        public IActionResult RetornaListaVolume()
+        public IActionResult RetornaListaVolume([FromQuery] int? IdObra)
         {
-            var result = _volumeService.RetornaListaVolume();
+            var result = _volumeService.RetornaListaVolume(IdObra);
             if (result.IsFailed)
             {
                 return BadRequest(result.Errors[0].Message);
@@ -65,14 +65,16 @@ namespace TsundokuTraducoes.Controllers
 
         [HttpDelete("{id}")]
         public IActionResult ExcluirVolume(int id)
-        {
-            var result = _volumeService.ExcluirVolume(id);
-            if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+        {            
+            //var result = _volumeService.ExcluirVolume(id);
+            //if (result.IsFailed)
+            //{
+            //    return BadRequest(result.Errors[0].Message);
+            //}
 
-            return Ok(result.Successes[0].Message);
+            //return Ok(result.Successes[0].Message);
+
+            return Ok("Contatar os administradores do site para essa solicitação");
         }
     }
 }

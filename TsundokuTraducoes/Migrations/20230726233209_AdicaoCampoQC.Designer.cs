@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TsundokuTraducoes.Api.Data;
 
@@ -10,9 +11,10 @@ using TsundokuTraducoes.Api.Data;
 namespace TsundokuTraducoes.Api.Migrations
 {
     [DbContext(typeof(TsundokuContext))]
-    partial class TsundokuContextModelSnapshot : ModelSnapshot
+    [Migration("20230726233209_AdicaoCampoQC")]
+    partial class AdicaoCampoQC
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

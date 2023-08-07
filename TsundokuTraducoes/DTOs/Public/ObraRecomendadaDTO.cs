@@ -4,7 +4,7 @@ namespace TsundokuTraducoes.Api.DTOs.Public
 {
     public class ObraRecomendadaDTO
     {
-        public string UrlImagemCapaPrincipal { get; set; }
+        public string ImagemCapaPrincipalObra { get; set; }
         public string TituloAliasObra { get; set; }
         public string Sinopse { get; set; }
         public string SlugObra { get; set; }

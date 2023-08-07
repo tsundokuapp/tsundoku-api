@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using FluentResults;
+using System.Collections.Generic;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Models;
-using TsundokuTraducoes.Models;
 
 namespace TsundokuTraducoes.Api.Repository.Interfaces
 {
@@ -14,11 +14,14 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
         public Obra AtualizaObra(ObraDTO obraDTO);
         Obra RetornaObraPorId(int obraId);
         List<Obra> RetornaListaObras();
-        List<Genero> RetornaListaGeneros();
-        void InsereGenerosObra(ObraDTO obraDTO);
-        void CarregaListaGeneros(ObraDTO obraDTO, Obra obra, bool inclusao);
-        void CarregaVolumes(List<Volume> volumes, Volume volume);
-        void CarregaCapitulos(List<Volume> volumes, CapituloNovel capitulo, CapituloManga urlImagensManga = null);
-        void CarregaImagensManga(List<CapituloNovel> capitulos, CapituloManga urlImagensManga = null);
+        List<Genero> RetornaListaGeneros();        
+        void InsereGenerosObra(ObraDTO obraDTO, Obra obra, bool inclusao);
+        void InsereListaComentariosObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO, ObraRecomendada obraRecomendada);
+        void InsereComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO);
+        ComentarioObraRecomendada RetornaComentarioObraRecomendadaPorId(int id);
+        ComentarioObraRecomendada AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO);
+        List<ObraRecomendada> RetornaListaObraRecomendada();
+        ObraRecomendada RetornaObraRecomendadaPorId(int id);
+        ObraRecomendada RetornaObraRecomendadaPorObraId(int idObra);
     }
 }

@@ -9,7 +9,7 @@ namespace TsundokuTraducoes.Api.Models
         [Key]
         public int Id { get; set; }
         public string Titulo { get; set; }
-        public double Numero { get; set; }
+        public string Numero { get; set; }
         public string DescritivoVolume { get; set; }
         public string Sinopse { get; set; }
         public string ImagemVolume { get; set; }
@@ -19,17 +19,14 @@ namespace TsundokuTraducoes.Api.Models
         public DateTime DataCadastro { get; set; } = DateTime.Now;
         public DateTime? DataAlteracao { get; set; }
         public string DiretorioImagemVolume { get; set; }
-
         public int ObraId { get; set; }
         public virtual Obra Obra { get; set; }
-
         public List<CapituloNovel> ListaCapituloNovel { get; set; }
-        public List<CapituloManga> ListaCapituloManga { get; set; }
-
+        public List<CapituloComic> ListaCapituloComic { get; set; }
         public Volume()
         {
             ListaCapituloNovel = new List<CapituloNovel>();
-            ListaCapituloManga = new List<CapituloManga>();
+            ListaCapituloComic = new List<CapituloComic>();
         }
     }
 }

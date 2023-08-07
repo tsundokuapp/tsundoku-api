@@ -1,13 +1,12 @@
 ﻿using Dapper;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using TsundokuTraducoes.Api.Data;
-using TsundokuTraducoes.Api.DTOs.Admin;
+using System.Collections.Generic;
 using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Repository.Interfaces;
-using TsundokuTraducoes.Models;
 
 namespace TsundokuTraducoes.Api.Repository
 {
@@ -46,44 +45,16 @@ namespace TsundokuTraducoes.Api.Repository
             return _context.SaveChanges() > 0;
         }
 
-        public List<CapituloNovel> RetornaListaCapitulos()
+        #region Comics
+
+        public CapituloComic RetornaCapituloComicPorId(int capituloId)
         {
-            var listaCapitulos = new List<CapituloNovel>();
-            _contextDapper.Query<CapituloNovel, CapituloManga, CapituloNovel>(RetornaQueryListaCapitulos(),
-                (capitulo, urlImagensManga) =>
-                {
-                    if (listaCapitulos.SingleOrDefault(c => c.Id == capitulo.Id) == null)
-                    {
-                        listaCapitulos.Add(capitulo);
-                    }
-                    else
-                    {
-                        capitulo = listaCapitulos.SingleOrDefault(o => o.Id == capitulo.Id);
-                    }
-
-                    _obraRepository.CarregaImagensManga(listaCapitulos, urlImagensManga);
-                    return capitulo;
-                });
-
-            return listaCapitulos;
+            return _context.CapituloManga.FirstOrDefault(f => f.Id == capituloId);
         }
-
-        public CapituloNovel RetornaCapituloPorId(int capituloId)
+        
+        public CapituloComic AtualizaCapituloComic(CapituloDTO capituloDTO)
         {
-            return RetornaListaCapitulos().FirstOrDefault(f => f.Id == capituloId);
-        }
-
-        public void ExcluiTabelaUrlImagensManga(CapituloNovel capitulo)
-        {
-            //foreach (var urlImagensManga in capitulo.ListaImagensManga)
-            //{
-            //    _context.Remove(urlImagensManga);
-            //}
-        }
-
-        public CapituloNovel AtualizaCapitulo(CapituloDTO capituloDTO)
-        {
-            var capituloEncontrado = _context.CapitulosNovel.SingleOrDefault(s => s.Id == capituloDTO.Id);
+            var capituloEncontrado = _context.CapituloManga.SingleOrDefault(s => s.Id == capituloDTO.Id);
 
             _context.Entry(capituloEncontrado).CurrentValues.SetValues(capituloDTO);
             capituloEncontrado.DataAlteracao = DateTime.Now;
@@ -91,25 +62,7 @@ namespace TsundokuTraducoes.Api.Repository
             return capituloEncontrado;
         }
 
-        private string RetornaQueryListaCapitulos()
-        {
-            return @"SELECT C.*, UIM.*
-                       FROM Capitulos C
-                       LEFT JOIN UrlsImagensManga UIM ON UIM.CapituloId = C.Id
-                      ORDER BY C.Id, UIM.Id ";
-        }
-
-        public Volume RetornaVolumePorId(int volumeId)
-        {
-            return _volumeRepository.RetornaVolumePorId(volumeId);
-        }
-
-        public Obra RetornaObraPorId(int obraId)
-        {
-            return _obraRepository.RetornaObraPorId(obraId);
-        }
-
-        public void AtualizaObraPorCapitulo(Obra obra, CapituloNovel capitulo)
+        public void AtualizaObraPorCapituloComic(Obra obra, CapituloComic capitulo)
         {
             var parametros = new
             {
@@ -126,6 +79,94 @@ namespace TsundokuTraducoes.Api.Repository
                          where Id = @Id;";
 
             _contextDapper.Query(sql, parametros);
+        }
+
+        public CapituloComic RetornaCapituloComicExistente(int idVolume, CapituloDTO capituloDTO)
+        {
+            var sql = @"SELECT * FROM CapituloManga 
+                         WHERE VolumeId = @IdVolume
+                           AND Slug = @Slug";
+
+            var parametros = new { IdVolume = idVolume, Slug = capituloDTO.Slug };
+            return _contextDapper.Query<CapituloComic>(sql, parametros).FirstOrDefault();
+        }
+
+        #endregion
+
+        #region Novels
+
+        public CapituloNovel RetornaCapituloNovelPorId(int capituloId)
+        {
+            return _context.CapituloNovel.FirstOrDefault(f => f.Id == capituloId);
+        }
+        
+        public CapituloNovel AtualizaCapituloNovel(CapituloDTO capituloDTO)
+        {
+            var capituloEncontrado = _context.CapituloNovel.SingleOrDefault(s => s.Id == capituloDTO.Id);
+
+            _context.Entry(capituloEncontrado).CurrentValues.SetValues(capituloDTO);
+            capituloEncontrado.DataAlteracao = DateTime.Now;
+
+            return capituloEncontrado;
+        }
+
+        public void AtualizaObraPorCapitulo(Obra obra, string descritivoCapitulo, string slug, DateTime dataInclusao)
+        {
+            var parametros = new
+            {
+                obra.Id,
+                NumeroUltimoCapitulo = descritivoCapitulo,
+                SlugUltimoCapitulo = slug,
+                DataAtualizacaoUltimoCapitulo = dataInclusao
+            };
+
+            var sql = @"update Obra 
+                           set NumeroUltimoCapitulo = @NumeroUltimoCapitulo, 
+                               SlugUltimoCapitulo = @SlugUltimoCapitulo, 
+                               DataAtualizacaoUltimoCapitulo = @DataAtualizacaoUltimoCapitulo 
+                         where Id = @Id;";
+
+            _contextDapper.Query(sql, parametros);
+        }
+
+        public CapituloNovel RetornaCapituloNovelExistente(int idVolume, CapituloDTO capituloDTO)
+        {
+            var sql = @"SELECT * FROM CapituloNovel 
+                         WHERE VolumeId = @IdVolume
+                           AND Slug = @Slug";
+
+            var parametros = new { IdVolume = idVolume, Slug = capituloDTO.Slug };
+            return _contextDapper.Query<CapituloNovel>(sql, parametros).FirstOrDefault();
+        }
+
+        #endregion
+
+        public List<CapituloDTO> RetornaListaCapitulos()
+        {            
+            return _contextDapper.Query<CapituloDTO>(RetornaQueryListaCapitulos()).ToList();            
+        }
+
+        public Volume RetornaVolumePorId(int volumeId)
+        {
+            return _volumeRepository.RetornaVolumePorId(volumeId);
+        }
+
+        public Obra RetornaObraPorId(int obraId)
+        {
+            return _obraRepository.RetornaObraPorId(obraId);
+        }
+
+        private string RetornaQueryListaCapitulos()
+        {
+            return @"SELECT CN.Id, CN.Titulo, CN.UsuarioCadastro, CN.DataInclusao, O.TipoObraSlug 
+                       FROM CapituloNovel CN
+                      INNER JOIN Volume V ON V.Id = CN.VolumeId
+                      INNER JOIN Obra O ON O.Id = V.ObraId
+                      UNION 
+                     SELECT CM.Id, CM.Titulo, CM.UsuarioCadastro, CM.DataInclusao, O.TipoObraSlug 
+                       FROM CapituloManga CM
+                      INNER JOIN Volume V ON V.Id = CM.VolumeId
+                      INNER JOIN Obra O ON O.Id = V.ObraId";
         }
     }
 }

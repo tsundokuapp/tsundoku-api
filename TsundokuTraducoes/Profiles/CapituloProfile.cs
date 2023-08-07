@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Models;
-using TsundokuTraducoes.Models;
 
 namespace TsundokuTraducoes.Api.Profiles
 {
@@ -10,6 +9,7 @@ namespace TsundokuTraducoes.Api.Profiles
         public CapituloProfile()
         {
             CreateMap<CapituloDTO, CapituloNovel>();
+            CreateMap<CapituloDTO, CapituloComic>();
         }
     }
 }

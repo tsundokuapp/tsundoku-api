@@ -7,8 +7,7 @@ namespace TsundokuTraducoes.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class CapituloController : ControllerBase
-    {
-        
+    {   
         private readonly ICapituloService _capituloService;
 
         public CapituloController(ICapituloService capituloService)
@@ -27,11 +26,14 @@ namespace TsundokuTraducoes.Controllers
 
             return Ok(result.Value);
         }
-        
-        [HttpGet("{id}")]
-        public IActionResult RetornaCapituloPorId(int id)
+
+        #region Comic
+
+        [HttpGet]
+        [Route("comic/{id}")]
+        public IActionResult RetornaCapituloComicPorId(int id)
         {
-            var result = _capituloService.RetornaCapituloPorId(id);
+            var result = _capituloService.RetornaCapituloComicPorId(id);
             if (result.IsFailed)
             {
                 return BadRequest(result.Errors[0].Message);
@@ -39,11 +41,12 @@ namespace TsundokuTraducoes.Controllers
 
             return Ok(result.Value);
         }
-        
+
         [HttpPost]
-        public IActionResult AdcionaCapitulo([FromForm]CapituloDTO capituloDTO)
+        [Route("comic")]
+        public IActionResult AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
-            var result = _capituloService.AdicionaCapitulo(capituloDTO);
+            var result = _capituloService.AdicionaCapituloComic(capituloDTO);
             if (result.IsFailed)
             {
                 return BadRequest(result.Errors[0].Message);
@@ -53,21 +56,23 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpPut]
-        public IActionResult AtualizaCapitulo([FromForm]CapituloDTO capituloDTO)
+        [Route("comic")]
+        public IActionResult AtualizaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
-            var result = _capituloService.AtualizaCapitulo(capituloDTO);
+            var result = _capituloService.AtualizaCapituloComic(capituloDTO);
             if (result.IsFailed)
             {
                 return BadRequest(result.Errors[0].Message);
             }
 
             return Ok(result.Value);
-        }       
+        }
 
-        [HttpDelete("{id}")]
-        public IActionResult ExcluiCapitulo(int id)
+        [HttpDelete]
+        [Route("comic/{id}")]
+        public IActionResult ExcluiCapituloComic(int id)
         {
-            var result = _capituloService.ExcluiCapitulo(id);
+            var result = _capituloService.ExcluiCapituloComic(id);
             if (result.IsFailed)
             {
                 return BadRequest(result.Errors[0].Message);
@@ -75,6 +80,64 @@ namespace TsundokuTraducoes.Controllers
 
             return Ok(result.Successes[0].Message);
         }
+
+        #endregion
+
+        #region Novel
+
+        [HttpGet]
+        [Route("novel/{id}")]
+        public IActionResult RetornaCapituloNovelPorId(int id)
+        {
+            var result = _capituloService.RetornaCapituloNovelPorId(id);
+            if (result.IsFailed)
+            {
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpPost]
+        [Route("novel")]
+        public IActionResult AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
+        {
+            var result = _capituloService.AdicionaCapituloNovel(capituloDTO);
+            if (result.IsFailed)
+            {
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpPut]
+        [Route("novel")]
+        public IActionResult AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
+        {
+            var result = _capituloService.AtualizaCapituloNovel(capituloDTO);
+            if (result.IsFailed)
+            {
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpDelete]
+        [Route("novel/{id}")]
+        public IActionResult ExcluiCapitulo(int id)
+        {
+            var result = _capituloService.ExcluiCapituloNovel(id);
+            if (result.IsFailed)
+            {
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Successes[0].Message);
+        }
+
+        #endregion
 
         [HttpGet]
         [Route("dados-obra/{id}")]

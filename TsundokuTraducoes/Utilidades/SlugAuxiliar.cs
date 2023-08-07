@@ -32,7 +32,7 @@ namespace TsundokuTraducoes.Api.Utilidades
             return dicionarioStatusObraSlug.GetValueOrDefault(slug);
         }
 
-        public static string RetornaNacionalidadePorSlug(string slug)
+        internal static string RetornaNacionalidadePorSlug(string slug)
         {
             var dicionarioNacionalidadeSlug = new Dictionary<string, string>
             {
@@ -43,6 +43,6 @@ namespace TsundokuTraducoes.Api.Utilidades
             };
 
             return dicionarioNacionalidadeSlug.GetValueOrDefault(slug);
-        }       
+        }
     }
 }
