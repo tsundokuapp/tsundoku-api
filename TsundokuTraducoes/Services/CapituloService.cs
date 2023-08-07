@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using FluentResults;
-using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using TsundokuTraducoes.Api.DTOs.Admin;
+using Microsoft.AspNetCore.Hosting;
 using TsundokuTraducoes.Api.Models;
-using TsundokuTraducoes.Api.Repository.Interfaces;
-using TsundokuTraducoes.Api.Services.Interfaces;
+using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Utilidades;
-using TsundokuTraducoes.Models;
+using TsundokuTraducoes.Api.Services.Interfaces;
+using TsundokuTraducoes.Api.Repository.Interfaces;
 
 namespace TsundokuTraducoes.Api.Services
 {
@@ -25,20 +23,11 @@ namespace TsundokuTraducoes.Api.Services
             _webHostEnvironment = hostEnvironment;
         }
 
-        public Result<List<CapituloNovel>> RetornaListaCapitulos()
-        {
-            var capitulos = _repository.RetornaListaCapitulos();
-            if (capitulos == null)
-            {
-                return Result.Fail("Erro ao retornar todos os capitulos!");
-            }
+        #region Comics
 
-            return Result.Ok(capitulos);
-        }
-
-        public Result<CapituloNovel> RetornaCapituloPorId(int capituloId)
+        public Result<CapituloComic> RetornaCapituloComicPorId(int capituloId)
         {
-            var capitulo = _repository.RetornaCapituloPorId(capituloId);
+            var capitulo = _repository.RetornaCapituloComicPorId(capituloId);
             if (capitulo == null)
             {
                 return Result.Fail("Erro ao retornar o capitulo!");
@@ -47,55 +36,58 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok(capitulo);
         }
 
-        public Result<CapituloNovel> AdicionaCapitulo(CapituloDTO capituloDTO)
+        public Result<CapituloComic> AdicionaCapituloComic(CapituloDTO capituloDTO)
         {
-            var capitulo = _mapper.Map<CapituloNovel>(capituloDTO);
             var volume = _repository.RetornaVolumePorId(capituloDTO.VolumeId);
             var obra = _repository.RetornaObraPorId(volume.ObraId);
-            _repository.Adiciona(capitulo);
-
-            var ehComic = VerificaEhComic(volume.ObraId);
-            if (ehComic)
+            
+            var capituloExistente = _repository.RetornaCapituloComicExistente(volume.Id, capituloDTO);
+            if (capituloExistente == null)
             {
-                if (capituloDTO.ListaImagensCapitulo != null && capituloDTO.ListaImagensCapitulo.Count > 0)
-                {
-                    
-                    var uploadImagemCapa = new Imagens(_webHostEnvironment);
-                    var resultadoMensagemDTO = uploadImagemCapa.ProcessaListaUploadImagemPaginaCapitulo(capituloDTO.ListaImagensCapitulo, obra, volume, capitulo);
+                var capitulo = _mapper.Map<CapituloComic>(capituloDTO);
+                _repository.Adiciona(capitulo);
 
-                    if (resultadoMensagemDTO.Erro)
-                    {
-                        return Result.Fail(resultadoMensagemDTO.MensagemErro);
-                    }
-                }
-                else
-                {
-                    return Result.Fail("Não foi encontrada a lista de imagens para o capítulo");
-                }
-            }
 
-            //capitulo.ConteudoNovel = JsonConvert.SerializeObject(capitulo.ListaImagensManga);
-
-            if (_repository.AlteracoesSalvas())
-            {
-                _repository.AtualizaObraPorCapitulo(obra, capitulo);
+                var ehComic = VerificaEhComic(volume.ObraId);
                 if (ehComic)
                 {
-                    foreach (var urlImagemManga in capitulo.ListaImagensManga)
+                    if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
                     {
-                        urlImagemManga.CapituloId = capitulo.Id;
+                        var uploadImagemCapa = new Imagens(_webHostEnvironment);
+                        var result = uploadImagemCapa.ProcessaListaUploadImagemPaginaCapitulo(capituloDTO, obra, volume, capitulo.Id);
+
+                        if (result.IsFailed)
+                        {
+                            return Result.Fail(result.Errors[0].Message);
+                        }
+
+                        capitulo.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
+                        capitulo.ListaImagens = capituloDTO.ListaImagemCapitulo;
+                    }
+                    else
+                    {
+                        return Result.Fail("Não foi encontrada a lista de imagens para o capítulo.");
                     }
                 }
 
-                return Result.Ok(capitulo);
-            }
+                if (_repository.AlteracoesSalvas())
+                {
 
-            return Result.Fail("Erro ao adicionar o capítulo!");
+                    _repository.AtualizaObraPorCapitulo(obra, capitulo.DescritivoCapitulo, capitulo.Slug, capitulo.DataInclusao);
+                    return Result.Ok(capitulo);
+                }
+
+                return Result.Fail("Erro ao adicionar o capítulo!");
+            }
+            else
+            {
+                return Result.Fail("Capítulo já postado!");
+            }            
         }
 
-        public Result<CapituloNovel> AtualizaCapitulo(CapituloDTO capituloDTO)
+        public Result<CapituloComic> AtualizaCapituloComic(CapituloDTO capituloDTO)
         {
-            var capituloEncontrado = _repository.RetornaCapituloPorId(capituloDTO.Id);
+            var capituloEncontrado = _repository.RetornaCapituloComicPorId(capituloDTO.Id);
             if (capituloEncontrado == null)
             {
                 return Result.Fail("Capítulo não encontrado!");
@@ -103,22 +95,23 @@ namespace TsundokuTraducoes.Api.Services
 
             var volume = _repository.RetornaVolumePorId(capituloDTO.VolumeId);
 
-            if (capituloDTO.ListaImagensCapitulo != null && capituloDTO.ListaImagensCapitulo.Count > 0)
+            if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
             {
 
                 var obra = _repository.RetornaObraPorId(volume.ObraId);
-                new Imagens().ExcluiDiretorioImagens(capituloEncontrado.DiretorioCapitulo);
-                _repository.ExcluiTabelaUrlImagensManga(capituloEncontrado);
+                new Imagens().ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo);
+                var result = new Imagens().ProcessaListaUploadImagemPaginaCapitulo(capituloDTO, obra, volume, capituloEncontrado.Id);
 
-                var resultadoMensagemDTO = new Imagens().ProcessaListaUploadImagemPaginaCapitulo(capituloDTO.ListaImagensCapitulo, obra, volume, capituloEncontrado);
-
-                if (resultadoMensagemDTO.Erro)
+                if (result.IsFailed)
                 {
-                    return Result.Fail(resultadoMensagemDTO.MensagemErro);
+                    return Result.Fail(result.Errors[0].Message);
                 }
+
+                capituloEncontrado.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
+                capituloEncontrado.ListaImagens = capituloDTO.ListaImagemCapitulo;
             }
 
-            capituloEncontrado = _repository.AtualizaCapitulo(capituloDTO);
+            capituloEncontrado = _repository.AtualizaCapituloComic(capituloDTO);
 
             if (!_repository.AlteracoesSalvas())
             {
@@ -129,9 +122,9 @@ namespace TsundokuTraducoes.Api.Services
 
         }
 
-        public Result<bool> ExcluiCapitulo(int capituloId)
+        public Result<bool> ExcluiCapituloComic(int capituloId)
         {
-            var capituloEncontrado = _repository.RetornaCapituloPorId(capituloId);
+            var capituloEncontrado = _repository.RetornaCapituloNovelPorId(capituloId);
             if (capituloEncontrado == null)
             {
                 return Result.Fail("Capítulo não encontrado!");
@@ -140,10 +133,10 @@ namespace TsundokuTraducoes.Api.Services
             var volume = _repository.RetornaVolumePorId(capituloEncontrado.VolumeId);
             var obra = _repository.RetornaObraPorId(volume.ObraId);
 
-            if (VerificaEhComic(obra.Id))
+            if (capituloEncontrado.EhIlustracoesNovel)
             {
                 var imagens = new Imagens();
-                imagens.ExcluiDiretorioImagens(capituloEncontrado.DiretorioCapitulo);
+                imagens.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo);
             }
 
             _repository.Exclui(capituloEncontrado);
@@ -153,6 +146,144 @@ namespace TsundokuTraducoes.Api.Services
             }
 
             return Result.Ok().WithSuccess("Capítulo excluído com sucesso!");
+        }
+
+        #endregion
+
+        #region Novels
+
+        public Result<CapituloNovel> RetornaCapituloNovelPorId(int capituloId)
+        {
+            var capitulo = _repository.RetornaCapituloNovelPorId(capituloId);
+            if (capitulo == null)
+            {
+                return Result.Fail("Erro ao retornar o capitulo!");
+            }
+
+            return Result.Ok(capitulo);
+        }
+
+        public Result<CapituloNovel> AdicionaCapituloNovel(CapituloDTO capituloDTO)
+        {
+            var volume = _repository.RetornaVolumePorId(capituloDTO.VolumeId);
+            var obra = _repository.RetornaObraPorId(volume.ObraId);
+
+            var capituloExistente = _repository.RetornaCapituloNovelExistente(volume.Id, capituloDTO);
+            if (capituloExistente == null)
+            {
+                var capitulo = _mapper.Map<CapituloNovel>(capituloDTO);
+                _repository.Adiciona(capitulo);
+
+                if (capituloDTO.EhIlustracoesNovel)
+                {
+                    if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
+                    {
+
+                        var uploadImagemCapa = new Imagens(_webHostEnvironment);
+                        var result = uploadImagemCapa.ProcessaListaUploadImagemPaginaCapitulo(capituloDTO, obra, volume, capitulo.Id);
+
+                        if (result.IsFailed)
+                        {
+                            return Result.Fail(result.Errors[0].Message);
+                        }
+
+                        capitulo.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
+                        capitulo.ConteudoNovel = capituloDTO.ConteudoNovel;
+                    }
+                    else
+                    {
+                        return Result.Fail("Não foi encontrada a lista de imagens para o capítulo");
+                    }
+                }
+
+                if (_repository.AlteracoesSalvas())
+                {
+                    _repository.AtualizaObraPorCapitulo(obra, capitulo.DescritivoCapitulo, capitulo.Slug, capitulo.DataInclusao);
+                    return Result.Ok(capitulo);
+                }
+
+                return Result.Fail("Erro ao adicionar o capítulo!");
+            }
+            else
+            {
+                return Result.Fail("Capítulo já postado!");
+            }
+        }
+
+        public Result<CapituloNovel> AtualizaCapituloNovel(CapituloDTO capituloDTO)
+        {
+            var capituloEncontrado = _repository.RetornaCapituloNovelPorId(capituloDTO.Id);
+            if (capituloEncontrado == null)
+            {
+                return Result.Fail("Capítulo não encontrado!");
+            }
+
+            var volume = _repository.RetornaVolumePorId(capituloDTO.VolumeId);
+
+            if (capituloDTO.EhIlustracoesNovel)
+            {
+                if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
+                {
+
+                    var obra = _repository.RetornaObraPorId(volume.ObraId);
+                    new Imagens().ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo);
+                    var result = new Imagens().ProcessaListaUploadImagemPaginaCapitulo(capituloDTO, obra, volume, capituloEncontrado.Id);
+
+                    if (result.IsFailed)
+                    {
+                        return Result.Fail(result.Errors[0].Message);
+                    }
+
+                    capituloEncontrado.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
+                    capituloEncontrado.ConteudoNovel = capituloDTO.ConteudoNovel;
+                }
+            }
+
+            capituloEncontrado = _repository.AtualizaCapituloNovel(capituloDTO);
+
+            if (!_repository.AlteracoesSalvas())
+            {
+                return Result.Fail("Erro ao atualizar o capítulo!");
+            }
+
+            return Result.Ok(capituloEncontrado);
+
+        }
+
+        public Result<bool> ExcluiCapituloNovel(int capituloId)
+        {
+            var capituloEncontrado = _repository.RetornaCapituloNovelPorId(capituloId);
+            if (capituloEncontrado == null)
+            {
+                return Result.Fail("Capítulo não encontrado!");
+            }
+
+            if (capituloEncontrado.EhIlustracoesNovel)
+            {
+                var imagens = new Imagens();
+                imagens.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo);
+            }
+
+            _repository.Exclui(capituloEncontrado);
+            if (!_repository.AlteracoesSalvas())
+            {
+                return Result.Fail("Erro ao excluir o capítulo!");
+            }
+
+            return Result.Ok().WithSuccess("Capítulo excluído com sucesso!");
+        }
+
+        #endregion
+
+        public Result<List<CapituloDTO>> RetornaListaCapitulos()
+        {
+            var capitulos = _repository.RetornaListaCapitulos();
+            if (capitulos == null)
+            {
+                return Result.Fail("Erro ao retornar todos os capitulos!");
+            }
+
+            return Result.Ok(capitulos);
         }
 
         public Result<CapituloDTO> RetornaDadosObra(int obraId)
@@ -166,21 +297,34 @@ namespace TsundokuTraducoes.Api.Services
             }
 
             capituloDTO.Obra = obra;
-            //capituloDTO.EhComic = VerificaEhComic(obra.Id);
-
             return Result.Ok(capituloDTO);
         }
 
         public Result<CapituloDTO> RetornaDadosCapitulo(int capituloId)
         {
             var capituloDTO = new CapituloDTO();
-            var capitulo = _repository.RetornaCapituloPorId(capituloId);
-            if (capitulo == null)
+            var capituloNovel = _repository.RetornaCapituloNovelPorId(capituloId);
+            var capituloComic = _repository.RetornaCapituloComicPorId(capituloId);
+
+            int volumeId;
+            if (capituloNovel != null)
             {
-                return Result.Fail("Capítulo consultado não encontrada!");
+                volumeId = capituloNovel.VolumeId;
+
+            }
+            else
+            {
+                if (capituloComic != null)
+                {
+                    volumeId = capituloComic.VolumeId;
+                }
+                else
+                {
+                    return Result.Fail("Capítulo consultado não encontrada!");
+                }
             }
 
-            var volume = _repository.RetornaVolumePorId(capitulo.VolumeId);
+            var volume = _repository.RetornaVolumePorId(volumeId);
             if (volume == null)
             {
                 return Result.Fail("Volume consultado não encontrada!");
@@ -192,32 +336,49 @@ namespace TsundokuTraducoes.Api.Services
                 return Result.Fail("Obra consultada não encontrada!");
             }
 
-            AtualizaCapituloDTO(capituloDTO, capitulo, obra);
+            AtualizaCapituloDTO(capituloDTO, obra, capituloNovel, capituloComic);
             return Result.Ok(capituloDTO);
-        }
-
-        private void AtualizaCapituloDTO(CapituloDTO capituloDTO, CapituloNovel capitulo, Obra obra)
-        {
-            capituloDTO.Id = capitulo.Id;
-            capituloDTO.Numero = capitulo.Numero;
-            capituloDTO.Parte = !string.IsNullOrEmpty(capitulo.Parte) ? capitulo.Parte : string.Empty;
-            capituloDTO.Titulo = !string.IsNullOrEmpty(capitulo.Titulo) ? capitulo.Titulo : string.Empty;
-            capituloDTO.VolumeId = capitulo.VolumeId;
-            capituloDTO.ConteudoNovel = !string.IsNullOrEmpty(capitulo.ConteudoNovel) ? capitulo.ConteudoNovel : string.Empty;
-            capituloDTO.TituloObra = obra.Titulo;
-            capituloDTO.TipoObraSlug = obra.TipoObraSlug;
-            capituloDTO.ObraId = obra.Id;
-            capituloDTO.UsuarioAlteracao = capitulo.UsuarioAlteracao;
-            capituloDTO.UsuarioCadastro = capitulo.UsuarioCadastro;
-            capituloDTO.Obra = obra;
-            //capituloDTO.EhComic = VerificaEhComic(obra.Id);
-            capituloDTO.EhIlustracoesNovel = capitulo.EhIlustracoesNovel;
         }
 
         public bool VerificaEhComic(int obraId)
         {
             var obra = _repository.RetornaObraPorId(obraId);
             return obra.TipoObraSlug == "manga" || obra.TipoObraSlug == "manhua" || obra.TipoObraSlug == "manhwa";
+        }
+
+        private void AtualizaCapituloDTO(CapituloDTO capituloDTO, Obra obra, CapituloNovel capituloNovel, CapituloComic capituloComic)
+        {
+            if (capituloNovel != null)
+            {
+                capituloDTO.Id = capituloNovel.Id;
+                capituloDTO.Numero = capituloNovel.Numero;
+                capituloDTO.Parte = !string.IsNullOrEmpty(capituloNovel.Parte) ? capituloNovel.Parte : string.Empty;
+                capituloDTO.Titulo = !string.IsNullOrEmpty(capituloNovel.Titulo) ? capituloNovel.Titulo : string.Empty;
+                capituloDTO.VolumeId = capituloNovel.VolumeId;
+                capituloDTO.ConteudoNovel = !string.IsNullOrEmpty(capituloNovel.ConteudoNovel) ? capituloNovel.ConteudoNovel : string.Empty;
+                capituloDTO.TituloObra = obra.Titulo;
+                capituloDTO.TipoObraSlug = obra.TipoObraSlug;
+                capituloDTO.ObraId = obra.Id;
+                capituloDTO.UsuarioAlteracao = capituloNovel.UsuarioAlteracao;
+                capituloDTO.UsuarioCadastro = capituloNovel.UsuarioCadastro;
+                capituloDTO.Obra = obra;
+                capituloDTO.EhIlustracoesNovel = capituloNovel.EhIlustracoesNovel;
+            }
+            else
+            {
+                capituloDTO.Id = capituloComic.Id;
+                capituloDTO.Numero = capituloComic.Numero;
+                capituloDTO.Parte = !string.IsNullOrEmpty(capituloComic.Parte) ? capituloComic.Parte : string.Empty;
+                capituloDTO.Titulo = !string.IsNullOrEmpty(capituloComic.Titulo) ? capituloComic.Titulo : string.Empty;
+                capituloDTO.VolumeId = capituloComic.VolumeId;
+                capituloDTO.ListaImagemCapitulo = !string.IsNullOrEmpty(capituloComic.ListaImagens) ? capituloComic.ListaImagens : string.Empty;
+                capituloDTO.TituloObra = obra.Titulo;
+                capituloDTO.TipoObraSlug = obra.TipoObraSlug;
+                capituloDTO.ObraId = obra.Id;
+                capituloDTO.UsuarioAlteracao = capituloComic.UsuarioAlteracao;
+                capituloDTO.UsuarioCadastro = capituloComic.UsuarioCadastro;
+                capituloDTO.Obra = obra;
+            }
         }
     }
 }

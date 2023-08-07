@@ -6,12 +6,15 @@ namespace TsundokuTraducoes.Api.Data
 {
     public class TsundokuContext : DbContext
     {
-        public DbSet<CapituloManga> CapitulosManga { get; set; }
-        public DbSet<CapituloNovel> CapitulosNovel { get; set; }
-        public DbSet<Genero> Generos { get; set; }
-        public DbSet<GeneroObra> GenerosObra { get; set; }
-        public DbSet<Obra> Obras { get; set; }
-        public DbSet<Volume> Volumes { get; set; }
+        public DbSet<CapituloComic> CapituloManga { get; set; }
+        public DbSet<CapituloNovel> CapituloNovel { get; set; }
+        public DbSet<ComentarioObraRecomendada> ComentarioObraRecomendada { get; set; }
+        public DbSet<Genero> Genero { get; set; }
+        public DbSet<GeneroObra> GeneroObra { get; set; }
+        public DbSet<Obra> Obra { get; set; }
+        public DbSet<ObraRecomendada> ObraRecomendada { get; set; }
+        public DbSet<Volume> Volume { get; set; }
+        public DbSet<Imagem> Imagem { get; set; }
         public TsundokuContext(DbContextOptions<TsundokuContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

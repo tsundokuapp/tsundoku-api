@@ -1,13 +1,11 @@
 ﻿using Dapper;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Collections.Generic;
 using TsundokuTraducoes.Api.Data;
 using TsundokuTraducoes.Api.DTOs.Public;
 using TsundokuTraducoes.Api.Repository.Interfaces;
-using TsundokuTraducoes.Api.Utilidades;
-using TsundokuTraducoes.Models;
 
 namespace TsundokuTraducoes.Api.Repository
 {
@@ -35,15 +33,15 @@ namespace TsundokuTraducoes.Api.Repository
         {
             return @$"SELECT O.Titulo TituloObra,
 	                         O.NumeroUltimoVolume DescritivoVolume,
-                             O.NumeroUltimoCapitulo DescritivoCapitulo,
-                             O.Slug SlugObra,
+	                         O.NumeroUltimoCapitulo DescritivoCapitulo,
+	                         O.Slug SlugObra,
 	                         O.SlugUltimoVolume SlugVolume,
-                             O.SlugUltimoCapitulo SlugCapitulo,
-                             O.ImagemUltimoVolume UrlCapaVolume,
-                             O.Alias AliasObra,
-                             O.AutorObra 
-                        FROM Obras O 
-                       {condicaoConsulta}
+	                         O.SlugUltimoCapitulo SlugCapitulo,
+	                         O.ImagemCapaUltimoVolume UrlCapaVolume,
+	                         O.Alias AliasObra,
+	                         O.Autor AutorObra 
+                        FROM Obra O 
+                        {condicaoConsulta}
                        ORDER BY O.DataAtualizacaoUltimoCapitulo DESC";
         }
 
@@ -137,7 +135,7 @@ namespace TsundokuTraducoes.Api.Repository
 
         private static string RetornaCondicaoEhNovel(bool ehNovel)
         {
-            var condicaoEhNovel = string.Empty;
+            string condicaoEhNovel;
 
             if (ehNovel)
             {
@@ -155,7 +153,18 @@ namespace TsundokuTraducoes.Api.Repository
         {
             var listaObraDTO = new List<ObraDTO>();
 
-            _contextDapper.Query(RetornaSqlObraPorSlug(),
+            _contextDapper.Query(RetornaSqlObraNovelPorSlug(),
+                (Func<ObraDTO, GeneroDTO, VolumeDTO, CapituloDTO, ObraDTO>)((obraDTO, generoDTO, volumeDTO, capituloDTO) =>
+                {
+                    obraDTO = CarregaObra(obraDTO, listaObraDTO);
+                    CarregaGeneros(obraDTO, generoDTO);
+                    CarregaVolume(obraDTO, volumeDTO);
+                    CarregaCapitulo(obraDTO, capituloDTO);
+
+                    return obraDTO;
+                }), new { slug }, splitOn: "ImagemCapaPrincipal, Genero, ImagemCapaVolume, CapituloNumero");
+
+            _contextDapper.Query(RetornaSqlObraComicPorSlug(),
                 (Func<ObraDTO, GeneroDTO, VolumeDTO, CapituloDTO, ObraDTO>)((obraDTO, generoDTO, volumeDTO, capituloDTO) =>
                 {
                     obraDTO = CarregaObra(obraDTO, listaObraDTO);
@@ -220,37 +229,89 @@ namespace TsundokuTraducoes.Api.Repository
             }
         }
 
-        private static string RetornaSqlObraPorSlug()
+        private static string RetornaSqlObraNovelPorSlug()
         {
-            return @"SELECT O.EnderecoUrlCapa AS ImagemCapaPrincipal,
-                       	    O.Titulo, 
-                            O.TituloAlternativo,
-                            O.Sinopse AS SinopseObra,
-                            O.AutorObra,
-                            O.Artista AS Ilustrador,
-                            O.Slug AS SlugObra,
-                            O.StatusObraSlug AS SlugStatus,       
-                            O.TipoObraSlug AS SlugTipoObra,
-                            G.Descricao AS Genero,
-                            G.Slug AS SlugGenero,
-                      	    V.ImagemVolume AS ImagemCapaVolume,
-                            V.Sinopse AS SinopseVolume,
-                            V.Slug AS SlugVolume,
-                            V.Numero AS VolumeNumero,
-                            C.Numero AS CapituloNumero,
-                            C.Titulo AS TituloCapitulo,
-                            C.Slug AS SlugCapitulo
-                       FROM Obras O
-                      INNER JOIN GeneroObra GO ON GO.ObrasId = O.Id
-                      INNER JOIN Generos G ON G.Id = GO.GenerosId
-                       LEFT JOIN Volumes V ON V.ObraId = O.Id
-                       LEFT JOIN Capitulos C ON C.VolumeId = V.Id
+            return @"SELECT O.ImagemCapaPrincipal AS ImagemCapaPrincipal,
+		                    O.Titulo, 
+		                    O.TituloAlternativo,
+		                    O.Sinopse AS SinopseObra,
+		                    O.Autor AS AutorObra,
+		                    O.Artista AS Ilustrador,
+		                    O.Slug AS SlugObra,
+		                    O.StatusObraSlug AS SlugStatus,       
+		                    O.TipoObraSlug AS SlugTipoObra,
+		                    G.Descricao AS Genero,
+		                    G.Slug AS SlugGenero,
+		                    V.ImagemVolume AS ImagemCapaVolume,
+		                    V.Sinopse AS SinopseVolume,
+		                    V.Slug AS SlugVolume,
+		                    V.Numero AS VolumeNumero,
+		                    C.Numero AS CapituloNumero,
+		                    C.Titulo AS TituloCapitulo,
+		                    C.Slug AS SlugCapitulo
+                       FROM Obra O
+                      INNER JOIN GeneroObra GO ON GO.ObraId = O.Id
+                      INNER JOIN Genero G ON G.Id = GO.GeneroId
+                       LEFT JOIN Volume V ON V.ObraId = O.Id
+                       LEFT JOIN CapituloNovel C ON C.VolumeId = V.Id
                       WHERE O.Slug = @slug";
         }
 
-        public ConteudoCapituloNovelDTO ObterCapituloPorSlug(string slug)
+        private static string RetornaSqlObraComicPorSlug()
         {
-            return new ConteudoCapituloNovelDTO();
+            return @"SELECT O.ImagemCapaPrincipal AS ImagemCapaPrincipal,
+		                    O.Titulo, 
+		                    O.TituloAlternativo,
+		                    O.Sinopse AS SinopseObra,
+		                    O.Autor AS AutorObra,
+		                    O.Artista AS Ilustrador,
+		                    O.Slug AS SlugObra,
+		                    O.StatusObraSlug AS SlugStatus,       
+		                    O.TipoObraSlug AS SlugTipoObra,
+		                    G.Descricao AS Genero,
+		                    G.Slug AS SlugGenero,
+		                    V.ImagemVolume AS ImagemCapaVolume,
+		                    V.Sinopse AS SinopseVolume,
+		                    V.Slug AS SlugVolume,
+		                    V.Numero AS VolumeNumero,
+		                    C.Numero AS CapituloNumero,
+		                    C.Titulo AS TituloCapitulo,
+		                    C.Slug AS SlugCapitulo
+                       FROM Obra O
+                      INNER JOIN GeneroObra GO ON GO.ObraId = O.Id
+                      INNER JOIN Genero G ON G.Id = GO.GeneroId
+                       LEFT JOIN Volume V ON V.ObraId = O.Id
+                       LEFT JOIN CapituloManga C ON C.VolumeId = V.Id
+                      WHERE O.Slug = @slug";
+        }
+
+        public ConteudoCapituloNovelDTO ObterCapituloNovelPorSlug(string slug)
+        {
+            var sql = @"SELECT Titulo TituloCapitulo, 
+                               ConteudoNovel ConteudoCapitulo,
+                               Tradutor,
+                               Revisor,
+	                           QC,
+                               Slug SlugCapitulo,
+                               Id 
+                         FROM CapituloNovel
+                        WHERE Slug = @slug;";
+
+            var retorno = _contextDapper.Query<ConteudoCapituloNovelDTO>(sql, new { slug });
+            return retorno.FirstOrDefault();
+        }
+
+        public ConteudoCapituloComicDTO ObterCapituloComicPorSlug(string slug)
+        {
+            var sql = @"SELECT Id,
+	                           Titulo TituloCapitulo,
+                               ListaImagens	ListaImagensComic,
+                               Slug SlugCapitulo
+                          FROM CapituloManga
+                         WHERE Slug = @slug";
+
+            var retorno = _contextDapper.Query<ConteudoCapituloComicDTO>(sql, new { slug });
+            return retorno.FirstOrDefault();
         }
     }
 }

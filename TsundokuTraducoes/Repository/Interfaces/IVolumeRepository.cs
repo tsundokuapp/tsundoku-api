@@ -11,9 +11,10 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
         void Exclui<T>(T entity) where T : class;
         bool AlteracoesSalvas();
         Volume AtualizaVolume(VolumeDTO VolumeDTO);
-        List<Volume> RetornaListaVolumes();
+        List<Volume> RetornaListaVolumes(int? idObra);
         Volume RetornaVolumePorId(int volumeId);
         Obra RetornaObraPorId(int obraId);
         void AtualizaObraPorVolume(Obra obra, Volume volume);
+        Volume RetornaVolumeExistente(int obraId, string numero);
     }
 }

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using TsundokuTraducoes.Api.DTOs.Admin;
+﻿using System;
+using System.Collections.Generic;
 using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.DTOs.Admin;
 
 namespace TsundokuTraducoes.Api.Repository.Interfaces
 {
@@ -11,12 +12,25 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
         void Exclui<T>(T entity) where T : class;
         bool AlteracoesSalvas();
 
-        List<CapituloNovel> RetornaListaCapitulos();
-        CapituloNovel RetornaCapituloPorId(int capituloId);
+        #region Comic
+
+        CapituloComic RetornaCapituloComicPorId(int capituloId);
+        CapituloComic AtualizaCapituloComic(CapituloDTO capituloDTO);
+        CapituloComic RetornaCapituloComicExistente(int idVolume, CapituloDTO capituloDTO);
+
+        #endregion
+
+        #region Novel
+
+        CapituloNovel RetornaCapituloNovelPorId(int capituloId);
+        CapituloNovel AtualizaCapituloNovel(CapituloDTO capituloDTO);
+        CapituloNovel RetornaCapituloNovelExistente(int idVolume, CapituloDTO capituloDTO);
+
+        #endregion
+
+        void AtualizaObraPorCapitulo(Obra obra, string descritivoCapitulo, string slug, DateTime dataInclusao);
+        List<CapituloDTO> RetornaListaCapitulos();
         Volume RetornaVolumePorId(int volumeId);
         Obra RetornaObraPorId(int obraId);
-        void ExcluiTabelaUrlImagensManga(CapituloNovel capitulo);
-        CapituloNovel AtualizaCapitulo(CapituloDTO capituloDTO);
-        void AtualizaObraPorCapitulo(Obra obra, CapituloNovel capitulo);
     }
 }

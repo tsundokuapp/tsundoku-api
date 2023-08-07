@@ -9,7 +9,7 @@ namespace TsundokuTraducoes.Api.DTOs.Public
         public string Titulo { get; set; }
         public string TituloAlternativo { get; set; }
         public string SinopseObra { get; set; }
-        public string AutorObra { get; set; }
+        public string Autor { get; set; }
         public string Ilustrador { get; set; }
         public string SlugObra { get; set; }
         public string SlugStatus { get; set; }

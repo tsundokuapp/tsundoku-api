@@ -1,8 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using MySql.Data.MySqlClient;
-using System;
-using System.IO;
-using System.Security.Cryptography.X509Certificates;
 
 namespace TsundokuTraducoes.Api.Utilidades
 {
@@ -22,23 +18,6 @@ namespace TsundokuTraducoes.Api.Utilidades
                 .AddJsonFile("appsettings.json")
                 .Build()
                 .GetConnectionString("Default");
-
-            //var stringBuilder = new MySqlConnectionStringBuilder();
-            //stringBuilder.Server = "aws.connect.psdb.cloud";
-            //stringBuilder.UserID = "0mqdp47t1zvbclrqd2ar";
-            //stringBuilder.Password = "pscale_pw_HBdUbdWGnSATpMnuqxXUMI4I6U30hTJU7ETVMnae8zN";
-            //stringBuilder.Port = 3306;
-            //stringBuilder.Database = "tsun-db";
-            //stringBuilder.SslMode = MySqlSslMode.VerifyFull;
-            //stringBuilder.CertificateFile = "./Authentication/cacert_2023_01_10.pem";
-            //stringBuilder.CertificatePassword = "12345678";
-            //stringBuilder.CertificateStoreLocation = MySqlCertificateStoreLocation.CurrentUser;
-
-
-            //var retorno = stringBuilder.ToString();
-            //return retorno;
-
-
         }
 
         private static string RetornaValorAmbienteDesenvolvimento()

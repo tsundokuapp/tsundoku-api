@@ -43,34 +43,21 @@ namespace TsundokuTraducoes.Api.Repository
             return _context.SaveChanges() > 0;
         }
 
-        public List<Volume> RetornaListaVolumes()
-        {
-            var listaVolumes = new List<Volume>();
-            _contextDapper.Query<Volume, CapituloNovel, Volume>(RetornaQueryListaVolumes(),
-                (volume, capitulo) =>
-                {
-                    if (listaVolumes.SingleOrDefault(v => v.Id == volume.Id) == null)
-                    {                        
-                        listaVolumes.Add(volume);
-                    }
-                    else
-                    {
-                        volume = listaVolumes.SingleOrDefault(o => o.Id == volume.Id);
-                    }
-
-                    _obraRepository.CarregaCapitulos(listaVolumes, capitulo);
-                    return volume;
-                });
+        public List<Volume> RetornaListaVolumes(int? idObra = null)
+        {            
+            var listaVolumes = _contextDapper.Query<Volume>(RetornaQueryListaVolumes(idObra)).ToList();
 
             return listaVolumes;
         }
 
-        private string RetornaQueryListaVolumes()
+        private string RetornaQueryListaVolumes(int? idObra)
         {
-            return @"SELECT V.*, C.* 
-                       FROM Volumes V
-                       LEFT JOIN Capitulos C ON C.VolumeId = V.Id
-                      ORDER BY V.Id, C.Id";
+            var condicao = (idObra != null && idObra > 0) ? $"WHERE ObraId = {idObra.Value}" : ""; 
+            
+            return $@"SELECT *
+                       FROM Volume
+                      {condicao}
+                      ORDER BY Numero ASC";
         }
 
         public Volume RetornaVolumePorId(int volumeId)
@@ -80,22 +67,22 @@ namespace TsundokuTraducoes.Api.Repository
 
         public Volume AtualizaVolume(VolumeDTO VolumeDTO)
         {
-            var volumeEncontrado = _context.Volumes.SingleOrDefault(s => s.Id == VolumeDTO.Id);
+            var volumeEncontrado = _context.Volume.SingleOrDefault(s => s.Id == VolumeDTO.Id);
             var tituloVolumeVazio = VerificaCampoVazio(volumeEncontrado.Titulo, VolumeDTO.Titulo);
             if (tituloVolumeVazio)
             {
                 VolumeDTO.Titulo = string.Empty;
             }
 
-            var sinopseVolumeVazia = VerificaCampoVazio(volumeEncontrado.Titulo, VolumeDTO.Titulo);
+            var sinopseVolumeVazia = VerificaCampoVazio(volumeEncontrado.Sinopse, VolumeDTO.Sinopse);
             if (sinopseVolumeVazia)
             {
                 VolumeDTO.Sinopse = string.Empty;
             }
 
-            if (string.IsNullOrEmpty(VolumeDTO.UrlImagemVolume))
+            if (string.IsNullOrEmpty(VolumeDTO.ImagemCapaVolume))
             {
-                VolumeDTO.UrlImagemVolume = volumeEncontrado.ImagemVolume;
+                VolumeDTO.ImagemCapaVolume = volumeEncontrado.ImagemVolume;
             }
 
             _context.Entry(volumeEncontrado).CurrentValues.SetValues(VolumeDTO);
@@ -122,18 +109,35 @@ namespace TsundokuTraducoes.Api.Repository
             var parametros = new
             {
                 obra.Id,
-                UrlImagemUltimoVolume = volume.ImagemVolume,
+                ImagemCapaUltimoVolume = volume.ImagemVolume,
                 NumeroUltimoVolume = volume.DescritivoVolume,
                 SlugUltimoVolume = volume.Slug
             };
 
-            var sql = @"update Obras
-                           set UrlImagemUltimoVolume = @UrlImagemUltimoVolume,
+            var sql = @"UPDATE Obra
+                           SET ImagemCapaUltimoVolume = @ImagemCapaUltimoVolume,
                                NumeroUltimoVolume = @NumeroUltimoVolume,
                                SlugUltimoVolume = @SlugUltimoVolume
-                         where Id = @Id;";
+                         WHERE Id = @Id;";
 
             _contextDapper.Query(sql, parametros);
+        }
+
+        public Volume RetornaVolumeExistente(int obraId, string numeroVolume)
+        {
+            var parametros = new
+            {
+                obraId = obraId,
+                numeroVolume = numeroVolume
+            };
+
+            var sql = @"SELECT * 
+                          FROM Volume 
+                         WHERE ObraId = @obraId 
+                           AND Numero = @numeroVolume";
+
+
+            return _contextDapper.Query<Volume>(sql, parametros).FirstOrDefault();
         }
     }
 }

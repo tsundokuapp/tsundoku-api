@@ -7,7 +7,7 @@ namespace TsundokuTraducoes.Api.Services.Interfaces
 {
     public interface IVolumeService
     {
-        Result<List<Volume>> RetornaListaVolume();
+        Result<List<Volume>> RetornaListaVolume(int? idObra);
         Result<Volume> RetornaVolumePorId(int id);
         Result<Volume> AdicionaVolume(VolumeDTO volumeDTO);
         Result<Volume> AtualizaVolume(VolumeDTO volumeDTO);

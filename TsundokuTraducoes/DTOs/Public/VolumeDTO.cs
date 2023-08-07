@@ -9,7 +9,6 @@ namespace TsundokuTraducoes.Api.DTOs.Public
         public string SlugVolume { get; set; }
         public string VolumeNumero { get; set; }
         public List<CapituloDTO> CapitulosDTO { get; set; }
-
         public VolumeDTO()
         {
             CapitulosDTO = new List<CapituloDTO>();

@@ -75,6 +75,84 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Successes[0].Message);
         }
 
+        [HttpPost]
+        [Route("recomendada")]
+        public IActionResult AdicionaObraRecomendada([FromForm] ObraRecomendadaDTO obraRecomendadaDTO)
+        {
+            var result = _obraService.AdicionaObraRecomendada(obraRecomendadaDTO);
+            if (result.IsFailed)
+            {
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet]
+        [Route("recomendada")]
+        public IActionResult RetornaListaObraRecomendada()
+        {
+            var result = _obraService.RetornaListaObraRecomendada();
+            if (result.IsFailed)
+            {
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet]
+        [Route("recomendada/{id}")]
+        public IActionResult RetornaObraRecomendadaPorId(int id)
+        {
+            var result =_obraService.RetornaObraRecomendadaPorId(id);
+            if (result.IsFailed)
+            {
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Value);
+        }        
+        
+        [HttpPost]
+        [Route("recomendada/comentario")]
+        public IActionResult AdicionaComentarioObraRecomendada([FromForm] ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        {
+            var result = _obraService.AdicionaComentarioObraRecomendada(comentarioObraRecomendadaDTO);
+            if (result.IsFailed)
+            {
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpPut]
+        [Route("recomendada/comentario")]
+        public IActionResult AtualizaComentarioObraRecomendada([FromForm] ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        {
+            var result = _obraService.AtualizaComentarioObraRecomendada(comentarioObraRecomendadaDTO);
+            if (result.IsFailed)
+            {
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet]
+        [Route("recomendada/comentario/{id}")]
+        public IActionResult RetornaComentarioObraRecomendadaPorId(int id)
+        {
+            var result = _obraService.RetornaComentarioObraRecomendadaPorId(id);
+            if (result.IsFailed)
+            {
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Value);
+        }
+
         [Route("informacoes-obra")]
         [HttpGet]
         public IActionResult RetornaInformacoes()

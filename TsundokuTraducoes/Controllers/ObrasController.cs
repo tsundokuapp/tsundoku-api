@@ -22,14 +22,12 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(capitulos);
         }
         
-
         [HttpGet("{slug}")]
         public IActionResult ObterObra(string slug)
         {
             var obra = _infosObrasServices.ObterObraPorSlug(slug);
             return Ok(obra);
         }
-
         
         [HttpGet]
         [Route("novels")]
@@ -57,7 +55,7 @@ namespace TsundokuTraducoes.Api.Controllers
         [Route("novels/capitulo/{slugCapitulo}")]
         public IActionResult ObterCapituloNovel(string slugCapitulo)
         {
-            var capitulo = _infosObrasServices.ObterCapituloPorSlug(slugCapitulo);
+            var capitulo = _infosObrasServices.ObterCapituloNovelPorSlug(slugCapitulo);
             return Ok(capitulo);
         }
 
@@ -65,7 +63,7 @@ namespace TsundokuTraducoes.Api.Controllers
         [Route("comics/capitulo/{slugCapitulo}")]
         public IActionResult ObterCapituloComic(string slugCapitulo)
         {
-            var capitulo = _infosObrasServices.ObterCapituloPorSlug(slugCapitulo);
+            var capitulo = _infosObrasServices.ObterCapituloComicPorSlug(slugCapitulo);
             return Ok(capitulo);
         }
     }

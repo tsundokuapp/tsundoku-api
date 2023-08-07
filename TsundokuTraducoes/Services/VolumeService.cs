@@ -20,9 +20,9 @@ namespace TsundokuTraducoes.Api.Services
             _repository = repository;
         }
 
-        public Result<List<Volume>> RetornaListaVolume()
+        public Result<List<Volume>> RetornaListaVolume(int? idObra)
         {
-            var listaVolumes = _repository.RetornaListaVolumes();
+            var listaVolumes = _repository.RetornaListaVolumes(idObra);
             if (listaVolumes == null)
             {
                 return Result.Fail("Erro ao retornar todos os volumes!");
@@ -46,15 +46,21 @@ namespace TsundokuTraducoes.Api.Services
         {
             var volume = _mapper.Map<Volume>(volumeDTO);
             var obra = _repository.RetornaObraPorId(volumeDTO.ObraId);
+            var volumeExistente = _repository.RetornaVolumeExistente(volumeDTO.ObraId, volumeDTO.Numero);
 
             if (obra == null)
             {
                 return Result.Fail("Não foi encontrada a obra informada");
             }
 
-            if (volumeDTO.ImagemCapa != null)
+            if (volumeExistente != null)
             {
-                new Imagens().ProcessaUploadImagemCapaVolume(volumeDTO.ImagemCapa, volume, obra, volumeDTO);
+                return Result.Fail("Voluma já postado.");
+            }
+
+            if (volumeDTO.ImagemCapaVolumeFile != null)
+            {
+                new Imagens().ProcessaUploadImagemCapaVolume(volumeDTO.ImagemCapaVolumeFile, volume, obra, volumeDTO);
             }
             else
             {
@@ -79,14 +85,14 @@ namespace TsundokuTraducoes.Api.Services
                 return Result.Fail("Volume não encontrado!");
             }
 
-            if (volumeDTO.ImagemCapa != null)
+            if (volumeDTO.ImagemCapaVolumeFile != null)
             {
                 var obra = _repository.RetornaObraPorId(volumeDTO.ObraId);
 
                 if (obra == null)
                     return Result.Fail("Não foi encontrada a obra informada");
 
-                new Imagens().ProcessaUploadImagemCapaVolume(volumeDTO.ImagemCapa, volumeEncontrado, obra, volumeDTO);
+                new Imagens().ProcessaUploadImagemCapaVolume(volumeDTO.ImagemCapaVolumeFile, volumeEncontrado, obra, volumeDTO);
             }
 
             volumeEncontrado = _repository.AtualizaVolume(volumeDTO);
@@ -105,8 +111,6 @@ namespace TsundokuTraducoes.Api.Services
             {
                 return Result.Fail("Volume não encontrado!");
             }
-
-            //new Imagens().ExcluiDiretorioImagens(volumeEncontrado.DiretorioVolume);
 
             _repository.Exclui(volumeEncontrado);
             if (_repository.AlteracoesSalvas())

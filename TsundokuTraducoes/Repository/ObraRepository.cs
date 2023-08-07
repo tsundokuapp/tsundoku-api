@@ -1,5 +1,6 @@
 ﻿using Dapper;
-using Org.BouncyCastle.Utilities.Collections;
+using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +9,6 @@ using TsundokuTraducoes.Api.Data;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.Repository.Interfaces;
-using TsundokuTraducoes.Models;
 
 namespace TsundokuTraducoes.Api.Repository
 {
@@ -50,18 +50,12 @@ namespace TsundokuTraducoes.Api.Repository
                 new[]
                 {
                     typeof(Obra),
-                    typeof(Volume),
-                    typeof(CapituloNovel),
-                    typeof(CapituloManga),
-                    typeof(Genero)
+                    typeof(GeneroObra)
                 },
                 (objects) =>
                 {
                     var obra = (Obra)objects[0];
-                    var volume = (Volume)objects[1];
-                    var capitulo = (CapituloNovel)objects[2];
-                    var urlImagensManga = (CapituloManga)objects[3];
-                    var genero = (Genero)objects[4];
+                    var generoObra = (GeneroObra)objects[1];
 
                     if (listaObras.SingleOrDefault(o => o.Id == obra.Id) == null)
                     {
@@ -71,109 +65,65 @@ namespace TsundokuTraducoes.Api.Repository
                     {
                         obra = listaObras.SingleOrDefault(o => o.Id == obra.Id);
                     }
-                    
-                    AdicionaVolumesCapitulosObra(obra, volume, capitulo, urlImagensManga);
+
+                    AdicionaGeneroObra(obra, generoObra);
 
                     return obra;
-                });
+                }, splitOn: "Id, ObraId");
 
             return listaObras;
         }
 
         public Obra RetornaObraPorId(int obraId)
         {
-            return RetornaListaObras().FirstOrDefault(f => f.Id == obraId);
+            return RetornaListaObras().SingleOrDefault(f => f.Id == obraId);
         }
 
         public Obra AtualizaObra(ObraDTO obraDTO)
         {
-            var obraEncontrada = _context.Obras.SingleOrDefault(p => p.Id == obraDTO.Id);
-            CarregaListaGeneros(obraDTO, obraEncontrada, false);
-
-            if (string.IsNullOrEmpty(obraDTO.EnderecoUrlCapa))
-            {
-                obraDTO.EnderecoUrlCapa = obraEncontrada.EnderecoUrlCapa;
-            }
-
+            var obraEncontrada = _context.Obra.Include(o => o.GenerosObra).SingleOrDefault(o => o.Id == obraDTO.Id);
             _context.Entry(obraEncontrada).CurrentValues.SetValues(obraDTO);
             obraEncontrada.DataAlteracao = DateTime.Now;
+
+            AtualizaDadosObraRecomendada(obraEncontrada);
 
             return obraEncontrada;
         }
 
-        public void InsereGenerosObra(ObraDTO obraDTO)
+        private void AtualizaDadosObraRecomendada(Obra obraEncontrada)
         {
-            foreach (var genero in obraDTO.ListaGeneros)
+            var parametros = new
             {
-                var param = new
-                {
-                    generoId = genero,
-                    obraId = obraDTO.Id
-                };
+                IdObra = obraEncontrada.Id,
+                UrlImagemCapaPrincipal = obraEncontrada.ImagemCapaPrincipal,
+                Sinopse = obraEncontrada.Sinopse,
+                TituloAliasObra = obraEncontrada.Alias,
+                SlugObra = obraEncontrada.Slug
+            };
 
-                var sql = "INSERT INTO GeneroObras VALUES(@generoId,@obraId);";
+            var sql = @"UPDATE ObraRecomendada 
+                           SET UrlImagemCapaPrincipal = @UrlImagemCapaPrincipal,
+                               Sinopse = @Sinopse,
+                               TituloAliasObra = @TituloAliasObra,
+                               SlugObra = @SlugObra
+                         WHERE IdObra = @IdObra;";
 
-                _contextDapper.QueryAsync(sql, param);
+            _contextDapper.Execute(sql, parametros);
+        }
+
+        private void AdicionaGeneroObra(Obra obra, GeneroObra generoObra)
+        {
+            if (generoObra != null)
+            {
+                obra.GenerosObra.Add(generoObra);
             }
-        }
-
-        public void AdicionaVolumesCapitulosObra(Obra obra, Volume volume, CapituloNovel capitulo, CapituloManga urlImagensManga)
-        {
-            //if (volume != null)
-            //{
-            //    CarregaVolumes(obra.Volumes, volume);
-            //    CarregaCapitulos(obra.Volumes, capitulo, urlImagensManga);
-            //}
-        }
-
-        public void CarregaVolumes(List<Volume> volumes, Volume volume)
-        {
-            //if (volumes.SingleOrDefault(v => v.Id == volume.Id) == null)
-            //{
-            //    volume.Capitulos = new List<CapituloNovel>();
-            //    volumes.Add(volume);
-            //}
-        }
-
-        public void CarregaCapitulos(List<Volume> volumes, CapituloNovel capitulo, CapituloManga urlImagensManga)
-        {
-            //if (capitulo != null)
-            //{
-            //    foreach (var volumeObra in volumes)
-            //    {
-            //        if (volumeObra.Capitulos.SingleOrDefault(c => c.Id == capitulo.Id) == null)
-            //        {
-            //            capitulo.ListaImagensManga = new List<CapituloManga>();
-            //            volumeObra.Capitulos.Add(capitulo);
-            //            CarregaImagensManga(volumeObra.Capitulos, urlImagensManga);
-            //        }
-            //    }
-            //}
-        }
-
-        public void CarregaImagensManga(List<CapituloNovel> capitulos, CapituloManga urlImagensManga = null)
-        {
-            //if (urlImagensManga != null)
-            //{
-            //    foreach (var capituloVolumeObra in capitulos)
-            //    {
-            //        if (capituloVolumeObra.ListaImagensManga.FirstOrDefault(l => l.Id == urlImagensManga.Id) == null)
-            //        {
-            //            capituloVolumeObra.ListaImagensManga.Add(urlImagensManga);
-            //        }
-            //    }
-            //}
         }
 
         public string RetornaQueryListaObra()
         {
-            var sql = @"SELECT O.*, V.*, C.*, UIM.*, G.* 
-                          FROM Obras O
-                          LEFT JOIN Volumes V on V.ObraId = O.Id 
-                          LEFT JOIN Capitulos C on C.VolumeId = V.Id
-                          LEFT JOIN ImagensManga UIM on UIM.CapituloId = C.Id
-                         INNER JOIN GeneroObra GO on GO.ObrasId = O.Id
-                         INNER JOIN Generos G on G.Id = GO.GenerosId
+            var sql = @"SELECT O.*, GO.*
+                          FROM Obra O
+                         INNER JOIN GeneroObra GO ON GO.ObraId = O.Id
                          ORDER BY O.Titulo;";
 
             return sql;
@@ -181,40 +131,96 @@ namespace TsundokuTraducoes.Api.Repository
 
         public List<Genero> RetornaListaGeneros()
         {   
-            return _contextDapper.Query<Genero>("SELECT * FROM Generos ORDER BY Id").ToList();
+            return _contextDapper.Query<Genero>("SELECT * FROM Genero ORDER BY Id").ToList();
         }
 
-        public void CarregaListaGeneros(ObraDTO obraDTO, Obra obraEncontrada, bool inclusao)
+        public void InsereGenerosObra(ObraDTO obraDTO, Obra obraEncontrada, bool inclusao)
         {
-            //if (inclusao)
-            //{
-            //    obraEncontrada.Generos = new List<Genero>();
-            //}
-            //else
-            //{
-            //    obraEncontrada.Generos.Clear();
-            //}
+            if (inclusao)
+            {
+                obraEncontrada.GenerosObra = new List<GeneroObra>();
+            }
+            else
+            {
+                foreach (var generoObra in obraEncontrada.GenerosObra)
+                {
+                    Exclui(generoObra);
+                }
+            }
 
-            //var arrayGenero = obraDTO.ListaGeneros[0]?.Split(new string[] { "," }, System.StringSplitOptions.RemoveEmptyEntries);
+            var arrayGenero = obraDTO.ListaGeneros[0]?.Split(new string[] { "," }, System.StringSplitOptions.RemoveEmptyEntries);
 
-            //if (arrayGenero != null && arrayGenero.Length > 0)
-            //{
-            //    foreach (var genero in arrayGenero)
-            //    {
-            //        if (inclusao)
-            //        {
-            //            obraEncontrada.Generos.Add(new Genero
-            //            {
-            //                Id = RetornaListaGeneros().Find(f => f.Descricao == genero).Id,
-            //            });
-            //        }
-            //        else
-            //        {
-            //            var generoEncontrado = _context.Generos.Single(s => s.Descricao == genero);
-            //            obraEncontrada.Generos.Add(generoEncontrado);
-            //        }
-            //    }
-            //}            
+            if (arrayGenero != null && arrayGenero.Length > 0)
+            {
+                foreach (var genero in arrayGenero)
+                {
+                    var generoEncontrado = _context.Genero.Single(s => s.Slug == genero);
+                    Adiciona(new GeneroObra
+                    {
+                        GeneroId = generoEncontrado.Id,
+                        ObraId = obraEncontrada.Id
+                    });
+
+                    AlteracoesSalvas();
+                }
+            }
+        }
+
+        public void InsereListaComentariosObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO, ObraRecomendada obraRecomendada)
+        {
+            if (obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO != null && obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO.Count > 0)
+            {
+                foreach (var comentarioObraRecomendadaDTO in obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO)
+                {
+                    obraRecomendada.ListaComentarioObraRecomendada.Add(new ComentarioObraRecomendada
+                    {
+                        AutorComentario = comentarioObraRecomendadaDTO.AutorComentario,
+                        Comentario = comentarioObraRecomendadaDTO.Comentario,
+                        ObraRecomendadaId = obraRecomendada.Id,
+                    });
+                }
+            }
+        }
+
+        public void InsereComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        {
+            Adiciona(new ComentarioObraRecomendada
+            {
+                AutorComentario = comentarioObraRecomendadaDTO.AutorComentario,
+                Comentario = comentarioObraRecomendadaDTO.Comentario,
+                ObraRecomendadaId = comentarioObraRecomendadaDTO.ObraRecomendadaId,
+            });
+        }
+
+        public ComentarioObraRecomendada RetornaComentarioObraRecomendadaPorId(int id)
+        {
+            return _context.ComentarioObraRecomendada.SingleOrDefault(s => s.Id == id);
+        }
+
+        public ComentarioObraRecomendada AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        {
+            var comentarioObraRecomendada = _context.ComentarioObraRecomendada.SingleOrDefault(s => s.Id == comentarioObraRecomendadaDTO.Id);
+            _context.Entry(comentarioObraRecomendada).CurrentValues.SetValues(comentarioObraRecomendadaDTO);
+
+            return comentarioObraRecomendada;
+        }
+
+        public List<ObraRecomendada> RetornaListaObraRecomendada()
+        {
+            var listaObraRecomenda = _context.ObraRecomendada.Include(o => o.ListaComentarioObraRecomendada).ToList();
+            return listaObraRecomenda;
+        }
+
+        public ObraRecomendada RetornaObraRecomendadaPorId(int id)
+        { 
+            var obraRecomendada = RetornaListaObraRecomendada().FirstOrDefault(o => o.Id == id);
+            return obraRecomendada;
+        }
+
+        public ObraRecomendada RetornaObraRecomendadaPorObraId(int idObra)
+        {
+            var obraRecomendada = RetornaListaObraRecomendada().FirstOrDefault(o => o.IdObra == idObra);
+            return obraRecomendada;
         }
     }
 }

@@ -8,7 +8,7 @@
         public string SlugObra { get; set; }
         public string SlugVolume { get; set; }
         public string SlugCapitulo { get; set; }
-        public string UrlCapaVolume { get; set; }
+        public string ImagemCapaVolume { get; set; }
         public string AliasObra { get; set; }
         public string AutorObra { get; set; }
     }

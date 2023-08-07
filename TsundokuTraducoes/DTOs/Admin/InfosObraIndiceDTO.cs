@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System;
-using TsundokuTraducoes.Models;
+﻿using System;
+using System.Collections.Generic;
 using TsundokuTraducoes.Api.Models;
 
 namespace TsundokuTraducoes.Api.DTOs.Admin
