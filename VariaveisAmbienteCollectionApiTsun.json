@@ -1,0 +1,15 @@
+{
+	"id": "a96aaa85-ab21-4ab6-9776-75f18825995c",
+	"name": "Variavel Tsun API",
+	"values": [
+		{
+			"key": "urlApiTsun",
+			"value": "https://localhost:5001/",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2023-08-08T00:59:31.031Z",
+	"_postman_exported_using": "Postman/10.16.5"
+}
