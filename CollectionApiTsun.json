@@ -1,0 +1,1671 @@
+{
+	"info": {
+		"_postman_id": "39abb8f4-4570-4314-87a9-3ebe5604e196",
+		"name": "Api Tsun",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21782408",
+		"_collection_link": "https://speeding-space-859877.postman.co/workspace/New-Team-Workspace~115233a6-1a7b-48a9-8a69-5754c142a8fe/collection/21782408-39abb8f4-4570-4314-87a9-3ebe5604e196?action=share&creator=21782408&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "AdicionaObra",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Titulo",
+									"value": "Matador de Goblins",
+									"type": "text"
+								},
+								{
+									"key": "Alias",
+									"value": "Matador de Goblins",
+									"type": "text"
+								},
+								{
+									"key": "TituloAlternativo",
+									"value": "Goblin Slayer, ゴブリンスレイヤー",
+									"type": "text"
+								},
+								{
+									"key": "Autor",
+									"value": "Kumo Kagyu (蜗牛くも)",
+									"type": "text"
+								},
+								{
+									"key": "Artista",
+									"value": "Noboru Kannatuki",
+									"type": "text"
+								},
+								{
+									"key": "Ano",
+									"value": "2012",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "Sinopse",
+									"value": "— Só tenho goblins em minha mente.\n\nEssa é uma história de um homem que só podia matar goblins, mas desejava se tornar um aventureiro.\n\n— Não posso salvar o mundo, só posso matar goblins.\n\nSe dizia que, em uma guilda perto da fronteira, havia um homem que só caçava goblins e se elevou ao ranque prata (3º ranque). Ele era esse tipo de existência rara…\n\nDurante a primeira aventura em grupo de uma sacerdotisa, quando ela ficou em perigo, esse homem — o “matador de goblins” — estendeu sua mão para ajudá-la. Ele faria qualquer coisa e tudo mais para exterminar goblins.\n\nA sacerdotisa foi salva por ele, a recepcionista da guilda estava grata por ele, e sua amiga de infância — uma vaqueira — estava à espera do seu regresso. Foi então que, uma elfa jovem que ouve falar dos seus feitos apareceu e fez um pedido.\n\n \n\n\n\n \n\nO romance de internet extremamente popular foi finalmente publicado em livro! Kumo Kagyu e Noboru Kannatuki apresentam essa história de fantasia sombria. Vamos começar!",
+									"type": "text"
+								},
+								{
+									"key": "EhObraMaiorIdade",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "ListaGeneros",
+									"value": "acao,aventura,fantasia",
+									"type": "text"
+								},
+								{
+									"key": "CodigoCorHexaObra",
+									"value": "#ff0000",
+									"type": "text"
+								},
+								{
+									"key": "NacionalidadeSlug",
+									"value": "japonesa",
+									"type": "text"
+								},
+								{
+									"key": "StatusObraSlug",
+									"value": "em-andamento",
+									"type": "text"
+								},
+								{
+									"key": "TipoObraSlug",
+									"value": "light-novel",
+									"type": "text"
+								},
+								{
+									"key": "CargoObraDiscord",
+									"value": "@Matador de Goblins",
+									"type": "text"
+								},
+								{
+									"key": "ImagemCapaPrincipalFile",
+									"type": "file",
+									"src": "/C:/Users/edsra/Desktop/Capa_Bocchi.png"
+								},
+								{
+									"key": "ImagemBannerFile",
+									"type": "file",
+									"src": "/C:/Users/edsra/Desktop/Banner_Zero_LAB.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditaObra",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Titulo",
+									"value": "Matador de Goblins",
+									"type": "text"
+								},
+								{
+									"key": "Alias",
+									"value": "Goblin Slayer",
+									"type": "text"
+								},
+								{
+									"key": "TituloAlternativo",
+									"value": "Goblin Slayer, ゴブリンスレイヤー",
+									"type": "text"
+								},
+								{
+									"key": "Autor",
+									"value": "Kumo Kagyu (蜗牛くも)",
+									"type": "text"
+								},
+								{
+									"key": "Artista",
+									"value": "Noboru Kannatuki",
+									"type": "text"
+								},
+								{
+									"key": "Ano",
+									"value": "2016",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioAlteracao",
+									"value": "NERO_SL",
+									"type": "text"
+								},
+								{
+									"key": "Sinopse",
+									"value": "— Só tenho goblins em minha mente.\nEssa é uma história de um homem que só podia matar goblins, mas desejava se tornar um aventureiro.\n— Não posso salvar o mundo, só posso matar goblins.\nSe dizia que, em uma guilda perto da fronteira, havia um homem que só caçava goblins e se elevou ao ranque prata (3º ranque). Ele era esse tipo de existência rara…\nDurante a primeira aventura em grupo de uma sacerdotisa, quando ela ficou em perigo, esse homem — o “matador de goblins” — estendeu sua mão para ajudá-la. Ele faria qualquer coisa e tudo mais para exterminar goblins.\nA sacerdotisa foi salva por ele, a recepcionista da guilda estava grata por ele, e sua amiga de infância — uma vaqueira — estava à espera do seu regresso. Foi então que, uma elfa jovem que ouve falar dos seus feitos apareceu e fez um pedido.\n \n \nO romance de internet extremamente popular foi finalmente publicado em livro! Kumo Kagyu e Noboru Kannatuki apresentam essa história de fantasia sombria. Vamos começar!",
+									"type": "text"
+								},
+								{
+									"key": "EhObraMaiorIdade",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "ListaGeneros",
+									"value": "acao,aventura,seinen",
+									"type": "text"
+								},
+								{
+									"key": "CodigoCorHexaObra",
+									"value": "#ff0000",
+									"type": "text"
+								},
+								{
+									"key": "CargoObraDiscord",
+									"value": "@Matador de Goblins",
+									"type": "text"
+								},
+								{
+									"key": "NacionalidadeSlug",
+									"value": "japonesa",
+									"type": "text"
+								},
+								{
+									"key": "StatusObraSlug",
+									"value": "light-novel",
+									"type": "text"
+								},
+								{
+									"key": "TipoObraSlug",
+									"value": "light-novel",
+									"type": "text"
+								},
+								{
+									"key": "EnderecoUrlBanner",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "EnderecoUrlCapa",
+									"type": "file",
+									"src": "/C:/Users/edsra/Desktop/LdM_-_Capa.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra/",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdicionaObra Comic",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Titulo",
+									"value": "Gosu",
+									"type": "text"
+								},
+								{
+									"key": "Alias",
+									"value": "Gosu",
+									"type": "text"
+								},
+								{
+									"key": "TituloAlternativo",
+									"value": "The Master, O Mestre",
+									"type": "text"
+								},
+								{
+									"key": "Autor",
+									"value": "Ryu Ki-Woon",
+									"type": "text"
+								},
+								{
+									"key": "Artista",
+									"value": "Moon Jung-Hoo",
+									"type": "text"
+								},
+								{
+									"key": "Ano",
+									"value": "2020",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "Sinopse",
+									"value": " Um jovem se preparou para vingar seu mestre, um artista marcial poderoso que uma vez foi traído por seus próprios homens e mal escapou com vida.\n\nArmado com técnicas de arte marcial supremas do seu mestre, ele está pronto para trazer o terror e causar estragos no Murim.\n\nMas antes dele ter começado, ele descobre que aqueles que tinham traído seu mestre já estão mortos… Erm, o que acontece agora?",
+									"type": "text"
+								},
+								{
+									"key": "EhObraMaiorIdade",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "ListaGeneros",
+									"value": "acao,aventura",
+									"type": "text"
+								},
+								{
+									"key": "CodigoCorHexaObra",
+									"value": "#ffffff",
+									"type": "text"
+								},
+								{
+									"key": "NacionalidadeSlug",
+									"value": "coreana",
+									"type": "text"
+								},
+								{
+									"key": "StatusObraSlug",
+									"value": "em-andamento",
+									"type": "text"
+								},
+								{
+									"key": "TipoObraSlug",
+									"value": "manhwa",
+									"type": "text"
+								},
+								{
+									"key": "CargoObraDiscord",
+									"value": "@gosu",
+									"type": "text"
+								},
+								{
+									"key": "ImagemCapaPrincipalFile",
+									"type": "file",
+									"src": "/C:/Users/edsra/Desktop/Gosu_The_Master1.png"
+								},
+								{
+									"key": "ImagemBannerFile",
+									"type": "file",
+									"src": "/C:/Users/edsra/Desktop/HatsukoiEmbed.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditaObra Comic",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "Titulo",
+									"value": "Matador de Goblins",
+									"type": "text"
+								},
+								{
+									"key": "Alias",
+									"value": "Goblin Slayer",
+									"type": "text"
+								},
+								{
+									"key": "TituloAlternativo",
+									"value": "Goblin Slayer, ゴブリンスレイヤー",
+									"type": "text"
+								},
+								{
+									"key": "Autor",
+									"value": "Kumo Kagyu (蜗牛くも)",
+									"type": "text"
+								},
+								{
+									"key": "Artista",
+									"value": "Noboru Kannatuki",
+									"type": "text"
+								},
+								{
+									"key": "Ano",
+									"value": "2016",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioAlteracao",
+									"value": "NERO_SL",
+									"type": "text"
+								},
+								{
+									"key": "Sinopse",
+									"value": "— Só tenho goblins em minha mente.\nEssa é uma história de um homem que só podia matar goblins, mas desejava se tornar um aventureiro.\n— Não posso salvar o mundo, só posso matar goblins.\nSe dizia que, em uma guilda perto da fronteira, havia um homem que só caçava goblins e se elevou ao ranque prata (3º ranque). Ele era esse tipo de existência rara…\nDurante a primeira aventura em grupo de uma sacerdotisa, quando ela ficou em perigo, esse homem — o “matador de goblins” — estendeu sua mão para ajudá-la. Ele faria qualquer coisa e tudo mais para exterminar goblins.\nA sacerdotisa foi salva por ele, a recepcionista da guilda estava grata por ele, e sua amiga de infância — uma vaqueira — estava à espera do seu regresso. Foi então que, uma elfa jovem que ouve falar dos seus feitos apareceu e fez um pedido.\n \n \nO romance de internet extremamente popular foi finalmente publicado em livro! Kumo Kagyu e Noboru Kannatuki apresentam essa história de fantasia sombria. Vamos começar!",
+									"type": "text"
+								},
+								{
+									"key": "EhObraMaiorIdade",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "ListaGeneros",
+									"value": "acao,aventura,seinen",
+									"type": "text"
+								},
+								{
+									"key": "CodigoCorHexaObra",
+									"value": "#ff0000",
+									"type": "text"
+								},
+								{
+									"key": "CargoObraDiscord",
+									"value": "@Matador de Goblins",
+									"type": "text"
+								},
+								{
+									"key": "NacionalidadeSlug",
+									"value": "japonesa",
+									"type": "text"
+								},
+								{
+									"key": "StatusObraSlug",
+									"value": "light-novel",
+									"type": "text"
+								},
+								{
+									"key": "TipoObraSlug",
+									"value": "light-novel",
+									"type": "text"
+								},
+								{
+									"key": "EnderecoUrlBanner",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "EnderecoUrlCapa",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra/",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RetornaListaObras",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RetornarObraPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra/1",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdicionaVolume",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Titulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Numero",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Sinopse",
+									"value": "— Só tenho goblins em minha mente.\n\nEssa é uma história de um homem que só podia matar goblins, mas desejava se tornar um aventureiro.\n\n— Não posso salvar o mundo, só posso matar goblins.\n\nSe dizia que, em uma guilda perto da fronteira, havia um homem que só caçava goblins e se elevou ao ranque prata (3º ranque). Ele era esse tipo de existência rara…\n\nDurante a primeira aventura em grupo de uma sacerdotisa, quando ela ficou em perigo, esse homem — o “matador de goblins” — estendeu sua mão para ajudá-la. Ele faria qualquer coisa e tudo mais para exterminar goblins.\n\nA sacerdotisa foi salva por ele, a recepcionista da guilda estava grata por ele, e sua amiga de infância — uma vaqueira — estava à espera do seu regresso. Foi então que, uma elfa jovem que ouve falar dos seus feitos apareceu e fez um pedido.\n\n \n\n\n\n \n\nO romance de internet extremamente popular foi finalmente publicado em livro! Kumo Kagyu e Noboru Kannatuki apresentam essa história de fantasia sombria. Vamos começar!",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "ObraId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "ImagemCapaVolumeFile",
+									"type": "file",
+									"src": "/C:/Users/edsra/Desktop/LAB-Capa-vO.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/volume",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"volume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditaVolume",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Titulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Numero",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Sinopse",
+									"value": "Test sinopse",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioAlteracao",
+									"value": "NERO_SL",
+									"type": "text"
+								},
+								{
+									"key": "ObraId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "ImagemCapaVolumeFile",
+									"type": "file",
+									"src": "/K:/01 - Tsun/01 - Novels/01 - Em lançamento/Matador de Goblins/Postados/Volume 01/Iniciais/MdG_V01_Capa_02.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/volume",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"volume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdicionaVolume Comic",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Titulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Numero",
+									"value": "Único",
+									"type": "text"
+								},
+								{
+									"key": "Sinopse",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "ObraId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "ImagemCapaVolumeFile",
+									"type": "file",
+									"src": "/C:/Users/edsra/Desktop/Gosu_The_Master1.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/volume",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"volume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditaVolume Comic",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Titulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Numero",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Sinopse",
+									"value": "Test sinopse",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioAlteracao",
+									"value": "NERO_SL",
+									"type": "text"
+								},
+								{
+									"key": "ObraId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "ImagemCapaVolumeFile",
+									"type": "file",
+									"src": "/K:/01 - Tsun/01 - Novels/01 - Em lançamento/Matador de Goblins/Postados/Volume 01/Iniciais/MdG_V01_Capa_02.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/volume",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"volume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RetornaListaVolumes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/volume",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"volume"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RetornaVolumePorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/volume/1",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"volume",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdicionaCapitulo Ilustrações",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Numero",
+									"value": "Ilustrações",
+									"type": "text"
+								},
+								{
+									"key": "Parte",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Titulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "ConteudoNovel",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "ListaImagemCapitulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "VolumeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Tradutor",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Revisor",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "QC",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Editores",
+									"value": "Equipe Tsun",
+									"type": "text"
+								},
+								{
+									"key": "EhIlustracoesNovel",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "ListaImagensForm",
+									"type": "file",
+									"src": [
+										"/C:/Users/edsra/Desktop/baburave.gif",
+										"/C:/Users/edsra/Desktop/Banner_Zero_LAB.png",
+										"/C:/Users/edsra/Desktop/Capa_Bocchi.png",
+										"/C:/Users/edsra/Desktop/Capa-Chihara.jpg",
+										"/C:/Users/edsra/Desktop/Elaina_Av.jpg",
+										"/C:/Users/edsra/Desktop/Gosu_The_Master1.png",
+										"/C:/Users/edsra/Desktop/Gosu_The_Master1.webp",
+										"/C:/Users/edsra/Desktop/HatsukoiEmbed.png",
+										"/C:/Users/edsra/Desktop/hinowa_v8-1.jpg"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/capitulo/novel",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"capitulo",
+								"novel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditaCapitulo Ilustrações",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "Numero",
+									"value": "Ilustrações",
+									"type": "text"
+								},
+								{
+									"key": "Parte",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Titulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "ConteudoNovel",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "ListaImagemCapitulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioAlteracao",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "VolumeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Tradutor",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Revisor",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "QC",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Editores",
+									"value": "Equipe Tsun",
+									"type": "text"
+								},
+								{
+									"key": "EhIlustracoesNovel",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "ListaImagensForm",
+									"type": "file",
+									"src": [
+										"/K:/01 - Tsun/01 - Novels/01 - Em lançamento/Matador de Goblins/Postados/Volume 01/Iniciais/Originais/img4.jpg",
+										"/K:/01 - Tsun/01 - Novels/01 - Em lançamento/Matador de Goblins/Postados/Volume 01/Iniciais/Originais/img9.jpg",
+										"/K:/01 - Tsun/01 - Novels/01 - Em lançamento/Matador de Goblins/Postados/Volume 01/Iniciais/Originais/img12.jpg",
+										"/K:/01 - Tsun/01 - Novels/01 - Em lançamento/Matador de Goblins/Postados/Volume 01/Iniciais/Originais/img15.jpg",
+										"/K:/01 - Tsun/01 - Novels/01 - Em lançamento/Matador de Goblins/Postados/Volume 01/Iniciais/Originais/img18.jpg",
+										"/K:/01 - Tsun/01 - Novels/01 - Em lançamento/Matador de Goblins/Postados/Volume 01/Iniciais/Originais/img21.jpg",
+										"/K:/01 - Tsun/01 - Novels/01 - Em lançamento/Matador de Goblins/Postados/Volume 01/Iniciais/Originais/img24.jpg"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/capitulo/novel",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"capitulo",
+								"novel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdicionaCapitulo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Numero",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Parte",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Titulo",
+									"value": "O Destino de Alguns Aventureiros",
+									"type": "text"
+								},
+								{
+									"key": "ConteudoNovel",
+									"value": "A luta brutal terminou, ele pisou com sua bota no cadáver do goblin morto.\n\nEle estava manchado com o sangue carmesim do monstro, do seu elmo de aço sujo e armadura de couro, até a malha feita de anéis metálicos encadeados que cobriam todo o seu corpo.\n\nUm pequeno escudo surrado estava fixado em seu braço esquerdo, e em sua mão, segurava uma tocha ardente.\n\nCom seu calcanhar contra o cadáver da criatura, abaixou sua mão livre e retirou casualmente a espada de seu crânio. Era uma lâmina de aparência barata, com um comprimento mal concebido, e agora estava encharcada de cérebro de goblin.\n\nDeitada no chão com uma flecha no ombro, o corpo magro de uma menina tremia de medo. Seu clássico rosto adorável e doce, emoldurado pelos longos e quase translúcidos cabelos cor de ouro, estava franzido com uma junção de lagrimas e suor.\n\nSeus braços magros, seus pés; todo seu corpo deslumbrante estava com as vestimentas de uma sacerdotisa. O som do cajado de monge que ela agarrou ressoou, com seus anéis pendurados batendo uns contra os outros com suas mãos trêmulas.\n\nQuem era esse homem diante dela?\n\nTão estranha era sua aparência, a aura que o ocultava, no qual ela imaginava ele poder ser mesmo um goblin; ou talvez algo muito pior, algo que ela ainda não tinha conhecimento.\n\n— Que-quem é você…? — perguntou, suprimindo seu terror e dor.\n\nApós uma pausa, o homem respondeu: — Matador de Goblins.\n\nUm assassino. Não de dragões ou de vampiros, mas o mais simples dos monstros: goblins.\n\nNormalmente, o nome poderia parecer comicamente simples. Mas para Sacerdotisa, naquele momento, era tudo, menos engraçado.\n\n \n\n\n\nhttps://tsundoku.com.br\n\n \n\nVocê já ouviu esta história antes.\n\nO dia em que um órfão criado no templo faz quinze anos, ele se torna um adulto e deve escolher o seu caminho: permanecerá no templo como um servo da deusa, ou partirá e tentará ganhar a vida mundo afora?\n\nSacerdotisa escolhera o último, e uma visita à Guilda dos Aventureiros era o que escolheu fazer.\n\nA Guilda dos Aventureiros — criada para apoiar aquelas corajosas almas desbravadoras — foi inicialmente formada, assim dizendo, por um punhado de pessoas que se conheceram em um bar. Ao contrário de outras associações de trabalhadores, a Guilda dos Aventureiros era mais uma agência de empregos do que um sindicato. Na guerra atual entre monstros e “aqueles que possuem língua”, os aventureiros eram como mercenários. Ninguém toleraria a existência de pessoas armadas se não fossem administradas cuidadosamente.\n\nSacerdotisa parou seu trajeto quando a vasta sucursal que estava diretamente dentro dos portões da cidade tirou seu folego. Quando ela entrou na recepção, ficou surpresa ao encontrá-la agitada de aventureiros, embora ainda fosse de manhã.\n\nEsses edifícios ostentavam grandes pousadas e tavernas — geralmente juntas — bem como um escritório, tudo em um. Realmente, esse tipo de clamor era o resultado natural por possuir esses três serviços no mesmo lugar.\n\nPara cada humano comum com armadura de placas, havia um mago elfo com manto e cajado. Aqui havia um anão barbudo empunhando um machado; e ali, havia um dos pequenos indivíduos moradores dos prados, conhecidos como rheas. Sacerdotisa abriu caminho através da multidão, passando por homens e mulheres de todas as raças e idades que se poderia imaginar e carregando todos os tipos de armas, indo em direção a Garota da Guilda. A fila serpenteava sem parar, cheia de pessoas que vieram pegar, registrar uma missão ou apresentar um relatório.\n\nUm aventureiro empunhando uma lança estava conversando com alguém coberto por uma armadura pesada.\n\n— Então? Como foi com o manticora no desfiladeiro?\n\n— Não era grande coisa. Se quiser um grandão, acho que seria melhor tentar as ruínas ou algo desse tipo.\n\n— É justo, mas você nunca vai colocar comida na mesa desse jeito.\n\n— Ei, ouvi dizer que tem um espírito maligno causando problemas perto da capital. Quem quer que for para lá pode conseguir uma boa recompensa, hein?\n\n— Talvez eu conseguisse lidar com ele, se for só um demônio de nível baixo…\n\nSacerdotisa se surpreendeu não menos que três vezes ouvindo a conversa casual, e cada vez, ela trouxe seu cajado de monge mais perto para fortalecer sua determinação.\n\n— …Em breve também irei…!\n\nEla não possuía a ilusão de que a vida de um aventureiro era simples. Sacerdotisa vira em primeira mão os feridos que retornaram da masmorra, vindos ao templo, implorando por um milagre de cura. E curar tais pessoas era precisamente o credo da Mãe Terra.\n\nComo ela poderia se afastar então, de se pôr em perigo para fazer o que lhe fora ensinada? Ela era uma órfã, e o templo a salvou. E agora era sua vez de reembolsar essa dívida…\n\n— Pois não, o que te traz aqui hoje?\n\nA fila havia avançado progressivamente quando Sacerdotisa permaneceu perdida em pensamentos, e agora era sua vez.\n\nUsando uma expressão doce, Garota da Guilda atendendo-a ainda era jovem, embora mais velha que Sacerdotisa. Sua roupa imaculada estava impecavelmente bem cuidada, com seu cabelo castanho-claro entrelaçado em tranças. Um rápido olhar à volta do local não deixava dúvidas que a recepção da guilda seria um local de trabalho exigente. Essa recepcionista não mostrava nenhuma atitude tensa, muito comum entre as jovens profissionais, sendo, talvez, um sinal do quão bem ela conhecia o seu trabalho.\n\nSacerdotisa sentiu um pouco do seu nervosismo diminuir. Ela engoliu em seco e falou:\n\n— Hum, eu… eu quero ser uma… uma aventureira.\n\n— Tem… certeza? — questionou Garota da Guilda, sua expressão doce desapareceu momentaneamente quando ela hesitou brevemente, aparentemente sem palavras. Sacerdotisa sentiu os olhos da recepcionista se moverem do seu rosto para seu corpo, e estranhamente envergonhada, assentiu.\n\nA sensação desapareceu quando Garota da Guilda retomou um sorriso e disse: — Entendo. Você sabe ler e escrever?\n\n— Uhm, sim, um pouco. Eu aprendi no templo…\n\n— Então preencha isso, por favor. Se tiver alguma coisa que não entender, é só perguntar.\n\nEra uma ficha de aventura. Letras douradas se destacavam através do velino marrom claro.\n\nNome, sexo, idade, classe, cor dos cabelos, cor dos olhos, tipo de corpo, habilidades, magias, milagres… Informações tão simples. Tão simples que quase não parecia certo.\n\n— Ah — interrompeu Garota da Guilda — pode deixar os espaços “capacidades” e “história do aventureiro” em branco. A guilda vai preencher eles mais tarde.\n\n— S-sim, senhora. — Sacerdotisa assentiu, e então, com a mão trêmula, pegou uma pena, mergulhou ela em um tinteiro e começou a escrever com letras precisas.\n\nEla entregou a folha terminada para Garota da Guilda, que olhou para o papel com um aceno, depois pegou um estilete prateado e esculpiu uma série de letras cursivas em uma insígnia branca de porcelana. Ela entregou a insígnia para Sacerdotisa, que percebeu que possuía as mesmas informações que a sua ficha de aventura, mas agora com letras bem distribuídas.\n\n— Isso vai servir como sua identificação. Nós chamamos isso de “status”. Embora — acrescentou ela, provocadoramente — ele não diga nada que não conseguimos descobrir olhando para você. — Então ela disse calmamente para Sacerdotisa que pestanejava: — Ele será usado para confirmar a sua identidade se alguma coisa acontecer com você, por isso tente não perder.\n\nSe algo acontecer?\n\nPor um segundo, Sacerdotisa foi pega de surpresa pelo tom sério de Garota da Guilda, mas não demorou muito para ela ligar os pontos. A única vez que precisariam “confirmar sua identidade”, era quando alguém fora assassinado tão horrendamente, que ninguém poderia dizer quem era.\n\n— Sim, senhora — disse Sacerdotisa, enquanto desejava que sua voz parasse de tremular. — Mas é realmente assim tão fácil se tornar uma aventureira…?\n\n— Se tornar uma, sim.\n\nA expressão de Garota da Guilda estava ilegível. Ela estava preocupada ou resignada? Sacerdotisa não podia dizer.\n\n— É mais difícil progredir nos ranques. Os quais são baseados em assassinatos, quanto bem você tem feito e os testes de personalidade.\n\n— Testes de personalidade?\n\n— Às vezes você encontra os tipos eu-sou-forte-o-suficiente-para-fazer-tudo-sozinho.\n\nEntão, ela acrescentou baixinho: — Mas existem muitos tipos de excêntricos por aí. — E quando ela disse isso, por um instante seu comportamento mudou. Se suavizando com um sorriso saudoso e caloroso.\n\nOh, pensou Sacerdotisa, não sabia que ela podia sorrir assim.\n\nGarota da Guilda notou que Sacerdotisa a observava e rapidamente limpou a garganta. — As missões são fixadas lá. — Ela indicou um quadro de cortiça que cobria quase uma parede inteira. — Escolha aquelas que são adequadas ao seu nível, é claro.\n\nAs opções eram pequenas, já que a multidão enorme de aventureiros passava pelo quadro toda manhã. Mas a guilda não possuiria um quadro daquele tamanho se não precisasse.\n\n— Pessoalmente — disse a recepcionista — eu recomendo a você ficar com os pés molhados por limpar os esgotos. Sem brincadeira.\n\n— Limpar os esgotos? Mas aventureiros não lutam contra monstros…?\n\n— Existe honra em caçar ratos gigantes também. E você vai fazer um bem verdadeiro ao mundo. — Ela acrescentou em voz baixa: — Recém-chegados com um pouco de experiência podem avançar para os goblins, eu acho — e outra vez havia aquele olhar sem expressão.\n\n— Bem, isso é tudo por aqui no registro. Boa caçada!\n\n— Ah, o-obrigada. — Sacerdotisa baixou a cabeça em gratidão e deixou a recepção. Ela pendurou a insígnia de porcelana no pescoço e soltou um suspiro que esteve segurando. Ela era uma aventureira registrada. Foi simples assim.\n\nMas, o que devo fazer agora?\n\nSacerdotisa levava apenas seu cajado (o símbolo do seu ofício), um saco com uma muda de roupas e algumas moedas.\n\nEla ouvira que o segundo andar do edifício da guilda era destinado aos aventureiros de níveis baixos. Talvez ela devesse começar reservando um quarto, depois ver que tipos de missões estavam disponíveis…\n\n— Ei, quer ir se aventurar com a gente?\n\n— Hãããã?\n\nO convite inesperado veio de um jovem com uma espada no quadril e um peitoral de aço brilhante amarrado no peito. Da mesma forma que a Sacerdotisa, ele possuía uma insígnia nova de porcelana em volta do pescoço.\n\nAs insígnias vinham em dez variedades, indicando o ranque do portador, da platina no topo até a porcelana dos aventureiros noviços na parte inferior.\n\n— Você é uma sacerdotisa, certo?\n\n— Hum, sim. Sim… sou.\n\n— Perfeito! Exatamente o que meu grupo precisa.\n\nLogo atrás do jovem espadachim, ela podia ver agora outras duas garotas. Uma usava um uniforme de artista marcial, com o cabelo amarrado em onda e um olhar muito confiante no rosto, enquanto a outra possuía óculos e um cajado, com um olhar frio.\n\nUma lutadora e uma maga, ela presumiu.\n\nGuerreiro seguiu o olhar de Sacerdotisa e reiterou “Meu grupo”, com um aceno. — Estamos em uma missão urgente, mas eu gostaria de pelo menos mais uma pessoa. O que me diz?\n\n— O que você quer dizer com “urgente”…?\n\n— Temos que nos livrar de alguns goblins!\n\nGoblins. Os goblins viviam nas cavernas perto da cidade desde tempos imemoriais, ou assim diziam. Eles eram os monstros mais fracos, e a superioridade numérica era a única coisa agindo a seu favor.\n\nEles eram quase tão altos quanto uma criança, com força e inteligência equivalentes. Tudo o que os distinguia de um pequeno ser humano era a sua capacidade de enxergar no escuro. Eles faziam todas as coisas monstruosas usuais; ameaçavam pessoas, aterrorizavam aldeias e raptavam donzelas.\n\nEles eram fracos, sim, mas era melhor deixar os goblins deitados dormindo.\n\nOs aldeões haviam ignorado os goblins a princípio… mas depois as coisas mudaram. Primeiro, as colheitas que eles armazenaram para o inverno desapareceram, até à última semente. Os habitantes da cidade, enfurecidos, repararam suas cercas e depois colocaram patrulhas rondando a área com tochas na mão.\n\nOs goblins passaram facilmente por eles.\n\nEles roubaram a ovelha, junto com a filha do pastor e algumas mulheres que saíram para ver o que era todo aquele alvoroço.\n\nOs aldeões ficaram rapidamente sem opções. Eles reuniram seus recursos escassos e foram à guilda: a Guilda dos Aventureiros, onde os aventureiros se reuniam. Certamente, publicar uma missão traria alguém para ajudá-los.\n\nHum, e…\n\nSacerdotisa estava de pé com o dedo nos lábios, perdida em pensamentos enquanto Guerreiro dava sua explicação.\n\nUma boa e velha caça aos goblins como sua primeira aventura. Muitas pessoas fizeram isso. E ela nem precisava encontrar a aventura, a aventura a encontrara. Tinha que ser o destino.\n\nEla nunca imaginara que poderia fazer tudo sozinha, de qualquer forma. Aventurar-se sozinha como uma clériga era suicídio. Ela precisaria de um grupo eventualmente. Ela estava muito preocupada em se juntar com completos estranhos; mas alguém que fez um convite a ela não era um completo estranho, não é? Sim, nenhum garoto alguma vez a convidou para qualquer coisa antes, mas havia mais duas garotas ali.\n\nEntão tudo ficaria bem… certo?\n\n— Tudo bem então. Se você me aceitar.\n\nEla respondeu com um aceno firme com a cabeça, e Guerreiro deu um grito.\n\n— Sério?! Demais! Então, quem está pronto para ir em uma aventura?!\n\n— O quê, só vocês quatro? — interrompeu Garota da Guilda. — Eu tenho certeza de que se vocês esperarem um tempo, outros aventureiros irão aparecer…\n\nGuerreiro não pareceu se incomodar com o fato de a própria Garota da Guilda ter sentido a necessidade de comentar isso. — São só alguns goblins. Tenho certeza de que quatro pessoas são suficientes. — Ele se virou para seus companheiros. — Certo? — Ele parecia tão seguro, e com um sorriso alegre no rosto. Então ele se virou para Garota da Guilda. — As donzelas capturadas estão esperando serem resgatadas. Não temos tempo a perder!\n\nVendo isso, o rosto da jovem trabalhadora retornou de novo naquela expressão ilegível, enquanto um profundo e estranho desconforto se formava no fundo do coração de Sacerdotisa.\n\n \n\n\n\nhttps://tsundoku.com.br\n\n \n\nA tocha cintilava fracamente na brisa pútrida.\n\nO sol do meio-dia fora encoberto pela escuridão que preenchia a caverna. Na entrada era difícil de enxergar, e mais para dentro era quase preto.\n\nAs sombras projetadas das rochas brutas dançavam enquanto a chama balançava, deslizando pelas paredes como monstros em um afresco.\n\nTrês garotas e um garoto, cobertos com quaisquer peças de armadura ruins que poderiam encontrar. Em uma formação irregular, eles avançavam nervosamente através da escuridão densa. Guerreiro ia na frente, segurando a tocha. Lutadora estava atrás dele. Maga mantinha a retaguarda. E prensada entre a artista marcial e a maga, a terceira na fila, estava a garota com vestes de sacerdotisa, segurando seu cajado de monge ansiosamente enquanto caminhava.\n\nFoi Maga que sugeriu que se deslocassem em uma fila. Desde que não existisse caminhos ramificados, eles não teriam que se preocupar com um ataque vindo de trás. E se os aventureiros na frente se mantivessem firmes, os detrás ficariam seguros, capazes de prestar apoio da parte de trás da fileira. Esse era o plano, de qualquer forma.\n\n— É-é realmente uma boa ideia? Ir direto até eles? — O murmúrio de Sacerdotisa não soava confiante. No mínimo, ela parecia consideravelmente mais preocupada do que estava antes de terem entrado na caverna. — Quero dizer, nós não sabemos nada sobre esses goblins.\n\n— Céus, quanta preocupação. Acho que é exatamente o que se poderia esperar de uma sacerdotisa. — A voz de Guerreiro, um bocado ousado, ecoou no vazio da caverna até desaparecer. — Até crianças não têm medo de goblins. Raios, eu ajudei a expulsar alguns de minha aldeia uma vez.\n\n— Oh, pare — disse Lutadora. — Matar alguns goblins não tem nada de especial. Você está se envergonhando. Além do mais — acrescentou ela, com uma voz desagradável, porém baixa — você nem os matou.\n\n— Eu não disse isso — respondeu Guerreiro, fazendo um beicinho.\n\nLutadora deu um suspiro, irritada, mas de alguma forma afetuoso. — Os goblins podem picar esse perdedor como carne para o almoço, mas eu chutarei o traseiro deles. Então não se preocupe.\n\n— Perdedor? Isso magoa! — A luz da tocha brilhava no rosto abatido de Guerreiro, mas pouco depois, ele estava erguendo alegremente sua espada. — Ei, nós quatro poderíamos lidar com um dragão se tivesse um aqui!\n\n— Gente, não estamos ansiosos demais? — murmurou Maga, fazendo Lutadora rir. As vozes do grupo ecoaram, se misturando na caverna.\n\nSacerdotisa se manteve em silêncio, com medo, como se falar pudesse atrair algo da escuridão.\n\n— Mas espero caçar um dragão algum dia — disse Maga. — Vocês não? — O sorriso mudo de Sacerdotisa parecia concordar com Maga e com Guerreiro assentindo. Mas a escuridão escondia uma expressão tão ambígua quanto a de Garota da Guilda.\n\nSerá mesmo?, perguntou ela a si mesma, mas não se atreveu a exprimir as suas dúvidas, mesmo que o desconforto formasse uma tempestade dentro dela.\n\n“Nós quatro poderíamos…” dissera ele, mas como Guerreiro poderia confiar plenamente em pessoas que conhecia não faz nem dois dias? Sacerdotisa sabia que eles não eram pessoas más, mas…\n\n— Vocês têm certeza de que não devíamos ter nos preparados um pouco mais? — pressionou ela. — Nós nem sequer temos p-p… poções.\n\n— Também não temos dinheiro. Ou tempo para comprar isso — respondeu Guerreiro, com bravata, sem prestar atenção ao tremor na voz de Sacerdotisa. — Estou preocupado com aquelas garotas sequestradas… E de qualquer maneira, se um de nós for ferido você pode simplesmente curar, não é?\n\n— É verdade que tenho os milagres de cura e de luz… mas…\n\n— Então vamos ficar bem!\n\nNinguém pôde ouvir Sacerdotisa dizer com uma voz ininteligível: — Mas eu só posso usar três vezes…\n\n— É ótimo que você esteja tão confiante e tudo mais — disse Lutadora — mas você tem certeza de que não vamos nos perder?\n\n— É um túnel longo. Como poderíamos nos perder?\n\n— Não sei quanto a isso. Você se entusiasma tanto. Eu não posso tirar meus olhos de você nem por dois segundos!\n\n— Olha quem fala…\n\nLutadora e Guerreiro, que pertenciam à mesma cidade natal, entraram em uma das discussões que eles partilhavam desde o início da viagem.\n\nSacerdotisa, seguindo atrás deles, se agarrou ao cajado com as duas mãos e repetiu o nome da Mãe Terra em um murmuro.\n\n— Por favor, nos guie em segurança através disso…\n\nEla rezou tão baixinho que suas palavras nem mesmo ecoaram, só adentraram na escuridão e desapareceram.\n\nTalvez a Mãe Terra tenha ouvido sua oração, ou talvez Sacerdotisa só tenha sido cuidadosa quando disse tais palavras.\n\n— Vamos lá, se apresse. Mantenha a fila — repreendeu-a Maga.\n\n— Ah, certo, desculpe…\n\n \n\n \n\n\n\n \n\nSacerdotisa foi a primeira a reparar.\n\nEla estava passando na frente de Maga, que a ultrapassou enquanto rezava, quando ouviu. Um som de algo se deslocando, como uma pedra rolando.\n\nSacerdotisa deu um arranque.\n\n— De novo? O que foi dessa vez? — perguntou Maga com aborrecimento quando alcançou mais uma vez Sacerdotisa, que estava parada no lugar, tremendo.\n\nMaga havia se formado entre os melhores de sua turma da academia na capital, onde ela aprendera suas magias, e ela não gostava muito de sacerdotisas. A garotinha espantadiça no grupo deles fez uma primeira impressão terrível, e desde que entraram na caverna, a opinião de Maga por ela só piorou.\n\n— A-agorinha, parecia que eu ouvi algo d-deslizando…\n\n— Onde? Na nossa frente?\n\n— N-não, atrás de nós…\n\nAh, por favor.\n\nIsso não era cautela; era covardia. Essa sacerdotisa não possuía coragem de tomar as rédeas de sua vida como um aventureiro precisava. Guerreiro e Lutadora foram ficando mais distantes à frente, enquanto ela ficou lá. Ocupados com suas brincadeiras, os dois nem olharam para trás.\n\nUma luz cada vez mais distante atrás deles e apenas a escuridão se aprofundando adiante, Maga soltou um suspiro.\n\n— Olhe. Temos andado direto como uma flecha desde que entramos na caverna, certo? O que poderia possivelmente estar atrá… — E então, seu tom frio e exasperado…\n\n— Goblins!!\n\n…se tornou um grito.\n\nNão foi um desmoronamento que Sacerdotisa ouvira, mas de escavação.\n\nCriaturas medonhas saltaram de um túnel e correram em direção a Maga, que teve o azar de ser a última da fila.\n\nCada mão segurava uma arma rústica, e cada rosto tinha um olhar repulsivo. Esses eram os habitantes de cavernas do tamanho de crianças.\n\nGoblins.\n\n— G-g-gggg…\n\nDe repente, ela foi incapaz de encontrar sua voz, Maga levantou seu cajado com ponta de granada que recebeu na formatura.\n\nEra um milagre que sua língua contorcida conseguisse formar as palavras da magia.\n\n— Sagitta… inflammarae… radius! — Flecha de fogo, emerja!\n\nConforme ela puxou cada parte da magia de onde fora gravada nas profundezas de sua memória, as palavras começaram a surgir; palavras com o poder de moldar a própria realidade.\n\nUm raio de fogo brilhante em forma de flecha voou da granada do tamanho de um punho do seu cajado, e atingiu um goblin no rosto. Houve um chiado nauseante e cheiro de carne queimada.\n\nEsse já era!\n\nA vitória trouxe uma onda de alegria que deixou um sorriso extravagante em seu rosto. Maga se encheu de confiança de que se isso funcionou uma vez, funcionaria novamente.\n\n— Sagitta… inflammarae… radiaaaaiii!!\n\nMas havia muitos goblins e apenas quatro membros no grupo. Antes que ela terminasse a magia, um dos inimigozinhos agarrou seu braço. Ela nem teve tempo de reagir antes que o goblin a socasse no chão irregular de pedra.\n\n— Ouch! Ah…!\n\nSeus óculos foram atirados de seu rosto e destruído, deixando sua visão embaçada. Um goblin arrancou rapidamente seu cajado da mão.\n\n— E-ei! Me devolva isso! Isso não é para tipos como v-você!\n\nUm condutor mágico tal como um cajado ou anel era um salva-vidas do conjurador, mas mais do que isso, era o seu orgulho.\n\nComo se respondendo ao grito meio insano de Maga, o goblin segurou o cajado na frente de seus olhos e o quebrou com um crac.\n\nO rosto de Maga se retorceu em fúria, sua máscara de indiferença desapareceu.\n\n— Por que, seu…!\n\nEla se contorceu no chão, lutando contra o seu captor com seus braços fracos e com seus peitos grandes balançando. Isso não foi uma escolha sábia. O goblin irritado sacou sua adaga e a levou com muita força no estômago dela.\n\n— Ouuuchh?! — Ela deu um grito agoniada quando a lâmina perfurou suas entranhas.\n\nÉ claro, os companheiros de Maga não estavam parados, nem mesmo Sacerdotisa.\n\n— E-ei, todos vocês! Se afastem dela! Parem…! — Ela balançou seu cajado com seus braços delicados, tentando expulsar os goblins para longe.\n\nExistem alguns clérigos que são qualificados em artes marciais. Outros, tendo se aventurado durante muito tempo, poderiam até se gabar de uma boa dose de força física.\n\nSacerdotisa não era um deles.\n\nA forma como ela estava balançando loucamente seu cajado não estava atingindo nada, de qualquer forma.\n\nCada vez que seu cajado de monge atingia a parede ou o chão, ele fazia um ruído de chocalho. E para o bem ou para o mau, os goblins deram um passo atrás.\n\nTalvez a tivessem considerado uma sacerdotisa guerreira, ou talvez eles apenas tenham tido medo de ela atingir eles por pura sorte.\n\nSeja qual for a razão, Sacerdotisa se aproveitou da abertura momentânea para afastar Maga deles.\n\n— Seja forte! — gritou Sacerdotisa, praticamente sacudindo Maga. — Aguente firme…!\n\nMas não houve resposta. A mão de Sacerdotisa se afastou ensopada de sangue.\n\nA lâmina enferrujada ainda estava enfiada no abdômen de Maga, com o rasgo brutal revelando suas entranhas devastadas.\n\nSacerdotisa sentiu sua garganta fechar por causa da visão horrível, a respiração de Maga saiu como um chiado tenso.\n\n— Ah… Agh…\n\nMas ela estava viva. Se contraindo e convulsionando, mas viva.\n\nAinda havia tempo. Tinha de haver. Sacerdotisa mordeu forte os lábios.\n\nApertando seu cajado perto do peito, Sacerdotisa colocou a mão sobre as vísceras se espalhando de Maga, como se fosse empurrá-las de volta no lugar e recitou as palavras do milagre:\n\n— Ó Mãe Terra, abundante em misericórdia, coloque tua venerada mão sobre esta criança…\n\nAs magias podem afetar o funcionamento racional do mundo, mas Cura Menor é a genuína intervenção divina.\n\nConforme a oração fazia efeito, a palma de Sacerdotisa começou a brilhar com uma luz suave que pairou sobre Maga. Enquanto a luz começava a expandir, o estômago arruinado de Maga gradualmente se recompunha à normalidade.\n\nÉ claro que os goblins não eram do tipo que esperariam e deixariam isso acontecer.\n\n— Malditos! Seus goblins imundos! Como se atrevem a fazer isso com elas!!\n\nGuerreiro finalmente reparou o que se passava atrás dele e veio voando para cobrir suas companheiras, cortando seus possíveis atacantes.\n\nEle havia jogado fora a tocha e agora segurava a espada firmemente com as duas mãos. Ele deu um impulso, perfurando a garganta de um goblin.\n\n— GUIA?!\n\n— Quem é o próximo?\n\nEle arrancou a espada de sua primeira vítima, apanhando o segundo enquanto se virava. Ele cortou completamente o goblin do ombro à cintura.\n\nCom um jorro de sangue do goblin, Guerreiro deu um grande grito, embriagado pela sede de sangue.\n\n— Então, qual o problema?! Venham e me peguem!\n\nGuerreiro era o segundo filho de um fazendeiro, e desde sua juventude, ele sonhava em se tornar um cavaleiro. Como alguém poderia se tornar um cavaleiro, ele não sabia, mas ele tinha certeza de que força era um dos pré-requisitos. Os cavaleiros nas histórias de ninar que ele ouvira sempre derrotavam monstros, frustrando o mal e salvando o mundo. Aqui nessa caverna — batendo nesses goblins, salvando donzelas indefesas e protegendo seus amigos — ele se viu finalmente um cavaleiro.\n\nEsse pensamento trouxe um sorriso ao seu rosto.\n\nO poder percorria através das suas mãos, seu sangue bombeava em suas orelhas, tudo reduziu até que ele conseguisse ver apenas o inimigo diante dele.\n\n— Espera! Você não pode lidar com eles sozinho!\n\nEle ainda não era um verdadeiro cavaleiro.\n\nQuando a voz de Lutadora alcançou seus ouvidos, Guerreiro viu uma das espadas gastas enfiada em sua coxa.\n\n— Ugh! Ora, seu…!\n\nFoi o goblin que ele cortou através do peito. A lâmina sangrenta de Guerreiro não fora suficiente para dar um golpe mortal.\n\nRetirado da sua postura de combate, Guerreiro deu um segundo golpe no goblin, e dessa vez ele morreu sem nem sequer gemer.\n\nMas, momentos depois, outro monstro estava chegando atrás dele…\n\n— Tome isso! — Ele contra-atacou com a espada, mas ela atingiu a parede da caverna com uma pancada estridente.\n\nEra o último movimento que ele faria.\n\nA tocha que ele largara no chão crepitou e apagou, e na escuridão que envolveu à sua volta, ele ficou espantado com quão alto seu grito ecoou.\n\nSem uma família de renome e sem dinheiro, Guerreiro foi incapaz de investir em um escudo ou um elmo; ele só possuía o peitoral de placas frágil para o proteger. Ele não tinha meios de se salvar dos golpes viciosos dos goblins.\n\n— Não… não pode ser!\n\nLutadora não conseguiu chegar ao inimigo a tempo. Enquanto observava o jovem por quem tinha tanto apreço morrer, ela ficou pálida e imóvel.\n\nTudo o que ela podia fazer era formar suas duas mãos trêmulas em punhos e tomar uma posição de combate.\n\n— Vocês duas, corram.\n\n— M-mas…! — protestou debilmente Sacerdotisa, mas ela sabia que seria inútil. Apesar dos cuidados de Cura Menor, Maga em seus braços mal estava responsiva, sua respiração era curta e superficial.\n\nA horda de goblins estava se aproximando, fixada em suas presas restantes. Eles ainda estavam cautelosos com Lutadora, mas eles avançariam sobre ela em pouco tempo.\n\nSacerdotisa olhou para Maga e Lutadora, e depois olhou horrorizada para os goblins ainda maltratando o corpo caído de Guerreiro.\n\nVendo que suas companheiras ainda não se moveram, Lutadora estalou a língua. Então ela deu um grito ressoante, avançando contra a multidão de monstros.\n\n— Hi-yaaaaah!\n\nSeus punhos e pés eram flexíveis e rápidos. Seu próprio pai a treinara antes de morrer, e agora ela demonstrava a própria essência de sua arte.\n\nEla não morreria aqui. A arte de seu pai não podia perder para tais inimigos patéticos.\n\nEnquanto eu viver, nunca perdoarei vocês por matar aquele garoto!\n\nSeu coração e mente corroboraram seu treinamento quando ela levou seu punho direto no plexo solar de um goblin.\n\nEla empurrou seu inimigo para o lado quando ele caiu no chão vomitando, depois acertou ele com um único golpe faca de mão em seu pescoço quando ela girou.\n\nGolpe crítico.\n\nO golpe terrível no pescoço deixou a cabeça do goblin inclinada em um ângulo impossível quando ele desabou.\n\nNo mesmo momento, ela foi para o espaço deixado pelo seu corpo e usou o impulso para dar um chute em arco no ar à frente dela. Seu chute giratório rigorosamente controlado acertou mais dois goblins, os matando antes que alcançassem o chão…\n\n— O qu…?!\n\nMas, um terceiro goblin pegou facilmente sua perna e prendeu o seu tornozelo.\n\nO rosto de Lutadora empalideceu, e ele começou a apertar.\n\nOs goblins deveriam ter o tamanho de crianças… não era?\n\n— HUURRRRGH!\n\nA criatura, cujo hálito rançoso passou por ela enquanto se contorcia, era gigante.\n\nEla não era uma garota pequena, e mesmo assim teve que levantar a cabeça para olhar esse inimigo nos olhos. A dor em seu pé aumentava cada vez mais até que arrancou um grito de seus lábios.\n\n— Ahh… a-arrrrgh… me… deixe… ir-aaah!!\n\nCom a perna de Lutadora presa, o goblin a bateu casualmente contra à parede. Houve um som distante e ríspido de alguma coisa partindo.\n\nLutadora desmaiou sem sequer gemer, então ela estava inconsciente quando o goblin a balançou e bateu contra a parede oposta.\n\n— Hrr, guhhh…?!\n\nEla fez um som que quase não era humano, vomitando com sangue quando foi jogada no chão. Então o resto da horda se jogou sobre ela.\n\n— Ugh! Urrgh! Ya… yaaah! Ugh!\n\nOs goblins acertaram Lutadora com suas clavas, surdos aos seus gritos, até que arrancaram suas roupas e as jogaram para longe.\n\nOs goblins mostraram a mesma misericórdia para os aventureiros invasores, tal como o grupo tinha a intenção de lhes mostrar.\n\nAtormentada pela sua horrível provação, Lutadora deu um grande grito agudo, mas dentro dele, Sacerdotisa tinha a certeza de que conseguiu entender as palavras.\n\n— Fujam! Depressa!\n\n— Eu… eu sinto muito…!\n\nTampando os ouvidos para os ecos na caverna dos goblins violando sua companheira, Sacerdotisa pegou Maga e partiu em retirada, tropeçando.\n\nCorrer. Correr. Correr. Tropeçar, então se recompor e correr ainda mais.\n\nAtravés da escuridão ela ia, escorregando em cada pedra, mas nunca parando.\n\n— Me desculpe…! Me… desculpe! Por favor me… me perdoe…! — As palavras saíram dela em suspiros irregulares.\n\nNão havia mais luz. Ela sabia que estavam sendo perseguidas cada vez mais e mais fundo na caverna, mas o que ela podia fazer?\n\n— Ahh… ah…\n\nOs passos dos goblins, se aproximando cada vez mais a cada eco, era o que mais aterrorizava ela.\n\nParar agora seria tolice e ela não podia voltar pelo caminho que veio. Mesmo que pudesse, ela não iria ver nada mais do que tristeza.\n\nAgora ela compreendia a expressão ambígua da recepcionista da guilda.\n\nSim, os goblins eram fracos. Seu grupo de aventureiros ansiosos — seu Guerreiro, sua Maga, sua Lutadora — sabiam disso. Goblins eram tão altos, inteligentes e fortes quanto uma criança humana. Tal como eles ouviram.\n\nMas o que acontecia quando crianças pegavam armas, planejavam o mal, procuravam matar e viajavam em grupos fortes de dez?\n\nEles nem sequer consideraram isso.\n\nO grupo deles era fraco, inexperiente, não familiarizado com o combate, não possuíam dinheiro ou sorte, e o mais importante, eles estavam esmagadoramente em menor número.\n\nEra um erro comum, do tipo que se ouvia o tempo todo.\n\n— Ah!\n\nAs mangas compridas de Sacerdotisa finalmente se enroscaram em suas pernas e ela caiu indelicadamente no chão. Seu rosto e suas mãos ganharam arranhões generosos, mas muito pior, ela não conseguiu manter Maga em seus braços.\n\nSacerdotisa se apressou para puxá-la de volta, uma garota que nem sequer conhecia alguns dias atrás.\n\n— E-eu sinto muito! Você está bem?!\n\n— Ur, hrrg…\n\nEm vez de uma resposta, saliva salpicada com sangue emergiu da boca de Maga.\n\nSacerdotisa esteve tão concentrada em correr, que não reparou que Maga começara a tremer violentamente. Parecia que o corpo inteiro dela estava em chamas, e suor encharcava sua capa grossa.\n\n— Por-por quê…?\n\nSacerdotisa destinou a pergunta diretamente para si. Sua oração não alcançou à deusa?\n\nAfligida por essa preocupação, Sacerdotisa usou um tempo precioso para tirar as roupas externas de Maga e verificar a ferida.\n\nMas o milagre funcionou como previsto. O abdômen de Maga estava encharcado de sangue, mas estável. A ferida desaparecera.\n\n— A-ahn, n-nessas… nessas horas, o que devo…?\n\nSua mente estava em branco.\n\nEla sabia um pouco de primeiros socorros. E ainda podia usar seus milagres.\n\nMas outro milagre de cura iria realmente ajudar? Havia mais alguma coisa que deveria tentar? Aliás, em seu estado miserável, ela conseguiria se concentrar o suficiente para fazer uma petição efetiva à deusa?\n\n— Ahh? Aaahh!\n\nO momento que ela desperdiçou fora o que contava. Sacerdotisa quase desmaiou quando uma dor súbita a afligiu.\n\nEla ouviu um assobio — alguma coisa em alta velocidade? — e depois seu ombro esquerdo se preencheu com uma dor ardente. Ela olhou para ele e viu uma flecha enfiada no fundo de sua carne. Sangue escorria e manchava suas vestes.\n\nSacerdotisa não estava usando nenhuma armadura. A flecha rasgara selvagemente suas roupas e adentrou sob seu ombro adorável. Os preceitos proibiam excesso de armadura, e ela não possuía dinheiro de qualquer modo. Agora, cada pequeno movimento parecia amplificado cem vezes, e provocavam um ardor e dor como se ela fora perfurada com ferro ardente.\n\n— Aaaaghh…!\n\nTudo o que ela podia fazer era cerrar os dentes, manter as lágrimas em seus olhos e olhar atentamente para os goblins.\n\nDois monstros armados se aproximavam. Sorrisos perversos dividiam seus rostos; fios de baba se penduravam nos cantos de seus lábios.\n\nSeria melhor se pudesse morder sua própria língua e morrer. Mas sua deusa não permitia o suicídio, e ela parecia destinada a ter a mesma sorte que seus amigos.\n\nSerá que eles a rasgariam? Ou a violariam? Ou os dois?\n\n— Ohh… não…\n\nEla tremia; seus dentes começaram a ranger, impotentes.\n\nSacerdotisa puxou Maga para perto, usando seu próprio corpo para proteger sua companheira, mas, de repente, ela sentiu algo quente e molhado em suas pernas. Os goblins pareciam ter sentido o cheiro, e seus rostos se contorceram de nojo.\n\nSacerdotisa repetiu desesperadamente o nome da Mãe Terra, tentando evitar ver o que estava diante dela.\n\nNão havia esperança.\n\nMas então…\n\n— O qu…?\n\nNas profundezas da escuridão, surgiu uma luz.\n\nParecia como uma estrela da noite brilhando orgulhosamente contra o crepúsculo invasor.\n\nUm único ponto de luz, sempre-tão-pequeno, mas vividamente brilhante, e ele se aproximava progressivamente.\n\nA luz era acompanhada pelos passos calmos e determinados de alguém que não tinha quaisquer dúvidas sobre onde estava indo.\n\nOs goblins olharam para trás, confusos. Seus amigos haviam deixado uma presa escapar?\n\nE então, logo atrás dos goblins, ela o viu.\n\nEle não era muito impressionante.\n\nEle usava uma armadura de couro suja e um elmo de aço imundo. No seu braço esquerdo, um escudo estava preso e na sua mão estava uma tocha. Sua mão direita segurava uma espada que parecia ter um comprimento estranho. Sacerdotisa não pôde deixar de pensar que seu próprio grupo terrivelmente despreparado parecia mais bem preparado do que ele.\n\nNão, ela queria gritar, se afaste! Mas o terror paralisou sua língua, e ela não conseguiu gritar. Ela estava profundamente humilhada por lhe faltar a coragem de Lutadora.\n\nOs dois goblins se viraram para o recém-chegado, não demonstrando nenhuma relutância em mostrar suas costas para Sacerdotisa impotente. Eles lidariam com ela mais tarde. Um deles colocou uma flecha na corda do arco, puxou e disparou.\n\nEra uma flecha rústica com a ponta de pedra. E o goblin era francamente um arqueiro terrível.\n\nMas, a escuridão é a aliada dos goblins.\n\nNinguém poderia esquivar de uma flecha que voava repentinamente da escuridão…\n\n— Hmph.\n\nMesmo enquanto dava um bufo escarnecedor, o homem cortou o projétil no ar com um golpe rápido de sua espada.\n\nIncapaz de compreender a implicação do que aconteceu, o segundo goblin avançou na direção do homem. A criatura empunhava a única arma que carregava, outra das adagas enferrujadas dos monstros. Sua lâmina encontrou uma fenda no ombro do homem e enfiou nela.\n\n— Nããão!\n\nSacerdotisa deu um grito, mas não houve outro som. O golpe do goblin fez apenas um som baixo de metal raspando metal.\n\nA lâmina foi parada pela malha sob a armadura de couro do homem.\n\nO goblin desnorteado forçou ainda mais sua lâmina. O recém-chegado aproveitou a oportunidade.\n\n— GAYOU?! — O goblin gritou quando o escudo do homem bateu nele com um som seco e o prensou contra a pedra.\n\n— Você primeiro… — disse friamente o homem.\n\nSeu significado ficou claro quando ele pegou sua tocha e a levou calmamente para o rosto do goblin.\n\nHouve um grito insuportável e abafado. O cheiro de carne queimada preencheu a caverna.\n\nO goblin lutou, meio enlouquecido com a dor, mas preso pelo escudo, ele nem sequer conseguia agarrar seu próprio rosto.\n\nFinalmente, ele parou de se mover, seus membros caíram inanimadamente no chão. O homem se certificou de que o monstro estava imóvel, então puxou lentamente seu escudo.\n\nHouve um grande humph quando o goblin tombou ao chão, com o rosto queimado.\n\nO homem deu ao monstro um pontapé casual, rolando seu corpo, e então entrou mais fundo na caverna.\n\n— Próximo.\n\nFoi um espetáculo bizarro. Sacerdotisa já não era mais a única que estava aterrorizada.\n\nO goblin com o arco deu um passo inconscientemente para trás, parecendo — compreensivelmente — disposto a abandonar seu companheiro e fugir. Coragem, afinal, é a última palavra que alguém associaria a um goblin.\n\nMas agora Sacerdotisa estava atrás dele.\n\nEla exalou abruptamente. E dessa vez, ela conseguiu se mover. Ela poderia ter uma flecha no ombro, um goblin na frente dela, suas pernas esgotadas e sua companheira inconsciente a pressionando para baixo, mas ela se moveu.\n\nCom seu braço livre, Sacerdotisa levou o seu cajado de monge ao goblin.\n\nFoi um gesto sem sentido. Ela não teve realmente a intenção de o fazer, agiu por instinto.\n\nMas foi mais que suficiente para fazer o goblin parar por um instante.\n\nNaquele instante, a criatura pensou mais freneticamente sobre o que fazer do que alguma vez o fez em toda sua vida. Mas antes que ele pudesse tomar uma decisão, sua reação incompleta se chocou contra a parede de pedra, impulsionado pela espada que o guerreiro armadurado lançou através dele.\n\nMetade da cabeça do goblin permaneceu na parede. A outra metade com o resto dele, desabou no chão.\n\n— Já são dois.\n\nA luta brutal terminou, ele pisou com sua bota no cadáver do goblin morto.\n\nEle estava manchado com o sangue carmesim do monstro, do seu elmo de aço sujo e armadura de couro, até a malha feita de anéis metálicos encadeados que cobriam todo o seu corpo.\n\nUm pequeno escudo surrado estava fixado em seu braço esquerdo, e em sua mão, ele segurava uma tocha ardente.\n\nCom seu calcanhar contra o cadáver da criatura, ele abaixou sua mão livre e retirou casualmente a espada de seu crânio. Era uma lâmina de aparência barata, com um comprimento mal concebido, e agora estava encharcada de cérebro de goblin.\n\nDeitada no chão com uma flecha no ombro, o corpo magro de uma menina tremia de medo. Seu clássico rosto adorável e doce, emoldurado pelos longos e quase translúcidos cabelos cor de ouro, estava franzido com uma junção de lagrimas e suor.\n\nSeus braços magros, seus pés; todo seu corpo deslumbrante estava com as vestimentas de uma sacerdotisa. O som do cajado de monge que ela agarrou ressoou, com seus anéis pendurados batendo uns contra os outros com suas mãos trêmulas.\n\nQuem era esse homem diante dela?\n\nTão estranha era sua aparência, a aura que o ocultava, que ela imaginava que ele pudesse ser mesmo um goblin; ou talvez algo muito pior, algo que ela ainda não tinha conhecimento.\n\n— Que-quem é você…? — perguntou ela, suprimindo seu terror e dor.\n\nApós uma pausa, o homem respondeu:\n\n— Matador de Goblins.\n\nUm assassino. Não de dragões ou de vampiros, mas o mais simples dos monstros: goblins.\n\nNormalmente, o nome poderia parecer comicamente simples. Mas para Sacerdotisa, naquele momento, era tudo, menos engraçado.\n\n \n\n\n\nhttps://tsundoku.com.br",
+									"type": "text"
+								},
+								{
+									"key": "ListaImagemCapitulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "VolumeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Tradutor",
+									"value": "Equipe 3Lobos",
+									"type": "text"
+								},
+								{
+									"key": "Revisor",
+									"value": "Equipe 3Lobos",
+									"type": "text"
+								},
+								{
+									"key": "QC",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Editores",
+									"value": "Equipe 3Lobos",
+									"type": "text"
+								},
+								{
+									"key": "EhIlustracoesNovel",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "ListaImagensForm",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/capitulo/novel",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"capitulo",
+								"novel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditaCapitulo",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "Numero",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Parte",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Titulo",
+									"value": "O Destino de Alguns Aventureiros",
+									"type": "text"
+								},
+								{
+									"key": "ConteudoNovel",
+									"value": "Teste",
+									"type": "text"
+								},
+								{
+									"key": "ListaImagemCapitulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioAlteracao",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "VolumeId",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Tradutor",
+									"value": "NERO_SL",
+									"type": "text"
+								},
+								{
+									"key": "Revisor",
+									"value": "NERO_SL",
+									"type": "text"
+								},
+								{
+									"key": "QC",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Editores",
+									"value": "Equipe Tsun",
+									"type": "text"
+								},
+								{
+									"key": "EhIlustracoesNovel",
+									"value": "false",
+									"type": "text"
+								},
+								{
+									"key": "ListaImagensForm",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/capitulo/novel",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"capitulo",
+								"novel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdicionaCapitulo Comic",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Numero",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Parte",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Titulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "VolumeId",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "ListaImagensForm",
+									"type": "file",
+									"src": [
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/0.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/1.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/2.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/3.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/4.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/5.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/6.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/7.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/8.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/9.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/10.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/11.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/12.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/13.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/14.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/15.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/16.rawkuma.com.jpg",
+										"/C:/Users/edsra/Desktop/tearmoon-teikoku-monogatari-danto-dai-kara-hajimaru-hime-no-tensei-gyakuten-story-chapter-19-1/17.rawkuma.com.jpg"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/capitulo/comic",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"capitulo",
+								"comic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditaCapitulo Comic",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Numero",
+									"value": "150",
+									"type": "text"
+								},
+								{
+									"key": "Parte",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "Titulo",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioAlteracao",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "UsuarioCadastro",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "VolumeId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "ListaImagensForm",
+									"type": "file",
+									"src": [
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/01.png",
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/02.png",
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/03.png",
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/04.png",
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/05.png",
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/06.png",
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/07.png",
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/08.png",
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/09.png",
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/10.png",
+										"/K:/01 - Tsun/02 - Mangás/01 - Lançamento/Gosu/150/11.png"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/capitulo/comic",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"capitulo",
+								"comic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdicionaObraRecomendada",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "IdObra",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "ImagemCapaPrincipal",
+									"value": "https://tsundoku.com.br/wp-content/uploads/2023/04/TA-Capa-vO.png",
+									"type": "text"
+								},
+								{
+									"key": "TituloAliasObra",
+									"value": "Trono do Arcanista",
+									"type": "text"
+								},
+								{
+									"key": "Sinopse",
+									"value": "Após supostamente morrer, Xiafeng se vê na pele de Lucien, um garoto normal que já apanhou um bocado da vida. O pior é que as surras não vão parar por aí.\n\nRevoltado com sua situação naquele mundo completamente novo, ele assiste maravilhado ao poder divino dos sacerdotes, e já que ele não pode se tornar um deles, a decisão é uma só: o caminho dos feiticeiros!\n\nPara primeiro se tornar um feiticeiro, ele precisa aprender a ler, e também precisa arrumar um bom disfarce, quem sabe como um músico? Ele usa as obras primas do seu mundo original para alcançar a fama e bancar seus estudos mágicos, mas é aí que a coisa fica mais complicada.\n\nA Igreja, apoiada pela nobreza, caça os feiticeiros. Em sua fuga constante do poder da Igreja, ele aprende que esse é um mundo de linhas borradas, onde nada é inteiramente bom, ou inteiramente ruim.\n\nA Igreja não é tão absoluta assim, pois há outros poderes espalhados pelos quatro cantos do mundo, como o Congresso Continental de Magia, a Floresta dos Druidas ou os ducados de vampiros lendários. O problema é que nenhum deles parece querer Lucien por perto, ou sequer vivo.",
+									"type": "text"
+								},
+								{
+									"key": "SlugObra",
+									"value": "trono-do-arcanista",
+									"type": "text"
+								},
+								{
+									"key": "ListaComentarioObraRecomendadaDTOJson",
+									"value": "[\n\t{\n\t\t\"AutorComentario\": \"Bravo\",\n\t\t\"Comentario\": \"Eu acho essa obra muito foda, porquê o autor usa vários elementos da física, química e astrologia!! Recomendo fortemente!!\",\n\t}\n]",
+									"contentType": "application/json",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra/recomendada",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra",
+								"recomendada"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RetornaListaObraRecomendada",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra/recomendada",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra",
+								"recomendada"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RetornaObraRecomendadaPorId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra/recomendada/4",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra",
+								"recomendada",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdicionaMensagemObraRecomendada",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "AutorComentario",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "Comentario",
+									"value": "Essa obra tem tudo de bom e tudo o que deveria ter em uma obra",
+									"type": "text"
+								},
+								{
+									"key": "IdObraRecomendada",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra/recomendada/comentario",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra",
+								"recomendada",
+								"comentario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditaMensagemObraRecomendada",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "AutorComentario",
+									"value": "Bravo",
+									"type": "text"
+								},
+								{
+									"key": "Comentario",
+									"value": "TA É MUITO FODA!!!!",
+									"type": "text"
+								},
+								{
+									"key": "ObraRecomendadaId",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra/recomendada/comentario",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra",
+								"recomendada",
+								"comentario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obra/recomendada/comentario/3",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obra",
+								"recomendada",
+								"comentario",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Public",
+			"item": [
+				{
+					"name": "RetornaListaCapitulosHome",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obras",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obras"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ObterObraPorSlug",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obras/matador-de-goblins",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obras",
+								"matador-de-goblins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ObterCapitulo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obras/novels/capitulo/capitulo-1-parte-1-o-destino-de-alguns-aventureiros",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obras",
+								"novels",
+								"capitulo",
+								"capitulo-1-parte-1-o-destino-de-alguns-aventureiros"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ObterCapitulo Comic",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obras/comics/capitulo/capitulo-1",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obras",
+								"comics",
+								"capitulo",
+								"capitulo-1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ObterNovels",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obras/novels?pesquisar=&nacionalidade=&status=&tipo=&genero=&pagina=&capitulosPorPagina=",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obras",
+								"novels"
+							],
+							"query": [
+								{
+									"key": "pesquisar",
+									"value": ""
+								},
+								{
+									"key": "nacionalidade",
+									"value": ""
+								},
+								{
+									"key": "status",
+									"value": ""
+								},
+								{
+									"key": "tipo",
+									"value": ""
+								},
+								{
+									"key": "genero",
+									"value": ""
+								},
+								{
+									"key": "pagina",
+									"value": ""
+								},
+								{
+									"key": "capitulosPorPagina",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ObterComics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{urlApiTsun}}api/obras/comics?pesquisar=&nacionalidade&status&tipo&genero&pagina&capitulosPorPagina",
+							"host": [
+								"{{urlApiTsun}}api"
+							],
+							"path": [
+								"obras",
+								"comics"
+							],
+							"query": [
+								{
+									"key": "pesquisar",
+									"value": ""
+								},
+								{
+									"key": "nacionalidade",
+									"value": null
+								},
+								{
+									"key": "status",
+									"value": null
+								},
+								{
+									"key": "tipo",
+									"value": null
+								},
+								{
+									"key": "genero",
+									"value": null
+								},
+								{
+									"key": "pagina",
+									"value": null
+								},
+								{
+									"key": "capitulosPorPagina",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
