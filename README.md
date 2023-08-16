@@ -1,6 +1,6 @@
 ## Tsundoku Traduções V2 - API
 Tsundoku é um site voltado para leitura de Light Novels e Mangás, que já está ativo no link [Tsundoku](https://tsundoku.com.br/).
-Este repo é a atualização do site para uma interface mais moderna e única com objetivos de solucionar problemas e limitações enfrentados no site atual.
+Este repo é a atualização backend do site para uma estrutura mais moderna e única com objetivos de solucionar problemas e limitações enfrentados no site atual.
 
 ## Contribuindo
 
@@ -11,7 +11,6 @@ A Tsundoku adoraria sua ajuda, apesar do esforço, o projeto é grande e muitos 
 - Fazer um fork do projeto
 - Clonar o projeto em sua máquina 
 - Rodar o comando "git pull" para se certificar das alterações
-- Rodar o comando "npm i" dentro da pasta
 
 ## Orientações sobre Pull Requests
 
@@ -26,8 +25,8 @@ Alguns exemplos:
 **2.**  Após realizar as alterações, é hora de fazer um commit com uma mensagem coerente do que foi feito. Exemplo:
 ```
 git add --all
-git commit -am ‘feat(home): adiciona carrossel na tela inicial’
-git push origin feat/carrossel
+git commit -am ‘fix(usuario): adiciona campo id externo na tabela user’
+git push origin fix/usuario
 ```
 o exemplo segue o padrão do Conventional Commits, se não estiver habituado com Conventional Commits, não se preocupe, basta que a mensagem seja clara e direta.
  Leia sobre em: [Conventional Commits](https://www.conventionalcommits.org/pt-br/v1.0.0/)
@@ -52,25 +51,21 @@ git push -f origin main
 **5.**  Quando iniciar uma nova contribuição, repita o processo do inicio, criando uma nova branch.
 
 
-## Lembrentes
+## Lembrente
 
 - Evite mexer em arquivos desconexos dentro de um mesmo commit
 - Não altere versões de libs ou ferramentas.
 - Se precisar de ajuda, pergunte diretamente informando o problema que está tendo.
 
-## Lembrentes 2
+## Postman
 
-- Para realizar os testes de crud é necessário usar o Postman (Ou algum app de requisição de seu interesse). Estou deixando as collectios e a variável de ambiente disponível aqui.
+- Para realizar os testes de crud é necessário usar o Postman (Ou algum app de requisição de seu interesse). Caso use o Postman, existe uma collection e variáveis de ambiente disponível no repósitorio.
 Basta importar os arquivos jsons disponíveis e utilizar o mesmo.
 
-## Lembrentes 3
+## Iniciando o projeto
 
-### Passos após clonar o projeto
-
-- Adicionar aquivo appsettings.json e adicionar a connectionString com os dados do banco MySql Local ou Remoto
+- Copie o arquivo appsettingsExample.json e altere seu nome para appsettings.json, adicionando a connectionString do banco local ou remoto.
 - Adicionar diretórios wwwroot/image (_Enquanto salvar arquivos locais_)
-- Rodar o comando ```update-database``` 
-  - Visual Studio Code > ```dotnet ef database update```
-    - instalar o pacote dotnet-ef > ```dotnet tool install --global dotnet-ef```
-- E em seguida rodar o projeto para subir a api
-  - Visual Studio Code > ```dotnet run```
+- instalar o pacote dotnet-ef > ```dotnet tool install --global dotnet-ef```
+- Execute o comando > ```dotnet ef database update``` 
+- Suba a aplicação com > ```dotnet run```
