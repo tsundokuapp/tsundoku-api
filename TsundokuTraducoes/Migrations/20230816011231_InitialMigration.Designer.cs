@@ -11,8 +11,8 @@ using TsundokuTraducoes.Api.Data;
 namespace TsundokuTraducoes.Api.Migrations
 {
     [DbContext(typeof(TsundokuContext))]
-    [Migration("20230726233209_AdicaoCampoQC")]
-    partial class AdicaoCampoQC
+    [Migration("20230816011231_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

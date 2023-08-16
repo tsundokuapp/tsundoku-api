@@ -293,7 +293,13 @@ namespace TsundokuTraducoes.Api.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     OrdemCapitulo = table.Column<int>(type: "int", nullable: false),
                     EhIlustracoesNovel = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    VolumeId = table.Column<int>(type: "int", nullable: false)
+                    VolumeId = table.Column<int>(type: "int", nullable: false),
+                    Tradutor = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Revisor = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    QC = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
