@@ -67,9 +67,10 @@ Basta importar os arquivos jsons disponíveis e utilizar o mesmo.
 
 ### Passos após clonar o projeto
 
-_Enquanto salvar arquivos locais_
-
 - Adicionar aquivo appsettings.json e adicionar a connectionString com os dados do banco MySql Local ou Remoto
-- Adicionar diretórios wwwroot/image
-- Rodar o comando update-database 
+- Adicionar diretórios wwwroot/image (_Enquanto salvar arquivos locais_)
+- Rodar o comando ```update-database``` 
+  - Visual Studio Code > ```dotnet ef database update```
+    - instalar o pacote dotnet-ef > ```dotnet tool install --global dotnet-ef```
 - E em seguida rodar o projeto para subir a api
+  - Visual Studio Code > ```dotnet run```
