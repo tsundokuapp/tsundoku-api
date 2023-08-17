@@ -17,13 +17,13 @@ namespace TsundokuTraducoes.Api.DTOs.Public
         public string SlugTipoObra { get; set; }
         public string TipoObra { get { return SlugAuxiliar.RetornaTipoObraPorSlug(SlugTipoObra); } }
 
-        public List<GeneroDTO> GenerosDTO { get; set; }
-        public List<VolumeDTO> VolumesDTO { get; set; }
+        public List<GeneroDTO> Generos { get; set; }
+        public List<VolumeDTO> Volumes { get; set; }
 
         public ObraDTO()
         {
-            GenerosDTO = new List<GeneroDTO>();
-            VolumesDTO = new List<VolumeDTO>();
+            Generos = new List<GeneroDTO>();
+            Volumes = new List<VolumeDTO>();
         }
     }
 }

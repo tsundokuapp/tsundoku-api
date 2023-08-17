@@ -6,13 +6,9 @@
 
   <ItemGroup>
     <Compile Remove="ArquivosEstaticos\**" />
-    <Compile Remove="wwwroot\images\MatadorDeGoblins\Volume-01\Capitulo-Ilustrações\**" />
     <Content Remove="ArquivosEstaticos\**" />
-    <Content Remove="wwwroot\images\MatadorDeGoblins\Volume-01\Capitulo-Ilustrações\**" />
     <EmbeddedResource Remove="ArquivosEstaticos\**" />
-    <EmbeddedResource Remove="wwwroot\images\MatadorDeGoblins\Volume-01\Capitulo-Ilustrações\**" />
     <None Remove="ArquivosEstaticos\**" />
-    <None Remove="wwwroot\images\MatadorDeGoblins\Volume-01\Capitulo-Ilustrações\**" />
   </ItemGroup>
 
   <ItemGroup>

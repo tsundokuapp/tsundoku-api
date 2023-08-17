@@ -11,44 +11,38 @@ namespace TsundokuTraducoes.Models
     {
         private readonly IObraService _obraService;
         public ObraController(IObraService obraService)
-        {  
+        {
             _obraService = obraService;
-        }       
+        }
 
         [HttpGet]
         public IActionResult RetornaListaObras()
         {
-            var result = _obraService.RetornaListaObras();               
+            var result = _obraService.RetornaListaObras();
             if (result.IsFailed)
-            {  
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
-        
+
         [HttpGet("{id}")]
         public IActionResult RetornaObraPorId(int id)
         {
             var result = _obraService.RetornaObraPorId(id);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
-        
+
         [HttpPost]
         public IActionResult AdicionaObra([FromForm] ObraDTO obraDTO)
-        {  
+        {
             var result = _obraService.AdicionaObra(obraDTO);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors[0].Message);
-            }
 
-            return Ok(result.Value);                      
+            return Ok(result.Value);
         }
 
         [HttpPut]
@@ -56,9 +50,7 @@ namespace TsundokuTraducoes.Models
         {
             var result = _obraService.AtualizarObra(obraDTO);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -66,13 +58,13 @@ namespace TsundokuTraducoes.Models
         [HttpDelete("{idObra}")]
         public IActionResult ExcluirObra(int idObra)
         {
-            var result = _obraService.ExcluirObra(idObra);
-            if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+            //var result = _obraService.ExcluirObra(idObra);
+            //if (result.IsFailed)
+            //    return NotFound(result.Errors[0].Message);
 
-            return Ok(result.Successes[0].Message);
+            //return Ok(result.Successes[0].Message);
+
+            return Ok("Contatar os administradores do site para essa solicitação");
         }
 
         [HttpPost]
@@ -81,9 +73,7 @@ namespace TsundokuTraducoes.Models
         {
             var result = _obraService.AdicionaObraRecomendada(obraRecomendadaDTO);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -94,9 +84,7 @@ namespace TsundokuTraducoes.Models
         {
             var result = _obraService.RetornaListaObraRecomendada();
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -105,24 +93,20 @@ namespace TsundokuTraducoes.Models
         [Route("recomendada/{id}")]
         public IActionResult RetornaObraRecomendadaPorId(int id)
         {
-            var result =_obraService.RetornaObraRecomendadaPorId(id);
+            var result = _obraService.RetornaObraRecomendadaPorId(id);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
-        }        
-        
+        }
+
         [HttpPost]
         [Route("recomendada/comentario")]
         public IActionResult AdicionaComentarioObraRecomendada([FromForm] ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
         {
             var result = _obraService.AdicionaComentarioObraRecomendada(comentarioObraRecomendadaDTO);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors[0].Message);
-            }
 
             return Ok(result.Value);
         }
@@ -133,9 +117,7 @@ namespace TsundokuTraducoes.Models
         {
             var result = _obraService.AtualizaComentarioObraRecomendada(comentarioObraRecomendadaDTO);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors[0].Message);
-            }
 
             return Ok(result.Value);
         }
@@ -146,9 +128,7 @@ namespace TsundokuTraducoes.Models
         {
             var result = _obraService.RetornaComentarioObraRecomendadaPorId(id);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -159,9 +139,7 @@ namespace TsundokuTraducoes.Models
         {
             var result = _obraService.RetornaInformacaoObraDTO();
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -172,11 +150,9 @@ namespace TsundokuTraducoes.Models
         {
             var result = _obraService.RetornaInformacaoObraDTO(idObra);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
-        }       
+        }
     }
 }

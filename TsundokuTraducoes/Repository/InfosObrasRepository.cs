@@ -105,10 +105,10 @@ namespace TsundokuTraducoes.Api.Repository
                                 O.Slug SlugObra,
                          	    O.SlugUltimoVolume SlugVolume,
                                 O.SlugUltimoCapitulo SlugCapitulo,
-                                O.ImagemUltimoVolume UrlCapaVolume,
+                                O.ImagemCapaUltimoVolume UrlCapaVolume,
                                 O.Alias AliasObra,
-                                O.AutorObra 
-                           FROM Obras O
+                                O.Autor AutorObra
+                           FROM Obra O
                           INNER JOIN GeneroObra GO on GO.ObrasId = O.Id
                           INNER JOIN Generos G on G.Id = GO.GenerosId
                           {condicaoConsulta}
@@ -122,10 +122,10 @@ namespace TsundokuTraducoes.Api.Repository
                                 O.Slug SlugObra,
 	                            O.SlugUltimoVolume SlugVolume,
                                 O.SlugUltimoCapitulo SlugCapitulo,
-                                O.ImagemUltimoVolume UrlCapaVolume,
+                                O.ImagemCapaUltimoVolume UrlCapaVolume,
                                 O.Alias AliasObra,
-                                O.AutorObra 
-                           FROM Obras O 
+                                O.Autor AutorObra
+                           FROM Obra O 
                           {condicaoConsulta} 
                           ORDER BY O.DataAtualizacaoUltimoCapitulo DESC;";
             }
@@ -195,9 +195,9 @@ namespace TsundokuTraducoes.Api.Repository
 
         private static void CarregaGeneros(ObraDTO obraDTO, GeneroDTO generoDTO)
         {
-            if (obraDTO.GenerosDTO.FirstOrDefault(w => w.SlugGenero == generoDTO.SlugGenero) == null)
+            if (obraDTO.Generos.FirstOrDefault(w => w.SlugGenero == generoDTO.SlugGenero) == null)
             {
-                obraDTO.GenerosDTO.Add(generoDTO);
+                obraDTO.Generos.Add(generoDTO);
             }
         }
 
@@ -205,20 +205,20 @@ namespace TsundokuTraducoes.Api.Repository
         {
             if (volumeDTO != null)
             {
-                if (obraDTO.VolumesDTO.FirstOrDefault(w => w.SlugVolume == volumeDTO.SlugVolume) == null)
+                if (obraDTO.Volumes.FirstOrDefault(w => w.SlugVolume == volumeDTO.SlugVolume) == null)
                 {
-                    obraDTO.VolumesDTO.Add(volumeDTO);
+                    obraDTO.Volumes.Add(volumeDTO);
                 }
             }
         }
 
         private static void CarregaCapitulo(ObraDTO obraDTO, CapituloDTO capituloDTO)
         {
-            if (obraDTO.VolumesDTO.Count > 0)
+            if (obraDTO.Volumes.Count > 0)
             {
                 if (capituloDTO != null)
                 {
-                    foreach (var volume in obraDTO.VolumesDTO)
+                    foreach (var volume in obraDTO.Volumes)
                     {
                         if (volume.CapitulosDTO.FirstOrDefault(w => w.SlugCapitulo == capituloDTO.SlugCapitulo) == null)
                         {

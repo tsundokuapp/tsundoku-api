@@ -1,14 +1,13 @@
 ﻿using AutoMapper;
 using FluentResults;
-using Microsoft.AspNetCore.Hosting;
-using System.Collections.Generic;
-using TsundokuTraducoes.Api.DTOs.Admin;
-using TsundokuTraducoes.Api.Models;
-using TsundokuTraducoes.Api.Repository.Interfaces;
-using TsundokuTraducoes.Api.Services.Interfaces;
-using TsundokuTraducoes.Api.Utilidades;
 using Newtonsoft.Json;
-using System;
+using System.Collections.Generic;
+using TsundokuTraducoes.Api.Models;
+using Microsoft.AspNetCore.Hosting;
+using TsundokuTraducoes.Api.Utilidades;
+using TsundokuTraducoes.Api.DTOs.Admin;
+using TsundokuTraducoes.Api.Services.Interfaces;
+using TsundokuTraducoes.Api.Repository.Interfaces;
 
 namespace TsundokuTraducoes.Api.Services
 {
@@ -23,15 +22,13 @@ namespace TsundokuTraducoes.Api.Services
             _repository = repository;
             _mapper = mapper;
             _webHostEnvironment = hostEnvironment;
-        }       
+        }
 
         public Result<List<Obra>> RetornaListaObras()
         {
             var listaObras = _repository.RetornaListaObras();
             if (listaObras == null)
-            {   
                 return Result.Fail("Erro ao retornar todas as Obras!");
-            }
 
             return Result.Ok(listaObras);
         }
@@ -40,9 +37,7 @@ namespace TsundokuTraducoes.Api.Services
         {
             var obra = _repository.RetornaObraPorId(id);
             if (obra == null)
-            {
                 return Result.Fail("Obra não encontrada!");
-            }
 
             return Result.Ok(obra);
         }
@@ -50,10 +45,17 @@ namespace TsundokuTraducoes.Api.Services
         public Result<Obra> AdicionaObra(ObraDTO obraDTO)
         {
             var obra = _mapper.Map<Obra>(obraDTO);
+            var obraExistente = _repository.RetornaObraExistente(obraDTO.Titulo);
+
+            if (obraExistente != null)
+                return Result.Fail("Obra já postada!");
+
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
                 var uploadImagemCapa = new Imagens(_webHostEnvironment);
-                uploadImagemCapa.ProcessaImagemObra(obraDTO.ImagemCapaPrincipalFile, obraDTO.Titulo, obra, obraDTO);
+                var retornoProcessoImagem = uploadImagemCapa.ProcessaImagemObra(obraDTO.ImagemCapaPrincipalFile, obraDTO.Titulo, obra, obraDTO);
+                if (retornoProcessoImagem.IsFailed)
+                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
             }
             else
             {
@@ -63,30 +65,30 @@ namespace TsundokuTraducoes.Api.Services
             if (obraDTO.ImagemBannerFile != null)
             {
                 var uploadImagemCapa = new Imagens(_webHostEnvironment);
-                uploadImagemCapa.ProcessaImagemObra(obraDTO.ImagemBannerFile, obraDTO.Titulo, obra, obraDTO, true);
+                var retornoProcessoImagem = uploadImagemCapa.ProcessaImagemObra(obraDTO.ImagemBannerFile, obraDTO.Titulo, obra, obraDTO, true);
+                if (retornoProcessoImagem.IsFailed)
+                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
             }
 
             _repository.Adiciona(obra);
             if (!_repository.AlteracoesSalvas())
-            {
                 return Result.Fail("Erro ao adicionar a Obra!");
-            }
 
             _repository.InsereGenerosObra(obraDTO, obra, true);
             return Result.Ok().ToResult(obra);
         }
 
         public Result<Obra> AtualizarObra(ObraDTO obraDTO)
-        {   
+        {
             var obraEncontrada = _repository.RetornaObraPorId(obraDTO.Id);
             if (obraEncontrada == null)
-            {
                 return Result.Fail("Obra não encontrada!");
-            }            
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
-                new Imagens(_webHostEnvironment).ProcessaImagemObra(obraDTO.ImagemCapaPrincipalFile, obraDTO.Titulo, obraEncontrada, obraDTO);
+                var retornoProcessoImagem = new Imagens(_webHostEnvironment).ProcessaImagemObra(obraDTO.ImagemCapaPrincipalFile, obraDTO.Titulo, obraEncontrada, obraDTO);
+                if (retornoProcessoImagem.IsFailed)
+                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
             }
             else
             {
@@ -95,7 +97,9 @@ namespace TsundokuTraducoes.Api.Services
 
             if (obraDTO.ImagemBannerFile != null)
             {
-                new Imagens(_webHostEnvironment).ProcessaImagemObra(obraDTO.ImagemBannerFile, obraDTO.Titulo, obraEncontrada, obraDTO, true);
+                var retornoProcessoImagem = new Imagens(_webHostEnvironment).ProcessaImagemObra(obraDTO.ImagemBannerFile, obraDTO.Titulo, obraEncontrada, obraDTO, true);
+                if (retornoProcessoImagem.IsFailed)
+                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
             }
             else
             {
@@ -105,29 +109,21 @@ namespace TsundokuTraducoes.Api.Services
             obraEncontrada = _repository.AtualizaObra(obraDTO);
 
             if (!_repository.AlteracoesSalvas())
-            {   
                 return Result.Fail("Erro ao atualizar a obra!");
-            }
 
             _repository.InsereGenerosObra(obraDTO, obraEncontrada, false);
             return Result.Ok().ToResult(obraEncontrada);
-        }   
+        }
 
         public Result<bool> ExcluirObra(int idObra)
         {
             var obraEncontrada = _repository.RetornaObraPorId(idObra);
             if (obraEncontrada == null)
-            {
                 return Result.Fail("Obra não encontrada!");
-            }
 
-            //new Imagens().ExcluiDiretorioImagens(obraEncontrada.DiretorioObra);
             _repository.Exclui(obraEncontrada);
             if (!_repository.AlteracoesSalvas())
-            {
-                return Result.Fail("Obra não encontrada!");
-                
-            }
+                return Result.Fail("Erro ao excluir a obra!");
 
             return Result.Ok().WithSuccess("Obra excluída com sucesso!");
         }
@@ -136,26 +132,18 @@ namespace TsundokuTraducoes.Api.Services
         {
             var obraRecomendadaExistente = _repository.RetornaObraRecomendadaPorObraId(obraRecomendadaDTO.IdObra);
             if (obraRecomendadaExistente != null)
-            {
                 return Result.Fail("Obra recomendada já cadastrada!");
-            }
-            
-            var retornoCargaListaMensagem = CarregaListaMensagemObraRecomendada(obraRecomendadaDTO);
 
+            var retornoCargaListaMensagem = CarregaListaMensagemObraRecomendada(obraRecomendadaDTO);
             if (retornoCargaListaMensagem.IsFailed)
-            {
                 return Result.Fail(retornoCargaListaMensagem.Errors[0].Message);
-            }
 
             var obraRecomendada = _mapper.Map<ObraRecomendada>(obraRecomendadaDTO);
             _repository.Adiciona(obraRecomendada);
-            
             _repository.InsereListaComentariosObraRecomendada(obraRecomendadaDTO, obraRecomendada);
 
             if (!_repository.AlteracoesSalvas())
-            {
                 return Result.Fail("Erro ao adicionar a Obra Recomendada!");
-            }
 
             return Result.Ok().ToResult(obraRecomendada);
         }
@@ -167,39 +155,29 @@ namespace TsundokuTraducoes.Api.Services
 
             var retornoOk = generos != null;
             if (!retornoOk)
-            {
                 return Result.Fail("Erro ao retornar as informações das obras!");
-            }
-            else
+
+            informacaoObraDTO.ListaGeneros.AddRange(generos);
+
+            if (idObra != null)
             {
-                informacaoObraDTO.ListaGeneros.AddRange(generos);
+                var obra = _repository.RetornaObraPorId(idObra.Value);
+                if (obra == null)
+                    return Result.Fail("Obra não encontrada!");
 
-                if (idObra != null)
-                {
-                    var obra = _repository.RetornaObraPorId(idObra.Value);
-                    if (obra == null)
-                    {
-                        return Result.Fail("Obra não encontrada!");
-                    }
-
-                    informacaoObraDTO.Obra = obra;
-                }
-
-                return Result.Ok(informacaoObraDTO);
+                informacaoObraDTO.Obra = obra;
             }
+
+            return Result.Ok(informacaoObraDTO);
         }
 
         private Result CarregaListaMensagemObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO)
         {
-            var listaComentarioObraRecomendadaDTO = new List<ComentarioObraRecomendadaDTO>();
-            if (!string.IsNullOrEmpty(obraRecomendadaDTO.ListaComentarioObraRecomendadaDTOJson))
-            {
-                obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO = JsonConvert.DeserializeObject<List<ComentarioObraRecomendadaDTO>>(obraRecomendadaDTO.ListaComentarioObraRecomendadaDTOJson);
-            }
-            else
-            {
-                Result.Fail("Não foi informado uma lista de comentário obra recomendada");
-            }
+            if (string.IsNullOrEmpty(obraRecomendadaDTO.ListaComentarioObraRecomendadaDTOJson))
+                return Result.Fail("Não foi informado uma lista de comentário obra recomendada");
+
+            obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO =
+                JsonConvert.DeserializeObject<List<ComentarioObraRecomendadaDTO>>(obraRecomendadaDTO.ListaComentarioObraRecomendadaDTOJson);
 
             return Result.Ok();
         }
@@ -210,9 +188,7 @@ namespace TsundokuTraducoes.Api.Services
 
             _repository.Adiciona(comentarioObraRecomendada);
             if (!_repository.AlteracoesSalvas())
-            {
                 return Result.Fail("Erro ao adicionar a Comentario Obra Recomendada!");
-            }
 
             return Result.Ok().ToResult(comentarioObraRecomendada);
         }
@@ -221,16 +197,12 @@ namespace TsundokuTraducoes.Api.Services
         {
             var comentarioObraRecomendada = _repository.RetornaComentarioObraRecomendadaPorId(comentarioObraRecomendadaDTO.Id);
             if (comentarioObraRecomendada == null)
-            {
                 return Result.Fail("Obra não encontrada!");
-            }
 
             comentarioObraRecomendada = _repository.AtualizaComentarioObraRecomendada(comentarioObraRecomendadaDTO);
 
             if (!_repository.AlteracoesSalvas())
-            {
                 return Result.Fail("Erro ao adicionar a Comentario Obra Recomendada!");
-            }
 
             return Result.Ok().ToResult(comentarioObraRecomendada);
         }
@@ -239,9 +211,7 @@ namespace TsundokuTraducoes.Api.Services
         {
             var listaObraRecomendada = _repository.RetornaListaObraRecomendada();
             if (listaObraRecomendada == null)
-            {
                 return Result.Fail("Erro ao retornar todas as Obras!");
-            }
 
             return Result.Ok().ToResult(listaObraRecomendada);
         }
@@ -249,11 +219,8 @@ namespace TsundokuTraducoes.Api.Services
         public Result<ObraRecomendada> RetornaObraRecomendadaPorId(int id)
         {
             var obraRecomendada = _repository.RetornaObraRecomendadaPorId(id);
-
             if (obraRecomendada == null)
-            {
                 return Result.Fail("Obra Recomendada não encontrada!");
-            }
 
             return obraRecomendada;
         }
@@ -261,11 +228,8 @@ namespace TsundokuTraducoes.Api.Services
         public Result<ComentarioObraRecomendada> RetornaComentarioObraRecomendadaPorId(int id)
         {
             var comentarioObraRecomendada = _repository.RetornaComentarioObraRecomendadaPorId(id);
-
             if (comentarioObraRecomendada == null)
-            {
                 return Result.Fail("Comentário da Obra Recomendada não encontrado!");
-            }
 
             return comentarioObraRecomendada;
         }

@@ -7,7 +7,7 @@ namespace TsundokuTraducoes.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class VolumeController : ControllerBase
-    {       
+    {
         private readonly IVolumeService _volumeService;
 
         public VolumeController(IVolumeService volumeService)
@@ -20,9 +20,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _volumeService.RetornaListaVolume(IdObra);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -32,9 +30,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _volumeService.RetornaVolumePorId(id);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -44,9 +40,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _volumeService.AdicionaVolume(volumeDTO);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors[0].Message);
-            }
 
             return Ok(result.Value);
         }
@@ -56,16 +50,14 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _volumeService.AtualizaVolume(volumeDTO);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors[0].Message);
-            }
 
             return Ok(result.Value);
         }
 
         [HttpDelete("{id}")]
         public IActionResult ExcluirVolume(int id)
-        {            
+        {
             //var result = _volumeService.ExcluirVolume(id);
             //if (result.IsFailed)
             //{

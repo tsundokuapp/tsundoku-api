@@ -24,9 +24,7 @@ namespace TsundokuTraducoes.Api.Services
         {
             var listaVolumes = _repository.RetornaListaVolumes(idObra);
             if (listaVolumes == null)
-            {
                 return Result.Fail("Erro ao retornar todos os volumes!");
-            }
 
             return Result.Ok(listaVolumes);
         }
@@ -35,9 +33,7 @@ namespace TsundokuTraducoes.Api.Services
         {
             var volume = _repository.RetornaVolumePorId(id);
             if (volume == null)
-            {
                 return Result.Fail("Volume não encontrado!");
-            }
 
             return Result.Ok(volume);
         }
@@ -49,41 +45,37 @@ namespace TsundokuTraducoes.Api.Services
             var volumeExistente = _repository.RetornaVolumeExistente(volumeDTO.ObraId, volumeDTO.Numero);
 
             if (obra == null)
-            {
                 return Result.Fail("Não foi encontrada a obra informada");
-            }
 
             if (volumeExistente != null)
-            {
-                return Result.Fail("Voluma já postado.");
-            }
+                return Result.Fail("Volume já postado!");
 
             if (volumeDTO.ImagemCapaVolumeFile != null)
             {
-                new Imagens().ProcessaUploadImagemCapaVolume(volumeDTO.ImagemCapaVolumeFile, volume, obra, volumeDTO);
+                var retornoProcessoImagem = new Imagens().ProcessaUploadImagemCapaVolume(volumeDTO.ImagemCapaVolumeFile, volume, obra, volumeDTO);
+                if (retornoProcessoImagem.IsFailed)
+                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
             }
             else
             {
                 return Result.Fail("Erro ao adicionar volume da obra, imagem capa do volume não enviada!");
             }
 
-            _repository.Adiciona(volume);            
+            _repository.Adiciona(volume);
             if (_repository.AlteracoesSalvas())
             {
                 _repository.AtualizaObraPorVolume(obra, volume);
                 return Result.Ok(volume);
             }
 
-            return Result.Fail("Erro ao adicionar volume da obra!");            
+            return Result.Fail("Erro ao adicionar volume da obra!");
         }
 
         public Result<Volume> AtualizaVolume(VolumeDTO volumeDTO)
         {
             var volumeEncontrado = _repository.RetornaVolumePorId(volumeDTO.Id);
             if (volumeEncontrado == null)
-            {
                 return Result.Fail("Volume não encontrado!");
-            }
 
             if (volumeDTO.ImagemCapaVolumeFile != null)
             {
@@ -92,15 +84,15 @@ namespace TsundokuTraducoes.Api.Services
                 if (obra == null)
                     return Result.Fail("Não foi encontrada a obra informada");
 
-                new Imagens().ProcessaUploadImagemCapaVolume(volumeDTO.ImagemCapaVolumeFile, volumeEncontrado, obra, volumeDTO);
+                var retornoProcessoImagem = new Imagens().ProcessaUploadImagemCapaVolume(volumeDTO.ImagemCapaVolumeFile, volumeEncontrado, obra, volumeDTO);
+                if (retornoProcessoImagem.IsFailed)
+                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
             }
 
             volumeEncontrado = _repository.AtualizaVolume(volumeDTO);
             if (!_repository.AlteracoesSalvas())
-            {
                 return Result.Fail("Erro ao atualizar o volume!");
-            }
-                
+
             return Result.Ok(volumeEncontrado);
         }
 
@@ -108,15 +100,11 @@ namespace TsundokuTraducoes.Api.Services
         {
             var volumeEncontrado = _repository.RetornaVolumePorId(id);
             if (volumeEncontrado == null)
-            {
                 return Result.Fail("Volume não encontrado!");
-            }
 
             _repository.Exclui(volumeEncontrado);
             if (_repository.AlteracoesSalvas())
-            {
                 return Result.Ok().WithSuccess("Volume excluído com sucesso!");
-            }
 
             return Result.Fail("Erro ao excluir o volume!");
         }
