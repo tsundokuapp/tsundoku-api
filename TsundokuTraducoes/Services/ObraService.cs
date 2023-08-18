@@ -155,7 +155,7 @@ namespace TsundokuTraducoes.Api.Services
 
             var retornoOk = generos != null;
             if (!retornoOk)
-                return Result.Fail("Erro ao retornar as informações das obras!");
+                return Result.Fail("Erro ao carregar os gêneros!");
 
             informacaoObraDTO.ListaGeneros.AddRange(generos);
 
