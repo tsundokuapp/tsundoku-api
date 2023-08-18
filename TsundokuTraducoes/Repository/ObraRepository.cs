@@ -1,13 +1,12 @@
 ﻿using Dapper;
-using FluentResults;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using TsundokuTraducoes.Api.Data;
-using TsundokuTraducoes.Api.DTOs.Admin;
+using System.Collections.Generic;
 using TsundokuTraducoes.Api.Models;
+using Microsoft.EntityFrameworkCore;
+using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 
 namespace TsundokuTraducoes.Api.Repository
@@ -114,9 +113,7 @@ namespace TsundokuTraducoes.Api.Repository
         private void AdicionaGeneroObra(Obra obra, GeneroObra generoObra)
         {
             if (generoObra != null)
-            {
                 obra.GenerosObra.Add(generoObra);
-            }
         }
 
         public string RetornaQueryListaObra()
@@ -130,7 +127,7 @@ namespace TsundokuTraducoes.Api.Repository
         }
 
         public List<Genero> RetornaListaGeneros()
-        {   
+        {
             return _contextDapper.Query<Genero>("SELECT * FROM Genero ORDER BY Id").ToList();
         }
 
@@ -149,7 +146,6 @@ namespace TsundokuTraducoes.Api.Repository
             }
 
             var arrayGenero = obraDTO.ListaGeneros[0]?.Split(new string[] { "," }, System.StringSplitOptions.RemoveEmptyEntries);
-
             if (arrayGenero != null && arrayGenero.Length > 0)
             {
                 foreach (var genero in arrayGenero)
@@ -206,21 +202,29 @@ namespace TsundokuTraducoes.Api.Repository
         }
 
         public List<ObraRecomendada> RetornaListaObraRecomendada()
-        {
-            var listaObraRecomenda = _context.ObraRecomendada.Include(o => o.ListaComentarioObraRecomendada).ToList();
-            return listaObraRecomenda;
+        {            
+            return _context.ObraRecomendada.Include(o => o.ListaComentarioObraRecomendada).ToList();
         }
 
         public ObraRecomendada RetornaObraRecomendadaPorId(int id)
-        { 
-            var obraRecomendada = RetornaListaObraRecomendada().FirstOrDefault(o => o.Id == id);
-            return obraRecomendada;
+        {            
+            return RetornaListaObraRecomendada().FirstOrDefault(o => o.Id == id);
         }
 
         public ObraRecomendada RetornaObraRecomendadaPorObraId(int idObra)
+        {            
+            return RetornaListaObraRecomendada().FirstOrDefault(o => o.IdObra == idObra);
+        }
+
+        public Obra RetornaObraExistente(string titulo)
         {
-            var obraRecomendada = RetornaListaObraRecomendada().FirstOrDefault(o => o.IdObra == idObra);
-            return obraRecomendada;
+            titulo = titulo.Trim();
+            var sql = $@"SELECT * 
+                           FROM Obra 
+                          WHERE Titulo LIKE '%{titulo}%'";
+
+
+            return _contextDapper.Query<Obra>(sql).FirstOrDefault();
         }
     }
 }

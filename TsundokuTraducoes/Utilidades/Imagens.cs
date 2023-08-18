@@ -1,11 +1,12 @@
-﻿using FluentResults;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using System.IO;
+using FluentResults;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
-using System.IO;
-using TsundokuTraducoes.Api.DTOs.Admin;
+using Microsoft.AspNetCore.Hosting;
 using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.DTOs.Admin;
+using System;
 
 namespace TsundokuTraducoes.Api.Utilidades
 {
@@ -18,8 +19,11 @@ namespace TsundokuTraducoes.Api.Utilidades
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public void ProcessaImagemObra(IFormFile imagemCapa, string titulo, Obra obra, ObraDTO obraDTO, bool banner = false)
+        public Result<bool> ProcessaImagemObra(IFormFile imagemCapa, string titulo, Obra obra, ObraDTO obraDTO, bool banner = false)
         {
+            if (!ValidaImagemPorContentType(imagemCapa.ContentType))
+                return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
+
             var extensaoImagem = Path.GetExtension(imagemCapa.FileName);
             var diretorioArquivo = TratamentoDeStrings.RetornaStringDiretorio(titulo);
             var diretorioObraLocal = Path.Combine(_webHostEnvironment.WebRootPath, "images", diretorioArquivo);
@@ -75,29 +79,34 @@ namespace TsundokuTraducoes.Api.Utilidades
                     obraDTO.ImagemBanner = caminhoArquivoApi;
                 }
             }
+
+            return Result.Ok();
         }
 
-        public void ProcessaUploadImagemCapaVolume(IFormFile imagemCapa, Volume volume, Obra obra, VolumeDTO volumeDTO)
+        public Result<bool> ProcessaUploadImagemCapaVolume(IFormFile imagemCapa, Volume volume, Obra obra, VolumeDTO volumeDTO)
         {
+            if (!ValidaImagemPorContentType(imagemCapa.ContentType))
+                return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
+
             var extensaoImagem = Path.GetExtension(imagemCapa.FileName);
             var slugTituloObra = TratamentoDeStrings.RetornaStringDiretorio(obra.Titulo);
 
             if (Directory.Exists(obra.DiretorioImagemObra))
             {
-                var diretorioVolumeLocal = Path.Combine(obra.DiretorioImagemObra, $"Volume-{volumeDTO.DescritivoVolume}");
+                var diretorioVolumeLocal = Path.Combine(obra.DiretorioImagemObra, $"Volume-{volumeDTO.Numero}");
                 Diretorios.CriaDiretorio(diretorioVolumeLocal);
 
-                var nomeArquivoImagem = $"Capa-Volume-{TratamentoDeStrings.RetornaStringSlugTitleCase(volume.DescritivoVolume)}-Obra-{slugTituloObra}{extensaoImagem}";
+                var nomeArquivoImagem = $"Capa-{TratamentoDeStrings.RetornaStringSlugTitleCase(volume.DescritivoVolume)}-Obra-{slugTituloObra}{extensaoImagem}";
                 var caminhoArquivo = Path.Combine(diretorioVolumeLocal, nomeArquivoImagem);
                 volume.DiretorioImagemVolume = diretorioVolumeLocal;
 
                 SalvaArquivoFormFile(imagemCapa, caminhoArquivo);
 
                 var diretorioArquivo = TratamentoDeStrings.RetornaStringDiretorio(obra.Titulo);
-                var diretorioVolumeApi = Path.Combine(Constantes.UrlDiretioWebImagens, "images", diretorioArquivo, $"Volume-{volumeDTO.DescritivoVolume}");
+                var diretorioVolumeApi = Path.Combine(Constantes.UrlDiretioWebImagens, "images", diretorioArquivo, $"{TratamentoDeStrings.RetornaStringSlugTitleCase(volume.DescritivoVolume)}");
                 var caminhoArquivoApi = Path.Combine(diretorioVolumeApi, nomeArquivoImagem);
 
-                var diretorioVolumeLocalHost = Path.Combine(Constantes.UrlDiretorioLocalHostImagens, "images", diretorioArquivo, $"Volume-{volume.DescritivoVolume}");
+                var diretorioVolumeLocalHost = Path.Combine(Constantes.UrlDiretorioLocalHostImagens, "images", diretorioArquivo, $"{TratamentoDeStrings.RetornaStringSlugTitleCase(volume.DescritivoVolume)}");
                 var caminhoArquivoLocalHost = Path.Combine(diretorioVolumeLocalHost, nomeArquivoImagem);
 
 
@@ -112,6 +121,8 @@ namespace TsundokuTraducoes.Api.Utilidades
                     volumeDTO.ImagemCapaVolume = caminhoArquivoApi;
                 }
             }
+
+            return Result.Ok();
         }
 
         public Result ProcessaListaUploadImagemPaginaCapitulo(CapituloDTO capituloDTO, Obra obra, Volume volume, int capituloId)
@@ -134,6 +145,9 @@ namespace TsundokuTraducoes.Api.Utilidades
 
                 foreach (var imagemPagina in capituloDTO.ListaImagensForm)
                 {
+                    if (!ValidaImagemPorContentType(imagemPagina.ContentType))
+                        return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
+
                     var extensaoImagem = Path.GetExtension(imagemPagina.FileName);
                     var nomeArquivo = $"Pagina-{contador:#00}{extensaoImagem}";
                     var urlPaginasCapitulo = Path.Combine(diretorioCapitulo, nomeArquivo);
@@ -188,6 +202,15 @@ namespace TsundokuTraducoes.Api.Utilidades
             {
                 Directory.Delete(diretorioImagens, true);
             }
+        }
+
+        public bool ValidaImagemPorContentType(string contentType)
+        {
+            var imagemValida = contentType.ToLower().Contains("png") ||
+                contentType.ToLower().Contains("jpg") ||
+                contentType.ToLower().Contains("jpeg");
+
+            return imagemValida;
         }
     }
 }

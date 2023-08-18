@@ -8,6 +8,6 @@
 /.vs/tsundoku-api/v17/.suo
 /TsundokuTraducoes/bin/
 /TsundokuTraducoes/obj/
-/TsundokuTraducoes/wwwroot/
+/TsundokuTraducoes/wwwroot/images/*
 /.vs/
 /TsundokuTraducoes/appsettings.json

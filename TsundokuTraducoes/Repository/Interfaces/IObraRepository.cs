@@ -23,5 +23,6 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
         List<ObraRecomendada> RetornaListaObraRecomendada();
         ObraRecomendada RetornaObraRecomendadaPorId(int id);
         ObraRecomendada RetornaObraRecomendadaPorObraId(int idObra);
+        Obra RetornaObraExistente(string titulo);
     }
 }

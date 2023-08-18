@@ -7,22 +7,20 @@ namespace TsundokuTraducoes.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class CapituloController : ControllerBase
-    {   
+    {
         private readonly ICapituloService _capituloService;
 
         public CapituloController(ICapituloService capituloService)
         {
             _capituloService = capituloService;
         }
-        
+
         [HttpGet]
         public IActionResult RetornaListaCapitulos()
         {
             var result = _capituloService.RetornaListaCapitulos();
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -35,9 +33,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _capituloService.RetornaCapituloComicPorId(id);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -48,9 +44,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _capituloService.AdicionaCapituloComic(capituloDTO);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors[0].Message);
-            }
 
             return Ok(result.Value);
         }
@@ -61,9 +55,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _capituloService.AtualizaCapituloComic(capituloDTO);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors[0].Message);
-            }
 
             return Ok(result.Value);
         }
@@ -72,13 +64,13 @@ namespace TsundokuTraducoes.Controllers
         [Route("comic/{id}")]
         public IActionResult ExcluiCapituloComic(int id)
         {
-            var result = _capituloService.ExcluiCapituloComic(id);
-            if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+            //var result = _capituloService.ExcluiCapituloComic(id);
+            //if (result.IsFailed)
+            //    return BadRequest(result.Errors[0].Message);
 
-            return Ok(result.Successes[0].Message);
+            //return Ok(result.Successes[0].Message);
+
+            return Ok("Contatar os administradores do site para essa solicitação");
         }
 
         #endregion
@@ -91,9 +83,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _capituloService.RetornaCapituloNovelPorId(id);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -104,9 +94,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _capituloService.AdicionaCapituloNovel(capituloDTO);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors[0].Message);
-            }
 
             return Ok(result.Value);
         }
@@ -117,9 +105,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _capituloService.AtualizaCapituloNovel(capituloDTO);
             if (result.IsFailed)
-            {
                 return BadRequest(result.Errors[0].Message);
-            }
 
             return Ok(result.Value);
         }
@@ -128,13 +114,13 @@ namespace TsundokuTraducoes.Controllers
         [Route("novel/{id}")]
         public IActionResult ExcluiCapitulo(int id)
         {
-            var result = _capituloService.ExcluiCapituloNovel(id);
-            if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+            //var result = _capituloService.ExcluiCapituloNovel(id);
+            //if (result.IsFailed)
+            //    return BadRequest(result.Errors[0].Message);
 
-            return Ok(result.Successes[0].Message);
+            //return Ok(result.Successes[0].Message);
+
+            return Ok("Contatar os administradores do site para essa solicitação");
         }
 
         #endregion
@@ -145,9 +131,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _capituloService.RetornaDadosObra(id);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
@@ -158,9 +142,7 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = _capituloService.RetornaDadosCapitulo(id);
             if (result.IsFailed)
-            {
-                return BadRequest(result.Errors[0].Message);
-            }
+                return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }

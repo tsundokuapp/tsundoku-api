@@ -1,11 +1,11 @@
 ﻿using Dapper;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Collections.Generic;
 using TsundokuTraducoes.Api.Data;
-using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 
 namespace TsundokuTraducoes.Api.Repository
@@ -44,16 +44,13 @@ namespace TsundokuTraducoes.Api.Repository
         }
 
         public List<Volume> RetornaListaVolumes(int? idObra = null)
-        {            
-            var listaVolumes = _contextDapper.Query<Volume>(RetornaQueryListaVolumes(idObra)).ToList();
-
-            return listaVolumes;
+        {
+            return _contextDapper.Query<Volume>(RetornaQueryListaVolumes(idObra)).ToList();
         }
 
         private string RetornaQueryListaVolumes(int? idObra)
         {
-            var condicao = (idObra != null && idObra > 0) ? $"WHERE ObraId = {idObra.Value}" : ""; 
-            
+            var condicao = (idObra != null && idObra > 0) ? $"WHERE ObraId = {idObra.Value}" : "";
             return $@"SELECT *
                        FROM Volume
                       {condicao}
@@ -70,20 +67,14 @@ namespace TsundokuTraducoes.Api.Repository
             var volumeEncontrado = _context.Volume.SingleOrDefault(s => s.Id == VolumeDTO.Id);
             var tituloVolumeVazio = VerificaCampoVazio(volumeEncontrado.Titulo, VolumeDTO.Titulo);
             if (tituloVolumeVazio)
-            {
                 VolumeDTO.Titulo = string.Empty;
-            }
 
             var sinopseVolumeVazia = VerificaCampoVazio(volumeEncontrado.Sinopse, VolumeDTO.Sinopse);
             if (sinopseVolumeVazia)
-            {
                 VolumeDTO.Sinopse = string.Empty;
-            }
 
             if (string.IsNullOrEmpty(VolumeDTO.ImagemCapaVolume))
-            {
                 VolumeDTO.ImagemCapaVolume = volumeEncontrado.ImagemVolume;
-            }
 
             _context.Entry(volumeEncontrado).CurrentValues.SetValues(VolumeDTO);
             volumeEncontrado.DataAlteracao = DateTime.Now;
