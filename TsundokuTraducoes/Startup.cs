@@ -34,6 +34,7 @@ namespace TsundokuTraducoes
             services.AddScoped<ICapituloService, CapituloService>();
             services.AddScoped<IInfosObrasServices, InfosObrasService>();
             services.AddScoped<IObraRepository, ObraRepository>();
+            services.AddScoped<IGeneroRepository, GeneroRepository>();
             services.AddScoped<IVolumeRepository, VolumeRepository>();
             services.AddScoped<ICapituloRepository, CapituloRepository>();
             services.AddScoped<IInfosObrasRepository, InfosObrasRepository>();

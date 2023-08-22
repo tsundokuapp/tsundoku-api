@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Services.Interfaces;
 
@@ -36,9 +37,9 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpPost]
-        public IActionResult AdicionaVolume([FromForm] VolumeDTO volumeDTO)
+        public async Task<IActionResult> AdicionaVolume([FromForm] VolumeDTO volumeDTO)
         {
-            var result = _volumeService.AdicionaVolume(volumeDTO);
+            var result = await _volumeService.AdicionaVolume(volumeDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
@@ -46,9 +47,9 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpPut]
-        public IActionResult AtualizaVolume([FromForm] VolumeDTO volumeDTO)
+        public async Task<IActionResult> AtualizaVolume([FromForm] VolumeDTO volumeDTO)
         {
-            var result = _volumeService.AtualizaVolume(volumeDTO);
+            var result = await _volumeService.AtualizaVolume(volumeDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 

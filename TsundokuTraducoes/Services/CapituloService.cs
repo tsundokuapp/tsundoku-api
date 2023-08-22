@@ -7,6 +7,7 @@ using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Utilidades;
 using TsundokuTraducoes.Api.Services.Interfaces;
 using TsundokuTraducoes.Api.Repository.Interfaces;
+using System.Threading.Tasks;
 
 namespace TsundokuTraducoes.Api.Services
 {
@@ -34,10 +35,10 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok(capitulo);
         }
 
-        public Result<CapituloComic> AdicionaCapituloComic(CapituloDTO capituloDTO)
+        public async Task<Result<CapituloComic>> AdicionaCapituloComic(CapituloDTO capituloDTO)
         {
             var volume = _repository.RetornaVolumePorId(capituloDTO.VolumeId);
-            var obra = _repository.RetornaObraPorId(volume.ObraId);
+            var obra = await _repository.RetornaObraPorId(volume.ObraId);
 
             var capituloExistente = _repository.RetornaCapituloComicExistente(volume.Id, capituloDTO);
             if (capituloExistente == null)
@@ -46,7 +47,7 @@ namespace TsundokuTraducoes.Api.Services
                 _repository.Adiciona(capitulo);
 
 
-                var ehComic = VerificaEhComic(volume.ObraId);
+                var ehComic = await VerificaEhComic(volume.ObraId);
                 if (ehComic)
                 {
                     if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
@@ -81,7 +82,7 @@ namespace TsundokuTraducoes.Api.Services
             }
         }
 
-        public Result<CapituloComic> AtualizaCapituloComic(CapituloDTO capituloDTO)
+        public async Task <Result<CapituloComic>> AtualizaCapituloComic(CapituloDTO capituloDTO)
         {
             var capituloEncontrado = _repository.RetornaCapituloComicPorId(capituloDTO.Id);
             if (capituloEncontrado == null)
@@ -91,7 +92,7 @@ namespace TsundokuTraducoes.Api.Services
 
             if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
             {
-                var obra = _repository.RetornaObraPorId(volume.ObraId);
+                var obra = await _repository.RetornaObraPorId(volume.ObraId);
                 new Imagens().ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo);
                 var result = new Imagens().ProcessaListaUploadImagemPaginaCapitulo(capituloDTO, obra, volume, capituloEncontrado.Id);
 
@@ -143,10 +144,10 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok(capitulo);
         }
 
-        public Result<CapituloNovel> AdicionaCapituloNovel(CapituloDTO capituloDTO)
+        public async Task<Result<CapituloNovel>> AdicionaCapituloNovel(CapituloDTO capituloDTO)
         {
             var volume = _repository.RetornaVolumePorId(capituloDTO.VolumeId);
-            var obra = _repository.RetornaObraPorId(volume.ObraId);
+            var obra = await _repository.RetornaObraPorId(volume.ObraId);
 
             var capituloExistente = _repository.RetornaCapituloNovelExistente(volume.Id, capituloDTO);
             if (capituloExistente == null)
@@ -187,7 +188,7 @@ namespace TsundokuTraducoes.Api.Services
             }
         }
 
-        public Result<CapituloNovel> AtualizaCapituloNovel(CapituloDTO capituloDTO)
+        public async Task<Result<CapituloNovel>> AtualizaCapituloNovel(CapituloDTO capituloDTO)
         {
             var capituloEncontrado = _repository.RetornaCapituloNovelPorId(capituloDTO.Id);
             if (capituloEncontrado == null)
@@ -200,7 +201,7 @@ namespace TsundokuTraducoes.Api.Services
                 if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
                 {
 
-                    var obra = _repository.RetornaObraPorId(volume.ObraId);
+                    var obra = await _repository.RetornaObraPorId(volume.ObraId);
                     new Imagens().ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo);
                     var result = new Imagens().ProcessaListaUploadImagemPaginaCapitulo(capituloDTO, obra, volume, capituloEncontrado.Id);
 
@@ -250,10 +251,10 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok(capitulos);
         }
 
-        public Result<CapituloDTO> RetornaDadosObra(int obraId)
+        public async Task<Result<CapituloDTO>> RetornaDadosObra(int obraId)
         {
             var capituloDTO = new CapituloDTO();
-            var obra = _repository.RetornaObraPorId(obraId);
+            var obra = await _repository.RetornaObraPorId(obraId);
 
             if (obra == null)
                 return Result.Fail("Obra consultada não encontrada!");
@@ -262,7 +263,7 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok(capituloDTO);
         }
 
-        public Result<CapituloDTO> RetornaDadosCapitulo(int capituloId)
+        public async Task<Result<CapituloDTO>> RetornaDadosCapitulo(int capituloId)
         {
             var capituloDTO = new CapituloDTO();
             var capituloNovel = _repository.RetornaCapituloNovelPorId(capituloId);
@@ -290,7 +291,7 @@ namespace TsundokuTraducoes.Api.Services
             if (volume == null)
                 return Result.Fail("Volume consultado não encontrada!");
 
-            var obra = _repository.RetornaObraPorId(volume.ObraId);
+            var obra = await _repository.RetornaObraPorId(volume.ObraId);
             if (obra == null)
                 return Result.Fail("Obra consultada não encontrada!");
 
@@ -298,9 +299,9 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok(capituloDTO);
         }
 
-        public bool VerificaEhComic(int obraId)
+        public async Task<bool> VerificaEhComic(int obraId)
         {
-            var obra = _repository.RetornaObraPorId(obraId);
+            var obra = await _repository.RetornaObraPorId(obraId);
             return obra.TipoObraSlug == "manga" || obra.TipoObraSlug == "manhua" || obra.TipoObraSlug == "manhwa";
         }
 

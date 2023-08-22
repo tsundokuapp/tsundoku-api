@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Services.Interfaces;
 
@@ -40,9 +41,9 @@ namespace TsundokuTraducoes.Controllers
 
         [HttpPost]
         [Route("comic")]
-        public IActionResult AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
+        public async Task<IActionResult> AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
-            var result = _capituloService.AdicionaCapituloComic(capituloDTO);
+            var result = await _capituloService.AdicionaCapituloComic(capituloDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
@@ -51,9 +52,9 @@ namespace TsundokuTraducoes.Controllers
 
         [HttpPut]
         [Route("comic")]
-        public IActionResult AtualizaCapituloComic([FromForm] CapituloDTO capituloDTO)
+        public async Task<IActionResult> AtualizaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
-            var result = _capituloService.AtualizaCapituloComic(capituloDTO);
+            var result = await _capituloService.AtualizaCapituloComic(capituloDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
@@ -90,9 +91,9 @@ namespace TsundokuTraducoes.Controllers
 
         [HttpPost]
         [Route("novel")]
-        public IActionResult AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
+        public async Task<IActionResult> AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
-            var result = _capituloService.AdicionaCapituloNovel(capituloDTO);
+            var result = await _capituloService.AdicionaCapituloNovel(capituloDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
@@ -101,9 +102,9 @@ namespace TsundokuTraducoes.Controllers
 
         [HttpPut]
         [Route("novel")]
-        public IActionResult AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
+        public async Task<IActionResult> AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
-            var result = _capituloService.AtualizaCapituloNovel(capituloDTO);
+            var result = await _capituloService.AtualizaCapituloNovel(capituloDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
@@ -127,9 +128,9 @@ namespace TsundokuTraducoes.Controllers
 
         [HttpGet]
         [Route("dados-obra/{id}")]
-        public IActionResult RetornaDadosObra(int id)
+        public async Task<IActionResult> RetornaDadosObra(int id)
         {
-            var result = _capituloService.RetornaDadosObra(id);
+            var result = await _capituloService.RetornaDadosObra(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
@@ -138,9 +139,9 @@ namespace TsundokuTraducoes.Controllers
 
         [HttpGet]
         [Route("dados-capitulo/{id}")]
-        public IActionResult RetornaDadosCapitulo(int id)
+        public async Task<IActionResult> RetornaDadosCapitulo(int id)
         {
-            var result = _capituloService.RetornaDadosCapitulo(id);
+            var result = await _capituloService.RetornaDadosCapitulo(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 

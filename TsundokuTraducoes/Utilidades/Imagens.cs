@@ -41,6 +41,7 @@ namespace TsundokuTraducoes.Api.Utilidades
             {
                 nomeArquivoImagem = $"Banner-Obra-{TratamentoDeStrings.RetornaStringSlugTitleCase(titulo)}{extensaoImagem}";
             }
+
             var caminhoArquivo = Path.Combine(diretorioObraLocal, nomeArquivoImagem);
             var caminhoArquivoApi = Path.Combine(diretorioObraApi, nomeArquivoImagem);
             var caminhoArquivoLocalHost = Path.Combine(diretorioObraLocalHost, nomeArquivoImagem);

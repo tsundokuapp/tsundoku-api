@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentResults;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.Repository.Interfaces;
@@ -38,10 +39,10 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok(volume);
         }
 
-        public Result<Volume> AdicionaVolume(VolumeDTO volumeDTO)
+        public async Task<Result<Volume>> AdicionaVolume(VolumeDTO volumeDTO)
         {
             var volume = _mapper.Map<Volume>(volumeDTO);
-            var obra = _repository.RetornaObraPorId(volumeDTO.ObraId);
+            var obra = await _repository.RetornaObraPorId(volumeDTO.ObraId);
             var volumeExistente = _repository.RetornaVolumeExistente(volumeDTO.ObraId, volumeDTO.Numero);
 
             if (obra == null)
@@ -71,7 +72,7 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Fail("Erro ao adicionar volume da obra!");
         }
 
-        public Result<Volume> AtualizaVolume(VolumeDTO volumeDTO)
+        public async Task<Result<Volume>> AtualizaVolume(VolumeDTO volumeDTO)
         {
             var volumeEncontrado = _repository.RetornaVolumePorId(volumeDTO.Id);
             if (volumeEncontrado == null)
@@ -79,7 +80,7 @@ namespace TsundokuTraducoes.Api.Services
 
             if (volumeDTO.ImagemCapaVolumeFile != null)
             {
-                var obra = _repository.RetornaObraPorId(volumeDTO.ObraId);
+                var obra = await _repository.RetornaObraPorId(volumeDTO.ObraId);
 
                 if (obra == null)
                     return Result.Fail("Não foi encontrada a obra informada");

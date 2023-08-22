@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Models;
 
@@ -13,7 +14,7 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
         Volume AtualizaVolume(VolumeDTO VolumeDTO);
         List<Volume> RetornaListaVolumes(int? idObra);
         Volume RetornaVolumePorId(int volumeId);
-        Obra RetornaObraPorId(int obraId);
+        Task<Obra> RetornaObraPorId(int obraId);
         void AtualizaObraPorVolume(Obra obra, Volume volume);
         Volume RetornaVolumeExistente(int obraId, string numero);
     }

@@ -7,6 +7,7 @@ using TsundokuTraducoes.Api.Data;
 using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Repository.Interfaces;
+using System.Threading.Tasks;
 
 namespace TsundokuTraducoes.Api.Repository
 {
@@ -89,10 +90,10 @@ namespace TsundokuTraducoes.Api.Repository
                !string.IsNullOrEmpty(campoVolumeEncontrado) && campoVolumeEncontrado.ToLower().Contains("null");
         }
 
-        public Obra RetornaObraPorId(int obraId)
+        public async Task<Obra> RetornaObraPorId(int obraId)
         {
             var repositoriObra = new ObraRepository(_context);
-            return repositoriObra.RetornaObraPorId(obraId);
+            return await repositoriObra.RetornaObraPorId(obraId);
         }
 
         public void AtualizaObraPorVolume(Obra obra, Volume volume)

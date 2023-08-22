@@ -1,54 +1,71 @@
 ﻿using AutoMapper;
 using FluentResults;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using TsundokuTraducoes.Api.Models;
-using Microsoft.AspNetCore.Hosting;
-using TsundokuTraducoes.Api.Utilidades;
+using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
-using TsundokuTraducoes.Api.Services.Interfaces;
+using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
+using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.Repository.Interfaces;
+using TsundokuTraducoes.Api.Services.Interfaces;
+using TsundokuTraducoes.Api.Utilidades;
 
 namespace TsundokuTraducoes.Api.Services
 {
     public class ObraService : IObraService
     {
-        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IObraRepository _repository;
+        private readonly IGeneroRepository _generoRepository;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ObraService(IObraRepository repository, IMapper mapper, IWebHostEnvironment hostEnvironment)
+        public ObraService(IObraRepository repository, IGeneroRepository generoRepository, IMapper mapper, IWebHostEnvironment hostEnvironment)
         {
             _repository = repository;
+            _generoRepository = generoRepository;   
             _mapper = mapper;
             _webHostEnvironment = hostEnvironment;
         }
 
-        public Result<List<Obra>> RetornaListaObras()
+        public async Task<Result<List<RetornoObra>>> RetornaListaObras()
         {
-            var listaObras = _repository.RetornaListaObras();
+            var listaRetornoObras = new List<RetornoObra>();
+            var listaObras = await _repository.RetornaListaObras();
             if (listaObras == null)
-                return Result.Fail("Erro ao retornar todas as Obras!");
+                return Result.Fail("Obras não encontradas!");
 
-            return Result.Ok(listaObras);
+            if (listaObras.Count > 0)
+            {
+                foreach (var obra in listaObras)
+                {
+                    listaRetornoObras.Add(await TrataRetornoObra(obra));
+                }
+            }
+
+            return Result.Ok(listaRetornoObras);
         }
 
-        public Result<Obra> RetornaObraPorId(int id)
+        public async Task<Result<RetornoObra>> RetornaObraPorId(int id)
         {
-            var obra = _repository.RetornaObraPorId(id);
+            var obra = await _repository.RetornaObraPorId(id);
             if (obra == null)
                 return Result.Fail("Obra não encontrada!");
 
-            return Result.Ok(obra);
+            var retornoObra = await TrataRetornoObra(obra);
+            return Result.Ok().ToResult(retornoObra);
         }
 
-        public Result<Obra> AdicionaObra(ObraDTO obraDTO)
+        public async Task<Result<RetornoObra>> AdicionaObra(ObraDTO obraDTO)
         {
             var obra = _mapper.Map<Obra>(obraDTO);
-            var obraExistente = _repository.RetornaObraExistente(obraDTO.Titulo);
+            var obraExistente = await _repository.RetornaObraExistente(obraDTO.Titulo);
 
             if (obraExistente != null)
                 return Result.Fail("Obra já postada!");
+
+            if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra)) 
+                return Result.Fail("Erro ao adicionar a Obra, cor hexadecimal informada fora do padrão!");
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
@@ -70,19 +87,24 @@ namespace TsundokuTraducoes.Api.Services
                     return Result.Fail(retornoProcessoImagem.Errors[0].Message);
             }
 
-            _repository.Adiciona(obra);
-            if (!_repository.AlteracoesSalvas())
+            await _repository.Adiciona(obra);
+            if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao adicionar a Obra!");
 
-            _repository.InsereGenerosObra(obraDTO, obra, true);
-            return Result.Ok().ToResult(obra);
+            await _repository.InsereGenerosObra(obraDTO, obra, true);
+
+            var retornoObra = await TrataRetornoObra(obra);
+            return Result.Ok().ToResult(retornoObra);
         }
 
-        public Result<Obra> AtualizarObra(ObraDTO obraDTO)
+        public async Task<Result<RetornoObra>> AtualizarObra(ObraDTO obraDTO)
         {
-            var obraEncontrada = _repository.RetornaObraPorId(obraDTO.Id);
+            var obraEncontrada = await _repository.RetornaObraPorId(obraDTO.Id);
             if (obraEncontrada == null)
                 return Result.Fail("Obra não encontrada!");
+
+            if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
+                return Result.Fail("Erro ao atualizar a Obra, cor hexadecimal informada fora do padrão!");
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
@@ -106,25 +128,28 @@ namespace TsundokuTraducoes.Api.Services
                 obraDTO.ImagemBanner = obraEncontrada.ImagemBanner;
             }
 
-            obraEncontrada = _repository.AtualizaObra(obraDTO);
+            obraEncontrada = await _repository.AtualizaObra(obraDTO);
 
-            if (!_repository.AlteracoesSalvas())
+            if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao atualizar a obra!");
 
-            _repository.InsereGenerosObra(obraDTO, obraEncontrada, false);
-            return Result.Ok().ToResult(obraEncontrada);
+            await _repository.InsereGenerosObra(obraDTO, obraEncontrada, false);
+
+            var retornoObra = await TrataRetornoObra(obraEncontrada);
+            return Result.Ok().ToResult(retornoObra);
         }
 
-        public Result<bool> ExcluirObra(int idObra)
+        public async Task<Result<bool>> ExcluirObra(int idObra)
         {
-            var obraEncontrada = _repository.RetornaObraPorId(idObra);
+            var obraEncontrada = await _repository.RetornaObraPorId(idObra);
             if (obraEncontrada == null)
                 return Result.Fail("Obra não encontrada!");
 
             _repository.Exclui(obraEncontrada);
-            if (!_repository.AlteracoesSalvas())
+            if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao excluir a obra!");
 
+            new Imagens().ExcluiDiretorioImagens(obraEncontrada.DiretorioImagemObra);
             return Result.Ok().WithSuccess("Obra excluída com sucesso!");
         }
 
@@ -142,16 +167,16 @@ namespace TsundokuTraducoes.Api.Services
             _repository.Adiciona(obraRecomendada);
             _repository.InsereListaComentariosObraRecomendada(obraRecomendadaDTO, obraRecomendada);
 
-            if (!_repository.AlteracoesSalvas())
+            if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao adicionar a Obra Recomendada!");
 
             return Result.Ok().ToResult(obraRecomendada);
         }
 
-        public Result<InformacaoObraDTO> RetornaInformacaoObraDTO(int? idObra = null)
+        public async Task<Result<InformacaoObraDTO>> RetornaInformacaoObraDTO(int? idObra = null)
         {
             var informacaoObraDTO = new InformacaoObraDTO();
-            var generos = _repository.RetornaListaGeneros();
+            var generos = await _repository.RetornaListaGeneros();
 
             var retornoOk = generos != null;
             if (!retornoOk)
@@ -161,7 +186,7 @@ namespace TsundokuTraducoes.Api.Services
 
             if (idObra != null)
             {
-                var obra = _repository.RetornaObraPorId(idObra.Value);
+                var obra = await _repository.RetornaObraPorId(idObra.Value);
                 if (obra == null)
                     return Result.Fail("Obra não encontrada!");
 
@@ -187,7 +212,7 @@ namespace TsundokuTraducoes.Api.Services
             var comentarioObraRecomendada = _mapper.Map<ComentarioObraRecomendada>(comentarioObraRecomendadaDTO);
 
             _repository.Adiciona(comentarioObraRecomendada);
-            if (!_repository.AlteracoesSalvas())
+            if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao adicionar a Comentario Obra Recomendada!");
 
             return Result.Ok().ToResult(comentarioObraRecomendada);
@@ -201,7 +226,7 @@ namespace TsundokuTraducoes.Api.Services
 
             comentarioObraRecomendada = _repository.AtualizaComentarioObraRecomendada(comentarioObraRecomendadaDTO);
 
-            if (!_repository.AlteracoesSalvas())
+            if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao adicionar a Comentario Obra Recomendada!");
 
             return Result.Ok().ToResult(comentarioObraRecomendada);
@@ -232,6 +257,16 @@ namespace TsundokuTraducoes.Api.Services
                 return Result.Fail("Comentário da Obra Recomendada não encontrado!");
 
             return comentarioObraRecomendada;
+        }
+
+        private async Task<RetornoObra> TrataRetornoObra(Obra obra)
+        {
+            var retornoObra = _mapper.Map<RetornoObra>(obra);
+            retornoObra.DataInclusao = obra.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoObra.UsuarioAlteracao = !string.IsNullOrEmpty(obra.UsuarioAlteracao) ? obra.UsuarioAlteracao : "";
+            retornoObra.DataAlteracao = obra.DataAlteracao != null ? obra.DataAlteracao?.ToString("dd/MM/yyyy HH:mm:ss") : "";
+            retornoObra.Generos = await _generoRepository.CarregaListaGeneros(obra.GenerosObra);
+            return retornoObra;
         }
     }
 }

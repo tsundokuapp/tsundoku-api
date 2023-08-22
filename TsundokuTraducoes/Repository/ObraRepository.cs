@@ -8,6 +8,7 @@ using TsundokuTraducoes.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Repository.Interfaces;
+using System.Threading.Tasks;
 
 namespace TsundokuTraducoes.Api.Repository
 {
@@ -22,9 +23,9 @@ namespace TsundokuTraducoes.Api.Repository
             _contextDapper = new TsundokuContextDapper().RetornaSqlConnetionDapper();
         }
 
-        public void Adiciona<t>(t entity) where t : class
+        public async Task Adiciona<t>(t entity) where t : class
         {
-            _context.Add(entity);
+            await _context.AddAsync(entity);
         }
 
         public void Atualiza<t>(t entity) where t : class
@@ -37,15 +38,15 @@ namespace TsundokuTraducoes.Api.Repository
             _context.Remove(entity);
         }
 
-        public bool AlteracoesSalvas()
+        public async Task<bool> AlteracoesSalvas()
         {
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        public List<Obra> RetornaListaObras()
+        public async Task<List<Obra>> RetornaListaObras()
         {
             var listaObras = new List<Obra>();
-            _contextDapper.Query(RetornaQueryListaObra(),
+            await _contextDapper.QueryAsync(RetornaQueryListaObra(),
                 new[]
                 {
                     typeof(Obra),
@@ -73,23 +74,23 @@ namespace TsundokuTraducoes.Api.Repository
             return listaObras;
         }
 
-        public Obra RetornaObraPorId(int obraId)
+        public async Task<Obra> RetornaObraPorId(int obraId)
         {
-            return RetornaListaObras().SingleOrDefault(f => f.Id == obraId);
+            var listaObras = await RetornaListaObras();
+            return listaObras.SingleOrDefault(f => f.Id == obraId);
         }
 
-        public Obra AtualizaObra(ObraDTO obraDTO)
+        public async Task<Obra> AtualizaObra(ObraDTO obraDTO)
         {
             var obraEncontrada = _context.Obra.Include(o => o.GenerosObra).SingleOrDefault(o => o.Id == obraDTO.Id);
             _context.Entry(obraEncontrada).CurrentValues.SetValues(obraDTO);
             obraEncontrada.DataAlteracao = DateTime.Now;
 
-            AtualizaDadosObraRecomendada(obraEncontrada);
-
+            await AtualizaDadosObraRecomendada(obraEncontrada);
             return obraEncontrada;
         }
 
-        private void AtualizaDadosObraRecomendada(Obra obraEncontrada)
+        private async Task AtualizaDadosObraRecomendada(Obra obraEncontrada)
         {
             var parametros = new
             {
@@ -107,7 +108,7 @@ namespace TsundokuTraducoes.Api.Repository
                                SlugObra = @SlugObra
                          WHERE IdObra = @IdObra;";
 
-            _contextDapper.Execute(sql, parametros);
+            await _contextDapper.ExecuteAsync(sql, parametros);
         }
 
         private void AdicionaGeneroObra(Obra obra, GeneroObra generoObra)
@@ -126,12 +127,13 @@ namespace TsundokuTraducoes.Api.Repository
             return sql;
         }
 
-        public List<Genero> RetornaListaGeneros()
+        public async Task<List<Genero>> RetornaListaGeneros()
         {
-            return _contextDapper.Query<Genero>("SELECT * FROM Genero ORDER BY Id").ToList();
+            var listaGeneros = await _contextDapper.QueryAsync<Genero>("SELECT * FROM Genero ORDER BY Id");
+            return listaGeneros.ToList();
         }
 
-        public void InsereGenerosObra(ObraDTO obraDTO, Obra obraEncontrada, bool inclusao)
+        public async Task InsereGenerosObra(ObraDTO obraDTO, Obra obraEncontrada, bool inclusao)
         {
             if (inclusao)
             {
@@ -151,13 +153,13 @@ namespace TsundokuTraducoes.Api.Repository
                 foreach (var genero in arrayGenero)
                 {
                     var generoEncontrado = _context.Genero.Single(s => s.Slug == genero);
-                    Adiciona(new GeneroObra
+                    await Adiciona(new GeneroObra
                     {
                         GeneroId = generoEncontrado.Id,
                         ObraId = obraEncontrada.Id
                     });
 
-                    AlteracoesSalvas();
+                    await AlteracoesSalvas();
                 }
             }
         }
@@ -178,9 +180,9 @@ namespace TsundokuTraducoes.Api.Repository
             }
         }
 
-        public void InsereComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        public async Task InsereComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
         {
-            Adiciona(new ComentarioObraRecomendada
+            await Adiciona(new ComentarioObraRecomendada
             {
                 AutorComentario = comentarioObraRecomendadaDTO.AutorComentario,
                 Comentario = comentarioObraRecomendadaDTO.Comentario,
@@ -202,29 +204,35 @@ namespace TsundokuTraducoes.Api.Repository
         }
 
         public List<ObraRecomendada> RetornaListaObraRecomendada()
-        {            
+        {
             return _context.ObraRecomendada.Include(o => o.ListaComentarioObraRecomendada).ToList();
         }
 
         public ObraRecomendada RetornaObraRecomendadaPorId(int id)
-        {            
+        {
             return RetornaListaObraRecomendada().FirstOrDefault(o => o.Id == id);
         }
 
         public ObraRecomendada RetornaObraRecomendadaPorObraId(int idObra)
-        {            
+        {
             return RetornaListaObraRecomendada().FirstOrDefault(o => o.IdObra == idObra);
         }
 
-        public Obra RetornaObraExistente(string titulo)
+        public async Task<Obra> RetornaObraExistente(string titulo)
         {
             titulo = titulo.Trim();
+
+            var parametro = new
+            {
+                Titulo = $"%{titulo}%",
+            };
+
             var sql = $@"SELECT * 
                            FROM Obra 
-                          WHERE Titulo LIKE '%{titulo}%'";
+                          WHERE Titulo LIKE @Titulo";
 
-
-            return _contextDapper.Query<Obra>(sql).FirstOrDefault();
+            var obraExistente = await _contextDapper.QueryAsync<Obra>(sql, parametro);
+            return obraExistente.FirstOrDefault();
         }
     }
 }
