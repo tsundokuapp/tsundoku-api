@@ -20,8 +20,8 @@ namespace TsundokuTraducoes.Models
         public async Task<IActionResult> RetornaListaObras()
         {
             var result = await _obraService.RetornaListaObras();
-            if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
+            if (result.Value == null || result.Value.Count == 0)
+                return NoContent();
 
             return Ok(result.Value);
         }

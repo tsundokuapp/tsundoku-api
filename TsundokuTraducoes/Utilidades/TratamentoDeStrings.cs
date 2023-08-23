@@ -64,15 +64,9 @@ namespace TsundokuTraducoes.Api.Utilidades
         }
 
         public static bool ValidaCorHexaDecimal(string corHexaDeximal)
-        {
-            var retorno = false;
+        {            
             var regexPattern = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
-
-            var match = Regex.Match(corHexaDeximal, regexPattern);
-            if (match.Success)
-                retorno = true;
-
-            return retorno;
+            return Regex.Match(corHexaDeximal, regexPattern).Success;
         }
     }
 }

@@ -31,9 +31,7 @@ namespace TsundokuTraducoes.Api.Services
         public async Task<Result<List<RetornoObra>>> RetornaListaObras()
         {
             var listaRetornoObras = new List<RetornoObra>();
-            var listaObras = await _repository.RetornaListaObras();
-            if (listaObras == null)
-                return Result.Fail("Obras não encontradas!");
+            var listaObras = await _repository.RetornaListaObras();            
 
             if (listaObras.Count > 0)
             {
@@ -65,7 +63,7 @@ namespace TsundokuTraducoes.Api.Services
                 return Result.Fail("Obra já postada!");
 
             if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra)) 
-                return Result.Fail("Erro ao adicionar a Obra, cor hexadecimal informada fora do padrão!");
+                return Result.Fail("Erro ao adicionar a Obra, código hexadecimal informada fora do padrão!");
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
@@ -104,7 +102,7 @@ namespace TsundokuTraducoes.Api.Services
                 return Result.Fail("Obra não encontrada!");
 
             if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
-                return Result.Fail("Erro ao atualizar a Obra, cor hexadecimal informada fora do padrão!");
+                return Result.Fail("Erro ao atualizar a Obra, código hexadecimal informada fora do padrão!");
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
@@ -144,7 +142,7 @@ namespace TsundokuTraducoes.Api.Services
             var obraEncontrada = await _repository.RetornaObraPorId(idObra);
             if (obraEncontrada == null)
                 return Result.Fail("Obra não encontrada!");
-
+            
             _repository.Exclui(obraEncontrada);
             if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao excluir a obra!");

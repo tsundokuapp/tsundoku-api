@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using System.Threading.Tasks;
+using static Dapper.SqlMapper;
 
 namespace TsundokuTraducoes.Api.Repository
 {
