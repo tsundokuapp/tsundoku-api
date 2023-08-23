@@ -85,7 +85,7 @@ namespace TsundokuTraducoes.Api.Services
                     return Result.Fail(retornoProcessoImagem.Errors[0].Message);
             }
 
-            await _repository.Adiciona(obra);
+            await _repository.AdicionaObra(obra);
             if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao adicionar a Obra!");
 
@@ -143,7 +143,7 @@ namespace TsundokuTraducoes.Api.Services
             if (obraEncontrada == null)
                 return Result.Fail("Obra não encontrada!");
             
-            _repository.Exclui(obraEncontrada);
+            _repository.ExcluiObra(obraEncontrada);
             if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao excluir a obra!");
 
@@ -162,7 +162,7 @@ namespace TsundokuTraducoes.Api.Services
                 return Result.Fail(retornoCargaListaMensagem.Errors[0].Message);
 
             var obraRecomendada = _mapper.Map<ObraRecomendada>(obraRecomendadaDTO);
-            _repository.Adiciona(obraRecomendada);
+            _repository.AdicionaObraRecomendada(obraRecomendada);
             _repository.InsereListaComentariosObraRecomendada(obraRecomendadaDTO, obraRecomendada);
 
             if (!_repository.AlteracoesSalvas().Result)
@@ -209,7 +209,7 @@ namespace TsundokuTraducoes.Api.Services
         {
             var comentarioObraRecomendada = _mapper.Map<ComentarioObraRecomendada>(comentarioObraRecomendadaDTO);
 
-            _repository.Adiciona(comentarioObraRecomendada);
+            _repository.AdicionaComentarioObraRecomendada(comentarioObraRecomendada);
             if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao adicionar a Comentario Obra Recomendada!");
 

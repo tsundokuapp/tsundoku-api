@@ -16,27 +16,34 @@ namespace TsundokuTraducoes.Api.Repository
     public class ObraRepository : IObraRepository
     {
         private readonly TsundokuContext _context;
+        private readonly IGeneroRepository _generoRepository;
         private readonly IDbConnection _contextDapper;
 
-        public ObraRepository(TsundokuContext context)
+        public ObraRepository(TsundokuContext context, IGeneroRepository generoRepository)
         {
             _context = context;
             _contextDapper = new TsundokuContextDapper().RetornaSqlConnetionDapper();
+            _generoRepository = generoRepository;
         }
 
-        public async Task Adiciona<t>(t entity) where t : class
+        public async Task AdicionaObra(Obra obra)
         {
-            await _context.AddAsync(entity);
+            await _context.AddAsync(obra);
         }
 
-        public void Atualiza<t>(t entity) where t : class
+        public async Task AdicionaObraRecomendada(ObraRecomendada obraRecomendada)
         {
-            _context.Update(entity);
+            await _context.AddAsync(obraRecomendada);
         }
 
-        public void Exclui<t>(t entity) where t : class
+        public async Task AdicionaComentarioObraRecomendada(ComentarioObraRecomendada comentarioObraRecomendada)
         {
-            _context.Remove(entity);
+            await _context.AddAsync(comentarioObraRecomendada);
+        }
+
+        public void ExcluiObra(Obra obra)
+        {
+            _context.Remove(obra);
         }
 
         public async Task<bool> AlteracoesSalvas()
@@ -144,7 +151,7 @@ namespace TsundokuTraducoes.Api.Repository
             {
                 foreach (var generoObra in obraEncontrada.GenerosObra)
                 {
-                    Exclui(generoObra);
+                    _generoRepository.ExcluiGeneroObra(generoObra);
                 }
             }
 
@@ -154,7 +161,7 @@ namespace TsundokuTraducoes.Api.Repository
                 foreach (var genero in arrayGenero)
                 {
                     var generoEncontrado = _context.Genero.Single(s => s.Slug == genero);
-                    await Adiciona(new GeneroObra
+                    await _generoRepository.AdicionaGeneroObra(new GeneroObra
                     {
                         GeneroId = generoEncontrado.Id,
                         ObraId = obraEncontrada.Id
@@ -183,7 +190,7 @@ namespace TsundokuTraducoes.Api.Repository
 
         public async Task InsereComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
         {
-            await Adiciona(new ComentarioObraRecomendada
+            await AdicionaComentarioObraRecomendada(new ComentarioObraRecomendada
             {
                 AutorComentario = comentarioObraRecomendadaDTO.AutorComentario,
                 Comentario = comentarioObraRecomendadaDTO.Comentario,

@@ -92,8 +92,8 @@ namespace TsundokuTraducoes.Api.Repository
 
         public async Task<Obra> RetornaObraPorId(int obraId)
         {
-            var repositoriObra = new ObraRepository(_context);
-            return await repositoriObra.RetornaObraPorId(obraId);
+            // TODO validar se dá erro quando ocorrer a refatoração do Crud do Volume
+            return await _obraRepository.RetornaObraPorId(obraId);
         }
 
         public void AtualizaObraPorVolume(Obra obra, Volume volume)

@@ -7,9 +7,10 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
 {
     public interface IObraRepository
     {
-        Task Adiciona<T>(T entity) where T : class;
-        void Atualiza<T>(T entity) where T : class;
-        void Exclui<T>(T entity) where T : class;
+        Task AdicionaObra(Obra obra);
+        Task AdicionaComentarioObraRecomendada(ComentarioObraRecomendada comentarioObraRecomendada);
+        Task AdicionaObraRecomendada(ObraRecomendada obraRecomendada);
+        void ExcluiObra(Obra obra);
         Task<bool> AlteracoesSalvas();
         Task<Obra> AtualizaObra(ObraDTO obraDTO);
         Task<Obra> RetornaObraPorId(int obraId);

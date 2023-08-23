@@ -7,6 +7,8 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
 {
     public interface IGeneroRepository
     {
+        Task AdicionaGeneroObra(GeneroObra generoObra);
+        void ExcluiGeneroObra(GeneroObra generoObra);
         Task<List<RetornoGenero>> CarregaListaGeneros(List<GeneroObra> generoObras);
     }
 }

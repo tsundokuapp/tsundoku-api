@@ -18,6 +18,16 @@ namespace TsundokuTraducoes.Api.Repository
             _context = context;
         }
 
+        public async Task AdicionaGeneroObra(GeneroObra generoObra)
+        {
+            await _context.AddAsync(generoObra);
+        }
+
+        public void ExcluiGeneroObra(GeneroObra generoObra)
+        {
+            _context.Remove(generoObra);
+        }
+
         public async Task<List<RetornoGenero>> CarregaListaGeneros(List<GeneroObra> generoObras)
         {
             var listaGeneros = new List<RetornoGenero>();
