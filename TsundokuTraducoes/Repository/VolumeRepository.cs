@@ -24,19 +24,14 @@ namespace TsundokuTraducoes.Api.Repository
             _contextDapper = new TsundokuContextDapper().RetornaSqlConnetionDapper();
         }
 
-        public void Adiciona<t>(t entity) where t : class
+        public void AdicionaVolume(Volume volume)
         {
-            _context.Add(entity);
-        }
+            _context.Add(volume);
+        }       
 
-        public void Atualiza<t>(t entity) where t : class
+        public void ExcluiVolume(Volume volume)
         {
-            _context.Update(entity);
-        }
-
-        public void Exclui<t>(t entity) where t : class
-        {
-            _context.Remove(entity);
+            _context.Remove(volume);
         }
 
         public bool AlteracoesSalvas()
@@ -44,9 +39,10 @@ namespace TsundokuTraducoes.Api.Repository
             return _context.SaveChanges() > 0;
         }
 
-        public List<Volume> RetornaListaVolumes(int? idObra = null)
+        public async Task<List<Volume>> RetornaListaVolumes(int? idObra = null)
         {
-            return _contextDapper.Query<Volume>(RetornaQueryListaVolumes(idObra)).ToList();
+            var listaVolumes = await _contextDapper.QueryAsync<Volume>(RetornaQueryListaVolumes(idObra));
+            return listaVolumes.ToList();
         }
 
         private string RetornaQueryListaVolumes(int? idObra)
@@ -58,9 +54,10 @@ namespace TsundokuTraducoes.Api.Repository
                       ORDER BY Numero ASC";
         }
 
-        public Volume RetornaVolumePorId(int volumeId)
+        public async Task<Volume> RetornaVolumePorId(int volumeId)
         {
-            return RetornaListaVolumes().FirstOrDefault(f => f.Id == volumeId);
+            var volume = await RetornaListaVolumes();
+            return volume.FirstOrDefault(f => f.Id == volumeId);
         }
 
         public Volume AtualizaVolume(VolumeDTO VolumeDTO)
@@ -92,7 +89,7 @@ namespace TsundokuTraducoes.Api.Repository
 
         public async Task<Obra> RetornaObraPorId(int obraId)
         {
-            // TODO validar se dá erro quando ocorrer a refatoração do Crud do Volume
+            // TODO validar se dá erro quando ocorrer a refatoração do Crud do Volume - Olha eu aqui ainda e vou continuar até a próxima refatoração ^^
             return await _obraRepository.RetornaObraPorId(obraId);
         }
 
@@ -115,21 +112,22 @@ namespace TsundokuTraducoes.Api.Repository
             _contextDapper.Query(sql, parametros);
         }
 
-        public Volume RetornaVolumeExistente(int obraId, string numeroVolume)
+        public async Task<Volume> RetornaVolumeExistente(int obraId, string numeroVolume)
         {
             var parametros = new
             {
-                obraId = obraId,
-                numeroVolume = numeroVolume
+                ObraId = obraId,
+                NumeroVolume = numeroVolume
             };
 
             var sql = @"SELECT * 
                           FROM Volume 
-                         WHERE ObraId = @obraId 
-                           AND Numero = @numeroVolume";
+                         WHERE ObraId = @ObraId 
+                           AND Numero = @NumeroVolume";
 
 
-            return _contextDapper.Query<Volume>(sql, parametros).FirstOrDefault();
+            var volumeExistente = await _contextDapper.QueryAsync<Volume>(sql, parametros);
+            return volumeExistente.FirstOrDefault();
         }
     }
 }

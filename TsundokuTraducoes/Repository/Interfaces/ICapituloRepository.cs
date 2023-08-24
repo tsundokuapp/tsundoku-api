@@ -30,8 +30,7 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
         #endregion
 
         void AtualizaObraPorCapitulo(Obra obra, string descritivoCapitulo, string slug, DateTime dataInclusao);
-        List<CapituloDTO> RetornaListaCapitulos();
-        Volume RetornaVolumePorId(int volumeId);
+        List<CapituloDTO> RetornaListaCapitulos();        
         Task<Obra> RetornaObraPorId(int obraId);
     }
 }

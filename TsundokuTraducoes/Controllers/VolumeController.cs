@@ -17,19 +17,19 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet]
-        public IActionResult RetornaListaVolume([FromQuery] int? IdObra)
+        public async Task<IActionResult> RetornaListaVolume([FromQuery] int? IdObra)
         {
-            var result = _volumeService.RetornaListaVolume(IdObra);
-            if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
+            var result = await _volumeService.RetornaListaVolume(IdObra);
+            if (result.Value.Count == 0)
+                return NoContent();
 
             return Ok(result.Value);
         }
 
         [HttpGet("{id}")]
-        public IActionResult RetornaVolumePorId(int id)
+        public async Task<IActionResult> RetornaVolumePorId(int id)
         {
-            var result = _volumeService.RetornaVolumePorId(id);
+            var result = await _volumeService.RetornaVolumePorId(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
@@ -43,7 +43,7 @@ namespace TsundokuTraducoes.Controllers
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Ok(result.Value);
+            return Created($"volume/{result.Value.Id}", result.Value);
         }
 
         [HttpPut]
@@ -51,23 +51,31 @@ namespace TsundokuTraducoes.Controllers
         {
             var result = await _volumeService.AtualizaVolume(volumeDTO);
             if (result.IsFailed)
-                return BadRequest(result.Errors[0].Message);
+            {
+                var mensagemErro = result.Errors[0].Message;
+                if (mensagemErro.Contains("não encontrado"))
+                    return NotFound(mensagemErro);
+
+                return BadRequest(mensagemErro);
+            }
 
             return Ok(result.Value);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult ExcluirVolume(int id)
+        public async Task<IActionResult> ExcluiVolume(int id)
         {
-            //var result = _volumeService.ExcluirVolume(id);
-            //if (result.IsFailed)
-            //{
-            //    return BadRequest(result.Errors[0].Message);
-            //}
+            var result = await _volumeService.ExcluiVolume(id);
+            if (result.IsFailed)
+            {
+                var mensagemErro = result.Errors[0].Message;
+                if (mensagemErro.Contains("não encontrado"))
+                    return NotFound(mensagemErro);
 
-            //return Ok(result.Successes[0].Message);
+                return BadRequest(mensagemErro);
+            }
 
-            return Ok("Contatar os administradores do site para essa solicitação");
+            return Ok(result.Successes[0].Message);
         }
     }
 }

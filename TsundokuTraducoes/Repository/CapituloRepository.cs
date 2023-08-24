@@ -147,11 +147,6 @@ namespace TsundokuTraducoes.Api.Repository
             return _contextDapper.Query<CapituloDTO>(RetornaQueryListaCapitulos()).ToList();            
         }
 
-        public Volume RetornaVolumePorId(int volumeId)
-        {
-            return _volumeRepository.RetornaVolumePorId(volumeId);
-        }
-
         public async Task<Obra> RetornaObraPorId(int obraId)
         {
             return await _obraRepository.RetornaObraPorId(obraId);

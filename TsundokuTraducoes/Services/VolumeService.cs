@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using FluentResults;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
+using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Repository;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using TsundokuTraducoes.Api.Services.Interfaces;
 using TsundokuTraducoes.Api.Utilidades;
@@ -13,37 +16,47 @@ namespace TsundokuTraducoes.Api.Services
     public class VolumeService : IVolumeService
     {
         private readonly IMapper _mapper;
-        private readonly IVolumeRepository _repository;
+        private readonly IVolumeRepository _volumeRepository;
+        private readonly IObraRepository _obraRepository;
 
-        public VolumeService(IMapper mapper, IVolumeRepository repository)
+        public VolumeService(IMapper mapper, IVolumeRepository repository, IObraRepository obraRepository)
         {
             _mapper = mapper;
-            _repository = repository;
+            _volumeRepository = repository;
+            _obraRepository = obraRepository;
         }
 
-        public Result<List<Volume>> RetornaListaVolume(int? idObra)
+        public async Task<Result<List<RetornoVolume>>> RetornaListaVolume(int? idObra)
         {
-            var listaVolumes = _repository.RetornaListaVolumes(idObra);
-            if (listaVolumes == null)
-                return Result.Fail("Erro ao retornar todos os volumes!");
+            var listaRetornoVolumes = new List<RetornoVolume>();
+            var listaVolumes = await _volumeRepository.RetornaListaVolumes(idObra);
 
-            return Result.Ok(listaVolumes);
+            if (listaVolumes.Count > 0)
+            {
+                foreach (var volume in listaVolumes)
+                {
+                    listaRetornoVolumes.Add(TrataRetornoVolume(volume));
+                }
+            }
+
+            return Result.Ok(listaRetornoVolumes);
         }
 
-        public Result<Volume> RetornaVolumePorId(int id)
+        public async Task<Result<RetornoVolume>> RetornaVolumePorId(int id)
         {
-            var volume = _repository.RetornaVolumePorId(id);
+            var volume = await _volumeRepository.RetornaVolumePorId(id);
             if (volume == null)
                 return Result.Fail("Volume não encontrado!");
 
-            return Result.Ok(volume);
+            var retornoVolume = TrataRetornoVolume(volume);
+            return Result.Ok(retornoVolume);
         }
 
-        public async Task<Result<Volume>> AdicionaVolume(VolumeDTO volumeDTO)
+        public async Task<Result<RetornoVolume>> AdicionaVolume(VolumeDTO volumeDTO)
         {
             var volume = _mapper.Map<Volume>(volumeDTO);
-            var obra = await _repository.RetornaObraPorId(volumeDTO.ObraId);
-            var volumeExistente = _repository.RetornaVolumeExistente(volumeDTO.ObraId, volumeDTO.Numero);
+            var obra = await _obraRepository.RetornaObraPorId(volumeDTO.ObraId);
+            var volumeExistente = await _volumeRepository.RetornaVolumeExistente(volumeDTO.ObraId, volumeDTO.Numero);
 
             if (obra == null)
                 return Result.Fail("Não foi encontrada a obra informada");
@@ -62,26 +75,26 @@ namespace TsundokuTraducoes.Api.Services
                 return Result.Fail("Erro ao adicionar volume da obra, imagem capa do volume não enviada!");
             }
 
-            _repository.Adiciona(volume);
-            if (_repository.AlteracoesSalvas())
+            _volumeRepository.AdicionaVolume(volume);
+            if (_volumeRepository.AlteracoesSalvas())
             {
-                _repository.AtualizaObraPorVolume(obra, volume);
-                return Result.Ok(volume);
+                _volumeRepository.AtualizaObraPorVolume(obra, volume);
+                var retornoVolume = TrataRetornoVolume(volume);
+                return Result.Ok(retornoVolume);
             }
 
             return Result.Fail("Erro ao adicionar volume da obra!");
         }
 
-        public async Task<Result<Volume>> AtualizaVolume(VolumeDTO volumeDTO)
+        public async Task<Result<RetornoVolume>> AtualizaVolume(VolumeDTO volumeDTO)
         {
-            var volumeEncontrado = _repository.RetornaVolumePorId(volumeDTO.Id);
+            var volumeEncontrado = await _volumeRepository.RetornaVolumePorId(volumeDTO.Id);
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
             if (volumeDTO.ImagemCapaVolumeFile != null)
             {
-                var obra = await _repository.RetornaObraPorId(volumeDTO.ObraId);
-
+                var obra = await _obraRepository.RetornaObraPorId(volumeDTO.ObraId);
                 if (obra == null)
                     return Result.Fail("Não foi encontrada a obra informada");
 
@@ -90,24 +103,53 @@ namespace TsundokuTraducoes.Api.Services
                     return Result.Fail(retornoProcessoImagem.Errors[0].Message);
             }
 
-            volumeEncontrado = _repository.AtualizaVolume(volumeDTO);
-            if (!_repository.AlteracoesSalvas())
+            volumeEncontrado = _volumeRepository.AtualizaVolume(volumeDTO);
+            if (!_volumeRepository.AlteracoesSalvas())
                 return Result.Fail("Erro ao atualizar o volume!");
 
-            return Result.Ok(volumeEncontrado);
+            var retornoVolume = TrataRetornoVolume(volumeEncontrado);
+            return Result.Ok(retornoVolume);
         }
 
-        public Result<bool> ExcluirVolume(int id)
+        public async Task<Result<bool>> ExcluiVolume(int id)
         {
-            var volumeEncontrado = _repository.RetornaVolumePorId(id);
+            var volumeEncontrado = await _volumeRepository.RetornaVolumePorId(id);
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
-            _repository.Exclui(volumeEncontrado);
-            if (_repository.AlteracoesSalvas())
+            _volumeRepository.ExcluiVolume(volumeEncontrado);
+            if (_volumeRepository.AlteracoesSalvas())
                 return Result.Ok().WithSuccess("Volume excluído com sucesso!");
 
             return Result.Fail("Erro ao excluir o volume!");
+        }
+
+        private RetornoVolume TrataRetornoVolume(Volume volume)
+        {
+            var retornoVolume = _mapper.Map<RetornoVolume>(volume);
+            retornoVolume.DataCadastro = volume.DataCadastro.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoVolume.DataAlteracao = volume.DataAlteracao != null ? volume.DataAlteracao?.ToString("dd/MM/yyyy HH:mm:ss") : null;
+            retornoVolume.UsuarioAlteracao = !string.IsNullOrEmpty(volume.UsuarioAlteracao) ? volume.UsuarioAlteracao : null;
+
+            if (volume.ListaCapituloNovel.Count > 0)
+            {
+                retornoVolume.ListaCapituloNovel = new List<RetornoCapituloNovel>();
+                foreach (var capituloNovel in volume.ListaCapituloNovel)
+                {
+                    retornoVolume.ListaCapituloNovel.Add(_mapper.Map<RetornoCapituloNovel>(capituloNovel));
+                }
+            }
+
+            if (volume.ListaCapituloComic.Count > 0)
+            {
+                retornoVolume.ListaCapituloComic = new List<RetornoCapituloComic>();
+                foreach (var capituloComic in volume.ListaCapituloComic)
+                {
+                    retornoVolume.ListaCapituloComic.Add(_mapper.Map<RetornoCapituloComic>(capituloComic));
+                }
+            }
+
+            return retornoVolume;
         }
     }
 }
