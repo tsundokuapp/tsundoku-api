@@ -41,6 +41,7 @@ namespace TsundokuTraducoes.Api.Utilidades
             {
                 nomeArquivoImagem = $"Banner-Obra-{TratamentoDeStrings.RetornaStringSlugTitleCase(titulo)}{extensaoImagem}";
             }
+
             var caminhoArquivo = Path.Combine(diretorioObraLocal, nomeArquivoImagem);
             var caminhoArquivoApi = Path.Combine(diretorioObraApi, nomeArquivoImagem);
             var caminhoArquivoLocalHost = Path.Combine(diretorioObraLocalHost, nomeArquivoImagem);
@@ -89,24 +90,35 @@ namespace TsundokuTraducoes.Api.Utilidades
                 return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
 
             var extensaoImagem = Path.GetExtension(imagemCapa.FileName);
-            var slugTituloObra = TratamentoDeStrings.RetornaStringDiretorio(obra.Titulo);
 
             if (Directory.Exists(obra.DiretorioImagemObra))
             {
                 var diretorioVolumeLocal = Path.Combine(obra.DiretorioImagemObra, $"Volume-{volumeDTO.Numero}");
                 Diretorios.CriaDiretorio(diretorioVolumeLocal);
+                
+                string tituloVolumeTratado;
+                var unico = (volume.Numero.ToLower() == "unico" || volume.Numero.ToLower() == "único");
+                if (unico)
+                {
+                    tituloVolumeTratado = "Volume-Unico";
+                }
+                else
+                {
+                    var numero = Convert.ToInt32(volume.Numero);
+                    tituloVolumeTratado = $"Volume-{numero:00}";
+                }
 
-                var nomeArquivoImagem = $"Capa-{TratamentoDeStrings.RetornaStringSlugTitleCase(volume.DescritivoVolume)}-Obra-{slugTituloObra}{extensaoImagem}";
+                var nomeArquivoImagem = $"Capa-{tituloVolumeTratado}{extensaoImagem}";
                 var caminhoArquivo = Path.Combine(diretorioVolumeLocal, nomeArquivoImagem);
                 volume.DiretorioImagemVolume = diretorioVolumeLocal;
 
                 SalvaArquivoFormFile(imagemCapa, caminhoArquivo);
 
                 var diretorioArquivo = TratamentoDeStrings.RetornaStringDiretorio(obra.Titulo);
-                var diretorioVolumeApi = Path.Combine(Constantes.UrlDiretioWebImagens, "images", diretorioArquivo, $"{TratamentoDeStrings.RetornaStringSlugTitleCase(volume.DescritivoVolume)}");
+                var diretorioVolumeApi = Path.Combine(Constantes.UrlDiretioWebImagens, "images", diretorioArquivo, $"{tituloVolumeTratado}");
                 var caminhoArquivoApi = Path.Combine(diretorioVolumeApi, nomeArquivoImagem);
 
-                var diretorioVolumeLocalHost = Path.Combine(Constantes.UrlDiretorioLocalHostImagens, "images", diretorioArquivo, $"{TratamentoDeStrings.RetornaStringSlugTitleCase(volume.DescritivoVolume)}");
+                var diretorioVolumeLocalHost = Path.Combine(Constantes.UrlDiretorioLocalHostImagens, "images", diretorioArquivo, $"{tituloVolumeTratado}");
                 var caminhoArquivoLocalHost = Path.Combine(diretorioVolumeLocalHost, nomeArquivoImagem);
 
 

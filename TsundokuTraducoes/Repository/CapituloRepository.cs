@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Repository.Interfaces;
+using System.Threading.Tasks;
 
 namespace TsundokuTraducoes.Api.Repository
 {
@@ -146,14 +147,9 @@ namespace TsundokuTraducoes.Api.Repository
             return _contextDapper.Query<CapituloDTO>(RetornaQueryListaCapitulos()).ToList();            
         }
 
-        public Volume RetornaVolumePorId(int volumeId)
+        public async Task<Obra> RetornaObraPorId(int obraId)
         {
-            return _volumeRepository.RetornaVolumePorId(volumeId);
-        }
-
-        public Obra RetornaObraPorId(int obraId)
-        {
-            return _obraRepository.RetornaObraPorId(obraId);
+            return await _obraRepository.RetornaObraPorId(obraId);
         }
 
         private string RetornaQueryListaCapitulos()

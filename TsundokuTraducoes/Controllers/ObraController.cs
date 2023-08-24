@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Services.Interfaces;
 
@@ -16,19 +17,19 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpGet]
-        public IActionResult RetornaListaObras()
+        public async Task<IActionResult> RetornaListaObras()
         {
-            var result = _obraService.RetornaListaObras();
-            if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
+            var result = await _obraService.RetornaListaObras();
+            if (result.Value == null || result.Value.Count == 0)
+                return NoContent();
 
             return Ok(result.Value);
         }
 
         [HttpGet("{id}")]
-        public IActionResult RetornaObraPorId(int id)
+        public async Task<IActionResult> RetornaObraPorId(int id)
         {
-            var result = _obraService.RetornaObraPorId(id);
+            var result = await _obraService.RetornaObraPorId(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
@@ -36,35 +37,45 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpPost]
-        public IActionResult AdicionaObra([FromForm] ObraDTO obraDTO)
+        public async Task<IActionResult> AdicionaObra([FromForm] ObraDTO obraDTO)
         {
-            var result = _obraService.AdicionaObra(obraDTO);
+            var result = await _obraService.AdicionaObra(obraDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Ok(result.Value);
+            return Created($"obra/{result.Value.Id}", result.Value);
         }
 
         [HttpPut]
-        public IActionResult AtualizarObra([FromForm] ObraDTO obraDTO)
+        public async Task<IActionResult> AtualizarObra([FromForm] ObraDTO obraDTO)
         {
-            var result = _obraService.AtualizarObra(obraDTO);
+            var result = await _obraService.AtualizarObra(obraDTO);
             if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
+            {
+                var mensagemErro = result.Errors[0].Message;
+                if (mensagemErro.Contains("não encontrada"))
+                    return NotFound(result.Errors[0].Message);
+
+                return BadRequest(result.Errors[0].Message);
+            }
 
             return Ok(result.Value);
         }
 
-        [HttpDelete("{idObra}")]
-        public IActionResult ExcluirObra(int idObra)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> ExcluirObra(int id)
         {
-            //var result = _obraService.ExcluirObra(idObra);
-            //if (result.IsFailed)
-            //    return NotFound(result.Errors[0].Message);
+            var result = await _obraService.ExcluirObra(id);
+            if (result.IsFailed)
+            {
+                var mensagemErro = result.Errors[0].Message;
+                if (mensagemErro.Contains("não encontrada"))
+                    return NotFound(result.Errors[0].Message);
 
-            //return Ok(result.Successes[0].Message);
+                return BadRequest(result.Errors[0].Message);
+            }
 
-            return Ok("Contatar os administradores do site para essa solicitação");
+            return Ok(result.Successes[0].Message);
         }
 
         [HttpPost]
@@ -135,9 +146,9 @@ namespace TsundokuTraducoes.Models
 
         [Route("informacoes-obra")]
         [HttpGet]
-        public IActionResult RetornaInformacoes()
+        public async Task<IActionResult> RetornaInformacoes()
         {
-            var result = _obraService.RetornaInformacaoObraDTO();
+            var result = await _obraService.RetornaInformacaoObraDTO();
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
@@ -146,9 +157,9 @@ namespace TsundokuTraducoes.Models
 
         [Route("informacoes-obra/{idObra}")]
         [HttpGet]
-        public IActionResult RetornaInformacoesObra(int idObra)
+        public async Task<IActionResult> RetornaInformacoesObra(int idObra)
         {
-            var result = _obraService.RetornaInformacaoObraDTO(idObra);
+            var result = await _obraService.RetornaInformacaoObraDTO(idObra);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 

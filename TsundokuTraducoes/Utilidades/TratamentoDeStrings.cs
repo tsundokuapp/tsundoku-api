@@ -62,5 +62,11 @@ namespace TsundokuTraducoes.Api.Utilidades
             return Regex.Replace(stringAlteracao, @"[^\w\.@-]", caractereDeSubstituicao,
                                 RegexOptions.None, TimeSpan.FromSeconds(1.5)).Trim();
         }
+
+        public static bool ValidaCorHexaDecimal(string corHexaDeximal)
+        {            
+            var regexPattern = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
+            return Regex.Match(corHexaDeximal, regexPattern).Success;
+        }
     }
 }

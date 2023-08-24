@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.DTOs.Admin;
+using System.Threading.Tasks;
 
 namespace TsundokuTraducoes.Api.Services.Interfaces
 {
@@ -10,8 +11,8 @@ namespace TsundokuTraducoes.Api.Services.Interfaces
         #region Comic        
 
         Result<CapituloComic> RetornaCapituloComicPorId(int capituloId);
-        Result<CapituloComic> AdicionaCapituloComic(CapituloDTO capituloDTO);
-        Result<CapituloComic> AtualizaCapituloComic(CapituloDTO capituloDTO);
+        Task<Result<CapituloComic>> AdicionaCapituloComic(CapituloDTO capituloDTO);
+        Task<Result<CapituloComic>> AtualizaCapituloComic(CapituloDTO capituloDTO);
         Result<bool> ExcluiCapituloComic(int capituloId);
 
         #endregion
@@ -19,15 +20,15 @@ namespace TsundokuTraducoes.Api.Services.Interfaces
         #region Novel        
 
         Result<CapituloNovel> RetornaCapituloNovelPorId(int capituloId);
-        Result<CapituloNovel> AdicionaCapituloNovel(CapituloDTO capituloDTO);
-        Result<CapituloNovel> AtualizaCapituloNovel(CapituloDTO capituloDTO);
+        Task<Result<CapituloNovel>> AdicionaCapituloNovel(CapituloDTO capituloDTO);
+        Task<Result<CapituloNovel>> AtualizaCapituloNovel(CapituloDTO capituloDTO);
         Result<bool> ExcluiCapituloNovel(int capituloId);
 
         #endregion
 
         Result<List<CapituloDTO>> RetornaListaCapitulos();
-        Result<CapituloDTO> RetornaDadosObra(int obraId);
-        Result<CapituloDTO> RetornaDadosCapitulo(int capituloId);        
-        bool VerificaEhComic(int obraId);
+        Task<Result<CapituloDTO>> RetornaDadosObra(int obraId);
+        Task<Result<CapituloDTO>> RetornaDadosCapitulo(int capituloId);        
+        Task<bool> VerificaEhComic(int obraId);
     }
 }

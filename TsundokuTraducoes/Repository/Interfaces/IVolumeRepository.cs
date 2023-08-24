@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Models;
 
@@ -6,15 +7,13 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
 {
     public interface IVolumeRepository
     {
-        void Adiciona<T>(T entity) where T : class;
-        void Atualiza<T>(T entity) where T : class;
-        void Exclui<T>(T entity) where T : class;
+        void AdicionaVolume(Volume volume);
+        void ExcluiVolume(Volume volume);
         bool AlteracoesSalvas();
         Volume AtualizaVolume(VolumeDTO VolumeDTO);
-        List<Volume> RetornaListaVolumes(int? idObra);
-        Volume RetornaVolumePorId(int volumeId);
-        Obra RetornaObraPorId(int obraId);
+        Task<List<Volume>> RetornaListaVolumes(int? idObra);
+        Task<Volume> RetornaVolumePorId(int volumeId);
         void AtualizaObraPorVolume(Obra obra, Volume volume);
-        Volume RetornaVolumeExistente(int obraId, string numero);
+        Task<Volume> RetornaVolumeExistente(int obraId, string numero);
     }
 }
