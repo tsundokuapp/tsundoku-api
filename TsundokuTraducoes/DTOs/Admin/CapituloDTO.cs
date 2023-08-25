@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
-using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Models.Obra;
 using TsundokuTraducoes.Api.Utilidades;
 
 namespace TsundokuTraducoes.Api.DTOs.Admin
@@ -80,7 +80,7 @@ namespace TsundokuTraducoes.Api.DTOs.Admin
         public string TituloObra { get; set; }
         public string TipoObraSlug { get; set; }
         public int ObraId { get; set; }
-        public Obra Obra { get; set; }
+        public Novel Obra { get; set; }
         public string DiretorioImagemCapitulo { get; internal set; }
 
         public List<IFormFile> ListaImagensForm { get; set; }

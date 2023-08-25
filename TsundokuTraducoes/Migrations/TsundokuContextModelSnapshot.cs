@@ -19,7 +19,7 @@ namespace TsundokuTraducoes.Api.Migrations
                 .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.CapituloComic", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Capitulo.CapituloComic", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -68,10 +68,10 @@ namespace TsundokuTraducoes.Api.Migrations
 
                     b.HasIndex("VolumeId");
 
-                    b.ToTable("CapituloManga");
+                    b.ToTable("CapituloComic");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.CapituloNovel", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Capitulo.CapituloNovel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -135,29 +135,7 @@ namespace TsundokuTraducoes.Api.Migrations
                     b.ToTable("CapituloNovel");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.ComentarioObraRecomendada", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("AutorComentario")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Comentario")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("ObraRecomendadaId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ObraRecomendadaId");
-
-                    b.ToTable("ComentarioObraRecomendada");
-                });
-
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Genero", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Genero.Genero", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -236,7 +214,7 @@ namespace TsundokuTraducoes.Api.Migrations
                         });
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.GeneroObra", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Genero.GeneroObra", b =>
                 {
                     b.Property<int?>("ObraId")
                         .HasColumnType("int");
@@ -244,40 +222,19 @@ namespace TsundokuTraducoes.Api.Migrations
                     b.Property<int?>("GeneroId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ComicId")
+                        .HasColumnType("int");
+
                     b.HasKey("ObraId", "GeneroId");
+
+                    b.HasIndex("ComicId");
 
                     b.HasIndex("GeneroId");
 
                     b.ToTable("GeneroObra");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Imagem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdCapitulo")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdObra")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdPost")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdVolume")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UrlImagem")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Imagem");
-                });
-
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Obra", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Obra.Comic", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -369,10 +326,127 @@ namespace TsundokuTraducoes.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Obra");
+                    b.ToTable("Comic");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.ObraRecomendada", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Obra.Novel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Alias")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Ano")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Artista")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Autor")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CargoObraDiscord")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CodigoCorHexaObra")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("DataAlteracao")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DataAtualizacaoUltimoCapitulo")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("DataInclusao")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("DiretorioImagemObra")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("EhObraMaiorIdade")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("ImagemBanner")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ImagemCapaPrincipal")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ImagemCapaUltimoVolume")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NacionalidadeSlug")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NumeroUltimoCapitulo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NumeroUltimoVolume")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Sinopse")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SlugUltimoCapitulo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SlugUltimoVolume")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("StatusObraSlug")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TipoObraSlug")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Titulo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TituloAlternativo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioAlteracao")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioCadastro")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Visualizacoes")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Novel");
+                });
+
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Recomendacao.Comic.ComentarioComicRecomendada", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AutorComentario")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Comentario")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ComicRecomendadaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComicRecomendadaId");
+
+                    b.ToTable("ComentarioComicRecomendada");
+                });
+
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Recomendacao.Comic.ComicRecomendada", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -395,10 +469,58 @@ namespace TsundokuTraducoes.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ObraRecomendada");
+                    b.ToTable("ComicRecomendada");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Volume", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Recomendacao.Novel.ComentarioNovelRecomendada", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("AutorComentario")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Comentario")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("NovelRecomendadaId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NovelRecomendadaId");
+
+                    b.ToTable("ComentarioNovelRecomendada");
+                });
+
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Recomendacao.Novel.NovelRecomendada", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdObra")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Sinopse")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SlugObra")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("TituloAliasObra")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UrlImagemCapaPrincipal")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NovelRecomendada");
+                });
+
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Volume.VolumeComic", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -444,13 +566,62 @@ namespace TsundokuTraducoes.Api.Migrations
 
                     b.HasIndex("ObraId");
 
-                    b.ToTable("Volume");
+                    b.ToTable("VolumeComic");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.CapituloComic", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Volume.VolumeNovel", b =>
                 {
-                    b.HasOne("TsundokuTraducoes.Api.Models.Volume", "Volume")
-                        .WithMany("ListaCapituloComic")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DataAlteracao")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("DescritivoVolume")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DiretorioImagemVolume")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ImagemVolume")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Numero")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("ObraId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Sinopse")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Slug")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Titulo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioAlteracao")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioCadastro")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ObraId");
+
+                    b.ToTable("VolumeNovel");
+                });
+
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Capitulo.CapituloComic", b =>
+                {
+                    b.HasOne("TsundokuTraducoes.Api.Models.Volume.VolumeComic", "Volume")
+                        .WithMany("ListaCapitulo")
                         .HasForeignKey("VolumeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -458,10 +629,10 @@ namespace TsundokuTraducoes.Api.Migrations
                     b.Navigation("Volume");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.CapituloNovel", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Capitulo.CapituloNovel", b =>
                 {
-                    b.HasOne("TsundokuTraducoes.Api.Models.Volume", "Volume")
-                        .WithMany("ListaCapituloNovel")
+                    b.HasOne("TsundokuTraducoes.Api.Models.Volume.VolumeNovel", "Volume")
+                        .WithMany("ListaCapitulo")
                         .HasForeignKey("VolumeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -469,26 +640,19 @@ namespace TsundokuTraducoes.Api.Migrations
                     b.Navigation("Volume");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.ComentarioObraRecomendada", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Genero.GeneroObra", b =>
                 {
-                    b.HasOne("TsundokuTraducoes.Api.Models.ObraRecomendada", "ObraRecomendada")
-                        .WithMany("ListaComentarioObraRecomendada")
-                        .HasForeignKey("ObraRecomendadaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("TsundokuTraducoes.Api.Models.Obra.Comic", null)
+                        .WithMany("GenerosObra")
+                        .HasForeignKey("ComicId");
 
-                    b.Navigation("ObraRecomendada");
-                });
-
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.GeneroObra", b =>
-                {
-                    b.HasOne("TsundokuTraducoes.Api.Models.Genero", "Genero")
+                    b.HasOne("TsundokuTraducoes.Api.Models.Genero.Genero", "Genero")
                         .WithMany("GenerosObra")
                         .HasForeignKey("GeneroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TsundokuTraducoes.Api.Models.Obra", "Obra")
+                    b.HasOne("TsundokuTraducoes.Api.Models.Obra.Novel", "Obra")
                         .WithMany("GenerosObra")
                         .HasForeignKey("ObraId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -499,9 +663,31 @@ namespace TsundokuTraducoes.Api.Migrations
                     b.Navigation("Obra");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Volume", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Recomendacao.Comic.ComentarioComicRecomendada", b =>
                 {
-                    b.HasOne("TsundokuTraducoes.Api.Models.Obra", "Obra")
+                    b.HasOne("TsundokuTraducoes.Api.Models.Recomendacao.Comic.ComicRecomendada", "ComicRecomendada")
+                        .WithMany("ListaComentarioComicRecomendada")
+                        .HasForeignKey("ComicRecomendadaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ComicRecomendada");
+                });
+
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Recomendacao.Novel.ComentarioNovelRecomendada", b =>
+                {
+                    b.HasOne("TsundokuTraducoes.Api.Models.Recomendacao.Novel.NovelRecomendada", "NovelRecomendada")
+                        .WithMany("ListaComentarioObraRecomendada")
+                        .HasForeignKey("NovelRecomendadaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NovelRecomendada");
+                });
+
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Volume.VolumeComic", b =>
+                {
+                    b.HasOne("TsundokuTraducoes.Api.Models.Obra.Comic", "Obra")
                         .WithMany("Volumes")
                         .HasForeignKey("ObraId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -510,28 +696,54 @@ namespace TsundokuTraducoes.Api.Migrations
                     b.Navigation("Obra");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Genero", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Volume.VolumeNovel", b =>
+                {
+                    b.HasOne("TsundokuTraducoes.Api.Models.Obra.Novel", "Obra")
+                        .WithMany("Volumes")
+                        .HasForeignKey("ObraId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Obra");
+                });
+
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Genero.Genero", b =>
                 {
                     b.Navigation("GenerosObra");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Obra", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Obra.Comic", b =>
                 {
                     b.Navigation("GenerosObra");
 
                     b.Navigation("Volumes");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.ObraRecomendada", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Obra.Novel", b =>
+                {
+                    b.Navigation("GenerosObra");
+
+                    b.Navigation("Volumes");
+                });
+
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Recomendacao.Comic.ComicRecomendada", b =>
+                {
+                    b.Navigation("ListaComentarioComicRecomendada");
+                });
+
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Recomendacao.Novel.NovelRecomendada", b =>
                 {
                     b.Navigation("ListaComentarioObraRecomendada");
                 });
 
-            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Volume", b =>
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Volume.VolumeComic", b =>
                 {
-                    b.Navigation("ListaCapituloComic");
+                    b.Navigation("ListaCapitulo");
+                });
 
-                    b.Navigation("ListaCapituloNovel");
+            modelBuilder.Entity("TsundokuTraducoes.Api.Models.Volume.VolumeNovel", b =>
+                {
+                    b.Navigation("ListaCapitulo");
                 });
 #pragma warning restore 612, 618
         }

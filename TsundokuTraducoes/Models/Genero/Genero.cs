@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace TsundokuTraducoes.Api.Models
+namespace TsundokuTraducoes.Api.Models.Genero
 {
     public class Genero
     {
@@ -11,7 +11,7 @@ namespace TsundokuTraducoes.Api.Models
         public string Slug { get; set; }
         public virtual List<GeneroObra> GenerosObra { get; set; }
         public Genero()
-        {   
+        {
             GenerosObra = new List<GeneroObra>();
         }
     }

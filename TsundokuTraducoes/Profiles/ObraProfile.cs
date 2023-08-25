@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
-using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Models.Obra;
+using TsundokuTraducoes.Api.Models.Recomendacao.Comic;
 
 namespace TsundokuTraducoes.Api.Profiles
 {
@@ -9,10 +10,10 @@ namespace TsundokuTraducoes.Api.Profiles
     {
         public ObraProfile()
         {
-            CreateMap<ObraDTO, Obra>();
-            CreateMap<ObraRecomendadaDTO, ObraRecomendada>();
-            CreateMap<ComentarioObraRecomendadaDTO, ComentarioObraRecomendada>();
-            CreateMap<Obra, RetornoObra>();
+            CreateMap<ObraDTO, Novel>();
+            CreateMap<ObraRecomendadaDTO, ComicRecomendada>();
+            CreateMap<ComentarioObraRecomendadaDTO, ComicRecomendada>();
+            CreateMap<Novel, RetornoObra>();
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
-using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Models.Recomendacao.Comic;
 
 namespace TsundokuTraducoes.Api.Services.Interfaces
 {
@@ -15,11 +15,11 @@ namespace TsundokuTraducoes.Api.Services.Interfaces
         Task<Result<RetornoObra>> AtualizarObra(ObraDTO obraDTO);
         Task<Result<InformacaoObraDTO>> RetornaInformacaoObraDTO(int? idObra = null);
         Task<Result<bool>> ExcluirObra(int idObra);
-        Result<ObraRecomendada> AdicionaObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO);
-        Result<ComentarioObraRecomendada> AdicionaComentarioObraRecomendada(ComentarioObraRecomendadaDTO obraRecomendadaDTO);
-        Result<ComentarioObraRecomendada> AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO);
-        Result<List<ObraRecomendada>> RetornaListaObraRecomendada();
-        Result<ObraRecomendada> RetornaObraRecomendadaPorId(int id);
-        Result<ComentarioObraRecomendada> RetornaComentarioObraRecomendadaPorId(int id);
+        Result<ComicRecomendada> AdicionaObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO);
+        Result<ComentarioComicRecomendada> AdicionaComentarioObraRecomendada(ComentarioObraRecomendadaDTO obraRecomendadaDTO);
+        Result<ComentarioComicRecomendada> AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO);
+        Result<List<ComicRecomendada>> RetornaListaObraRecomendada();
+        Result<ComicRecomendada> RetornaObraRecomendadaPorId(int id);
+        Result<ComentarioComicRecomendada> RetornaComentarioObraRecomendadaPorId(int id);
     }
 }

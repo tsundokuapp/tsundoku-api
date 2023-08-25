@@ -4,9 +4,10 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
-using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using System;
+using TsundokuTraducoes.Api.Models.Obra;
+using TsundokuTraducoes.Api.Models.Volume;
 
 namespace TsundokuTraducoes.Api.Utilidades
 {
@@ -19,7 +20,7 @@ namespace TsundokuTraducoes.Api.Utilidades
             _webHostEnvironment = webHostEnvironment;
         }
 
-        public Result<bool> ProcessaImagemObra(IFormFile imagemCapa, string titulo, Obra obra, ObraDTO obraDTO, bool banner = false)
+        public Result<bool> ProcessaImagemObra(IFormFile imagemCapa, string titulo, Novel obra, ObraDTO obraDTO, bool banner = false)
         {
             if (!ValidaImagemPorContentType(imagemCapa.ContentType))
                 return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
@@ -84,7 +85,7 @@ namespace TsundokuTraducoes.Api.Utilidades
             return Result.Ok();
         }
 
-        public Result<bool> ProcessaUploadImagemCapaVolume(IFormFile imagemCapa, Volume volume, Obra obra, VolumeDTO volumeDTO)
+        public Result<bool> ProcessaUploadImagemCapaVolume(IFormFile imagemCapa, VolumeNovel volume, Novel obra, VolumeDTO volumeDTO)
         {
             if (!ValidaImagemPorContentType(imagemCapa.ContentType))
                 return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
@@ -137,7 +138,7 @@ namespace TsundokuTraducoes.Api.Utilidades
             return Result.Ok();
         }
 
-        public Result ProcessaListaUploadImagemPaginaCapitulo(CapituloDTO capituloDTO, Obra obra, Volume volume, int capituloId)
+        public Result ProcessaListaUploadImagemPaginaCapitulo(CapituloDTO capituloDTO, Novel obra, VolumeNovel volume, int capituloId)
         {
             if (Directory.Exists(volume.DiretorioImagemVolume))
             {   

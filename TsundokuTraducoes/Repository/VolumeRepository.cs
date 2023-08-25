@@ -4,10 +4,11 @@ using System.Data;
 using System.Linq;
 using System.Collections.Generic;
 using TsundokuTraducoes.Api.Data;
-using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using System.Threading.Tasks;
+using TsundokuTraducoes.Api.Models.Obra;
+using TsundokuTraducoes.Api.Models.Volume;
 
 namespace TsundokuTraducoes.Api.Repository
 {
@@ -24,12 +25,12 @@ namespace TsundokuTraducoes.Api.Repository
             _contextDapper = new TsundokuContextDapper().RetornaSqlConnetionDapper();
         }
 
-        public void AdicionaVolume(Volume volume)
+        public void AdicionaVolume(VolumeNovel volume)
         {
             _context.Add(volume);
         }       
 
-        public void ExcluiVolume(Volume volume)
+        public void ExcluiVolume(VolumeNovel volume)
         {
             _context.Remove(volume);
         }
@@ -39,9 +40,9 @@ namespace TsundokuTraducoes.Api.Repository
             return _context.SaveChanges() > 0;
         }
 
-        public async Task<List<Volume>> RetornaListaVolumes(int? idObra = null)
+        public async Task<List<VolumeNovel>> RetornaListaVolumes(int? idObra = null)
         {
-            var listaVolumes = await _contextDapper.QueryAsync<Volume>(RetornaQueryListaVolumes(idObra));
+            var listaVolumes = await _contextDapper.QueryAsync<VolumeNovel>(RetornaQueryListaVolumes(idObra));
             return listaVolumes.ToList();
         }
 
@@ -54,15 +55,15 @@ namespace TsundokuTraducoes.Api.Repository
                       ORDER BY Numero ASC";
         }
 
-        public async Task<Volume> RetornaVolumePorId(int volumeId)
+        public async Task<VolumeNovel> RetornaVolumePorId(int volumeId)
         {
             var volume = await RetornaListaVolumes();
             return volume.FirstOrDefault(f => f.Id == volumeId);
         }
 
-        public Volume AtualizaVolume(VolumeDTO VolumeDTO)
+        public VolumeNovel AtualizaVolume(VolumeDTO VolumeDTO)
         {
-            var volumeEncontrado = _context.Volume.SingleOrDefault(s => s.Id == VolumeDTO.Id);
+            var volumeEncontrado = _context.VolumeNovel.SingleOrDefault(s => s.Id == VolumeDTO.Id);
             var tituloVolumeVazio = VerificaCampoVazio(volumeEncontrado.Titulo, VolumeDTO.Titulo);
             if (tituloVolumeVazio)
                 VolumeDTO.Titulo = string.Empty;
@@ -87,13 +88,13 @@ namespace TsundokuTraducoes.Api.Repository
                !string.IsNullOrEmpty(campoVolumeEncontrado) && campoVolumeEncontrado.ToLower().Contains("null");
         }
 
-        public async Task<Obra> RetornaObraPorId(int obraId)
+        public async Task<Novel> RetornaObraPorId(int obraId)
         {
             // TODO validar se dá erro quando ocorrer a refatoração do Crud do Volume - Olha eu aqui ainda e vou continuar até a próxima refatoração ^^
             return await _obraRepository.RetornaObraPorId(obraId);
         }
 
-        public void AtualizaObraPorVolume(Obra obra, Volume volume)
+        public void AtualizaObraPorVolume(Novel obra, VolumeNovel volume)
         {
             var parametros = new
             {
@@ -112,7 +113,7 @@ namespace TsundokuTraducoes.Api.Repository
             _contextDapper.Query(sql, parametros);
         }
 
-        public async Task<Volume> RetornaVolumeExistente(int obraId, string numeroVolume)
+        public async Task<VolumeNovel> RetornaVolumeExistente(int obraId, string numeroVolume)
         {
             var parametros = new
             {
@@ -126,7 +127,7 @@ namespace TsundokuTraducoes.Api.Repository
                            AND Numero = @NumeroVolume";
 
 
-            var volumeExistente = await _contextDapper.QueryAsync<Volume>(sql, parametros);
+            var volumeExistente = await _contextDapper.QueryAsync<VolumeNovel>(sql, parametros);
             return volumeExistente.FirstOrDefault();
         }
     }

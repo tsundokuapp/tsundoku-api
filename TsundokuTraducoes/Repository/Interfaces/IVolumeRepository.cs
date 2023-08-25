@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
-using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Models.Obra;
+using TsundokuTraducoes.Api.Models.Volume;
 
 namespace TsundokuTraducoes.Api.Repository.Interfaces
 {
     public interface IVolumeRepository
     {
-        void AdicionaVolume(Volume volume);
-        void ExcluiVolume(Volume volume);
+        void AdicionaVolume(VolumeNovel volume);
+        void ExcluiVolume(VolumeNovel volume);
         bool AlteracoesSalvas();
-        Volume AtualizaVolume(VolumeDTO VolumeDTO);
-        Task<List<Volume>> RetornaListaVolumes(int? idObra);
-        Task<Volume> RetornaVolumePorId(int volumeId);
-        void AtualizaObraPorVolume(Obra obra, Volume volume);
-        Task<Volume> RetornaVolumeExistente(int obraId, string numero);
+        VolumeNovel AtualizaVolume(VolumeDTO VolumeDTO);
+        Task<List<VolumeNovel>> RetornaListaVolumes(int? idObra);
+        Task<VolumeNovel> RetornaVolumePorId(int volumeId);
+        void AtualizaObraPorVolume(Novel obra, VolumeNovel volume);
+        Task<VolumeNovel> RetornaVolumeExistente(int obraId, string numero);
     }
 }

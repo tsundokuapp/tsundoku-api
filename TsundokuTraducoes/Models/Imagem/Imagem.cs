@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TsundokuTraducoes.Api.Models
+namespace TsundokuTraducoes.Api.Models.Imagem
 {
     public class Imagem
     {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using System.Threading.Tasks;
+using TsundokuTraducoes.Api.Models.Capitulo;
+using TsundokuTraducoes.Api.Models.Obra;
 
 namespace TsundokuTraducoes.Api.Repository.Interfaces
 {
@@ -29,8 +30,8 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
 
         #endregion
 
-        void AtualizaObraPorCapitulo(Obra obra, string descritivoCapitulo, string slug, DateTime dataInclusao);
+        void AtualizaObraPorCapitulo(Novel obra, string descritivoCapitulo, string slug, DateTime dataInclusao);
         List<CapituloDTO> RetornaListaCapitulos();        
-        Task<Obra> RetornaObraPorId(int obraId);
+        Task<Novel> RetornaObraPorId(int obraId);
     }
 }

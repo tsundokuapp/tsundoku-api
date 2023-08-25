@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using TsundokuTraducoes.Api.Models.Volume;
 
-namespace TsundokuTraducoes.Api.Models
+namespace TsundokuTraducoes.Api.Models.Capitulo
 {
     public class CapituloNovel
     {
@@ -20,7 +21,7 @@ namespace TsundokuTraducoes.Api.Models
         public string DiretorioImagemCapitulo { get; set; }
         public int OrdemCapitulo { get; set; }
         public bool EhIlustracoesNovel { get; set; }
-        public virtual Volume Volume { get; set; }
+        public virtual VolumeNovel Volume { get; set; }
         public int VolumeId { get; set; }
         public string Tradutor { get; set; }
         public string Revisor { get; set; }

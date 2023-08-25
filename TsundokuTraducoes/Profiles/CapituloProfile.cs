@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
-using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Models.Capitulo;
 
 namespace TsundokuTraducoes.Api.Profiles
 {

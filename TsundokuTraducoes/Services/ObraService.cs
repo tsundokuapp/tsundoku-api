@@ -6,7 +6,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
-using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Models.Obra;
+using TsundokuTraducoes.Api.Models.Recomendacao.Comic;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using TsundokuTraducoes.Api.Services.Interfaces;
 using TsundokuTraducoes.Api.Utilidades;
@@ -56,7 +57,7 @@ namespace TsundokuTraducoes.Api.Services
 
         public async Task<Result<RetornoObra>> AdicionaObra(ObraDTO obraDTO)
         {
-            var obra = _mapper.Map<Obra>(obraDTO);
+            var obra = _mapper.Map<Novel>(obraDTO);
             var obraExistente = await _repository.RetornaObraExistente(obraDTO.Titulo);
 
             if (obraExistente != null)
@@ -151,7 +152,7 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok().WithSuccess("Obra excluída com sucesso!");
         }
 
-        public Result<ObraRecomendada> AdicionaObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO)
+        public Result<ComicRecomendada> AdicionaObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO)
         {
             var obraRecomendadaExistente = _repository.RetornaObraRecomendadaPorObraId(obraRecomendadaDTO.IdObra);
             if (obraRecomendadaExistente != null)
@@ -161,7 +162,7 @@ namespace TsundokuTraducoes.Api.Services
             if (retornoCargaListaMensagem.IsFailed)
                 return Result.Fail(retornoCargaListaMensagem.Errors[0].Message);
 
-            var obraRecomendada = _mapper.Map<ObraRecomendada>(obraRecomendadaDTO);
+            var obraRecomendada = _mapper.Map<ComicRecomendada>(obraRecomendadaDTO);
             _repository.AdicionaObraRecomendada(obraRecomendada);
             _repository.InsereListaComentariosObraRecomendada(obraRecomendadaDTO, obraRecomendada);
 
@@ -205,9 +206,9 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok();
         }
 
-        public Result<ComentarioObraRecomendada> AdicionaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        public Result<ComentarioComicRecomendada> AdicionaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
         {
-            var comentarioObraRecomendada = _mapper.Map<ComentarioObraRecomendada>(comentarioObraRecomendadaDTO);
+            var comentarioObraRecomendada = _mapper.Map<ComentarioComicRecomendada>(comentarioObraRecomendadaDTO);
 
             _repository.AdicionaComentarioObraRecomendada(comentarioObraRecomendada);
             if (!_repository.AlteracoesSalvas().Result)
@@ -216,7 +217,7 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok().ToResult(comentarioObraRecomendada);
         }
 
-        public Result<ComentarioObraRecomendada> AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        public Result<ComentarioComicRecomendada> AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
         {
             var comentarioObraRecomendada = _repository.RetornaComentarioObraRecomendadaPorId(comentarioObraRecomendadaDTO.Id);
             if (comentarioObraRecomendada == null)
@@ -230,7 +231,7 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok().ToResult(comentarioObraRecomendada);
         }
 
-        public Result<List<ObraRecomendada>> RetornaListaObraRecomendada()
+        public Result<List<ComicRecomendada>> RetornaListaObraRecomendada()
         {
             var listaObraRecomendada = _repository.RetornaListaObraRecomendada();
             if (listaObraRecomendada == null)
@@ -239,7 +240,7 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Ok().ToResult(listaObraRecomendada);
         }
 
-        public Result<ObraRecomendada> RetornaObraRecomendadaPorId(int id)
+        public Result<ComicRecomendada> RetornaObraRecomendadaPorId(int id)
         {
             var obraRecomendada = _repository.RetornaObraRecomendadaPorId(id);
             if (obraRecomendada == null)
@@ -248,7 +249,7 @@ namespace TsundokuTraducoes.Api.Services
             return obraRecomendada;
         }
 
-        public Result<ComentarioObraRecomendada> RetornaComentarioObraRecomendadaPorId(int id)
+        public Result<ComentarioComicRecomendada> RetornaComentarioObraRecomendadaPorId(int id)
         {
             var comentarioObraRecomendada = _repository.RetornaComentarioObraRecomendadaPorId(id);
             if (comentarioObraRecomendada == null)
@@ -257,7 +258,7 @@ namespace TsundokuTraducoes.Api.Services
             return comentarioObraRecomendada;
         }
 
-        private async Task<RetornoObra> TrataRetornoObra(Obra obra)
+        private async Task<RetornoObra> TrataRetornoObra(Novel obra)
         {
             var retornoObra = _mapper.Map<RetornoObra>(obra);
             retornoObra.DataInclusao = obra.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");

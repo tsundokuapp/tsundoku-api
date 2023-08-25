@@ -1,8 +1,8 @@
 ﻿using FluentResults;
 using System.Collections.Generic;
-using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using System.Threading.Tasks;
+using TsundokuTraducoes.Api.Models.Capitulo;
 
 namespace TsundokuTraducoes.Api.Services.Interfaces
 {

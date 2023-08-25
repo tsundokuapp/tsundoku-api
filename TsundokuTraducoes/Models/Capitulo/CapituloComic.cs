@@ -1,7 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using TsundokuTraducoes.Api.Models.Volume;
 
-namespace TsundokuTraducoes.Api.Models
+namespace TsundokuTraducoes.Api.Models.Capitulo
 {
     public class CapituloComic
     {
@@ -19,7 +20,7 @@ namespace TsundokuTraducoes.Api.Models
         public DateTime? DataAlteracao { get; set; }
         public string DiretorioImagemCapitulo { get; set; }
         public int OrdemCapitulo { get; set; }
-        public virtual Volume Volume { get; set; }
+        public virtual VolumeComic Volume { get; set; }
         public int VolumeId { get; set; }
     }
 }

@@ -4,10 +4,11 @@ using System.Data;
 using System.Linq;
 using TsundokuTraducoes.Api.Data;
 using System.Collections.Generic;
-using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using System.Threading.Tasks;
+using TsundokuTraducoes.Api.Models.Capitulo;
+using TsundokuTraducoes.Api.Models.Obra;
 
 namespace TsundokuTraducoes.Api.Repository
 {
@@ -50,12 +51,12 @@ namespace TsundokuTraducoes.Api.Repository
 
         public CapituloComic RetornaCapituloComicPorId(int capituloId)
         {
-            return _context.CapituloManga.FirstOrDefault(f => f.Id == capituloId);
+            return _context.CapituloComic.FirstOrDefault(f => f.Id == capituloId);
         }
         
         public CapituloComic AtualizaCapituloComic(CapituloDTO capituloDTO)
         {
-            var capituloEncontrado = _context.CapituloManga.SingleOrDefault(s => s.Id == capituloDTO.Id);
+            var capituloEncontrado = _context.CapituloComic.SingleOrDefault(s => s.Id == capituloDTO.Id);
 
             _context.Entry(capituloEncontrado).CurrentValues.SetValues(capituloDTO);
             capituloEncontrado.DataAlteracao = DateTime.Now;
@@ -63,7 +64,7 @@ namespace TsundokuTraducoes.Api.Repository
             return capituloEncontrado;
         }
 
-        public void AtualizaObraPorCapituloComic(Obra obra, CapituloComic capitulo)
+        public void AtualizaObraPorCapituloComic(Novel obra, CapituloComic capitulo)
         {
             var parametros = new
             {
@@ -111,7 +112,7 @@ namespace TsundokuTraducoes.Api.Repository
             return capituloEncontrado;
         }
 
-        public void AtualizaObraPorCapitulo(Obra obra, string descritivoCapitulo, string slug, DateTime dataInclusao)
+        public void AtualizaObraPorCapitulo(Novel obra, string descritivoCapitulo, string slug, DateTime dataInclusao)
         {
             var parametros = new
             {
@@ -147,7 +148,7 @@ namespace TsundokuTraducoes.Api.Repository
             return _contextDapper.Query<CapituloDTO>(RetornaQueryListaCapitulos()).ToList();            
         }
 
-        public async Task<Obra> RetornaObraPorId(int obraId)
+        public async Task<Novel> RetornaObraPorId(int obraId)
         {
             return await _obraRepository.RetornaObraPorId(obraId);
         }
