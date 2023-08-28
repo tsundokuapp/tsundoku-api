@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
-using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Models.Volume;
 using TsundokuTraducoes.Api.Repository;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using TsundokuTraducoes.Api.Services.Interfaces;
@@ -54,7 +54,7 @@ namespace TsundokuTraducoes.Api.Services
 
         public async Task<Result<RetornoVolume>> AdicionaVolume(VolumeDTO volumeDTO)
         {
-            var volume = _mapper.Map<Volume>(volumeDTO);
+            var volume = _mapper.Map<VolumeNovel>(volumeDTO);
             var obra = await _obraRepository.RetornaObraPorId(volumeDTO.ObraId);
             var volumeExistente = await _volumeRepository.RetornaVolumeExistente(volumeDTO.ObraId, volumeDTO.Numero);
 
@@ -124,26 +124,26 @@ namespace TsundokuTraducoes.Api.Services
             return Result.Fail("Erro ao excluir o volume!");
         }
 
-        private RetornoVolume TrataRetornoVolume(Volume volume)
+        private RetornoVolume TrataRetornoVolume(VolumeNovel volume)
         {
             var retornoVolume = _mapper.Map<RetornoVolume>(volume);
             retornoVolume.DataCadastro = volume.DataCadastro.ToString("dd/MM/yyyy HH:mm:ss");
             retornoVolume.DataAlteracao = volume.DataAlteracao != null ? volume.DataAlteracao?.ToString("dd/MM/yyyy HH:mm:ss") : null;
             retornoVolume.UsuarioAlteracao = !string.IsNullOrEmpty(volume.UsuarioAlteracao) ? volume.UsuarioAlteracao : null;
 
-            if (volume.ListaCapituloNovel.Count > 0)
+            if (volume.ListaCapitulo.Count > 0)
             {
                 retornoVolume.ListaCapituloNovel = new List<RetornoCapituloNovel>();
-                foreach (var capituloNovel in volume.ListaCapituloNovel)
+                foreach (var capituloNovel in volume.ListaCapitulo)
                 {
                     retornoVolume.ListaCapituloNovel.Add(_mapper.Map<RetornoCapituloNovel>(capituloNovel));
                 }
             }
 
-            if (volume.ListaCapituloComic.Count > 0)
+            if (volume.ListaCapitulo.Count > 0)
             {
                 retornoVolume.ListaCapituloComic = new List<RetornoCapituloComic>();
-                foreach (var capituloComic in volume.ListaCapituloComic)
+                foreach (var capituloComic in volume.ListaCapitulo)
                 {
                     retornoVolume.ListaCapituloComic.Add(_mapper.Map<RetornoCapituloComic>(capituloComic));
                 }

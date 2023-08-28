@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using TsundokuTraducoes.Api.Models.Capitulo;
+using TsundokuTraducoes.Api.Models.Obra;
 
-namespace TsundokuTraducoes.Api.Models
+namespace TsundokuTraducoes.Api.Models.Volume
 {
-    public class Volume
+    public class VolumeNovel
     {
         [Key]
         public int Id { get; set; }
@@ -20,13 +22,11 @@ namespace TsundokuTraducoes.Api.Models
         public DateTime? DataAlteracao { get; set; }
         public string DiretorioImagemVolume { get; set; }
         public int ObraId { get; set; }
-        public virtual Obra Obra { get; set; }
-        public List<CapituloNovel> ListaCapituloNovel { get; set; }
-        public List<CapituloComic> ListaCapituloComic { get; set; }
-        public Volume()
+        public virtual Novel Obra { get; set; }
+        public List<CapituloNovel> ListaCapitulo { get; set; }
+        public VolumeNovel()
         {
-            ListaCapituloNovel = new List<CapituloNovel>();
-            ListaCapituloComic = new List<CapituloComic>();
+            ListaCapitulo = new List<CapituloNovel>();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Data;
 using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
-using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Models.Genero;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 
 namespace TsundokuTraducoes.Api.Repository

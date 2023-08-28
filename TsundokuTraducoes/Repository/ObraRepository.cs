@@ -4,12 +4,14 @@ using System.Data;
 using System.Linq;
 using TsundokuTraducoes.Api.Data;
 using System.Collections.Generic;
-using TsundokuTraducoes.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using System.Threading.Tasks;
 using static Dapper.SqlMapper;
+using TsundokuTraducoes.Api.Models.Obra;
+using TsundokuTraducoes.Api.Models.Genero;
+using TsundokuTraducoes.Api.Models.Recomendacao.Comic;
 
 namespace TsundokuTraducoes.Api.Repository
 {
@@ -26,22 +28,22 @@ namespace TsundokuTraducoes.Api.Repository
             _generoRepository = generoRepository;
         }
 
-        public async Task AdicionaObra(Obra obra)
+        public async Task AdicionaObra(Novel obra)
         {
             await _context.AddAsync(obra);
         }
 
-        public async Task AdicionaObraRecomendada(ObraRecomendada obraRecomendada)
+        public async Task AdicionaObraRecomendada(ComicRecomendada obraRecomendada)
         {
             await _context.AddAsync(obraRecomendada);
         }
 
-        public async Task AdicionaComentarioObraRecomendada(ComentarioObraRecomendada comentarioObraRecomendada)
+        public async Task AdicionaComentarioObraRecomendada(ComentarioComicRecomendada comentarioObraRecomendada)
         {
             await _context.AddAsync(comentarioObraRecomendada);
         }
 
-        public void ExcluiObra(Obra obra)
+        public void ExcluiObra(Novel obra)
         {
             _context.Remove(obra);
         }
@@ -51,18 +53,18 @@ namespace TsundokuTraducoes.Api.Repository
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<List<Obra>> RetornaListaObras()
+        public async Task<List<Novel>> RetornaListaObras()
         {
-            var listaObras = new List<Obra>();
+            var listaObras = new List<Novel>();
             await _contextDapper.QueryAsync(RetornaQueryListaObra(),
                 new[]
                 {
-                    typeof(Obra),
+                    typeof(Novel),
                     typeof(GeneroObra)
                 },
                 (objects) =>
                 {
-                    var obra = (Obra)objects[0];
+                    var obra = (Novel)objects[0];
                     var generoObra = (GeneroObra)objects[1];
 
                     if (listaObras.SingleOrDefault(o => o.Id == obra.Id) == null)
@@ -82,15 +84,15 @@ namespace TsundokuTraducoes.Api.Repository
             return listaObras;
         }
 
-        public async Task<Obra> RetornaObraPorId(int obraId)
+        public async Task<Novel> RetornaObraPorId(int obraId)
         {
             var listaObras = await RetornaListaObras();
             return listaObras.SingleOrDefault(f => f.Id == obraId);
         }
 
-        public async Task<Obra> AtualizaObra(ObraDTO obraDTO)
+        public async Task<Novel> AtualizaObra(ObraDTO obraDTO)
         {
-            var obraEncontrada = _context.Obra.Include(o => o.GenerosObra).SingleOrDefault(o => o.Id == obraDTO.Id);
+            var obraEncontrada = _context.Novel.Include(o => o.GenerosObra).SingleOrDefault(o => o.Id == obraDTO.Id);
             _context.Entry(obraEncontrada).CurrentValues.SetValues(obraDTO);
             obraEncontrada.DataAlteracao = DateTime.Now;
 
@@ -98,7 +100,7 @@ namespace TsundokuTraducoes.Api.Repository
             return obraEncontrada;
         }
 
-        private async Task AtualizaDadosObraRecomendada(Obra obraEncontrada)
+        private async Task AtualizaDadosObraRecomendada(Novel obraEncontrada)
         {
             var parametros = new
             {
@@ -119,7 +121,7 @@ namespace TsundokuTraducoes.Api.Repository
             await _contextDapper.ExecuteAsync(sql, parametros);
         }
 
-        private void AdicionaGeneroObra(Obra obra, GeneroObra generoObra)
+        private void AdicionaGeneroObra(Novel obra, GeneroObra generoObra)
         {
             if (generoObra != null)
                 obra.GenerosObra.Add(generoObra);
@@ -141,7 +143,7 @@ namespace TsundokuTraducoes.Api.Repository
             return listaGeneros.ToList();
         }
 
-        public async Task InsereGenerosObra(ObraDTO obraDTO, Obra obraEncontrada, bool inclusao)
+        public async Task InsereGenerosObra(ObraDTO obraDTO, Novel obraEncontrada, bool inclusao)
         {
             if (inclusao)
             {
@@ -172,17 +174,17 @@ namespace TsundokuTraducoes.Api.Repository
             }
         }
 
-        public void InsereListaComentariosObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO, ObraRecomendada obraRecomendada)
+        public void InsereListaComentariosObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO, ComicRecomendada obraRecomendada)
         {
             if (obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO != null && obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO.Count > 0)
             {
                 foreach (var comentarioObraRecomendadaDTO in obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO)
                 {
-                    obraRecomendada.ListaComentarioObraRecomendada.Add(new ComentarioObraRecomendada
+                    obraRecomendada.ListaComentarioComicRecomendada.Add(new ComentarioComicRecomendada
                     {
                         AutorComentario = comentarioObraRecomendadaDTO.AutorComentario,
                         Comentario = comentarioObraRecomendadaDTO.Comentario,
-                        ObraRecomendadaId = obraRecomendada.Id,
+                        ComicRecomendadaId = obraRecomendada.Id,
                     });
                 }
             }
@@ -190,43 +192,43 @@ namespace TsundokuTraducoes.Api.Repository
 
         public async Task InsereComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
         {
-            await AdicionaComentarioObraRecomendada(new ComentarioObraRecomendada
+            await AdicionaComentarioObraRecomendada(new ComentarioComicRecomendada
             {
                 AutorComentario = comentarioObraRecomendadaDTO.AutorComentario,
                 Comentario = comentarioObraRecomendadaDTO.Comentario,
-                ObraRecomendadaId = comentarioObraRecomendadaDTO.ObraRecomendadaId,
+                ComicRecomendadaId = comentarioObraRecomendadaDTO.ObraRecomendadaId,
             });
         }
 
-        public ComentarioObraRecomendada RetornaComentarioObraRecomendadaPorId(int id)
+        public ComentarioComicRecomendada RetornaComentarioObraRecomendadaPorId(int id)
         {
-            return _context.ComentarioObraRecomendada.SingleOrDefault(s => s.Id == id);
+            return _context.ComentarioComicRecomendada.SingleOrDefault(s => s.Id == id);
         }
 
-        public ComentarioObraRecomendada AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        public ComentarioComicRecomendada AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
         {
-            var comentarioObraRecomendada = _context.ComentarioObraRecomendada.SingleOrDefault(s => s.Id == comentarioObraRecomendadaDTO.Id);
+            var comentarioObraRecomendada = _context.ComentarioComicRecomendada.SingleOrDefault(s => s.Id == comentarioObraRecomendadaDTO.Id);
             _context.Entry(comentarioObraRecomendada).CurrentValues.SetValues(comentarioObraRecomendadaDTO);
 
             return comentarioObraRecomendada;
         }
 
-        public List<ObraRecomendada> RetornaListaObraRecomendada()
+        public List<ComicRecomendada> RetornaListaObraRecomendada()
         {
-            return _context.ObraRecomendada.Include(o => o.ListaComentarioObraRecomendada).ToList();
+            return _context.ComicRecomendada.Include(o => o.ListaComentarioComicRecomendada).ToList();
         }
 
-        public ObraRecomendada RetornaObraRecomendadaPorId(int id)
+        public ComicRecomendada RetornaObraRecomendadaPorId(int id)
         {
             return RetornaListaObraRecomendada().FirstOrDefault(o => o.Id == id);
         }
 
-        public ObraRecomendada RetornaObraRecomendadaPorObraId(int idObra)
+        public ComicRecomendada RetornaObraRecomendadaPorObraId(int idObra)
         {
             return RetornaListaObraRecomendada().FirstOrDefault(o => o.IdObra == idObra);
         }
 
-        public async Task<Obra> RetornaObraExistente(string titulo)
+        public async Task<Novel> RetornaObraExistente(string titulo)
         {
             titulo = titulo.Trim();
 
@@ -239,7 +241,7 @@ namespace TsundokuTraducoes.Api.Repository
                            FROM Obra 
                           WHERE Titulo LIKE @Titulo";
 
-            var obraExistente = await _contextDapper.QueryAsync<Obra>(sql, parametro);
+            var obraExistente = await _contextDapper.QueryAsync<Novel>(sql, parametro);
             return obraExistente.FirstOrDefault();
         }
     }

@@ -2,12 +2,13 @@
 using FluentResults;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Hosting;
-using TsundokuTraducoes.Api.Models;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Utilidades;
 using TsundokuTraducoes.Api.Services.Interfaces;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using System.Threading.Tasks;
+using TsundokuTraducoes.Api.Models.Capitulo;
+using TsundokuTraducoes.Api.Models.Obra;
 
 namespace TsundokuTraducoes.Api.Services
 {
@@ -307,7 +308,7 @@ namespace TsundokuTraducoes.Api.Services
             return obra.TipoObraSlug == "manga" || obra.TipoObraSlug == "manhua" || obra.TipoObraSlug == "manhwa";
         }
 
-        private void AtualizaCapituloDTO(CapituloDTO capituloDTO, Obra obra, CapituloNovel capituloNovel, CapituloComic capituloComic)
+        private void AtualizaCapituloDTO(CapituloDTO capituloDTO, Novel obra, CapituloNovel capituloNovel, CapituloComic capituloComic)
         {
             if (capituloNovel != null)
             {

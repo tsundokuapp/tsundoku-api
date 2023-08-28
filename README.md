@@ -66,6 +66,10 @@ Basta importar os arquivos jsons disponíveis e utilizar o mesmo.
 
 - Copie o arquivo appsettingsExample.json e altere seu nome para appsettings.json, adicionando a connectionString do banco local ou remoto.
 - Adicionar diretórios wwwroot/image (_Enquanto salvar arquivos locais_)
-- instalar o pacote dotnet-ef > ```dotnet tool install --global dotnet-ef```
-- Execute o comando > ```dotnet ef database update``` 
-- Suba a aplicação com > ```dotnet run```
+
+- instalar o pacote dotnet-ef > ```dotnet tool install --global dotnet-ef``` (_Geralmente é necessário no VSCode_)
+  - Rodar o comando ```update-database``` 
+    - Visual Studio Code > ```dotnet ef database update```
+    
+- E em seguida rodar o projeto para subir a api
+  - Visual Studio Code > ```dotnet run```

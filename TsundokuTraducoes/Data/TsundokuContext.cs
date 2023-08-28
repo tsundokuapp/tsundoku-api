@@ -1,20 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Models.Capitulo;
+using TsundokuTraducoes.Api.Models.Genero;
+using TsundokuTraducoes.Api.Models.Obra;
+using TsundokuTraducoes.Api.Models.Recomendacao.Comic;
+using TsundokuTraducoes.Api.Models.Recomendacao.Novel;
+using TsundokuTraducoes.Api.Models.Volume;
 
 namespace TsundokuTraducoes.Api.Data
 {
     public class TsundokuContext : DbContext
     {
-        public DbSet<CapituloComic> CapituloManga { get; set; }
+        public DbSet<Comic> Comic { get; set; }
+        public DbSet<Novel> Novel { get; set; }
+        public DbSet<VolumeComic> VolumeComic { get; set; }
+        public DbSet<VolumeNovel> VolumeNovel { get; set; }
+        public DbSet<CapituloComic> CapituloComic { get; set; }
         public DbSet<CapituloNovel> CapituloNovel { get; set; }
-        public DbSet<ComentarioObraRecomendada> ComentarioObraRecomendada { get; set; }
         public DbSet<Genero> Genero { get; set; }
         public DbSet<GeneroObra> GeneroObra { get; set; }
-        public DbSet<Obra> Obra { get; set; }
-        public DbSet<ObraRecomendada> ObraRecomendada { get; set; }
-        public DbSet<Volume> Volume { get; set; }
-        public DbSet<Imagem> Imagem { get; set; }
+        public DbSet<ComicRecomendada> ComicRecomendada { get; set; }
+        public DbSet<ComentarioComicRecomendada> ComentarioComicRecomendada { get; set; }
+        public DbSet<NovelRecomendada> NovelRecomendada { get; set; }
+        public DbSet<ComentarioNovelRecomendada> ComentarioNovelRecomendada { get; set; }
         public TsundokuContext(DbContextOptions<TsundokuContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

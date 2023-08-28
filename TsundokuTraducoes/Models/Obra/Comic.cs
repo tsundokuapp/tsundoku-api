@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using TsundokuTraducoes.Api.Models.Genero;
+using TsundokuTraducoes.Api.Models.Volume;
 
-namespace TsundokuTraducoes.Api.Models
+namespace TsundokuTraducoes.Api.Models.Obra
 {
-    public class Obra
-    {       
+    public class Comic
+    {
         [Key]
         public int Id { get; set; }
         public string Titulo { get; set; }
@@ -18,12 +20,12 @@ namespace TsundokuTraducoes.Api.Models
         public int Visualizacoes { get; set; }
         public string UsuarioCadastro { get; set; }
         public string UsuarioAlteracao { get; set; }
-        public string ImagemCapaPrincipal { get; set; }        
+        public string ImagemCapaPrincipal { get; set; }
         public string Sinopse { get; set; }
         public DateTime DataInclusao { get; set; } = DateTime.Now;
         public DateTime? DataAlteracao { get; set; }
         public bool EhObraMaiorIdade { get; set; }
-        public string CodigoCorHexaObra { get; set;}
+        public string CodigoCorHexaObra { get; set; }
         public string ImagemBanner { get; set; }
         public string CargoObraDiscord { get; set; }
         public string DiretorioImagemObra { get; set; }
@@ -37,12 +39,12 @@ namespace TsundokuTraducoes.Api.Models
         public string SlugUltimoCapitulo { get; set; }
         public DateTime? DataAtualizacaoUltimoCapitulo { get; set; }
 
-        public virtual List<Volume> Volumes { get; set; }
+        public virtual List<VolumeComic> Volumes { get; set; }
         public virtual List<GeneroObra> GenerosObra { get; set; }
 
-        public Obra()
+        public Comic()
         {
-            Volumes = new List<Volume>();
+            Volumes = new List<VolumeComic>();
             GenerosObra = new List<GeneroObra>();
         }
     }

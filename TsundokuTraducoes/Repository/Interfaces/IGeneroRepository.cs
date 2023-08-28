@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
-using TsundokuTraducoes.Api.Models;
+using TsundokuTraducoes.Api.Models.Genero;
 
 namespace TsundokuTraducoes.Api.Repository.Interfaces
 {
