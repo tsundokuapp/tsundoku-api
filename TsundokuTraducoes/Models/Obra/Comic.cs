@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using TsundokuTraducoes.Api.Models.Genero;
+using System.ComponentModel.DataAnnotations.Schema;
+using TsundokuTraducoes.Api.Models.DePara;
 using TsundokuTraducoes.Api.Models.Volume;
 
 namespace TsundokuTraducoes.Api.Models.Obra
 {
     public class Comic
     {
-        [Key]
-        public int Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
         public string Titulo { get; set; }
         public string TituloAlternativo { get; set; }
         public string Alias { get; set; }
@@ -18,13 +19,14 @@ namespace TsundokuTraducoes.Api.Models.Obra
         public string Ano { get; set; }
         public string Slug { get; set; }
         public int Visualizacoes { get; set; }
-        public string UsuarioCadastro { get; set; }
+        public string UsuarioInclusao { get; set; }
         public string UsuarioAlteracao { get; set; }
         public string ImagemCapaPrincipal { get; set; }
         public string Sinopse { get; set; }
         public DateTime DataInclusao { get; set; } = DateTime.Now;
-        public DateTime? DataAlteracao { get; set; }
+        public DateTime DataAlteracao { get; set; }
         public bool EhObraMaiorIdade { get; set; }
+        public bool EhRecomendacao { get; set; }
         public string CodigoCorHexaObra { get; set; }
         public string ImagemBanner { get; set; }
         public string CargoObraDiscord { get; set; }
@@ -37,15 +39,15 @@ namespace TsundokuTraducoes.Api.Models.Obra
         public string SlugUltimoVolume { get; set; }
         public string NumeroUltimoCapitulo { get; set; }
         public string SlugUltimoCapitulo { get; set; }
-        public DateTime? DataAtualizacaoUltimoCapitulo { get; set; }
+        public DateTime? DataAtualizacaoUltimoCapitulo { get; set; }        
 
         public virtual List<VolumeComic> Volumes { get; set; }
-        public virtual List<GeneroObra> GenerosObra { get; set; }
+        public virtual List<GeneroComic> GenerosComic { get; set; }
 
         public Comic()
         {
             Volumes = new List<VolumeComic>();
-            GenerosObra = new List<GeneroObra>();
+            GenerosComic = new List<GeneroComic>();
         }
     }
 }

@@ -1,172 +1,193 @@
 ﻿using Dapper;
-using System;
-using System.Data;
-using System.Linq;
-using TsundokuTraducoes.Api.Data;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using TsundokuTraducoes.Api.DTOs.Admin;
-using TsundokuTraducoes.Api.Repository.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using static Dapper.SqlMapper;
+using TsundokuTraducoes.Api.Data;
+using TsundokuTraducoes.Api.DTOs.Admin;
+using TsundokuTraducoes.Api.Models.DePara;
 using TsundokuTraducoes.Api.Models.Obra;
-using TsundokuTraducoes.Api.Models.Genero;
-using TsundokuTraducoes.Api.Models.Recomendacao.Comic;
+using TsundokuTraducoes.Api.Repository.Interfaces;
+using static Dapper.SqlMapper;
 
 namespace TsundokuTraducoes.Api.Repository
 {
-    public class ObraRepository : IObraRepository
-    {
-        private readonly TsundokuContext _context;
+    public class ObraRepository : Repository, IObraRepository
+    {   
         private readonly IGeneroRepository _generoRepository;
-        private readonly IDbConnection _contextDapper;
 
-        public ObraRepository(TsundokuContext context, IGeneroRepository generoRepository)
-        {
-            _context = context;
-            _contextDapper = new TsundokuContextDapper().RetornaSqlConnetionDapper();
+        public ObraRepository(TsundokuContext context, IGeneroRepository generoRepository) : base(context)
+        {   
             _generoRepository = generoRepository;
         }
 
-        public async Task AdicionaObra(Novel obra)
+        public async Task<List<Novel>> RetornaListaNovels()
         {
-            await _context.AddAsync(obra);
-        }
-
-        public async Task AdicionaObraRecomendada(ComicRecomendada obraRecomendada)
-        {
-            await _context.AddAsync(obraRecomendada);
-        }
-
-        public async Task AdicionaComentarioObraRecomendada(ComentarioComicRecomendada comentarioObraRecomendada)
-        {
-            await _context.AddAsync(comentarioObraRecomendada);
-        }
-
-        public void ExcluiObra(Novel obra)
-        {
-            _context.Remove(obra);
-        }
-
-        public async Task<bool> AlteracoesSalvas()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
-
-        public async Task<List<Novel>> RetornaListaObras()
-        {
-            var listaObras = new List<Novel>();
-            await _contextDapper.QueryAsync(RetornaQueryListaObra(),
+            var listaNovels = new List<Novel>();
+            await _contextDapper.QueryAsync(RetornaQueryListaNovel(),
                 new[]
                 {
                     typeof(Novel),
-                    typeof(GeneroObra)
+                    typeof(GeneroNovel)
                 },
                 (objects) =>
                 {
-                    var obra = (Novel)objects[0];
-                    var generoObra = (GeneroObra)objects[1];
+                    var novel = (Novel)objects[0];
+                    var generoNovel = (GeneroNovel)objects[1];
 
-                    if (listaObras.SingleOrDefault(o => o.Id == obra.Id) == null)
+                    if (listaNovels.SingleOrDefault(o => o.Id == novel.Id) == null)
                     {
-                        listaObras.Add(obra);
+                        listaNovels.Add(novel);
                     }
                     else
                     {
-                        obra = listaObras.SingleOrDefault(o => o.Id == obra.Id);
+                        novel = listaNovels.SingleOrDefault(o => o.Id == novel.Id);
                     }
 
-                    AdicionaGeneroObra(obra, generoObra);
+                    AdicionaGeneroNovel(novel, generoNovel);
 
-                    return obra;
-                }, splitOn: "Id, ObraId");
+                    return novel;
+                }, splitOn: "Id, NovelId");
 
-            return listaObras;
+            return listaNovels;
         }
-
-        public async Task<Novel> RetornaObraPorId(int obraId)
+        
+        public async Task<Novel> RetornaNovelPorId(Guid novelId)
         {
-            var listaObras = await RetornaListaObras();
-            return listaObras.SingleOrDefault(f => f.Id == obraId);
+            var listaNovels = await RetornaListaNovels();
+            return listaNovels.SingleOrDefault(f => f.Id == novelId);
         }
 
-        public async Task<Novel> AtualizaObra(ObraDTO obraDTO)
+
+        public async Task<List<Comic>> RetornaListaComics()
         {
-            var obraEncontrada = _context.Novel.Include(o => o.GenerosObra).SingleOrDefault(o => o.Id == obraDTO.Id);
-            _context.Entry(obraEncontrada).CurrentValues.SetValues(obraDTO);
-            obraEncontrada.DataAlteracao = DateTime.Now;
+            var listaComics = new List<Comic>();
+            await _contextDapper.QueryAsync(RetornaQueryListaComic(),
+                new[]
+                {
+                    typeof(Comic),
+                    typeof(GeneroComic)
+                },
+                (objects) =>
+                {
+                    var comic = (Comic)objects[0];
+                    var generoComic = (GeneroComic)objects[1];
 
-            await AtualizaDadosObraRecomendada(obraEncontrada);
-            return obraEncontrada;
+                    if (listaComics.SingleOrDefault(o => o.Id == comic.Id) == null)
+                    {
+                        listaComics.Add(comic);
+                    }
+                    else
+                    {
+                        comic = listaComics.SingleOrDefault(o => o.Id == comic.Id);
+                    }
+
+                    AdicionaGeneroComic(comic, generoComic);
+
+                    return comic;
+                }, splitOn: "Id, ComicId");
+
+            return listaComics;
         }
 
-        private async Task AtualizaDadosObraRecomendada(Novel obraEncontrada)
+        public async Task<Comic> RetornaComicPorId(Guid comicId)
         {
-            var parametros = new
-            {
-                IdObra = obraEncontrada.Id,
-                UrlImagemCapaPrincipal = obraEncontrada.ImagemCapaPrincipal,
-                Sinopse = obraEncontrada.Sinopse,
-                TituloAliasObra = obraEncontrada.Alias,
-                SlugObra = obraEncontrada.Slug
-            };
-
-            var sql = @"UPDATE ObraRecomendada 
-                           SET UrlImagemCapaPrincipal = @UrlImagemCapaPrincipal,
-                               Sinopse = @Sinopse,
-                               TituloAliasObra = @TituloAliasObra,
-                               SlugObra = @SlugObra
-                         WHERE IdObra = @IdObra;";
-
-            await _contextDapper.ExecuteAsync(sql, parametros);
+            var listaComics = await RetornaListaComics();
+            return listaComics.SingleOrDefault(f => f.Id == comicId);
         }
 
-        private void AdicionaGeneroObra(Novel obra, GeneroObra generoObra)
+
+        public async Task AdicionaNovel(Novel novel)
         {
-            if (generoObra != null)
-                obra.GenerosObra.Add(generoObra);
-        }
-
-        public string RetornaQueryListaObra()
+            await AdicionaEntidadeBancoDados(novel);
+        }        
+        
+        public async Task AdicionaComic(Comic comic)
         {
-            var sql = @"SELECT O.*, GO.*
-                          FROM Obra O
-                         INNER JOIN GeneroObra GO ON GO.ObraId = O.Id
-                         ORDER BY O.Titulo;";
-
-            return sql;
+            await AdicionaEntidadeBancoDados(comic);
         }
 
-        public async Task<List<Genero>> RetornaListaGeneros()
+
+        public Novel AtualizaNovel(ObraDTO obraDTO)
         {
-            var listaGeneros = await _contextDapper.QueryAsync<Genero>("SELECT * FROM Genero ORDER BY Id");
-            return listaGeneros.ToList();
+            var novelEncontrada = _context.Novels.Include(n => n.GenerosNovel).SingleOrDefault(n => n.Id == obraDTO.Id);
+            obraDTO.DiretorioImagemObra = novelEncontrada.DiretorioImagemObra;
+            _context.Entry(novelEncontrada).CurrentValues.SetValues(obraDTO);
+            novelEncontrada.DataAlteracao = DateTime.Now;
+                        
+            return novelEncontrada;
         }
 
-        public async Task InsereGenerosObra(ObraDTO obraDTO, Novel obraEncontrada, bool inclusao)
+        public Comic AtualizaComic(ObraDTO obraDTO)
+        {
+            var comicEncontrada = _context.Comics.Include(o => o.GenerosComic).SingleOrDefault(o => o.Id == obraDTO.Id);
+            obraDTO.DiretorioImagemObra = comicEncontrada.DiretorioImagemObra;
+            _context.Entry(comicEncontrada).CurrentValues.SetValues(obraDTO);
+            comicEncontrada.DataAlteracao = DateTime.Now;
+
+            return comicEncontrada;
+        }
+
+
+        public void ExcluiNovel(Novel novel)
+        {
+            ExcluiEntidadeBancoDados(novel);
+        }
+
+        public void ExcluiComic(Comic comic)
+        {
+            ExcluiEntidadeBancoDados(comic);
+        }
+
+
+        public async Task<Novel> RetornaNovelExistente(string titulo)
+        {
+            titulo = titulo.Trim();
+            var sql = $@"SELECT * 
+                           FROM Novels 
+                          WHERE Titulo LIKE @Titulo";
+
+            var novelExistente = await _contextDapper.QueryAsync<Novel>(sql, new { Titulo = "%" + titulo + "%" });
+            return novelExistente.FirstOrDefault();
+        }
+
+        public async Task<Comic> RetornaComicExistente(string titulo)
+        {
+            titulo = titulo.Trim();
+            var sql = $@"SELECT * 
+                           FROM Comics 
+                          WHERE Titulo LIKE @Titulo";
+
+            var comicExistente = await _contextDapper.QueryAsync<Comic>(sql, new { Titulo = "%" + titulo + "%" });
+            return comicExistente.FirstOrDefault();
+        }
+
+
+        public async Task InsereGenerosNovel(ObraDTO obraDTO, Novel novelEncontrada, bool inclusao)
         {
             if (inclusao)
             {
-                obraEncontrada.GenerosObra = new List<GeneroObra>();
+                novelEncontrada.GenerosNovel = new List<GeneroNovel>();
             }
             else
             {
-                foreach (var generoObra in obraEncontrada.GenerosObra)
+                foreach (var generosNovel in novelEncontrada.GenerosNovel)
                 {
-                    _generoRepository.ExcluiGeneroObra(generoObra);
+                    _generoRepository.ExcluiGeneroNovel(generosNovel);
                 }
             }
 
-            var arrayGenero = obraDTO.ListaGeneros[0]?.Split(new string[] { "," }, System.StringSplitOptions.RemoveEmptyEntries);
+            var arrayGenero = obraDTO.ListaGeneros[0]?.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             if (arrayGenero != null && arrayGenero.Length > 0)
             {
                 foreach (var genero in arrayGenero)
                 {
-                    var generoEncontrado = _context.Genero.Single(s => s.Slug == genero);
-                    await _generoRepository.AdicionaGeneroObra(new GeneroObra
+                    var generoEncontrado = _context.Generos.Single(s => s.Slug == genero);
+                    await _generoRepository.AdicionaGeneroNovel(new GeneroNovel
                     {
                         GeneroId = generoEncontrado.Id,
-                        ObraId = obraEncontrada.Id
+                        NovelId = novelEncontrada.Id
                     });
 
                     await AlteracoesSalvas();
@@ -174,75 +195,65 @@ namespace TsundokuTraducoes.Api.Repository
             }
         }
 
-        public void InsereListaComentariosObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO, ComicRecomendada obraRecomendada)
+        public async Task InsereGenerosComic(ObraDTO obraDTO, Comic comicEncontrada, bool inclusao)
         {
-            if (obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO != null && obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO.Count > 0)
+            if (inclusao)
             {
-                foreach (var comentarioObraRecomendadaDTO in obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO)
+                comicEncontrada.GenerosComic = new List<GeneroComic>();
+            }
+            else
+            {
+                foreach (var generosComic in comicEncontrada.GenerosComic)
                 {
-                    obraRecomendada.ListaComentarioComicRecomendada.Add(new ComentarioComicRecomendada
+                    _generoRepository.ExcluiGeneroComic(generosComic);
+                }
+            }
+
+            var arrayGenero = obraDTO.ListaGeneros[0]?.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            if (arrayGenero != null && arrayGenero.Length > 0)
+            {
+                foreach (var genero in arrayGenero)
+                {
+                    var generoEncontrado = _context.Generos.Single(s => s.Slug == genero);
+                    await _generoRepository.AdicionaGeneroComic(new GeneroComic
                     {
-                        AutorComentario = comentarioObraRecomendadaDTO.AutorComentario,
-                        Comentario = comentarioObraRecomendadaDTO.Comentario,
-                        ComicRecomendadaId = obraRecomendada.Id,
+                        GeneroId = generoEncontrado.Id,
+                        ComicId = comicEncontrada.Id
                     });
+
+                    await AlteracoesSalvas();
                 }
             }
         }
+              
 
-        public async Task InsereComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
+        private void AdicionaGeneroNovel(Novel novel, GeneroNovel generoNovel)
         {
-            await AdicionaComentarioObraRecomendada(new ComentarioComicRecomendada
-            {
-                AutorComentario = comentarioObraRecomendadaDTO.AutorComentario,
-                Comentario = comentarioObraRecomendadaDTO.Comentario,
-                ComicRecomendadaId = comentarioObraRecomendadaDTO.ObraRecomendadaId,
-            });
+            if (generoNovel != null)
+                novel.GenerosNovel.Add(generoNovel);
         }
 
-        public ComentarioComicRecomendada RetornaComentarioObraRecomendadaPorId(int id)
+        private void AdicionaGeneroComic(Comic comic, GeneroComic generoComic)
         {
-            return _context.ComentarioComicRecomendada.SingleOrDefault(s => s.Id == id);
+            if (generoComic != null)
+                comic.GenerosComic.Add(generoComic);
         }
 
-        public ComentarioComicRecomendada AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
-        {
-            var comentarioObraRecomendada = _context.ComentarioComicRecomendada.SingleOrDefault(s => s.Id == comentarioObraRecomendadaDTO.Id);
-            _context.Entry(comentarioObraRecomendada).CurrentValues.SetValues(comentarioObraRecomendadaDTO);
 
-            return comentarioObraRecomendada;
+        private string RetornaQueryListaNovel()
+        {
+            return @"SELECT N.*, GN.*
+                       FROM Novels N
+                      INNER JOIN GenerosNovel GN ON GN.NovelId = N.Id
+                      ORDER BY N.Titulo;";
         }
 
-        public List<ComicRecomendada> RetornaListaObraRecomendada()
+        private string RetornaQueryListaComic()
         {
-            return _context.ComicRecomendada.Include(o => o.ListaComentarioComicRecomendada).ToList();
-        }
-
-        public ComicRecomendada RetornaObraRecomendadaPorId(int id)
-        {
-            return RetornaListaObraRecomendada().FirstOrDefault(o => o.Id == id);
-        }
-
-        public ComicRecomendada RetornaObraRecomendadaPorObraId(int idObra)
-        {
-            return RetornaListaObraRecomendada().FirstOrDefault(o => o.IdObra == idObra);
-        }
-
-        public async Task<Novel> RetornaObraExistente(string titulo)
-        {
-            titulo = titulo.Trim();
-
-            var parametro = new
-            {
-                Titulo = $"%{titulo}%",
-            };
-
-            var sql = $@"SELECT * 
-                           FROM Obra 
-                          WHERE Titulo LIKE @Titulo";
-
-            var obraExistente = await _contextDapper.QueryAsync<Novel>(sql, parametro);
-            return obraExistente.FirstOrDefault();
-        }
+            return @"SELECT C.*, GC.*
+                       FROM Comics C
+                      INNER JOIN GenerosComic GC ON GC.ComicId = C.Id
+                      ORDER BY C.Titulo;";
+        }       
     }
 }

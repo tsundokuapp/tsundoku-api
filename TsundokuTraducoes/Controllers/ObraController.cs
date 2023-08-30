@@ -1,22 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using System;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Services.Interfaces;
 
 namespace TsundokuTraducoes.Models
 {
-    [Route("api/[controller]")]
     [ApiController]
-
     public class ObraController : ControllerBase
     {
+        // TODO - Criar as verificações de request, para saber se estar vindo corretamente.
         private readonly IObraService _obraService;
         public ObraController(IObraService obraService)
         {
             _obraService = obraService;
         }
 
-        [HttpGet]
+        [HttpGet("api/obra/")]
         public async Task<IActionResult> RetornaListaObras()
         {
             var result = await _obraService.RetornaListaObras();
@@ -26,30 +27,53 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Value);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> RetornaObraPorId(int id)
+        
+        [HttpGet("api/obra/novel/{id}")]
+        public async Task<IActionResult> RetornaNovelPorId(Guid id)
         {
-            var result = await _obraService.RetornaObraPorId(id);
+            var result = await _obraService.RetornaNovelPorId(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AdicionaObra([FromForm] ObraDTO obraDTO)
+        [HttpGet("api/obra/comic/{id}")]
+        public async Task<IActionResult> RetornaComicPorId(Guid id)
         {
-            var result = await _obraService.AdicionaObra(obraDTO);
+            var result = await _obraService.RetornaComicPorId(id);
+            if (result.IsFailed)
+                return NotFound(result.Errors[0].Message);
+
+            return Ok(result.Value);
+        }
+
+        
+        [HttpPost("api/obra/novel")]
+        public async Task<IActionResult> AdicionaNovel([FromForm] ObraDTO obraDTO)
+        {
+            var result = await _obraService.AdicionaNovel(obraDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Created($"obra/{result.Value.Id}", result.Value);
+            return Created($"api/obra/novel/{result.Value.Id}", result.Value);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> AtualizarObra([FromForm] ObraDTO obraDTO)
+        [HttpPost("api/obra/comic")]
+        public async Task<IActionResult> AdicionaComic([FromForm] ObraDTO obraDTO)
         {
-            var result = await _obraService.AtualizarObra(obraDTO);
+            var result = await _obraService.AdicionaComic(obraDTO);
+            if (result.IsFailed)
+                return BadRequest(result.Errors[0].Message);
+
+            return Created($"api/obra/comic/{result.Value.Id}", result.Value);
+        }
+
+
+        [HttpPut("api/obra/novel")]
+        public async Task<IActionResult> AtualizarNovel([FromForm] ObraDTO obraDTO)
+        {
+            var result = await _obraService.AtualizaNovel(obraDTO);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;
@@ -62,10 +86,27 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Value);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> ExcluirObra(int id)
+        [HttpPut("api/obra/comic")]
+        public async Task<IActionResult> AtualizarComic([FromForm] ObraDTO obraDTO)
         {
-            var result = await _obraService.ExcluirObra(id);
+            var result = await _obraService.AtualizaComic(obraDTO);
+            if (result.IsFailed)
+            {
+                var mensagemErro = result.Errors[0].Message;
+                if (mensagemErro.Contains("não encontrada"))
+                    return NotFound(result.Errors[0].Message);
+
+                return BadRequest(result.Errors[0].Message);
+            }
+
+            return Ok(result.Value);
+        }
+
+
+        [HttpDelete("api/obra/novel/{id}")]
+        public async Task<IActionResult> ExcluirNovel(Guid id)
+        {
+            var result = await _obraService.ExcluiNovel(id);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;
@@ -78,71 +119,22 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Successes[0].Message);
         }
 
-        [HttpPost]
-        [Route("recomendada")]
-        public IActionResult AdicionaObraRecomendada([FromForm] ObraRecomendadaDTO obraRecomendadaDTO)
+        [HttpDelete("api/obra/comic/{id}")]
+        public async Task<IActionResult> ExcluirComic(Guid id)
         {
-            var result = _obraService.AdicionaObraRecomendada(obraRecomendadaDTO);
+            var result = await _obraService.ExcluiComic(id);
             if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
+            {
+                var mensagemErro = result.Errors[0].Message;
+                if (mensagemErro.Contains("não encontrada"))
+                    return NotFound(result.Errors[0].Message);
 
-            return Ok(result.Value);
-        }
-
-        [HttpGet]
-        [Route("recomendada")]
-        public IActionResult RetornaListaObraRecomendada()
-        {
-            var result = _obraService.RetornaListaObraRecomendada();
-            if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
-
-            return Ok(result.Value);
-        }
-
-        [HttpGet]
-        [Route("recomendada/{id}")]
-        public IActionResult RetornaObraRecomendadaPorId(int id)
-        {
-            var result = _obraService.RetornaObraRecomendadaPorId(id);
-            if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
-
-            return Ok(result.Value);
-        }
-
-        [HttpPost]
-        [Route("recomendada/comentario")]
-        public IActionResult AdicionaComentarioObraRecomendada([FromForm] ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
-        {
-            var result = _obraService.AdicionaComentarioObraRecomendada(comentarioObraRecomendadaDTO);
-            if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
+            }
 
-            return Ok(result.Value);
+            return Ok(result.Successes[0].Message);
         }
 
-        [HttpPut]
-        [Route("recomendada/comentario")]
-        public IActionResult AtualizaComentarioObraRecomendada([FromForm] ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
-        {
-            var result = _obraService.AtualizaComentarioObraRecomendada(comentarioObraRecomendadaDTO);
-            if (result.IsFailed)
-                return BadRequest(result.Errors[0].Message);
-
-            return Ok(result.Value);
-        }
-
-        [HttpGet]
-        [Route("recomendada/comentario/{id}")]
-        public IActionResult RetornaComentarioObraRecomendadaPorId(int id)
-        {
-            var result = _obraService.RetornaComentarioObraRecomendadaPorId(id);
-            if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
-
-            return Ok(result.Value);
-        }
 
         [Route("informacoes-obra")]
         [HttpGet]
@@ -157,7 +149,7 @@ namespace TsundokuTraducoes.Models
 
         [Route("informacoes-obra/{idObra}")]
         [HttpGet]
-        public async Task<IActionResult> RetornaInformacoesObra(int idObra)
+        public async Task<IActionResult> RetornaInformacoesObra(Guid? idObra)
         {
             var result = await _obraService.RetornaInformacaoObraDTO(idObra);
             if (result.IsFailed)

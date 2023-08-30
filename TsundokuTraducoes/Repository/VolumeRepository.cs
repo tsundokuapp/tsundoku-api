@@ -1,69 +1,75 @@
 ﻿using Dapper;
 using System;
-using System.Data;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Data;
 using TsundokuTraducoes.Api.DTOs.Admin;
-using TsundokuTraducoes.Api.Repository.Interfaces;
-using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Models.Obra;
 using TsundokuTraducoes.Api.Models.Volume;
+using TsundokuTraducoes.Api.Repository.Interfaces;
+using TsundokuTraducoes.Api.Utilidades;
 
 namespace TsundokuTraducoes.Api.Repository
 {
-    public class VolumeRepository : IVolumeRepository
+    public class VolumeRepository : Repository, IVolumeRepository
     {
-        private readonly TsundokuContext _context;
-        private readonly IDbConnection _contextDapper;
-        private readonly IObraRepository _obraRepository;
+        public VolumeRepository(TsundokuContext context) : base(context) { }
 
-        public VolumeRepository(TsundokuContext context, IObraRepository obraRepository)
+        public async Task<List<VolumeNovel>> RetornaListaVolumesNovel(Guid? novelId = null)
         {
-            _context = context;
-            _obraRepository = obraRepository;
-            _contextDapper = new TsundokuContextDapper().RetornaSqlConnetionDapper();
+            object parametro = null;
+
+            if (novelId != null)
+            {
+                parametro = new { NovelId = novelId.Value };
+            }
+
+            var listaVolumesNovel = await _contextDapper.QueryAsync<VolumeNovel>(RetornaQueryListaVolumes(novelId), parametro);
+            return listaVolumesNovel.ToList();
         }
 
-        public void AdicionaVolume(VolumeNovel volume)
+        public async Task<List<VolumeComic>> RetornaListaVolumesComic(Guid? comicId = null)
         {
-            _context.Add(volume);
-        }       
+            object parametro = null;
 
-        public void ExcluiVolume(VolumeNovel volume)
-        {
-            _context.Remove(volume);
+            if (comicId != null)
+            {
+                parametro = new { ComicId = comicId.Value };
+            }
+
+            var listaVolumesComic = await _contextDapper.QueryAsync<VolumeComic>(RetornaQueryListaComics(comicId), parametro);
+            return listaVolumesComic.ToList();
         }
 
-        public bool AlteracoesSalvas()
-        {
-            return _context.SaveChanges() > 0;
-        }
 
-        public async Task<List<VolumeNovel>> RetornaListaVolumes(int? idObra = null)
+        public async Task<VolumeNovel> RetornaVolumeNovelPorId(Guid volumeId)
         {
-            var listaVolumes = await _contextDapper.QueryAsync<VolumeNovel>(RetornaQueryListaVolumes(idObra));
-            return listaVolumes.ToList();
-        }
-
-        private string RetornaQueryListaVolumes(int? idObra)
-        {
-            var condicao = (idObra != null && idObra > 0) ? $"WHERE ObraId = {idObra.Value}" : "";
-            return $@"SELECT *
-                       FROM Volume
-                      {condicao}
-                      ORDER BY Numero ASC";
-        }
-
-        public async Task<VolumeNovel> RetornaVolumePorId(int volumeId)
-        {
-            var volume = await RetornaListaVolumes();
+            var volume = await RetornaListaVolumesNovel();
             return volume.FirstOrDefault(f => f.Id == volumeId);
         }
 
-        public VolumeNovel AtualizaVolume(VolumeDTO VolumeDTO)
+        public async Task<VolumeComic> RetornaVolumeComicPorId(Guid volumeId)
         {
-            var volumeEncontrado = _context.VolumeNovel.SingleOrDefault(s => s.Id == VolumeDTO.Id);
+            var volume = await RetornaListaVolumesComic();
+            return volume.FirstOrDefault(f => f.Id == volumeId);
+        }
+
+
+        public async Task AdicionaVolumeNovel(VolumeNovel volumeNovel)
+        {
+            await AdicionaEntidadeBancoDados(volumeNovel);
+        }
+
+        public async Task AdicionaVolumeComic(VolumeComic volumeComic)
+        {
+            await AdicionaEntidadeBancoDados(volumeComic);
+        }
+
+
+        public VolumeNovel AtualizaVolumeNovel(VolumeDTO VolumeDTO)
+        {
+            var volumeEncontrado = _context.VolumesNovel.SingleOrDefault(s => s.Id == VolumeDTO.Id);
             var tituloVolumeVazio = VerificaCampoVazio(volumeEncontrado.Titulo, VolumeDTO.Titulo);
             if (tituloVolumeVazio)
                 VolumeDTO.Titulo = string.Empty;
@@ -72,39 +78,60 @@ namespace TsundokuTraducoes.Api.Repository
             if (sinopseVolumeVazia)
                 VolumeDTO.Sinopse = string.Empty;
 
-            if (string.IsNullOrEmpty(VolumeDTO.ImagemCapaVolume))
-                VolumeDTO.ImagemCapaVolume = volumeEncontrado.ImagemVolume;
+            if (string.IsNullOrEmpty(VolumeDTO.ImagemVolume))
+                VolumeDTO.ImagemVolume = volumeEncontrado.ImagemVolume;
 
+            VolumeDTO.DiretorioImagemVolume = volumeEncontrado.DiretorioImagemVolume;
             _context.Entry(volumeEncontrado).CurrentValues.SetValues(VolumeDTO);
             volumeEncontrado.DataAlteracao = DateTime.Now;
 
             return volumeEncontrado;
         }
 
-        private bool VerificaCampoVazio(string campoVolumeEncontrado, string campoVolumeDTO)
+        public VolumeComic AtualizaVolumeComic(VolumeDTO VolumeDTO)
         {
-            return string.IsNullOrEmpty(campoVolumeDTO) ||
-               !string.IsNullOrEmpty(campoVolumeDTO) && campoVolumeDTO.ToLower().Contains("null") ||
-               !string.IsNullOrEmpty(campoVolumeEncontrado) && campoVolumeEncontrado.ToLower().Contains("null");
+            var volumeEncontrado = _context.VolumesComic.SingleOrDefault(s => s.Id == VolumeDTO.Id);
+            var tituloVolumeVazio = VerificaCampoVazio(volumeEncontrado.Titulo, VolumeDTO.Titulo);
+            if (tituloVolumeVazio)
+                VolumeDTO.Titulo = string.Empty;
+
+            var sinopseVolumeVazia = VerificaCampoVazio(volumeEncontrado.Sinopse, VolumeDTO.Sinopse);
+            if (sinopseVolumeVazia)
+                VolumeDTO.Sinopse = string.Empty;
+
+            if (string.IsNullOrEmpty(VolumeDTO.ImagemVolume))
+                VolumeDTO.ImagemVolume = volumeEncontrado.ImagemVolume;
+
+            VolumeDTO.DiretorioImagemVolume = volumeEncontrado.DiretorioImagemVolume;
+            _context.Entry(volumeEncontrado).CurrentValues.SetValues(VolumeDTO);
+            volumeEncontrado.DataAlteracao = DateTime.Now;
+
+            return volumeEncontrado;
         }
 
-        public async Task<Novel> RetornaObraPorId(int obraId)
+
+        public void ExcluiVolumeNovel(VolumeNovel volumeNovel)
         {
-            // TODO validar se dá erro quando ocorrer a refatoração do Crud do Volume - Olha eu aqui ainda e vou continuar até a próxima refatoração ^^
-            return await _obraRepository.RetornaObraPorId(obraId);
+            ExcluiEntidadeBancoDados(volumeNovel);
         }
 
-        public void AtualizaObraPorVolume(Novel obra, VolumeNovel volume)
+        public void ExcluiVolumeComic(VolumeComic volumeComic)
+        {
+            ExcluiEntidadeBancoDados(volumeComic);
+        }
+
+
+        public void AtualizaNovelPorVolume(Novel novel, VolumeNovel volumeNovel)
         {
             var parametros = new
             {
-                obra.Id,
-                ImagemCapaUltimoVolume = volume.ImagemVolume,
-                NumeroUltimoVolume = volume.DescritivoVolume,
-                SlugUltimoVolume = volume.Slug
+                novel.Id,
+                ImagemCapaUltimoVolume = volumeNovel.ImagemVolume,
+                NumeroUltimoVolume = TratamentoDeStrings.RetornaDescritivoVolume(volumeNovel.Numero),
+                SlugUltimoVolume = volumeNovel.Slug
             };
 
-            var sql = @"UPDATE Obra
+            var sql = @"UPDATE Novels
                            SET ImagemCapaUltimoVolume = @ImagemCapaUltimoVolume,
                                NumeroUltimoVolume = @NumeroUltimoVolume,
                                SlugUltimoVolume = @SlugUltimoVolume
@@ -113,22 +140,89 @@ namespace TsundokuTraducoes.Api.Repository
             _contextDapper.Query(sql, parametros);
         }
 
-        public async Task<VolumeNovel> RetornaVolumeExistente(int obraId, string numeroVolume)
+        public void AtualizaComicPorVolume(Comic comic, VolumeComic volumeComic)
         {
             var parametros = new
             {
-                ObraId = obraId,
-                NumeroVolume = numeroVolume
+                comic.Id,
+                ImagemCapaUltimoVolume = volumeComic.ImagemVolume,
+                NumeroUltimoVolume = TratamentoDeStrings.RetornaDescritivoVolume(volumeComic.Numero),
+                SlugUltimoVolume = volumeComic.Slug
+            };
+
+            var sql = @"UPDATE Comics
+                           SET ImagemCapaUltimoVolume = @ImagemCapaUltimoVolume,
+                               NumeroUltimoVolume = @NumeroUltimoVolume,
+                               SlugUltimoVolume = @SlugUltimoVolume
+                         WHERE Id = @Id;";
+
+            _contextDapper.Query(sql, parametros);
+        }
+
+
+        public async Task<VolumeNovel> RetornaVolumeNovelExistente(VolumeDTO volumeDTO)
+        {
+            var parametros = new
+            {
+                NovelId = volumeDTO.NovelId,
+                Numero = volumeDTO.Numero,
+                Slug = volumeDTO.Slug,
             };
 
             var sql = @"SELECT * 
-                          FROM Volume 
-                         WHERE ObraId = @ObraId 
-                           AND Numero = @NumeroVolume";
+                          FROM VolumesNovel
+                         WHERE NovelId = @NovelId
+                           AND (Numero LIKE @Numero OR Slug LIKE @Slug);";
 
 
             var volumeExistente = await _contextDapper.QueryAsync<VolumeNovel>(sql, parametros);
             return volumeExistente.FirstOrDefault();
+        }
+
+        public async Task<VolumeComic> RetornaVolumeComicExistente(VolumeDTO volumeDTO)
+        {
+            var parametros = new
+            {
+                ComicId = volumeDTO.ComicId,
+                Numero = volumeDTO.Numero,
+                Slug = volumeDTO.Slug,
+            };
+
+            var sql = @"SELECT * 
+                          FROM VolumesComic
+                         WHERE ComicId = @ComicId
+                           AND (Numero LIKE @Numero OR Slug LIKE @Slug);";
+
+
+            var volumeExistente = await _contextDapper.QueryAsync<VolumeComic>(sql, parametros);
+            return volumeExistente.FirstOrDefault();
+        }
+
+
+        private string RetornaQueryListaVolumes(Guid? novelId)
+        {
+            var condicao = (novelId != null) ? $"WHERE NovelId = @NovelId" : "";
+            return $@"SELECT *
+                       FROM VolumesNovel
+                      {condicao}
+                      ORDER BY Numero ASC";
+        }
+
+        private string RetornaQueryListaComics(Guid? comicId)
+        {
+            var condicao = (comicId != null) ? $"WHERE ComicId = @ComicId" : "";
+            return $@"SELECT *
+                       FROM VolumesComic
+                      {condicao}
+                      ORDER BY Numero ASC";
+        }
+
+
+        private bool VerificaCampoVazio(string campoVolumeEncontrado, string campoVolumeDTO)
+        {
+            return string.IsNullOrEmpty(campoVolumeDTO) ||
+               !string.IsNullOrEmpty(campoVolumeDTO) && campoVolumeDTO.ToLower().Contains("null") ||
+               !string.IsNullOrEmpty(campoVolumeEncontrado) && campoVolumeEncontrado.ToLower().Contains("null");
         }
     }
 }

@@ -11,8 +11,8 @@ namespace TsundokuTraducoes.Api.Profiles
         {
             CreateMap<CapituloDTO, CapituloNovel>();
             CreateMap<CapituloDTO, CapituloComic>();
-            CreateMap<CapituloNovel, RetornoCapituloNovel>();
-            CreateMap<CapituloComic, RetornoCapituloComic>();
+            CreateMap<CapituloNovel, RetornoCapitulo>();
+            CreateMap<CapituloComic, RetornoCapitulo>();
         }
     }
 }

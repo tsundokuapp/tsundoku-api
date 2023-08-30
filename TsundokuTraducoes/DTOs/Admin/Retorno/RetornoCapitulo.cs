@@ -1,13 +1,12 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using TsundokuTraducoes.Api.Models.Volume;
+﻿using Newtonsoft.Json;
+using System;
+using TsundokuTraducoes.Api.Utilidades;
 
-namespace TsundokuTraducoes.Api.Models.Capitulo
+namespace TsundokuTraducoes.Api.DTOs.Admin.Retorno
 {
-    public class CapituloNovel
+    [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
+    public class RetornoCapitulo
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public string Numero { get; set; }
         public string Parte { get; set; }
@@ -16,15 +15,16 @@ namespace TsundokuTraducoes.Api.Models.Capitulo
         public string Slug { get; set; }
         public string UsuarioInclusao { get; set; }
         public string UsuarioAlteracao { get; set; }
-        public DateTime DataInclusao { get; set; } = DateTime.Now;
-        public DateTime DataAlteracao { get; set; }
+        public string DataInclusao { get; set; }
+        public string DataAlteracao { get; set; }
         public string DiretorioImagemCapitulo { get; set; }
         public int OrdemCapitulo { get; set; }
         public bool EhIlustracoesNovel { get; set; }
         public Guid VolumeId { get; set; }
-        public virtual VolumeNovel Volume { get; set; }
         public string Tradutor { get; set; }
         public string Revisor { get; set; }
         public string QC { get; set; }
-    }
+        public string ListaImagens { get; set; }
+        public string DescritivoCapitulo => TratamentoDeStrings.RetornaDescritivoCapitulo(Numero, Parte);
+    }   
 }

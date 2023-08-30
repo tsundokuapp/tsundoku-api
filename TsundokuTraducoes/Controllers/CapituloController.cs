@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Services.Interfaces;
 
 namespace TsundokuTraducoes.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class CapituloController : ControllerBase
     {
+        // TODO - Criar as verificações de request, para saber se estar vindo corretamente.
         private readonly ICapituloService _capituloService;
 
         public CapituloController(ICapituloService capituloService)
@@ -16,119 +17,128 @@ namespace TsundokuTraducoes.Controllers
             _capituloService = capituloService;
         }
 
-        [HttpGet]
-        public IActionResult RetornaListaCapitulos()
+        [HttpGet("api/capitulo/")]
+        public async Task<IActionResult> RetornaListaCapitulos([FromQuery] Guid? volumeId)
         {
-            var result = _capituloService.RetornaListaCapitulos();
+            var result = await _capituloService.RetornaListaCapitulos(volumeId);
+            if (result.Value.Count == 0)
+                return NoContent();
+
+            return Ok(result.Value);
+        }
+
+
+        [HttpGet("api/capitulo/novel/{id}")]
+        public async Task<IActionResult> RetornaCapituloNovelPorId(Guid id)
+        {
+            var result = await _capituloService.RetornaCapituloNovelPorId(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
 
-        #region Comic
-
-        [HttpGet]
-        [Route("comic/{id}")]
-        public IActionResult RetornaCapituloComicPorId(int id)
+        [HttpGet("api/capitulo/comic/{id}")]
+        public async Task<IActionResult> RetornaCapituloComicPorId(Guid id)
         {
-            var result = _capituloService.RetornaCapituloComicPorId(id);
+            var result = await _capituloService.RetornaCapituloComicPorId(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
             return Ok(result.Value);
         }
 
-        [HttpPost]
-        [Route("comic")]
-        public async Task<IActionResult> AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
-        {
-            var result = await _capituloService.AdicionaCapituloComic(capituloDTO);
-            if (result.IsFailed)
-                return BadRequest(result.Errors[0].Message);
 
-            return Ok(result.Value);
-        }
-
-        [HttpPut]
-        [Route("comic")]
-        public async Task<IActionResult> AtualizaCapituloComic([FromForm] CapituloDTO capituloDTO)
-        {
-            var result = await _capituloService.AtualizaCapituloComic(capituloDTO);
-            if (result.IsFailed)
-                return BadRequest(result.Errors[0].Message);
-
-            return Ok(result.Value);
-        }
-
-        [HttpDelete]
-        [Route("comic/{id}")]
-        public IActionResult ExcluiCapituloComic(int id)
-        {
-            //var result = _capituloService.ExcluiCapituloComic(id);
-            //if (result.IsFailed)
-            //    return BadRequest(result.Errors[0].Message);
-
-            //return Ok(result.Successes[0].Message);
-
-            return Ok("Contatar os administradores do site para essa solicitação");
-        }
-
-        #endregion
-
-        #region Novel
-
-        [HttpGet]
-        [Route("novel/{id}")]
-        public IActionResult RetornaCapituloNovelPorId(int id)
-        {
-            var result = _capituloService.RetornaCapituloNovelPorId(id);
-            if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
-
-            return Ok(result.Value);
-        }
-
-        [HttpPost]
-        [Route("novel")]
+        [HttpPost("api/capitulo/novel/")]
         public async Task<IActionResult> AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
             var result = await _capituloService.AdicionaCapituloNovel(capituloDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Ok(result.Value);
+            return Created($"api/capitulo/novel/{result.Value.Id}", result.Value);
         }
 
-        [HttpPut]
-        [Route("novel")]
+        [HttpPost("api/capitulo/comic/")]
+        public async Task<IActionResult> AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
+        {
+            var result = await _capituloService.AdicionaCapituloComic(capituloDTO);
+            if (result.IsFailed)
+                return BadRequest(result.Errors[0].Message);
+
+            return Created($"api/capitulo/comic/{result.Value.Id}", result.Value);
+        }
+
+
+        [HttpPut("api/capitulo/novel/")]
         public async Task<IActionResult> AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
             var result = await _capituloService.AtualizaCapituloNovel(capituloDTO);
             if (result.IsFailed)
-                return BadRequest(result.Errors[0].Message);
+            {
+                var mensagemErro = result.Errors[0].Message;
+                if (mensagemErro.Contains("não encontrado"))
+                    return NotFound(mensagemErro);
+
+                return BadRequest(mensagemErro);
+            }
 
             return Ok(result.Value);
         }
 
-        [HttpDelete]
-        [Route("novel/{id}")]
-        public IActionResult ExcluiCapitulo(int id)
+        [HttpPut("api/capitulo/comic/")]
+        public async Task<IActionResult> AtualizaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
-            //var result = _capituloService.ExcluiCapituloNovel(id);
-            //if (result.IsFailed)
-            //    return BadRequest(result.Errors[0].Message);
+            var result = await _capituloService.AtualizaCapituloComic(capituloDTO);
+            if (result.IsFailed)
+            {
+                var mensagemErro = result.Errors[0].Message;
+                if (mensagemErro.Contains("não encontrado"))
+                    return NotFound(mensagemErro);
 
-            //return Ok(result.Successes[0].Message);
+                return BadRequest(mensagemErro);
+            }
 
-            return Ok("Contatar os administradores do site para essa solicitação");
+            return Ok(result.Value);
         }
 
-        #endregion
 
-        [HttpGet]
-        [Route("dados-obra/{id}")]
-        public async Task<IActionResult> RetornaDadosObra(int id)
+        [HttpDelete("api/capitulo/novel/{id}")]
+        public async Task<IActionResult> ExcluiCapituloNovel(Guid id)
+        {
+            var result = await _capituloService.ExcluiCapituloNovel(id);
+            if (result.IsFailed)
+            {
+                var mensagemErro = result.Errors[0].Message;
+                if (mensagemErro.Contains("não encontrado"))
+                    return NotFound(mensagemErro);
+                                
+                return BadRequest(mensagemErro);
+            }
+
+            return Ok(result.Successes[0].Message);
+        }
+
+        [HttpDelete("api/capitulo/comic/{id}")]
+        public async Task<IActionResult> ExcluiCapituloComic(Guid id)
+        {
+            var result = await _capituloService.ExcluiCapituloComic(id);
+            if (result.IsFailed)
+            {
+                var mensagemErro = result.Errors[0].Message;
+                if (mensagemErro.Contains("não encontrado"))
+                    return NotFound(mensagemErro);
+                
+                return BadRequest(mensagemErro);
+            }
+
+            return Ok(result.Successes[0].Message);
+        }
+
+
+        //Talvez seja descontinuado
+        [HttpGet("dados-obra/{id}")]
+        public async Task<IActionResult> RetornaDadosObra(Guid id)
         {
             var result = await _capituloService.RetornaDadosObra(id);
             if (result.IsFailed)
@@ -137,9 +147,8 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Value);
         }
 
-        [HttpGet]
-        [Route("dados-capitulo/{id}")]
-        public async Task<IActionResult> RetornaDadosCapitulo(int id)
+        [HttpGet("dados-capitulo/{id}")] 
+        public async Task<IActionResult> RetornaDadosCapitulo(Guid id)
         {
             var result = await _capituloService.RetornaDadosCapitulo(id);
             if (result.IsFailed)

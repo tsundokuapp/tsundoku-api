@@ -8,7 +8,7 @@ namespace TsundokuTraducoes.Api.Utilidades
         public static string RetornaStringDiretorio(string stringAhSerTratada)
         {
             var stringSlugAuxiliar = RetornaStringSlug(stringAhSerTratada);
-            var matrizStringSlugAuxiliar = stringSlugAuxiliar.Split(new string[] { Constantes.Hifen }, StringSplitOptions.RemoveEmptyEntries);
+            var matrizStringSlugAuxiliar = stringSlugAuxiliar.Split(new string[] { "-" }, StringSplitOptions.RemoveEmptyEntries);
             var stringTratadaTitleCase = string.Empty;
             foreach (var stringSlug in matrizStringSlugAuxiliar)
             {
@@ -21,13 +21,13 @@ namespace TsundokuTraducoes.Api.Utilidades
 
         public static string RetornaStringSlug(string stringAhSerTratada)
         {
-            return RetornaStringTratadaComRegex(stringAhSerTratada, Constantes.Hifen).ToLower();
+            return RetornaStringTratadaComRegex(stringAhSerTratada, "-").ToLower();
         }
 
         public static string RetornaStringSlugTitleCase(string stringAhSerTratada)
         {
             var stringSlugAuxiliar = RetornaStringSlug(stringAhSerTratada);
-            var matrizStringSlugAuxiliar = stringSlugAuxiliar.Split(new string[] { Constantes.Hifen }, StringSplitOptions.RemoveEmptyEntries);
+            var matrizStringSlugAuxiliar = stringSlugAuxiliar.Split(new string[] { "-" }, StringSplitOptions.RemoveEmptyEntries);
             var stringTratadaTitleCase = string.Empty;
             foreach (var stringSlug in matrizStringSlugAuxiliar)
             {
@@ -64,9 +64,58 @@ namespace TsundokuTraducoes.Api.Utilidades
         }
 
         public static bool ValidaCorHexaDecimal(string corHexaDeximal)
-        {            
+        {
             var regexPattern = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
             return Regex.Match(corHexaDeximal, regexPattern).Success;
+        }
+
+        public static string RetornaDescritivoCapitulo(string numero, string parte)
+        {
+            string descritivoCapitulo;
+
+            if (int.TryParse(numero, out int numeroInt))
+            {
+                descritivoCapitulo = $"Capítulo {numeroInt:#00}";
+            }
+            else
+            {
+                if (double.TryParse(numero, out double numeroDouble))
+                {
+                    descritivoCapitulo = $"Capítulo {numeroDouble:#00.0}";
+                }
+                else
+                {
+                    descritivoCapitulo = numero;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(parte))
+            {
+                // TODO - Retirar esse tratamento quando adicionar as validações na controller, tem que ser um valor inteiro
+                if (parte.Contains(','))
+                {
+                    parte = parte.Substring(0, parte.IndexOf(','));
+                }
+                
+                var parteNumero = Convert.ToInt32(parte);
+                descritivoCapitulo += $" - Parte {parteNumero:00}";
+            }
+
+            return descritivoCapitulo;
+        }
+
+        public static string RetornaDescritivoVolume(string numero)
+        {
+            var unico = (numero.ToLower() == "unico" || numero.ToLower() == "único");
+            if (unico)
+            {
+                return $"Volume Único";
+            }
+            else
+            {
+                var numeroVolume = Convert.ToInt32(numero);
+                return $"Volume {numeroVolume:00}";
+            }
         }
     }
 }

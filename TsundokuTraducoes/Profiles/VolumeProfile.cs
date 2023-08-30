@@ -10,7 +10,9 @@ namespace TsundokuTraducoes.Api.Profiles
         public VolumeProfile()
         {
             CreateMap<VolumeDTO, VolumeNovel>();
+            CreateMap<VolumeDTO, VolumeComic>();
             CreateMap<VolumeNovel, RetornoVolume>();
+            CreateMap<VolumeComic, RetornoVolume>();
         }
     }
 }
