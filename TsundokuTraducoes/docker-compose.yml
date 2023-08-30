@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  database:
+    image: mysql
+    container_name: database
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=DbTsundoku
+      - MYSQL_USER=tsun
+      - MYSQL_PASSWORD=1234
+    volumes:
+      - ./database:/var/lib/mysql
