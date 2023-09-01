@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TsundokuTraducoes.Api.DTOs.Admin;
 using System.Threading.Tasks;
+using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Models.Capitulo;
 using TsundokuTraducoes.Api.Models.Obra;
 
@@ -9,29 +9,27 @@ namespace TsundokuTraducoes.Api.Repository.Interfaces
 {
     public interface ICapituloRepository
     {
-        void Adiciona<T>(T entity) where T : class;
-        void Atualiza<T>(T entity) where T : class;
-        void Exclui<T>(T entity) where T : class;
-        bool AlteracoesSalvas();
+        Task<List<CapituloNovel>> RetornaListaCapitulosNovel(Guid? volumeId);
+        Task<List<CapituloComic>> RetornaListaCapitulosComic(Guid? volumeId);
 
-        #region Comic
+        Task<CapituloNovel> RetornaCapituloNovelPorId(Guid capituloId);
+        Task<CapituloComic> RetornaCapituloComicPorId(Guid capituloId);
 
-        CapituloComic RetornaCapituloComicPorId(int capituloId);
-        CapituloComic AtualizaCapituloComic(CapituloDTO capituloDTO);
-        CapituloComic RetornaCapituloComicExistente(int idVolume, CapituloDTO capituloDTO);
+        Task AdicionaCapituloNovel(CapituloNovel volumeNovel);
+        Task AdicionaCapituloComic(CapituloComic volumeComic);
 
-        #endregion
+        Task<CapituloNovel> AtualizaCapituloNovel(CapituloDTO capituloDTO);
+        Task<CapituloComic> AtualizaCapituloComic(CapituloDTO capituloDTO);
 
-        #region Novel
+        void ExcluiCapituloNovel(CapituloNovel volumeNovel);
+        void ExcluiCapituloComic(CapituloComic volumeComic);
 
-        CapituloNovel RetornaCapituloNovelPorId(int capituloId);
-        CapituloNovel AtualizaCapituloNovel(CapituloDTO capituloDTO);
-        CapituloNovel RetornaCapituloNovelExistente(int idVolume, CapituloDTO capituloDTO);
+        Task<CapituloNovel> RetornaCapituloNovelExistente(CapituloDTO capituloDTO);
+        Task<CapituloComic> RetornaCapituloComicExistente(CapituloDTO capituloDTO);
 
-        #endregion
+        void AtualizaNovelPorCapitulo(Novel novel, CapituloNovel capituloNovel);
+        void AtualizaComicPorCapitulo(Comic comic, CapituloComic capituloComic);
 
-        void AtualizaObraPorCapitulo(Novel obra, string descritivoCapitulo, string slug, DateTime dataInclusao);
-        List<CapituloDTO> RetornaListaCapitulos();        
-        Task<Novel> RetornaObraPorId(int obraId);
+        Task<bool> AlteracoesSalvas();
     }
 }

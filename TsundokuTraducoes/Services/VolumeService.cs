@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Api.Models.Volume;
-using TsundokuTraducoes.Api.Repository;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using TsundokuTraducoes.Api.Services.Interfaces;
-using TsundokuTraducoes.Api.Utilidades;
 
 namespace TsundokuTraducoes.Api.Services
 {
@@ -18,137 +16,244 @@ namespace TsundokuTraducoes.Api.Services
         private readonly IMapper _mapper;
         private readonly IVolumeRepository _volumeRepository;
         private readonly IObraRepository _obraRepository;
+        private readonly IImagemService _imagemService;
 
-        public VolumeService(IMapper mapper, IVolumeRepository repository, IObraRepository obraRepository)
+        public VolumeService(IMapper mapper, IVolumeRepository repository, IObraRepository obraRepository, IImagemService imagemService)
         {
             _mapper = mapper;
             _volumeRepository = repository;
             _obraRepository = obraRepository;
+            _imagemService = imagemService;
         }
 
-        public async Task<Result<List<RetornoVolume>>> RetornaListaVolume(int? idObra)
+        public async Task<Result<List<RetornoVolume>>> RetornaListaVolumes(Guid? idObra)
         {
-            var listaRetornoVolumes = new List<RetornoVolume>();
-            var listaVolumes = await _volumeRepository.RetornaListaVolumes(idObra);
+            var listaVolumes = new List<RetornoVolume>();
+            var listaVolumesNovel = await _volumeRepository.RetornaListaVolumesNovel(idObra);
+            var listaVolumesComic = await _volumeRepository.RetornaListaVolumesComic(idObra);
 
-            if (listaVolumes.Count > 0)
+            if (listaVolumesNovel.Count > 0)
             {
-                foreach (var volume in listaVolumes)
+                foreach (var volume in listaVolumesNovel)
                 {
-                    listaRetornoVolumes.Add(TrataRetornoVolume(volume));
+                    listaVolumes.Add(TrataRetornoVolumeNovel(volume));
                 }
             }
 
-            return Result.Ok(listaRetornoVolumes);
+            if (listaVolumesComic.Count > 0)
+            {
+                foreach (var volume in listaVolumesComic)
+                {
+                    listaVolumes.Add(TrataRetornoVolumeComic(volume));
+                }
+            }
+
+            return Result.Ok(listaVolumes);
         }
 
-        public async Task<Result<RetornoVolume>> RetornaVolumePorId(int id)
+
+        public async Task<Result<RetornoVolume>> RetornaVolumeNovelPorId(Guid id)
         {
-            var volume = await _volumeRepository.RetornaVolumePorId(id);
+            var volume = await _volumeRepository.RetornaVolumeNovelPorId(id);
             if (volume == null)
                 return Result.Fail("Volume não encontrado!");
 
-            var retornoVolume = TrataRetornoVolume(volume);
+            var retornoVolume = TrataRetornoVolumeNovel(volume);
             return Result.Ok(retornoVolume);
         }
 
-        public async Task<Result<RetornoVolume>> AdicionaVolume(VolumeDTO volumeDTO)
+        public async Task<Result<RetornoVolume>> RetornaVolumeComicPorId(Guid id)
+        {
+            var volume = await _volumeRepository.RetornaVolumeComicPorId(id);
+            if (volume == null)
+                return Result.Fail("Volume não encontrado!");
+
+            var retornoVolume = TrataRetornoVolumeComic(volume);
+            return Result.Ok(retornoVolume);
+        }
+
+
+        public async Task<Result<RetornoVolume>> AdicionaVolumeNovel(VolumeDTO volumeDTO)
         {
             var volume = _mapper.Map<VolumeNovel>(volumeDTO);
-            var obra = await _obraRepository.RetornaObraPorId(volumeDTO.ObraId);
-            var volumeExistente = await _volumeRepository.RetornaVolumeExistente(volumeDTO.ObraId, volumeDTO.Numero);
+            var novel = await _obraRepository.RetornaNovelPorId(volumeDTO.ObraId);
+            var volumeExistente = await _volumeRepository.RetornaVolumeNovelExistente(volumeDTO);
 
-            if (obra == null)
+            if (novel == null)
                 return Result.Fail("Não foi encontrada a obra informada");
 
             if (volumeExistente != null)
                 return Result.Fail("Volume já postado!");
 
-            if (volumeDTO.ImagemCapaVolumeFile != null)
+            if (volumeDTO.ImagemVolumeFile != null)
             {
-                var retornoProcessoImagem = new Imagens().ProcessaUploadImagemCapaVolume(volumeDTO.ImagemCapaVolumeFile, volume, obra, volumeDTO);
-                if (retornoProcessoImagem.IsFailed)
-                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
+                var result = _imagemService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, novel.DiretorioImagemObra);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
+
+                volume.DiretorioImagemVolume = volumeDTO.DiretorioImagemVolume;
+                volume.ImagemVolume = volumeDTO.ImagemVolume;
             }
             else
             {
-                return Result.Fail("Erro ao adicionar volume da obra, imagem capa do volume não enviada!");
+                return Result.Fail("Erro ao adicionar volume da obra, capa do volume não enviada!");
             }
 
-            _volumeRepository.AdicionaVolume(volume);
-            if (_volumeRepository.AlteracoesSalvas())
+            volume.DataAlteracao = volume.DataInclusao;
+            await _volumeRepository.AdicionaVolumeNovel(volume);
+            if (_volumeRepository.AlteracoesSalvas().Result)
             {
-                _volumeRepository.AtualizaObraPorVolume(obra, volume);
-                var retornoVolume = TrataRetornoVolume(volume);
+                _volumeRepository.AtualizaNovelPorVolume(novel, volume);
+                var retornoVolume = TrataRetornoVolumeNovel(volume);
                 return Result.Ok(retornoVolume);
             }
 
             return Result.Fail("Erro ao adicionar volume da obra!");
         }
 
-        public async Task<Result<RetornoVolume>> AtualizaVolume(VolumeDTO volumeDTO)
+        public async Task<Result<RetornoVolume>> AdicionaVolumeComic(VolumeDTO volumeDTO)
         {
-            var volumeEncontrado = await _volumeRepository.RetornaVolumePorId(volumeDTO.Id);
+            var volume = _mapper.Map<VolumeComic>(volumeDTO);
+            var comic = await _obraRepository.RetornaComicPorId(volumeDTO.ObraId);
+            var volumeExistente = await _volumeRepository.RetornaVolumeComicExistente(volumeDTO);
+
+            if (comic == null)
+                return Result.Fail("Não foi encontrada a obra informada");
+
+            if (volumeExistente != null)
+                return Result.Fail("Volume já postado!");
+
+            if (volumeDTO.ImagemVolumeFile != null)
+            {
+                var result = _imagemService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, comic.DiretorioImagemObra);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
+
+                volume.DiretorioImagemVolume = volumeDTO.DiretorioImagemVolume;
+                volume.ImagemVolume = volumeDTO.ImagemVolume;
+            }
+            else
+            {
+                return Result.Fail("Erro ao adicionar volume da obra, capa do volume não enviada!");
+            }
+
+            volume.DataAlteracao = volume.DataInclusao;
+            await _volumeRepository.AdicionaVolumeComic(volume);
+            if (_volumeRepository.AlteracoesSalvas().Result)
+            {
+                _volumeRepository.AtualizaComicPorVolume(comic, volume);
+                var retornoVolume = TrataRetornoVolumeComic(volume);
+                return Result.Ok(retornoVolume);
+            }
+
+            return Result.Fail("Erro ao adicionar volume da obra!");
+        }
+
+
+        public async Task<Result<RetornoVolume>> AtualizaVolumeNovel(VolumeDTO volumeDTO)
+        {
+            var volumeEncontrado = await _volumeRepository.RetornaVolumeNovelPorId(volumeDTO.Id);
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
-            if (volumeDTO.ImagemCapaVolumeFile != null)
+            if (volumeDTO.ImagemVolumeFile != null)
             {
-                var obra = await _obraRepository.RetornaObraPorId(volumeDTO.ObraId);
-                if (obra == null)
-                    return Result.Fail("Não foi encontrada a obra informada");
+                var novel = await _obraRepository.RetornaNovelPorId(volumeDTO.ObraId);
+                if (novel == null)
+                    return Result.Fail("Não foi encontrada a obra informada");                
 
-                var retornoProcessoImagem = new Imagens().ProcessaUploadImagemCapaVolume(volumeDTO.ImagemCapaVolumeFile, volumeEncontrado, obra, volumeDTO);
-                if (retornoProcessoImagem.IsFailed)
-                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
+                var result = _imagemService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, novel.DiretorioImagemObra);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
+
+                volumeEncontrado.DiretorioImagemVolume = volumeDTO.DiretorioImagemVolume;
+                volumeEncontrado.ImagemVolume = volumeDTO.ImagemVolume;
             }
 
-            volumeEncontrado = _volumeRepository.AtualizaVolume(volumeDTO);
-            if (!_volumeRepository.AlteracoesSalvas())
+            volumeEncontrado = _volumeRepository.AtualizaVolumeNovel(volumeDTO);
+            if (!_volumeRepository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao atualizar o volume!");
 
-            var retornoVolume = TrataRetornoVolume(volumeEncontrado);
+            var retornoVolume = TrataRetornoVolumeNovel(volumeEncontrado);
             return Result.Ok(retornoVolume);
         }
 
-        public async Task<Result<bool>> ExcluiVolume(int id)
+        public async Task<Result<RetornoVolume>> AtualizaVolumeComic(VolumeDTO volumeDTO)
         {
-            var volumeEncontrado = await _volumeRepository.RetornaVolumePorId(id);
+            var volumeEncontrado = await _volumeRepository.RetornaVolumeComicPorId(volumeDTO.Id);
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
-            _volumeRepository.ExcluiVolume(volumeEncontrado);
-            if (_volumeRepository.AlteracoesSalvas())
-                return Result.Ok().WithSuccess("Volume excluído com sucesso!");
+            if (volumeDTO.ImagemVolumeFile != null)
+            {
+                var comic = await _obraRepository.RetornaComicPorId(volumeDTO.ObraId);
+                if (comic == null)
+                    return Result.Fail("Não foi encontrada a obra informada");
 
-            return Result.Fail("Erro ao excluir o volume!");
+                var result = _imagemService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, comic.DiretorioImagemObra);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
+
+                volumeEncontrado.DiretorioImagemVolume = volumeDTO.DiretorioImagemVolume;
+                volumeEncontrado.ImagemVolume = volumeDTO.ImagemVolume;
+            }
+
+            volumeEncontrado = _volumeRepository.AtualizaVolumeComic(volumeDTO);
+            if (!_volumeRepository.AlteracoesSalvas().Result)
+                return Result.Fail("Erro ao atualizar o volume!");
+
+            var retornoVolume = TrataRetornoVolumeComic(volumeEncontrado);
+            return Result.Ok(retornoVolume);
         }
 
-        private RetornoVolume TrataRetornoVolume(VolumeNovel volume)
+
+        public async Task<Result<bool>> ExcluiVolumeNovel(Guid novelId)
         {
-            var retornoVolume = _mapper.Map<RetornoVolume>(volume);
-            retornoVolume.DataCadastro = volume.DataCadastro.ToString("dd/MM/yyyy HH:mm:ss");
-            retornoVolume.DataAlteracao = volume.DataAlteracao != null ? volume.DataAlteracao?.ToString("dd/MM/yyyy HH:mm:ss") : null;
-            retornoVolume.UsuarioAlteracao = !string.IsNullOrEmpty(volume.UsuarioAlteracao) ? volume.UsuarioAlteracao : null;
+            var volumeEncontrado = await _volumeRepository.RetornaVolumeNovelPorId(novelId);
+            if (volumeEncontrado == null)
+                return Result.Fail("Volume não encontrado!");
 
-            if (volume.ListaCapitulo.Count > 0)
-            {
-                retornoVolume.ListaCapituloNovel = new List<RetornoCapituloNovel>();
-                foreach (var capituloNovel in volume.ListaCapitulo)
-                {
-                    retornoVolume.ListaCapituloNovel.Add(_mapper.Map<RetornoCapituloNovel>(capituloNovel));
-                }
-            }
+            _volumeRepository.ExcluiVolumeNovel(volumeEncontrado);
+            _imagemService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume);            
 
-            if (volume.ListaCapitulo.Count > 0)
-            {
-                retornoVolume.ListaCapituloComic = new List<RetornoCapituloComic>();
-                foreach (var capituloComic in volume.ListaCapitulo)
-                {
-                    retornoVolume.ListaCapituloComic.Add(_mapper.Map<RetornoCapituloComic>(capituloComic));
-                }
-            }
+            if (!_volumeRepository.AlteracoesSalvas().Result)
+                return Result.Fail("Erro ao excluir o volume!");
 
+
+            return Result.Ok().WithSuccess("Volume excluído com sucesso!");
+        }
+
+        public async Task<Result<bool>> ExcluiVolumeComic(Guid comicId)
+        {
+            var volumeEncontrado = await _volumeRepository.RetornaVolumeComicPorId(comicId);
+            if (volumeEncontrado == null)
+                return Result.Fail("Volume não encontrado!");
+
+            _volumeRepository.ExcluiVolumeComic(volumeEncontrado);
+            _imagemService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume);
+
+            if (!_volumeRepository.AlteracoesSalvas().Result)
+                return Result.Fail("Erro ao excluir o volume!");
+
+            return Result.Ok().WithSuccess("Volume excluído com sucesso!");
+        }
+
+
+        private RetornoVolume TrataRetornoVolumeNovel(VolumeNovel volumeNovel)
+        {
+            var retornoVolume = _mapper.Map<RetornoVolume>(volumeNovel);
+            retornoVolume.DataInclusao = volumeNovel.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoVolume.DataAlteracao = volumeNovel.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoVolume.UsuarioAlteracao = !string.IsNullOrEmpty(volumeNovel.UsuarioAlteracao) ? volumeNovel.UsuarioAlteracao : null;
+            return retornoVolume;
+        }
+
+        private RetornoVolume TrataRetornoVolumeComic(VolumeComic volumeComic)
+        {
+            var retornoVolume = _mapper.Map<RetornoVolume>(volumeComic);
+            retornoVolume.DataInclusao = volumeComic.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoVolume.DataAlteracao = volumeComic.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoVolume.UsuarioAlteracao = !string.IsNullOrEmpty(volumeComic.UsuarioAlteracao) ? volumeComic.UsuarioAlteracao : null;
             return retornoVolume;
         }
     }

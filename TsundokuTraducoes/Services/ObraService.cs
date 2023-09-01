@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using FluentResults;
-using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Api.Models.Obra;
-using TsundokuTraducoes.Api.Models.Recomendacao.Comic;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using TsundokuTraducoes.Api.Services.Interfaces;
 using TsundokuTraducoes.Api.Utilidades;
@@ -16,62 +14,82 @@ namespace TsundokuTraducoes.Api.Services
 {
     public class ObraService : IObraService
     {
+        private readonly IMapper _mapper;
         private readonly IObraRepository _repository;
         private readonly IGeneroRepository _generoRepository;
-        private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IImagemService _imagemService;
 
-        public ObraService(IObraRepository repository, IGeneroRepository generoRepository, IMapper mapper, IWebHostEnvironment hostEnvironment)
+        public ObraService(IObraRepository repository, IGeneroRepository generoRepository, IMapper mapper, IImagemService imagemService)
         {
             _repository = repository;
-            _generoRepository = generoRepository;   
+            _generoRepository = generoRepository;
             _mapper = mapper;
-            _webHostEnvironment = hostEnvironment;
+            _imagemService = imagemService;
         }
 
         public async Task<Result<List<RetornoObra>>> RetornaListaObras()
         {
             var listaRetornoObras = new List<RetornoObra>();
-            var listaObras = await _repository.RetornaListaObras();            
+            var listaNovels = await _repository.RetornaListaNovels();
+            var listaComics = await _repository.RetornaListaComics();
 
-            if (listaObras.Count > 0)
+            if (listaNovels.Count > 0)
             {
-                foreach (var obra in listaObras)
+                foreach (var obra in listaNovels)
                 {
-                    listaRetornoObras.Add(await TrataRetornoObra(obra));
+                    listaRetornoObras.Add(await TrataRetornoNovel(obra));
+                }
+            }
+
+            if (listaComics.Count > 0)
+            {
+                foreach (var comic in listaComics)
+                {
+                    listaRetornoObras.Add(await TrataRetornoComic(comic));
                 }
             }
 
             return Result.Ok(listaRetornoObras);
         }
 
-        public async Task<Result<RetornoObra>> RetornaObraPorId(int id)
-        {
-            var obra = await _repository.RetornaObraPorId(id);
-            if (obra == null)
-                return Result.Fail("Obra não encontrada!");
 
-            var retornoObra = await TrataRetornoObra(obra);
-            return Result.Ok().ToResult(retornoObra);
+        public async Task<Result<RetornoObra>> RetornaNovelPorId(Guid id)
+        {
+            var novel = await _repository.RetornaNovelPorId(id);
+            if (novel == null)
+                return Result.Fail("Novel não encontrada!");
+
+            var retornoNovel = await TrataRetornoNovel(novel);
+            return Result.Ok().ToResult(retornoNovel);
         }
 
-        public async Task<Result<RetornoObra>> AdicionaObra(ObraDTO obraDTO)
+        public async Task<Result<RetornoObra>> RetornaComicPorId(Guid id)
         {
-            var obra = _mapper.Map<Novel>(obraDTO);
-            var obraExistente = await _repository.RetornaObraExistente(obraDTO.Titulo);
+            var comic = await _repository.RetornaComicPorId(id);
+            if (comic == null)
+                return Result.Fail("Comic não encontrada!");
 
-            if (obraExistente != null)
-                return Result.Fail("Obra já postada!");
+            var retornoComic = await TrataRetornoComic(comic);
+            return Result.Ok().ToResult(retornoComic);
+        }
 
-            if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra)) 
-                return Result.Fail("Erro ao adicionar a Obra, código hexadecimal informada fora do padrão!");
+
+        public async Task<Result<RetornoObra>> AdicionaNovel(ObraDTO obraDTO)
+        {
+            var novel = _mapper.Map<Novel>(obraDTO);
+            var novelExistente = await _repository.RetornaNovelExistente(obraDTO.Titulo);
+
+            if (novelExistente != null)
+                return Result.Fail("Novel já postada!");
+
+            if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
+                return Result.Fail("Erro ao adicionar a Novel, código hexadecimal informada fora do padrão!");
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
-                var uploadImagemCapa = new Imagens(_webHostEnvironment);
-                var retornoProcessoImagem = uploadImagemCapa.ProcessaImagemObra(obraDTO.ImagemCapaPrincipalFile, obraDTO.Titulo, obra, obraDTO);
-                if (retornoProcessoImagem.IsFailed)
-                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
+                var result = _imagemService.ProcessaUploadCapaObra(obraDTO);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
             }
             else
             {
@@ -80,26 +98,119 @@ namespace TsundokuTraducoes.Api.Services
 
             if (obraDTO.ImagemBannerFile != null)
             {
-                var uploadImagemCapa = new Imagens(_webHostEnvironment);
-                var retornoProcessoImagem = uploadImagemCapa.ProcessaImagemObra(obraDTO.ImagemBannerFile, obraDTO.Titulo, obra, obraDTO, true);
-                if (retornoProcessoImagem.IsFailed)
-                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
+                var result = _imagemService.ProcessaUploadBannerObra(obraDTO);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
             }
 
-            await _repository.AdicionaObra(obra);
+            novel.DataAlteracao = novel.DataInclusao;
+            novel.DiretorioImagemObra = obraDTO.DiretorioImagemObra;
+            novel.ImagemCapaPrincipal = obraDTO.ImagemCapaPrincipal;
+            novel.ImagemBanner = obraDTO.ImagemBanner;
+
+            await _repository.AdicionaNovel(novel);
             if (!_repository.AlteracoesSalvas().Result)
-                return Result.Fail("Erro ao adicionar a Obra!");
+                return Result.Fail("Erro ao adicionar a Novel!");
 
-            await _repository.InsereGenerosObra(obraDTO, obra, true);
+            await _repository.InsereGenerosNovel(obraDTO, novel, true);
 
-            var retornoObra = await TrataRetornoObra(obra);
+            var retornoObra = await TrataRetornoNovel(novel);
             return Result.Ok().ToResult(retornoObra);
         }
 
-        public async Task<Result<RetornoObra>> AtualizarObra(ObraDTO obraDTO)
+        public async Task<Result<RetornoObra>> AdicionaComic(ObraDTO obraDTO)
         {
-            var obraEncontrada = await _repository.RetornaObraPorId(obraDTO.Id);
-            if (obraEncontrada == null)
+            var comic = _mapper.Map<Comic>(obraDTO);
+            var comicExistente = await _repository.RetornaComicExistente(obraDTO.Titulo);
+
+            if (comicExistente != null)
+                return Result.Fail("Comic já postada!");
+
+            if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
+                return Result.Fail("Erro ao adicionar a Comic, código hexadecimal informada fora do padrão!");
+
+            if (obraDTO.ImagemCapaPrincipalFile != null)
+            {   
+                var result = _imagemService.ProcessaUploadCapaObra(obraDTO);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
+            }
+            else
+            {
+                return Result.Fail("Erro ao adicionar a Comic, imagem da capa não enviada!");
+            }
+
+            if (obraDTO.ImagemBannerFile != null)
+            {                
+                var result = _imagemService.ProcessaUploadBannerObra(obraDTO);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
+            }
+
+            comic.DataAlteracao = comic.DataInclusao;
+            comic.DiretorioImagemObra = obraDTO.DiretorioImagemObra;
+            comic.ImagemCapaPrincipal = obraDTO.ImagemCapaPrincipal;
+            comic.ImagemBanner = obraDTO.ImagemBanner;
+
+            await _repository.AdicionaComic(comic);
+            if (!_repository.AlteracoesSalvas().Result)
+                return Result.Fail("Erro ao adicionar a Comic!");
+
+            await _repository.InsereGenerosComic(obraDTO, comic, true);
+
+            var retornoObra = await TrataRetornoComic(comic);
+            return Result.Ok().ToResult(retornoObra);
+        }
+
+
+        public async Task<Result<RetornoObra>> AtualizaNovel(ObraDTO obraDTO)
+        {
+            var novelEncontrada = await _repository.RetornaNovelPorId(obraDTO.Id);
+            if (novelEncontrada == null)
+                return Result.Fail("Novel não encontrada!");
+
+            if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
+                return Result.Fail("Erro ao atualizar a Novel, código hexadecimal informada fora do padrão!");
+
+            if (obraDTO.ImagemCapaPrincipalFile != null)
+            {
+                var result = _imagemService.ProcessaUploadCapaObra(obraDTO);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
+            }
+            else
+            {
+                obraDTO.ImagemCapaPrincipal = novelEncontrada.ImagemCapaPrincipal;
+            }
+
+            if (obraDTO.ImagemBannerFile != null)
+            {
+                var result = _imagemService.ProcessaUploadBannerObra(obraDTO);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
+            }
+            else
+            {
+                obraDTO.ImagemBanner = novelEncontrada.ImagemBanner;
+            }
+
+            novelEncontrada.ImagemCapaPrincipal = obraDTO.ImagemCapaPrincipal;
+            novelEncontrada.ImagemBanner = obraDTO.ImagemBanner;
+            novelEncontrada = _repository.AtualizaNovel(obraDTO);
+
+            if (!_repository.AlteracoesSalvas().Result)
+                return Result.Fail("Erro ao atualizar a Novel!");
+
+            await _repository.InsereGenerosNovel(obraDTO, novelEncontrada, false);
+
+            var retornoObra = await TrataRetornoNovel(novelEncontrada);
+            return Result.Ok().ToResult(retornoObra);
+        }
+
+        public async Task<Result<RetornoObra>> AtualizaComic(ObraDTO obraDTO)
+        {
+            var comicEncontrada = await _repository.RetornaComicPorId(obraDTO.Id);
+            if (comicEncontrada == null)
                 return Result.Fail("Obra não encontrada!");
 
             if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
@@ -107,75 +218,97 @@ namespace TsundokuTraducoes.Api.Services
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
-                var retornoProcessoImagem = new Imagens(_webHostEnvironment).ProcessaImagemObra(obraDTO.ImagemCapaPrincipalFile, obraDTO.Titulo, obraEncontrada, obraDTO);
-                if (retornoProcessoImagem.IsFailed)
-                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
+                var result = _imagemService.ProcessaUploadCapaObra(obraDTO);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
             }
             else
             {
-                obraDTO.ImagemCapaPrincipal = obraEncontrada.ImagemCapaPrincipal;
+                obraDTO.ImagemCapaPrincipal = comicEncontrada.ImagemCapaPrincipal;
             }
 
             if (obraDTO.ImagemBannerFile != null)
             {
-                var retornoProcessoImagem = new Imagens(_webHostEnvironment).ProcessaImagemObra(obraDTO.ImagemBannerFile, obraDTO.Titulo, obraEncontrada, obraDTO, true);
-                if (retornoProcessoImagem.IsFailed)
-                    return Result.Fail(retornoProcessoImagem.Errors[0].Message);
+                var result = _imagemService.ProcessaUploadBannerObra(obraDTO);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
             }
             else
             {
-                obraDTO.ImagemBanner = obraEncontrada.ImagemBanner;
+                obraDTO.ImagemBanner = comicEncontrada.ImagemBanner;
             }
 
-            obraEncontrada = await _repository.AtualizaObra(obraDTO);
+            comicEncontrada.ImagemCapaPrincipal = obraDTO.ImagemCapaPrincipal;
+            comicEncontrada.ImagemBanner = obraDTO.ImagemBanner;
+            comicEncontrada = _repository.AtualizaComic(obraDTO);
 
             if (!_repository.AlteracoesSalvas().Result)
                 return Result.Fail("Erro ao atualizar a obra!");
 
-            await _repository.InsereGenerosObra(obraDTO, obraEncontrada, false);
+            await _repository.InsereGenerosComic(obraDTO, comicEncontrada, false);
 
-            var retornoObra = await TrataRetornoObra(obraEncontrada);
+            var retornoObra = await TrataRetornoComic(comicEncontrada);
             return Result.Ok().ToResult(retornoObra);
         }
 
-        public async Task<Result<bool>> ExcluirObra(int idObra)
+
+        public async Task<Result<bool>> ExcluiNovel(Guid idObra)
         {
-            var obraEncontrada = await _repository.RetornaObraPorId(idObra);
-            if (obraEncontrada == null)
-                return Result.Fail("Obra não encontrada!");
-            
-            _repository.ExcluiObra(obraEncontrada);
-            if (!_repository.AlteracoesSalvas().Result)
-                return Result.Fail("Erro ao excluir a obra!");
+            var novelEncontrada = await _repository.RetornaNovelPorId(idObra);
+            if (novelEncontrada == null)
+                return Result.Fail("Novel não encontrada!");
 
-            new Imagens().ExcluiDiretorioImagens(obraEncontrada.DiretorioImagemObra);
-            return Result.Ok().WithSuccess("Obra excluída com sucesso!");
-        }
-
-        public Result<ComicRecomendada> AdicionaObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO)
-        {
-            var obraRecomendadaExistente = _repository.RetornaObraRecomendadaPorObraId(obraRecomendadaDTO.IdObra);
-            if (obraRecomendadaExistente != null)
-                return Result.Fail("Obra recomendada já cadastrada!");
-
-            var retornoCargaListaMensagem = CarregaListaMensagemObraRecomendada(obraRecomendadaDTO);
-            if (retornoCargaListaMensagem.IsFailed)
-                return Result.Fail(retornoCargaListaMensagem.Errors[0].Message);
-
-            var obraRecomendada = _mapper.Map<ComicRecomendada>(obraRecomendadaDTO);
-            _repository.AdicionaObraRecomendada(obraRecomendada);
-            _repository.InsereListaComentariosObraRecomendada(obraRecomendadaDTO, obraRecomendada);
+            _repository.ExcluiNovel(novelEncontrada);
+            _imagemService.ExcluiDiretorioImagens(novelEncontrada.DiretorioImagemObra);
 
             if (!_repository.AlteracoesSalvas().Result)
-                return Result.Fail("Erro ao adicionar a Obra Recomendada!");
+                return Result.Fail("Erro ao excluir a Novel!");
 
-            return Result.Ok().ToResult(obraRecomendada);
+            return Result.Ok().WithSuccess("Novel excluída com sucesso!");
         }
 
-        public async Task<Result<InformacaoObraDTO>> RetornaInformacaoObraDTO(int? idObra = null)
+        public async Task<Result<bool>> ExcluiComic(Guid idObra)
+        {
+            var comicEncontrada = await _repository.RetornaComicPorId(idObra);
+            if (comicEncontrada == null)
+                return Result.Fail("Comic não encontrada!");
+
+            _repository.ExcluiComic(comicEncontrada);
+            _imagemService.ExcluiDiretorioImagens(comicEncontrada.DiretorioImagemObra);
+
+            if (!_repository.AlteracoesSalvas().Result)
+                return Result.Fail("Erro ao excluir a Comic!");
+
+            return Result.Ok().WithSuccess("Comic excluída com sucesso!");
+        }
+
+
+        private async Task<RetornoObra> TrataRetornoNovel(Novel novel)
+        {
+            var retornoNovel = _mapper.Map<RetornoObra>(novel);
+            retornoNovel.DataInclusao = novel.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoNovel.UsuarioAlteracao = !string.IsNullOrEmpty(novel.UsuarioAlteracao) ? novel.UsuarioAlteracao : "";
+            retornoNovel.DataAlteracao = novel.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoNovel.Generos = await _generoRepository.CarregaListaGenerosNovel(novel.GenerosNovel);
+            return retornoNovel;
+        }
+
+        private async Task<RetornoObra> TrataRetornoComic(Comic comic)
+        {
+            var retornoObra = _mapper.Map<RetornoObra>(comic);
+            retornoObra.DataInclusao = comic.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoObra.UsuarioAlteracao = !string.IsNullOrEmpty(comic.UsuarioAlteracao) ? comic.UsuarioAlteracao : "";
+            retornoObra.DataAlteracao = comic.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoObra.Generos = await _generoRepository.CarregaListaGenerosComic(comic.GenerosComic);
+            return retornoObra;
+        }
+
+        
+        // TODO - Talvez seja desconsiderado
+        public async Task<Result<InformacaoObraDTO>> RetornaInformacaoObraDTO(Guid? idObra = null)
         {
             var informacaoObraDTO = new InformacaoObraDTO();
-            var generos = await _repository.RetornaListaGeneros();
+            var generos = await _generoRepository.RetornaListaGeneros();
 
             var retornoOk = generos != null;
             if (!retornoOk)
@@ -185,87 +318,14 @@ namespace TsundokuTraducoes.Api.Services
 
             if (idObra != null)
             {
-                var obra = await _repository.RetornaObraPorId(idObra.Value);
+                var obra = await _repository.RetornaNovelPorId(idObra.Value);
                 if (obra == null)
                     return Result.Fail("Obra não encontrada!");
 
-                informacaoObraDTO.Obra = obra;
+                informacaoObraDTO.Novel = obra;
             }
 
             return Result.Ok(informacaoObraDTO);
-        }
-
-        private Result CarregaListaMensagemObraRecomendada(ObraRecomendadaDTO obraRecomendadaDTO)
-        {
-            if (string.IsNullOrEmpty(obraRecomendadaDTO.ListaComentarioObraRecomendadaDTOJson))
-                return Result.Fail("Não foi informado uma lista de comentário obra recomendada");
-
-            obraRecomendadaDTO.ListaComentarioObraRecomendadaDTO =
-                JsonConvert.DeserializeObject<List<ComentarioObraRecomendadaDTO>>(obraRecomendadaDTO.ListaComentarioObraRecomendadaDTOJson);
-
-            return Result.Ok();
-        }
-
-        public Result<ComentarioComicRecomendada> AdicionaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
-        {
-            var comentarioObraRecomendada = _mapper.Map<ComentarioComicRecomendada>(comentarioObraRecomendadaDTO);
-
-            _repository.AdicionaComentarioObraRecomendada(comentarioObraRecomendada);
-            if (!_repository.AlteracoesSalvas().Result)
-                return Result.Fail("Erro ao adicionar a Comentario Obra Recomendada!");
-
-            return Result.Ok().ToResult(comentarioObraRecomendada);
-        }
-
-        public Result<ComentarioComicRecomendada> AtualizaComentarioObraRecomendada(ComentarioObraRecomendadaDTO comentarioObraRecomendadaDTO)
-        {
-            var comentarioObraRecomendada = _repository.RetornaComentarioObraRecomendadaPorId(comentarioObraRecomendadaDTO.Id);
-            if (comentarioObraRecomendada == null)
-                return Result.Fail("Obra não encontrada!");
-
-            comentarioObraRecomendada = _repository.AtualizaComentarioObraRecomendada(comentarioObraRecomendadaDTO);
-
-            if (!_repository.AlteracoesSalvas().Result)
-                return Result.Fail("Erro ao adicionar a Comentario Obra Recomendada!");
-
-            return Result.Ok().ToResult(comentarioObraRecomendada);
-        }
-
-        public Result<List<ComicRecomendada>> RetornaListaObraRecomendada()
-        {
-            var listaObraRecomendada = _repository.RetornaListaObraRecomendada();
-            if (listaObraRecomendada == null)
-                return Result.Fail("Erro ao retornar todas as Obras!");
-
-            return Result.Ok().ToResult(listaObraRecomendada);
-        }
-
-        public Result<ComicRecomendada> RetornaObraRecomendadaPorId(int id)
-        {
-            var obraRecomendada = _repository.RetornaObraRecomendadaPorId(id);
-            if (obraRecomendada == null)
-                return Result.Fail("Obra Recomendada não encontrada!");
-
-            return obraRecomendada;
-        }
-
-        public Result<ComentarioComicRecomendada> RetornaComentarioObraRecomendadaPorId(int id)
-        {
-            var comentarioObraRecomendada = _repository.RetornaComentarioObraRecomendadaPorId(id);
-            if (comentarioObraRecomendada == null)
-                return Result.Fail("Comentário da Obra Recomendada não encontrado!");
-
-            return comentarioObraRecomendada;
-        }
-
-        private async Task<RetornoObra> TrataRetornoObra(Novel obra)
-        {
-            var retornoObra = _mapper.Map<RetornoObra>(obra);
-            retornoObra.DataInclusao = obra.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
-            retornoObra.UsuarioAlteracao = !string.IsNullOrEmpty(obra.UsuarioAlteracao) ? obra.UsuarioAlteracao : "";
-            retornoObra.DataAlteracao = obra.DataAlteracao != null ? obra.DataAlteracao?.ToString("dd/MM/yyyy HH:mm:ss") : "";
-            retornoObra.Generos = await _generoRepository.CarregaListaGeneros(obra.GenerosObra);
-            return retornoObra;
         }
     }
 }

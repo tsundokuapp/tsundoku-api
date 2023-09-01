@@ -9,15 +9,10 @@ using TsundokuTraducoes.Api.Repository.Interfaces;
 
 namespace TsundokuTraducoes.Api.Repository
 {
-    public class InfosObrasRepository : IInfosObrasRepository
+    public class InfosObrasRepository : Repository, IInfosObrasRepository
     {
-        private readonly IDbConnection _contextDapper;
-
-        public InfosObrasRepository()
-        {
-            _contextDapper = new TsundokuContextDapper().RetornaSqlConnetionDapper();
-        }
-
+        public InfosObrasRepository(TsundokuContext context) : base(context) { }
+        
         public List<DadosCapitulosDTO> ObterCapitulos()
         {
             return _contextDapper.Query<DadosCapitulosDTO>(RetornaSqlListaCapitulos()).ToList();

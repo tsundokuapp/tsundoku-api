@@ -8,6 +8,7 @@ namespace TsundokuTraducoes.Api.Controllers
     [ApiController]
     public class ObrasController : Controller
     {
+        // TODO - Criar as verificações de request, para saber se estar vindo corretamente.
         private readonly IInfosObrasServices _infosObrasServices;
 
         public ObrasController(IInfosObrasServices infosObrasServices)
