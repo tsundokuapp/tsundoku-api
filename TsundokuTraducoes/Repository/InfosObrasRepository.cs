@@ -39,8 +39,9 @@ namespace TsundokuTraducoes.Api.Repository
             }
 
             var retornoConsulta = await _contextDapper.QueryAsync<RetornoObra>(sql, dynamicParameters);
-            listaRetornoObra.AddRange(retornoConsulta.Where(w => !string.IsNullOrEmpty(w.DescritivoVolume)).ToList());
+            listaRetornoObra.AddRange(retornoConsulta.ToList());
 
+            TrataListaRetornoObra(listaRetornoObra);
             return listaRetornoObra;
         }
 
@@ -48,12 +49,13 @@ namespace TsundokuTraducoes.Api.Repository
         {
             var listaRetornoObra = new List<RetornoObra>();
 
-            var sql = @"SELECT ImagemCapaUltimoVolume ImagemCapaVolume,
-                        	   Alias AliasObra,
-                        	   Autor AutorObra,
-                        	   Slug SlugObra,
-                        	   NumeroUltimoVolume DescritivoVolume,
-                        	   Id
+            var sql = @"SELECT ImagemCapaPrincipal UrlCapaPrincipal,
+	                           ImagemCapaUltimoVolume UrlCapaVolume,
+	                           Alias,
+	                           Autor,
+	                           Slug,
+	                           NumeroUltimoVolume DescritivoVolume,
+	                           Id
                           FROM Novels
                          ORDER BY DataAlteracao DESC;"
             ;
@@ -61,15 +63,17 @@ namespace TsundokuTraducoes.Api.Repository
             var retornoConsulta = await _contextDapper.QueryAsync<RetornoObra>(sql);
             listaRetornoObra.AddRange(retornoConsulta.ToList());
 
+            TrataListaRetornoObra(listaRetornoObra);
             return listaRetornoObra;
         }
 
         private static string RetornaSqlListaNovelsComPesquisar()
         {
-            return @"SELECT ImagemCapaUltimoVolume ImagemCapaVolume,
-	                        Alias AliasObra,
-                            Autor AutorObra,
-                            Slug SlugObra,
+            return @"SELECT ImagemCapaPrincipal UrlCapaPrincipal,
+                            ImagemCapaUltimoVolume UrlCapaVolume,
+                            Alias,
+                            Autor,
+                            Slug,
                             NumeroUltimoVolume DescritivoVolume,
                             Id
                        FROM Novels
@@ -117,17 +121,33 @@ namespace TsundokuTraducoes.Api.Repository
                 }
             }            
 
-            return @$"SELECT N.ImagemCapaUltimoVolume ImagemCapaVolume,
-	                         N.Alias AliasObra,
-                             N.Autor AutorObra,
-                             N.Slug SlugObra,
-                             N.NumeroUltimoVolume DescritivoVolume,
-                             N.Id
+            return @$"SELECT N.ImagemCapaPrincipal UrlCapaPrincipal,
+	                         N.ImagemCapaUltimoVolume UrlCapaVolume,
+	                         N.Alias,
+	                         N.Autor,
+	                         N.Slug,
+	                         N.NumeroUltimoVolume DescritivoVolume,
+	                         N.Id
                         FROM Novels N 
                         {joinsGeneros} 
                         {condicaoConsulta} ";
         }
 
+        private static void TrataListaRetornoObra(List<RetornoObra> listaRetornoObra)
+        {
+            foreach (var retornoObra in listaRetornoObra)
+            {
+                retornoObra.UrlCapa = !string.IsNullOrEmpty(retornoObra.UrlCapaVolume)
+                    ? retornoObra.UrlCapaVolume
+                    : retornoObra.UrlCapaPrincipal;
+
+                if (string.IsNullOrEmpty(retornoObra.DescritivoVolume))
+                    retornoObra.DescritivoVolume = string.Empty;
+
+                retornoObra.UrlCapaVolume = null;
+                retornoObra.UrlCapaPrincipal = null;
+            }
+        }
 
         // TODO - Será verificado se vai ser reaproveitado enquanto é trabalhado nos backlogs
         public List<DadosCapitulosDTO> ObterCapitulos()
