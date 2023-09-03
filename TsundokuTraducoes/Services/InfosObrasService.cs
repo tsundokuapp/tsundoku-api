@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using TsundokuTraducoes.Api.DTOs.Public.Retorno;
 using TsundokuTraducoes.Api.DTOs.Public;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using TsundokuTraducoes.Api.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace TsundokuTraducoes.Api.Services
 {
@@ -13,6 +15,21 @@ namespace TsundokuTraducoes.Api.Services
             _infosObrasRepository = infosObrasRepository;
         }
 
+        public async Task<List<RetornoObra>> ObterListaNovels(string pesquisar, string nacionalidade, string status, string tipo, string genero)
+        {
+            var listaRetornoObra = await _infosObrasRepository.ObterListaNovels(pesquisar, nacionalidade,status, tipo, genero);
+            return listaRetornoObra;
+        }
+
+        public async Task<List<RetornoObra>> ObterListaNovelsRecentes()
+        {            
+            var listaRetornoObra = await _infosObrasRepository.ObterListaNovelsRecentes();
+            return listaRetornoObra;
+        }
+
+
+        // TODO - Será verificado se vai ser reaproveitado enquanto é trabalhado nos backlogs
+
         public List<DadosCapitulosDTO> ObterCapitulos()
         {
             return _infosObrasRepository.ObterCapitulos();
@@ -21,10 +38,10 @@ namespace TsundokuTraducoes.Api.Services
         public List<DadosCapitulosDTO> ObterCapitulos(string pesquisar, string nacionalidade, string status, string tipo, string genero, bool ehNovel)
         {
             var listaDadosCapitulosDTO = new List<DadosCapitulosDTO>();
-            
+
             if (!string.IsNullOrEmpty(pesquisar))
             {
-                listaDadosCapitulosDTO = _infosObrasRepository.ObterCapitulos(pesquisar, ehNovel);    
+                listaDadosCapitulosDTO = _infosObrasRepository.ObterCapitulos(pesquisar, ehNovel);
             }
             else
             {

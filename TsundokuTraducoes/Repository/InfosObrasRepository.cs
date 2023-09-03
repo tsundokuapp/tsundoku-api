@@ -1,18 +1,135 @@
 ﻿using Dapper;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Data;
 using TsundokuTraducoes.Api.DTOs.Public;
+using TsundokuTraducoes.Api.DTOs.Public.Retorno;
 using TsundokuTraducoes.Api.Repository.Interfaces;
+using static Dapper.SqlMapper;
 
 namespace TsundokuTraducoes.Api.Repository
 {
     public class InfosObrasRepository : Repository, IInfosObrasRepository
     {
         public InfosObrasRepository(TsundokuContext context) : base(context) { }
-        
+
+
+        public async Task<List<RetornoObra>> ObterListaNovels(string pesquisar, string nacionalidade, string status, string tipo, string genero)
+        {
+            var listaRetornoObra = new List<RetornoObra>();
+            var sql = string.Empty;
+            var dynamicParameters = new DynamicParameters();
+
+            if (!string.IsNullOrEmpty(pesquisar))
+            {
+                sql = RetornaSqlListaNovelsComPesquisar();                
+                dynamicParameters.Add("@pesquisar", "%" + pesquisar + "%");                
+            }
+            else
+            {
+                dynamicParameters.Add("@nacionalidade", nacionalidade);
+                dynamicParameters.Add("@status", status);
+                dynamicParameters.Add("@tipo", tipo);
+                dynamicParameters.Add("@genero", genero);
+
+                sql = RetornaSqlListaNovelsPorParametros(nacionalidade, status, tipo, genero);
+            }
+
+            var retornoConsulta = await _contextDapper.QueryAsync<RetornoObra>(sql, dynamicParameters);
+            listaRetornoObra.AddRange(retornoConsulta.Where(w => !string.IsNullOrEmpty(w.DescritivoVolume)).ToList());
+
+            return listaRetornoObra;
+        }
+
+        public async Task<List<RetornoObra>> ObterListaNovelsRecentes()
+        {
+            var listaRetornoObra = new List<RetornoObra>();
+
+            var sql = @"SELECT ImagemCapaUltimoVolume ImagemCapaVolume,
+                        	   Alias AliasObra,
+                        	   Autor AutorObra,
+                        	   Slug SlugObra,
+                        	   NumeroUltimoVolume DescritivoVolume,
+                        	   Id
+                          FROM Novels
+                         ORDER BY DataAlteracao DESC;"
+            ;
+
+            var retornoConsulta = await _contextDapper.QueryAsync<RetornoObra>(sql);
+            listaRetornoObra.AddRange(retornoConsulta.ToList());
+
+            return listaRetornoObra;
+        }
+
+        private static string RetornaSqlListaNovelsComPesquisar()
+        {
+            return @"SELECT ImagemCapaUltimoVolume ImagemCapaVolume,
+	                        Alias AliasObra,
+                            Autor AutorObra,
+                            Slug SlugObra,
+                            NumeroUltimoVolume DescritivoVolume,
+                            Id
+                       FROM Novels
+                      WHERE Titulo LIKE upper(@pesquisar)";
+        }
+
+        private static string RetornaSqlListaNovelsPorParametros(string nacionalidade, string status, string tipo, string genero)
+        {
+            var condicaoConsulta = string.Empty;
+            var joinsGeneros = string.Empty;
+
+            var listaParametroConsulta = new List<string>();
+
+            if (!string.IsNullOrEmpty(nacionalidade))
+            {
+                listaParametroConsulta.Add($"N.NacionalidadeSlug = @nacionalidade ");
+            }
+
+            if (!string.IsNullOrEmpty(status))
+            {
+                listaParametroConsulta.Add($"N.StatusObraSlug = @status ");
+            }
+
+            if (!string.IsNullOrEmpty(tipo))
+            {
+                listaParametroConsulta.Add($"N.TipoObraSlug = @tipo ");
+            }
+
+            if (!string.IsNullOrEmpty(genero))
+            {                
+                listaParametroConsulta.Add($"G.Slug = @genero ");
+                joinsGeneros = @"INNER JOIN GenerosNovel GN ON GN.NovelId = N.Id
+                                 INNER JOIN Generos G ON G.Id = GN.GeneroId ";
+            }
+
+            for (int indice = 0; indice < listaParametroConsulta.Count; indice++)
+            {
+                if (indice == 0)
+                {
+                    condicaoConsulta = $"WHERE {listaParametroConsulta[indice]} ";
+                }
+                else
+                {
+                    condicaoConsulta += $"AND {listaParametroConsulta[indice]} ";
+                }
+            }            
+
+            return @$"SELECT N.ImagemCapaUltimoVolume ImagemCapaVolume,
+	                         N.Alias AliasObra,
+                             N.Autor AutorObra,
+                             N.Slug SlugObra,
+                             N.NumeroUltimoVolume DescritivoVolume,
+                             N.Id
+                        FROM Novels N 
+                        {joinsGeneros} 
+                        {condicaoConsulta} ";
+        }
+
+
+        // TODO - Será verificado se vai ser reaproveitado enquanto é trabalhado nos backlogs
         public List<DadosCapitulosDTO> ObterCapitulos()
         {
             return _contextDapper.Query<DadosCapitulosDTO>(RetornaSqlListaCapitulos()).ToList();
