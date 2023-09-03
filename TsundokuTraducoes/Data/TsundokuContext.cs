@@ -24,7 +24,7 @@ namespace TsundokuTraducoes.Api.Data
         public TsundokuContext(DbContextOptions<TsundokuContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {   
             modelBuilder.Entity<GeneroNovel>()
             .HasKey(gn => new { gn.NovelId, gn.GeneroId });
 
@@ -112,12 +112,12 @@ namespace TsundokuTraducoes.Api.Data
                     StatusObraSlug = "em-andamento",
                     TipoObraSlug = "light-novel",
                     NacionalidadeSlug = "japonesa",
-                    ImagemCapaUltimoVolume = "",
-                    NumeroUltimoVolume = "",
-                    SlugUltimoVolume = "",
-                    NumeroUltimoCapitulo = "",
-                    SlugUltimoCapitulo = "",
-                    DataAtualizacaoUltimoCapitulo = null,
+                    ImagemCapaUltimoVolume = "https://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg",
+                    NumeroUltimoVolume = "Volume 01",
+                    SlugUltimoVolume = "volume-1",
+                    NumeroUltimoCapitulo = "Ilustrações",
+                    SlugUltimoCapitulo = "ilustracoes",
+                    DataAtualizacaoUltimoCapitulo = DateTime.Now,
                 });
 
             modelBuilder.Entity<Comic>()
@@ -147,12 +147,12 @@ namespace TsundokuTraducoes.Api.Data
                     StatusObraSlug = "em-andamento",
                     TipoObraSlug = "comic",
                     NacionalidadeSlug = "japonesa",
-                    ImagemCapaUltimoVolume = "",
-                    NumeroUltimoVolume = "",
-                    SlugUltimoVolume = "",
-                    NumeroUltimoCapitulo = "",
-                    SlugUltimoCapitulo = "",
-                    DataAtualizacaoUltimoCapitulo = null,
+                    ImagemCapaUltimoVolume = "https://tsundoku.com.br/wp-content/uploads/2022/01/Hatsukoi_cover.jpg",
+                    NumeroUltimoVolume = "Volume 01",
+                    SlugUltimoVolume = "volume-1",
+                    NumeroUltimoCapitulo = "Capítulo 01",
+                    SlugUltimoCapitulo = "capitulo-1",
+                    DataAtualizacaoUltimoCapitulo = DateTime.Now,
                 });
 
             modelBuilder.Entity<VolumeNovel>()
