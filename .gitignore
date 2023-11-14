@@ -12,3 +12,15 @@
 /.vs/
 /TsundokuTraducoes/appsettings.json
 /TsundokuTraducoes/database
+/TsundokuTraducoes.Data/bin
+/TsundokuTraducoes.Data/obj
+/TsundokuTraducoes.Domain/bin
+/TsundokuTraducoes.Domain/obj
+/TsundokuTraducoes.Domain.Tests/bin
+/TsundokuTraducoes.Domain.Tests/obj
+/TsundokuTraducoes.Infrastructure.Tests/bin
+/TsundokuTraducoes.Infrastructure.Tests/obj
+/TsundokuTraducoes.Services/bin
+/TsundokuTraducoes.Services/obj
+/TsundokuTraducoes.Services.Tests/bin
+/TsundokuTraducoes.Services.Tests/obj
