@@ -1,23 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Api.DTOs.Public;
+using TsundokuTraducoes.Api.DTOs.Admin.Request;
 using TsundokuTraducoes.Api.DTOs.Public.Retorno;
 
 namespace TsundokuTraducoes.Api.Repository.Interfaces
 {
     public interface IInfosObrasRepository
     {
-        Task<List<RetornoObra>> ObterListaNovels(string pesquisar, string nacionalidade, string status, string tipo, string genero);
+        Task<List<RetornoObra>> ObterListaNovels(RequestObras requestObras);
         Task<List<RetornoObra>> ObterListaNovelsRecentes();
+        Task<RetornoObra> ObterNovelsPorId(RequestObras requestObras);
 
+        Task<List<RetornoObra>> ObterListaComics(RequestObras requestObras);
+        Task<List<RetornoObra>> ObterListaComicsRecentes();
+        Task<RetornoObra> ObterComicPorId(RequestObras requestObras);
 
-
-        // TODO - Será verificado se vai ser reaproveitado enquanto é trabalhado nos backlogs
-        ConteudoCapituloNovelDTO ObterCapituloNovelPorSlug(string slugCapitulo);
-        ConteudoCapituloComicDTO ObterCapituloComicPorSlug(string slugCapitulo);
-        List<DadosCapitulosDTO> ObterCapitulos();
-        List<DadosCapitulosDTO> ObterCapitulos(string pesquisar, bool ehNovel);
-        List<DadosCapitulosDTO> ObterCapitulos(string nacionalidade, string status, string tipo, string genero, bool ehNovel);
-        ObraDTO ObterObraPorSlug(string slug);
+        Task<List<RetornoCapitulos>> ObterCapitulosHome();
     }
 }

@@ -1,23 +1,24 @@
-﻿using TsundokuTraducoes.Api.Services.Interfaces;
+﻿using TsundokuTraducoes.Api.DTOs.Admin.Request;
+using TsundokuTraducoes.Api.Services.Interfaces;
 
 namespace TsundokuTraducoes.Api.Services
 {
     public class ValidacaoTratamentoObrasService : IValidacaoTratamentoObrasService
     {
-        public bool ValidaParametrosNovel(string pesquisar, string nacionalidade, string status, string tipo, string genero, int? skip, int? take)
+        public bool ValidaParametrosNovel(RequestObras requestObras)
         {
-            return ValidaParametrosObra(pesquisar, nacionalidade, status, tipo, genero, skip, take);
+            return ValidaParametrosObra(requestObras);
         }
 
-        public bool ValidaParametrosObra(string pesquisar, string nacionalidade, string status, string tipo, string genero, int? skip, int? take)
+        public bool ValidaParametrosObra(RequestObras requestObras)
         {
-            return !string.IsNullOrEmpty(pesquisar) ||
-                   !string.IsNullOrEmpty(nacionalidade) ||
-                   !string.IsNullOrEmpty(status) ||
-                   !string.IsNullOrEmpty(tipo) ||
-                   !string.IsNullOrEmpty(genero) ||
-                   skip != null ||
-                   take != null;
+            return !string.IsNullOrEmpty(requestObras.Pesquisar) ||
+                   !string.IsNullOrEmpty(requestObras.Nacionalidade) ||
+                   !string.IsNullOrEmpty(requestObras.Status) ||
+                   !string.IsNullOrEmpty(requestObras.Tipo) ||
+                   !string.IsNullOrEmpty(requestObras.Genero) ||
+                   requestObras.Skip != null ||
+                   requestObras.Take != null;
         }
 
         public int RetornaSkipTratado(int? pagina)
@@ -25,9 +26,10 @@ namespace TsundokuTraducoes.Api.Services
             return pagina == null ? 0 : pagina.GetValueOrDefault();
         }
 
-        public int RetornaTakeTratado(int? obrasPorPagina)
+        public int RetornaTakeTratado(int? obrasPorPagina, bool home = false)
         {
-            return obrasPorPagina == null ? 4 : obrasPorPagina.GetValueOrDefault();
+            var valorObrasPorPagina = home == true ? 5 : 4;
+            return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
         }
     }
 }
