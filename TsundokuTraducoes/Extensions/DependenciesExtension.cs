@@ -34,6 +34,7 @@ namespace TsundokuTraducoes.Api.Extensions
             services.AddTransient<ICapituloService, CapituloService>();
             services.AddTransient<IInfosObrasServices, InfosObrasService>();
             services.AddTransient<IImagemService, ImagemService>();
+            services.AddTransient<IValidacaoTratamentoObrasService, ValidacaoTratamentoObrasService>();
         }
     }
 }
