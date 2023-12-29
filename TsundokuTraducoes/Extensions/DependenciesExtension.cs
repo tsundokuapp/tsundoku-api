@@ -1,10 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using TsundokuTraducoes.Api.Data;
 using TsundokuTraducoes.Api.Repository;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using TsundokuTraducoes.Api.Services;
 using TsundokuTraducoes.Api.Services.Interfaces;
+using TsundokuTraducoes.Data.Context;
+using TsundokuTraducoes.Data.Repositories;
+using TsundokuTraducoes.Data.Repositories.Base;
+using TsundokuTraducoes.Domain.Interfaces.Repositories;
+using TsundokuTraducoes.Domain.Interfaces.Repositories.Base;
+using TsundokuTraducoes.Domain.Interfaces.Services;
+using TsundokuTraducoes.Domain.Services;
+using TsundokuTraducoes.Services.AppServices;
+using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Api.Extensions
 {
@@ -14,27 +22,47 @@ namespace TsundokuTraducoes.Api.Extensions
         this IServiceCollection services,
         string connectionString)
         {
-            services.AddDbContext<TsundokuContext>(
-            context => context.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+            services.AddDbContext<ContextBase>(
+            context => context.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+            );
         }
 
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddTransient<IObraRepository, ObraRepository>();
-            services.AddTransient<IGeneroRepository, GeneroRepository>();
-            services.AddTransient<IVolumeRepository, VolumeRepository>();
-            services.AddTransient<ICapituloRepository, CapituloRepository>();
-            services.AddTransient<IInfosObrasRepository, InfosObrasRepository>();
+            services.AddTransient<IObraRepositoryOld, ObraRepositoryOld>();
+            services.AddTransient<IGeneroRepositoryOld, GeneroRepositoryOld>();
+            services.AddTransient<IVolumeRepositoryOld, VolumeRepositoryOld>();
+            services.AddTransient<ICapituloRepositoryOld, CapituloRepositoryOld>();
+            services.AddTransient<IInfosObrasRepositoryOld, InfosObrasRepositoryOld>();
+
+            services.AddScoped<IBaseRepository, BaseRepository>();
+            services.AddScoped<ICapituloRepository, CapituloRepository>();
+            services.AddScoped<IGeneroDeParaRepository, GeneroDeParaRepository>();
+            services.AddScoped<IGeneroRepository, GeneroRepository>();
+            services.AddScoped<IInfosObrasRepository, InfosObrasRepository>();
+            services.AddScoped<IObraRepository, ObraRepository>();
+            services.AddScoped<IVolumeRepository, VolumeRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddTransient<IObraService, ObraService>();
-            services.AddTransient<IVolumeService, VolumeService>();
-            services.AddTransient<ICapituloService, CapituloService>();
-            services.AddTransient<IInfosObrasServices, InfosObrasService>();
-            services.AddTransient<IImagemService, ImagemService>();
-            services.AddTransient<IValidacaoTratamentoObrasService, ValidacaoTratamentoObrasService>();
+            services.AddTransient<IObraServiceOld, ObraServiceOld>();
+            services.AddTransient<IVolumeServiceOld, VolumeServiceOld>();
+            services.AddTransient<ICapituloServiceOld, CapituloServiceOld>();
+            services.AddTransient<IInfosObrasServicesOld, InfosObrasServiceOld>();
+            services.AddTransient<IImagemServiceOld, ImagemServiceOld>();
+            services.AddTransient<IValidacaoTratamentoObrasServiceOld, ValidacaoTratamentoObrasServiceOld>();
+
+            services.AddScoped<IGeneroDeParaAppService, GeneroDeParaAppService>();
+            services.AddScoped<IImagemAppService, ImagemAppService>();
+            services.AddScoped<IObraAppService, ObraAppService>();
+
+            services.AddScoped<ICapituloService, CapituloService>();
+            services.AddScoped<IGeneroDeParaService, GeneroDeParaService>();
+            services.AddScoped<IGeneroService, GeneroService>();
+            services.AddScoped<IInfosObrasServices, InfosObrasServices>();
+            services.AddScoped<IObraService, ObraService>();
+            services.AddScoped<IVolumeService, VolumeService>();
         }
     }
 }

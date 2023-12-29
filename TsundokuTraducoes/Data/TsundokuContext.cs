@@ -21,7 +21,8 @@ namespace TsundokuTraducoes.Api.Data
         public DbSet<Genero> Generos { get; set; }
         public DbSet<GeneroNovel> GenerosNovel { get; set; }
         public DbSet<GeneroComic> GenerosComic { get; set; }
-        public TsundokuContext(DbContextOptions<TsundokuContext> options) : base(options) { }
+
+        public TsundokuContext(DbContextOptions<TsundokuContext> options) : base(options) { }      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {   

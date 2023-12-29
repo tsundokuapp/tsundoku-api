@@ -5,29 +5,35 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TsundokuTraducoes.Api", "TsundokuTraducoes\TsundokuTraducoes.Api.csproj", "{BD53C56D-C5ED-4194-B9F7-E6F562411052}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-Domain", "0-Domain", "{5FB7F9D8-83C6-44AE-840D-1A25F076C8E5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Domain", "2-Domain", "{5FB7F9D8-83C6-44AE-840D-1A25F076C8E5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Services", "1-Services", "{2C10F674-2997-475C-B19A-3B50C2D50EE2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Infrastructure", "2-Infrastructure", "{F3196BD8-82F3-4C65-ABBE-DD75CAF06C58}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Infrastructure", "3-Infrastructure", "{F3196BD8-82F3-4C65-ABBE-DD75CAF06C58}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Api", "3-Api", "{3431C729-1487-4DF8-9D44-78A81CF69874}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "0-Api", "0-Api", "{3431C729-1487-4DF8-9D44-78A81CF69874}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Tests", "4-Tests", "{0CF65A03-F4E1-48F1-B155-69297552D24E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Tests", "5-Tests", "{0CF65A03-F4E1-48F1-B155-69297552D24E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsundokuTraducoes.Domain", "TsundokuTraducoes.Domain\TsundokuTraducoes.Domain.csproj", "{96F47981-30C2-4BBB-9E69-DA4ABD669E52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TsundokuTraducoes.Domain", "TsundokuTraducoes.Domain\TsundokuTraducoes.Domain.csproj", "{96F47981-30C2-4BBB-9E69-DA4ABD669E52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsundokuTraducoes.Services", "TsundokuTraducoes.Services\TsundokuTraducoes.Services.csproj", "{F54642D4-768C-4A87-A60D-711A55C2E461}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TsundokuTraducoes.Services", "TsundokuTraducoes.Services\TsundokuTraducoes.Services.csproj", "{F54642D4-768C-4A87-A60D-711A55C2E461}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{769DD2B2-7D03-45C7-A1AF-A2CB1E5CD54F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsundokuTraducoes.Data", "TsundokuTraducoes.Data\TsundokuTraducoes.Data.csproj", "{8066DC82-EAF0-4C46-B65E-41C0A05C5010}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TsundokuTraducoes.Data", "TsundokuTraducoes.Data\TsundokuTraducoes.Data.csproj", "{8066DC82-EAF0-4C46-B65E-41C0A05C5010}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsundokuTraducoes.Domain.Tests", "TsundokuTraducoes.Domain.Tests\TsundokuTraducoes.Domain.Tests.csproj", "{BD418AC5-4CF4-4FA9-8621-4A30AA59E629}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Entities", "4-Entities", "{EBE81696-CA04-44BC-AEB7-E854CEEF540D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsundokuTraducoes.Services.Tests", "TsundokuTraducoes.Services.Tests\TsundokuTraducoes.Services.Tests.csproj", "{6C5EE4F2-55BD-49C3-AC11-63D03DF86065}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TsundokuTraducoes.Entities", "TsundokuTraducoes.Entities\TsundokuTraducoes.Entities.csproj", "{9F67B968-A4EA-435A-BFC9-AA06B8ABC300}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsundokuTraducoes.Infrastructure.Tests", "TsundokuTraducoes.Infrastructure.Tests\TsundokuTraducoes.Infrastructure.Tests.csproj", "{7A9C5F59-843B-4C30-8A00-4B286C5E0731}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TsundokuTraducoes.Entities.Tests", "TsundokuTraducoes.Entities.Tests\TsundokuTraducoes.Entities.Tests.csproj", "{BB011DB1-4D4B-48DD-9FCC-050D53822B5F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6-Helpers", "6-Helpers", "{D915E52C-9147-44AD-90F1-614BBE16ABFC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TsundokuTraducoes.Helpers", "TsundokuTraducoes.Helpers\TsundokuTraducoes.Helpers.csproj", "{A3A354CA-151A-40AC-A2BF-4902387D9818}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsundokuTraducoes.Integration.Tests", "TsundokuTraducoes.Integration.Tests\TsundokuTraducoes.Integration.Tests.csproj", "{83BD4DF9-8F8D-42C7-B732-72A3BCE51724}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,18 +57,22 @@ Global
 		{8066DC82-EAF0-4C46-B65E-41C0A05C5010}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8066DC82-EAF0-4C46-B65E-41C0A05C5010}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8066DC82-EAF0-4C46-B65E-41C0A05C5010}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BD418AC5-4CF4-4FA9-8621-4A30AA59E629}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BD418AC5-4CF4-4FA9-8621-4A30AA59E629}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BD418AC5-4CF4-4FA9-8621-4A30AA59E629}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BD418AC5-4CF4-4FA9-8621-4A30AA59E629}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C5EE4F2-55BD-49C3-AC11-63D03DF86065}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C5EE4F2-55BD-49C3-AC11-63D03DF86065}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C5EE4F2-55BD-49C3-AC11-63D03DF86065}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C5EE4F2-55BD-49C3-AC11-63D03DF86065}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7A9C5F59-843B-4C30-8A00-4B286C5E0731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A9C5F59-843B-4C30-8A00-4B286C5E0731}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A9C5F59-843B-4C30-8A00-4B286C5E0731}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A9C5F59-843B-4C30-8A00-4B286C5E0731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F67B968-A4EA-435A-BFC9-AA06B8ABC300}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F67B968-A4EA-435A-BFC9-AA06B8ABC300}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F67B968-A4EA-435A-BFC9-AA06B8ABC300}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F67B968-A4EA-435A-BFC9-AA06B8ABC300}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB011DB1-4D4B-48DD-9FCC-050D53822B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB011DB1-4D4B-48DD-9FCC-050D53822B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB011DB1-4D4B-48DD-9FCC-050D53822B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB011DB1-4D4B-48DD-9FCC-050D53822B5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3A354CA-151A-40AC-A2BF-4902387D9818}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3A354CA-151A-40AC-A2BF-4902387D9818}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3A354CA-151A-40AC-A2BF-4902387D9818}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3A354CA-151A-40AC-A2BF-4902387D9818}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83BD4DF9-8F8D-42C7-B732-72A3BCE51724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83BD4DF9-8F8D-42C7-B732-72A3BCE51724}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83BD4DF9-8F8D-42C7-B732-72A3BCE51724}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83BD4DF9-8F8D-42C7-B732-72A3BCE51724}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,9 +83,10 @@ Global
 		{F54642D4-768C-4A87-A60D-711A55C2E461} = {2C10F674-2997-475C-B19A-3B50C2D50EE2}
 		{769DD2B2-7D03-45C7-A1AF-A2CB1E5CD54F} = {F3196BD8-82F3-4C65-ABBE-DD75CAF06C58}
 		{8066DC82-EAF0-4C46-B65E-41C0A05C5010} = {769DD2B2-7D03-45C7-A1AF-A2CB1E5CD54F}
-		{BD418AC5-4CF4-4FA9-8621-4A30AA59E629} = {0CF65A03-F4E1-48F1-B155-69297552D24E}
-		{6C5EE4F2-55BD-49C3-AC11-63D03DF86065} = {0CF65A03-F4E1-48F1-B155-69297552D24E}
-		{7A9C5F59-843B-4C30-8A00-4B286C5E0731} = {0CF65A03-F4E1-48F1-B155-69297552D24E}
+		{9F67B968-A4EA-435A-BFC9-AA06B8ABC300} = {EBE81696-CA04-44BC-AEB7-E854CEEF540D}
+		{BB011DB1-4D4B-48DD-9FCC-050D53822B5F} = {0CF65A03-F4E1-48F1-B155-69297552D24E}
+		{A3A354CA-151A-40AC-A2BF-4902387D9818} = {D915E52C-9147-44AD-90F1-614BBE16ABFC}
+		{83BD4DF9-8F8D-42C7-B732-72A3BCE51724} = {0CF65A03-F4E1-48F1-B155-69297552D24E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73D9AC66-7DAE-4733-92AB-48157C5FF921}

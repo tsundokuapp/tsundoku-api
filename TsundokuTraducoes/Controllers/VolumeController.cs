@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Services.Interfaces;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Controllers
 {
@@ -10,13 +10,13 @@ namespace TsundokuTraducoes.Controllers
     public class VolumeController : ControllerBase
     {
         // TODO - Criar as verificações de request, para saber se estar vindo corretamente.
-        private readonly IVolumeService _volumeService;
+        private readonly IVolumeServiceOld _volumeService;
 
-        public VolumeController(IVolumeService volumeService)
+        public VolumeController(IVolumeServiceOld volumeService)
         {
             _volumeService = volumeService;
         }
-                
+
         [HttpGet("api/volume/")]
         public async Task<IActionResult> RetornaListaVolume([FromQuery] Guid? IdObra)
         {
@@ -27,7 +27,7 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Value);
         }
 
-        
+
         [HttpGet("api/volume/novel/{id}")]
         public async Task<IActionResult> RetornaVolumeNovelPorId(Guid id)
         {
