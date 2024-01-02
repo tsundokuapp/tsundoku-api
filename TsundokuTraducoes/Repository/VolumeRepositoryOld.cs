@@ -164,9 +164,9 @@ namespace TsundokuTraducoes.Api.Repository
         {
             var parametros = new
             {
-                NovelId = volumeDTO.NovelId,
-                Numero = volumeDTO.Numero,
-                Slug = volumeDTO.Slug,
+                volumeDTO.NovelId,
+                volumeDTO.Numero,
+                volumeDTO.Slug,
             };
 
             var sql = @"SELECT * 
@@ -183,9 +183,9 @@ namespace TsundokuTraducoes.Api.Repository
         {
             var parametros = new
             {
-                ComicId = volumeDTO.ComicId,
-                Numero = volumeDTO.Numero,
-                Slug = volumeDTO.Slug,
+                volumeDTO.ComicId,
+                volumeDTO.Numero,
+                volumeDTO.Slug,
             };
 
             var sql = @"SELECT * 
@@ -199,7 +199,7 @@ namespace TsundokuTraducoes.Api.Repository
         }
 
 
-        private string RetornaQueryListaVolumes(Guid? novelId)
+        private static string RetornaQueryListaVolumes(Guid? novelId)
         {
             var condicao = (novelId != null) ? $"WHERE NovelId = @NovelId" : "";
             return $@"SELECT *
@@ -208,7 +208,7 @@ namespace TsundokuTraducoes.Api.Repository
                       ORDER BY Numero ASC";
         }
 
-        private string RetornaQueryListaComics(Guid? comicId)
+        private static string RetornaQueryListaComics(Guid? comicId)
         {
             var condicao = (comicId != null) ? $"WHERE ComicId = @ComicId" : "";
             return $@"SELECT *
@@ -217,8 +217,7 @@ namespace TsundokuTraducoes.Api.Repository
                       ORDER BY Numero ASC";
         }
 
-
-        private bool VerificaCampoVazio(string campoVolumeEncontrado, string campoVolumeDTO)
+        private static bool VerificaCampoVazio(string campoVolumeEncontrado, string campoVolumeDTO)
         {
             return string.IsNullOrEmpty(campoVolumeDTO) ||
                !string.IsNullOrEmpty(campoVolumeDTO) && campoVolumeDTO.ToLower().Contains("null") ||
