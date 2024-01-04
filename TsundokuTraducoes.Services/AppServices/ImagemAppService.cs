@@ -67,15 +67,19 @@ namespace TsundokuTraducoes.Services.AppServices
             if (Directory.Exists(diretorioImagemObra))
             {
                 string tituloVolumeTratado;
-                var unico = numeroVolume.ToLower() == "unico" || numeroVolume.ToLower() == "único";
+                var unico = numeroVolume.ToLower() == "único";
                 if (unico)
                 {
                     tituloVolumeTratado = "Volume-Unico";
                 }
                 else
                 {
-                    var numeroTratado = Convert.ToInt32(numeroVolume);
-                    tituloVolumeTratado = $"Volume-{numeroTratado:00}";
+                    var ehNumeroDouble = double.TryParse(numeroVolume, out double numeroVolumeTratado);
+                    
+                    if (!ehNumeroDouble)
+                        return Result.Fail("Verifique o valor informado no campo Número!");
+
+                    tituloVolumeTratado = $"Volume-{numeroVolumeTratado:00}";                    
                 }
 
                 var nomeImagemVolume = $"Capa-{tituloVolumeTratado}.jpg";
