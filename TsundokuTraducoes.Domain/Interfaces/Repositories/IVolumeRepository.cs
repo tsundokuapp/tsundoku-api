@@ -28,5 +28,7 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
         Task<VolumeComic> RetornaVolumeComicExistente(VolumeDTO volumeDTO);
 
         Task<bool> AlteracoesSalvas();
+
+        bool AlteracoesSalvass();
     }
 }

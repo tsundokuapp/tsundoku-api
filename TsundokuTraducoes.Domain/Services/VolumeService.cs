@@ -37,16 +37,16 @@ namespace TsundokuTraducoes.Domain.Services
         }
 
 
-        public async Task<bool> AdicionaVolumeNovel(VolumeNovel volumeNovel)
+        public bool AdicionaVolumeNovel(VolumeNovel volumeNovel)
         {
-            await _volumeRepository.AdicionaVolumeNovel(volumeNovel);
-            return await _volumeRepository.AlteracoesSalvas();
+            _volumeRepository.AdicionaVolumeNovel(volumeNovel);
+            return _volumeRepository.AlteracoesSalvass();
         }
 
-        public async Task<bool> AdicionaVolumeComic(VolumeComic volumeComic)
+        public bool AdicionaVolumeComic(VolumeComic volumeComic)
         {
-            await _volumeRepository.AdicionaVolumeComic(volumeComic);
-            return await _volumeRepository.AlteracoesSalvas();
+            _volumeRepository.AdicionaVolumeComic(volumeComic);
+            return _volumeRepository.AlteracoesSalvass();
         }
 
 
@@ -61,16 +61,16 @@ namespace TsundokuTraducoes.Domain.Services
         }
 
 
-        public async Task<bool> ExcluiVolumeNovel(VolumeNovel volumeNovel)
+        public bool ExcluiVolumeNovel(VolumeNovel volumeNovel)
         {
             _volumeRepository.ExcluiVolumeNovel(volumeNovel);
-            return await _volumeRepository.AlteracoesSalvas();
+            return _volumeRepository.AlteracoesSalvass();
         }
 
-        public async Task<bool> ExcluiVolumeComic(VolumeComic volumeComic)
+        public bool ExcluiVolumeComic(VolumeComic volumeComic)
         {
             _volumeRepository.ExcluiVolumeComic(volumeComic);
-            return await _volumeRepository.AlteracoesSalvas();
+            return _volumeRepository.AlteracoesSalvass();
         }
 
         public async Task<VolumeNovel> RetornaVolumeNovelExistente(VolumeDTO VolumeDTO)
@@ -83,9 +83,9 @@ namespace TsundokuTraducoes.Domain.Services
             return await _volumeRepository.RetornaVolumeComicExistente(VolumeDTO);
         }        
 
-        public async Task<bool> AlteracoesSalvas()
+        public bool AlteracoesSalvas()
         {
-            return await _volumeRepository.AlteracoesSalvas();
+            return _volumeRepository.AlteracoesSalvass();
         }
 
         public void AtualizaNovelPorVolume(Novel novel, VolumeNovel volumeNovel)

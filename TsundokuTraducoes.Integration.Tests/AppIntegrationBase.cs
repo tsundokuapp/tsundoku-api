@@ -42,16 +42,15 @@ namespace TsundokuTraducoes.Integration.Tests
             _titulo = serializado.Titulo;
         }
 
-        protected HttpContent RetornaStreamImagemMock(string nomeArquivo, string idForm)
+        protected static HttpContent RetornaStreamImagemMock(string nomeArquivo, string idForm)
         {
             var stream = new MemoryStream();
-
             var httpcontent = new StreamContent(stream);
+
             httpcontent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
             {
                 Name = idForm,
                 FileName = nomeArquivo,
-
             };
 
             var teste = new MediaTypeHeaderValue("image/jpg");
@@ -59,12 +58,12 @@ namespace TsundokuTraducoes.Integration.Tests
 
             return httpcontent;
         }
-    
+
         protected async Task CarregaIdNovel()
         {
             var responseNovels = await _httpClient.GetAsync($"api/obra/novels");
-
             var retornoSerializado = await responseNovels.Content.ReadAsStringAsync();
+
             var listaNovels = JsonConvert.DeserializeObject<List<RetornoObra>>(retornoSerializado);
             var serializado = listaNovels?.FirstOrDefault();
 
@@ -74,8 +73,8 @@ namespace TsundokuTraducoes.Integration.Tests
         protected async Task CarregaIdVolumeNovel()
         {
             var responseNovels = await _httpClient.GetAsync($"api/volume/novel");
-
             var retornoSerializado = await responseNovels.Content.ReadAsStringAsync();
+
             var listaVolumeNovels = JsonConvert.DeserializeObject<List<RetornoVolume>>(retornoSerializado);
             var serializado = listaVolumeNovels?.FirstOrDefault();
 
@@ -83,9 +82,33 @@ namespace TsundokuTraducoes.Integration.Tests
             _idObra = serializado.NovelId.Value;
         }
 
-        protected int RetornaNumeroAleatorio()
-        {           
-            return new Random().Next(1, 99);
+        protected async Task CarregaIdComic()
+        {
+            var responseNovels = await _httpClient.GetAsync($"api/obra/comics");
+            var retornoSerializado = await responseNovels.Content.ReadAsStringAsync();
+
+            var listaNovels = JsonConvert.DeserializeObject<List<RetornoObra>>(retornoSerializado);
+            var serializado = listaNovels?.FirstOrDefault();
+
+            _idObra = serializado.Id;
+        }
+
+        protected async Task CarregaIdVolumeComic()
+        {
+            var responseNovels = await _httpClient.GetAsync($"api/volume/comic");
+            var retornoSerializado = await responseNovels.Content.ReadAsStringAsync();
+
+            var listaVolumeNovels = JsonConvert.DeserializeObject<List<RetornoVolume>>(retornoSerializado);
+            var serializado = listaVolumeNovels?.FirstOrDefault();
+
+            _idVolume = serializado.Id;
+            _idObra = serializado.ComicId.Value;
+        }
+
+        protected static double RetornaNumeroAleatorio()
+        {
+            var numeroAleatorioAuxiliar = $"{new Random().Next(1, 99)}.{new Random().Next(1, 99)}";
+            return Convert.ToDouble(numeroAleatorioAuxiliar);
         }
     }
 }

@@ -220,5 +220,10 @@ namespace TsundokuTraducoes.Data.Repositories
                !string.IsNullOrEmpty(campoVolumeDTO) && campoVolumeDTO.ToLower().Contains("null") ||
                !string.IsNullOrEmpty(campoVolumeEncontrado) && campoVolumeEncontrado.ToLower().Contains("null");
         }
+
+        public bool AlteracoesSalvass()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

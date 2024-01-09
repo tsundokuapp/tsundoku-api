@@ -119,7 +119,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             volume.DataInclusao = DateTime.Now;
             volume.DataAlteracao = volume.DataInclusao;
-            var volumeAdicionado = await _volumeService.AdicionaVolumeNovel(volume);
+            var volumeAdicionado = _volumeService.AdicionaVolumeNovel(volume);
             if (volumeAdicionado)
             {
                 _volumeService.AtualizaNovelPorVolume(novel, volume);
@@ -158,7 +158,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             volume.DataInclusao = DateTime.Now;
             volume.DataAlteracao = volume.DataInclusao;
-            var volumeComicAdicionado = await _volumeService.AdicionaVolumeComic(volume);
+            var volumeComicAdicionado = _volumeService.AdicionaVolumeComic(volume);
             if (volumeComicAdicionado)
             {
                 _volumeService.AtualizaComicPorVolume(comic, volume);
@@ -191,7 +191,7 @@ namespace TsundokuTraducoes.Services.AppServices
             }
 
             volumeEncontrado = _volumeService.AtualizaVolumeNovel(volumeDTO);
-            if (!_volumeService.AlteracoesSalvas().Result)
+            if (!_volumeService.AlteracoesSalvas())
                 return Result.Fail("Erro ao atualizar o volume!");
 
             var retornoVolume = TrataRetornoVolumeNovel(volumeEncontrado);
@@ -219,7 +219,7 @@ namespace TsundokuTraducoes.Services.AppServices
             }
 
             volumeEncontrado = _volumeService.AtualizaVolumeComic(volumeDTO);
-            if (!_volumeService.AlteracoesSalvas().Result)
+            if (!_volumeService.AlteracoesSalvas())
                 return Result.Fail("Erro ao atualizar o volume!");
 
             var retornoVolume = TrataRetornoVolumeComic(volumeEncontrado);
@@ -233,7 +233,7 @@ namespace TsundokuTraducoes.Services.AppServices
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
-            var volumeExcluido = await _volumeService.ExcluiVolumeNovel(volumeEncontrado);
+            var volumeExcluido = _volumeService.ExcluiVolumeNovel(volumeEncontrado);
             _imagemAppService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume);
 
             if (!volumeExcluido)
@@ -249,7 +249,7 @@ namespace TsundokuTraducoes.Services.AppServices
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
-            var volumeExcluido = await _volumeService.ExcluiVolumeComic(volumeEncontrado);
+            var volumeExcluido = _volumeService.ExcluiVolumeComic(volumeEncontrado);
             _imagemAppService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume);
 
             if (!volumeExcluido)

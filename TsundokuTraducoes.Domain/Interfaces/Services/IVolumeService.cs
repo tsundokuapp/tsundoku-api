@@ -12,8 +12,8 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
         Task<VolumeNovel> RetornaVolumeNovelPorId(Guid id);
         Task<VolumeComic> RetornaVolumeComicPorId(Guid id);
 
-        Task<bool> AdicionaVolumeNovel(VolumeNovel volumeNovel);
-        Task<bool> AdicionaVolumeComic(VolumeComic volumeComic);
+        bool AdicionaVolumeNovel(VolumeNovel volumeNovel);
+        bool AdicionaVolumeComic(VolumeComic volumeComic);
 
         VolumeNovel AtualizaVolumeNovel(VolumeDTO volumeDTO);
         VolumeComic AtualizaVolumeComic(VolumeDTO volumeDTO);
@@ -24,9 +24,9 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
         Task<VolumeNovel> RetornaVolumeNovelExistente(VolumeDTO VolumeDTO);
         Task<VolumeComic> RetornaVolumeComicExistente(VolumeDTO VolumeDTO);
 
-        Task<bool> ExcluiVolumeNovel(VolumeNovel volumeNovel);
-        Task<bool> ExcluiVolumeComic(VolumeComic volumeComic);
+        bool ExcluiVolumeNovel(VolumeNovel volumeNovel);
+        bool ExcluiVolumeComic(VolumeComic volumeComic);
 
-        Task<bool> AlteracoesSalvas();
+        bool AlteracoesSalvas();
     }
 }
