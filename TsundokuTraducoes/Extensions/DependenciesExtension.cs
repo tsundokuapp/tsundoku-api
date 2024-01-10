@@ -1,14 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using TsundokuTraducoes.Api.Repository;
 using TsundokuTraducoes.Api.Repository.Interfaces;
 using TsundokuTraducoes.Api.Services;
 using TsundokuTraducoes.Api.Services.Interfaces;
 using TsundokuTraducoes.Data.Context;
+using TsundokuTraducoes.Data.Context.Interface;
 using TsundokuTraducoes.Data.Repositories;
-using TsundokuTraducoes.Data.Repositories.Base;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
-using TsundokuTraducoes.Domain.Interfaces.Repositories.Base;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Domain.Services;
 using TsundokuTraducoes.Services.AppServices;
@@ -20,11 +18,10 @@ namespace TsundokuTraducoes.Api.Extensions
     {
         public static void AddSqlConnection(
         this IServiceCollection services,
-        string connectionString)
+        string stringConnection)
         {
-            services.AddDbContext<ContextBase>(
-            context => context.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-            );
+            services.AddDbContext<ContextBase>();
+            services.AddScoped<IContextBase>(provider => provider.GetService<ContextBase>());
         }
 
         public static void AddRepositories(this IServiceCollection services)
@@ -34,8 +31,7 @@ namespace TsundokuTraducoes.Api.Extensions
             services.AddTransient<IVolumeRepositoryOld, VolumeRepositoryOld>();
             services.AddTransient<ICapituloRepositoryOld, CapituloRepositoryOld>();
             services.AddTransient<IInfosObrasRepositoryOld, InfosObrasRepositoryOld>();
-
-            services.AddScoped<IBaseRepository, BaseRepository>();
+            
             services.AddScoped<ICapituloRepository, CapituloRepository>();
             services.AddScoped<IGeneroDeParaRepository, GeneroDeParaRepository>();
             services.AddScoped<IGeneroRepository, GeneroRepository>();

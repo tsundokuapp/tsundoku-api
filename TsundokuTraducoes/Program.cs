@@ -21,7 +21,6 @@ SourceConnection.SetaConnectionStringConfig(_connectionStringConfig);
 
 builder.Services.AddSqlConnection(_connectionStringConfig.ConnectionString);
 
-builder.Services.AddScoped<DbContext, ContextBase>();
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 

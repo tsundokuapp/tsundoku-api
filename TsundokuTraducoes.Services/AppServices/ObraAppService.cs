@@ -130,7 +130,7 @@ namespace TsundokuTraducoes.Services.AppServices
             novel.ImagemCapaPrincipal = obraDTO.ImagemCapaPrincipal;
             novel.ImagemBanner = obraDTO.ImagemBanner;
 
-            var novelCriada = await _obraservice.AdicionaNovel(novel);
+            var novelCriada = _obraservice.AdicionaNovel(novel);
             if (!novelCriada)
                 return Result.Fail("Erro ao adicionar a Novel!");
 
@@ -179,7 +179,7 @@ namespace TsundokuTraducoes.Services.AppServices
             comic.ImagemCapaPrincipal = obraDTO.ImagemCapaPrincipal;
             comic.ImagemBanner = obraDTO.ImagemBanner;
 
-            var comicAdicionada = await _obraservice.AdicionaComic(comic);
+            var comicAdicionada = _obraservice.AdicionaComic(comic);
             if (!comicAdicionada)
                 return Result.Fail("Erro ao adicionar a Comic!");
 
@@ -225,7 +225,7 @@ namespace TsundokuTraducoes.Services.AppServices
             novelEncontrada.ImagemBanner = obraDTO.ImagemBanner;
             novelEncontrada = _obraservice.AtualizaNovel(obraDTO);
 
-            var novelAtualizada = await _obraservice.AlteracoesSalvas();
+            var novelAtualizada = _obraservice.AlteracoesSalvas();
 
             if (!novelAtualizada)
                 return Result.Fail("Erro ao atualizar a Novel!");
@@ -273,7 +273,7 @@ namespace TsundokuTraducoes.Services.AppServices
             comicEncontrada.ImagemBanner = obraDTO.ImagemBanner;
             comicEncontrada = _obraservice.AtualizaComic(obraDTO);
 
-            var comicAtualizada = await _obraservice.AlteracoesSalvas();
+            var comicAtualizada = _obraservice.AlteracoesSalvas();
 
             if (!comicAtualizada)
                 return Result.Fail("Erro ao atualizar a obra!");
@@ -291,7 +291,7 @@ namespace TsundokuTraducoes.Services.AppServices
             if (novelEncontrada == null)
                 return Result.Fail("Novel não encontrada!");
 
-            var novelExcluida = await _obraservice.ExcluiNovel(novelEncontrada);
+            var novelExcluida = _obraservice.ExcluiNovel(novelEncontrada);
             _imagemAppService.ExcluiDiretorioImagens(novelEncontrada.DiretorioImagemObra);
 
             if (!novelExcluida)
@@ -306,7 +306,7 @@ namespace TsundokuTraducoes.Services.AppServices
             if (comicEncontrada == null)
                 return Result.Fail("Comic não encontrada!");
 
-            var comicExcluida = await _obraservice.ExcluiComic(comicEncontrada);
+            var comicExcluida = _obraservice.ExcluiComic(comicEncontrada);
             _imagemAppService.ExcluiDiretorioImagens(comicEncontrada.DiretorioImagemObra);
 
             if (!comicExcluida)
