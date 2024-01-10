@@ -20,7 +20,7 @@ namespace TsundokuTraducoes.Api.Extensions
         this IServiceCollection services,
         string stringConnection)
         {
-            services.AddDbContext<ContextBase>();
+            services.AddDbContextFactory<ContextBase>();
             services.AddScoped<IContextBase>(provider => provider.GetService<ContextBase>());
         }
 

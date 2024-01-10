@@ -77,7 +77,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
-        [Fact(Skip = "Teste desativado, causa: erro de concorrência")]
+        //[Fact(Skip = "Teste desativado, causa: erro de concorrência")]
+        [Fact]
         public async Task DeveExcluirUmVolumeComic()
         {
             await CarregaIdVolumeComic();

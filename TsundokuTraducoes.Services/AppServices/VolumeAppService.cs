@@ -25,11 +25,11 @@ namespace TsundokuTraducoes.Services.AppServices
             _imagemAppService = imagemAppService;
         }
 
-        public async Task<Result<List<RetornoVolume>>> RetornaListaVolumes(Guid? idObra)
+        public Result<List<RetornoVolume>> RetornaListaVolumes(Guid? idObra)
         {
             var listaVolumes = new List<RetornoVolume>();
-            var listaVolumesNovel = await RetornaListaVolumesNovel(idObra);
-            var listaVolumesComic = await RetornaListaVolumesComic(idObra);
+            var listaVolumesNovel = RetornaListaVolumesNovel(idObra);
+            var listaVolumesComic = RetornaListaVolumesComic(idObra);
 
             listaVolumes.AddRange(listaVolumesNovel.Value);
             listaVolumes.AddRange(listaVolumesComic.Value);           
@@ -37,10 +37,10 @@ namespace TsundokuTraducoes.Services.AppServices
             return Result.Ok(listaVolumes);
         }
 
-        public async Task<Result<List<RetornoVolume>>> RetornaListaVolumesNovel(Guid? idObra)
+        public Result<List<RetornoVolume>> RetornaListaVolumesNovel(Guid? idObra)
         {
             var listaRetornoVolume = new List<RetornoVolume>();
-            var listaVolumesNovel = await _volumeService.RetornaListaVolumesNovel(idObra);
+            var listaVolumesNovel = _volumeService.RetornaListaVolumesNovel(idObra);
 
             if (listaVolumesNovel.Count > 0)
             {
@@ -53,10 +53,10 @@ namespace TsundokuTraducoes.Services.AppServices
             return Result.Ok( listaRetornoVolume);
         }
 
-        public async Task<Result<List<RetornoVolume>>> RetornaListaVolumesComic(Guid? idObra)
+        public Result<List<RetornoVolume>> RetornaListaVolumesComic(Guid? idObra)
         {
             var listaRetornoVolume = new List<RetornoVolume>();
-            var listaVolumesComic = await _volumeService.RetornaListaVolumesComic(idObra);
+            var listaVolumesComic = _volumeService.RetornaListaVolumesComic(idObra);
 
             if (listaVolumesComic.Count > 0)
             {
@@ -70,9 +70,9 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        public async Task<Result<RetornoVolume>> RetornaVolumeNovelPorId(Guid id)
+        public Result<RetornoVolume> RetornaVolumeNovelPorId(Guid id)
         {
-            var volume = await _volumeService.RetornaVolumeNovelPorId(id);
+            var volume = _volumeService.RetornaVolumeNovelPorId(id);
             if (volume == null)
                 return Result.Fail("Volume não encontrado!");
 
@@ -80,9 +80,9 @@ namespace TsundokuTraducoes.Services.AppServices
             return Result.Ok(retornoVolume);
         }
 
-        public async Task<Result<RetornoVolume>> RetornaVolumeComicPorId(Guid id)
+        public Result<RetornoVolume> RetornaVolumeComicPorId(Guid id)
         {
-            var volume = await _volumeService.RetornaVolumeComicPorId(id);
+            var volume = _volumeService.RetornaVolumeComicPorId(id);
             if (volume == null)
                 return Result.Fail("Volume não encontrado!");
 
@@ -91,11 +91,11 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        public async Task<Result<RetornoVolume>> AdicionaVolumeNovel(VolumeDTO volumeDTO)
+        public Result<RetornoVolume> AdicionaVolumeNovel(VolumeDTO volumeDTO)
         {
             var volume = _mapper.Map<VolumeNovel>(volumeDTO);
-            var novel = await _obraService.RetornaNovelPorId(volumeDTO.ObraId);
-            var volumeExistente = await _volumeService.RetornaVolumeNovelExistente(volumeDTO);
+            var novel = _obraService.RetornaNovelPorId(volumeDTO.ObraId).Result;
+            var volumeExistente = _volumeService.RetornaVolumeNovelExistente(volumeDTO);
 
             if (novel == null)
                 return Result.Fail("Não foi encontrada a obra informada");
@@ -130,11 +130,11 @@ namespace TsundokuTraducoes.Services.AppServices
             return Result.Fail("Erro ao adicionar volume da obra!");
         }
 
-        public async Task<Result<RetornoVolume>> AdicionaVolumeComic(VolumeDTO volumeDTO)
+        public Result<RetornoVolume> AdicionaVolumeComic(VolumeDTO volumeDTO)
         {
             var volume = _mapper.Map<VolumeComic>(volumeDTO);
-            var comic = await _obraService.RetornaComicPorId(volumeDTO.ObraId);
-            var volumeExistente = await _volumeService.RetornaVolumeComicExistente(volumeDTO);
+            var comic = _obraService.RetornaComicPorId(volumeDTO.ObraId).Result;
+            var volumeExistente = _volumeService.RetornaVolumeComicExistente(volumeDTO);
 
             if (comic == null)
                 return Result.Fail("Não foi encontrada a obra informada");
@@ -170,15 +170,15 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        public async Task<Result<RetornoVolume>> AtualizaVolumeNovel(VolumeDTO volumeDTO)
+        public Result<RetornoVolume> AtualizaVolumeNovel(VolumeDTO volumeDTO)
         {
-            var volumeEncontrado = await _volumeService.RetornaVolumeNovelPorId(volumeDTO.Id);
+            var volumeEncontrado = _volumeService.RetornaVolumeNovelPorId(volumeDTO.Id);
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
             if (volumeDTO.ImagemVolumeFile != null)
             {
-                var novel = await _obraService.RetornaNovelPorId(volumeDTO.ObraId);
+                var novel = _obraService.RetornaNovelPorId(volumeDTO.ObraId).Result;
                 if (novel == null)
                     return Result.Fail("Não foi encontrada a obra informada");
 
@@ -198,15 +198,15 @@ namespace TsundokuTraducoes.Services.AppServices
             return Result.Ok(retornoVolume);
         }
 
-        public async Task<Result<RetornoVolume>> AtualizaVolumeComic(VolumeDTO volumeDTO)
+        public Result<RetornoVolume> AtualizaVolumeComic(VolumeDTO volumeDTO)
         {
-            var volumeEncontrado = await _volumeService.RetornaVolumeComicPorId(volumeDTO.Id);
+            var volumeEncontrado = _volumeService.RetornaVolumeComicPorId(volumeDTO.Id);
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
             if (volumeDTO.ImagemVolumeFile != null)
             {
-                var comic = await _obraService.RetornaComicPorId(volumeDTO.ObraId);
+                var comic = _obraService.RetornaComicPorId(volumeDTO.ObraId).Result;
                 if (comic == null)
                     return Result.Fail("Não foi encontrada a obra informada");
 
@@ -227,14 +227,14 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        public async Task<Result<bool>> ExcluiVolumeNovel(Guid novelId)
+        public Result<bool> ExcluiVolumeNovel(Guid novelId)
         {
-            var volumeEncontrado = await _volumeService.RetornaVolumeNovelPorId(novelId);
+            var volumeEncontrado = _volumeService.RetornaVolumeNovelPorId(novelId);
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
             var volumeExcluido = _volumeService.ExcluiVolumeNovel(volumeEncontrado);
-            _imagemAppService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume);
+            //_imagemAppService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume);
 
             if (!volumeExcluido)
                 return Result.Fail("Erro ao excluir o volume!");
@@ -243,14 +243,14 @@ namespace TsundokuTraducoes.Services.AppServices
             return Result.Ok().WithSuccess("Volume excluído com sucesso!");
         }
 
-        public async Task<Result<bool>> ExcluiVolumeComic(Guid comicId)
+        public Result<bool> ExcluiVolumeComic(Guid comicId)
         {
-            var volumeEncontrado = await _volumeService.RetornaVolumeComicPorId(comicId);
+            var volumeEncontrado = _volumeService.RetornaVolumeComicPorId(comicId);
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
             var volumeExcluido = _volumeService.ExcluiVolumeComic(volumeEncontrado);
-            _imagemAppService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume);
+            //_imagemAppService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume);
 
             if (!volumeExcluido)
                 return Result.Fail("Erro ao excluir o volume!");

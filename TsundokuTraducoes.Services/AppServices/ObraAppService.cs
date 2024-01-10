@@ -292,7 +292,7 @@ namespace TsundokuTraducoes.Services.AppServices
                 return Result.Fail("Novel não encontrada!");
 
             var novelExcluida = _obraservice.ExcluiNovel(novelEncontrada);
-            _imagemAppService.ExcluiDiretorioImagens(novelEncontrada.DiretorioImagemObra);
+            //_imagemAppService.ExcluiDiretorioImagens(novelEncontrada.DiretorioImagemObra);
 
             if (!novelExcluida)
                 return Result.Fail("Erro ao excluir a Novel!");
@@ -307,7 +307,7 @@ namespace TsundokuTraducoes.Services.AppServices
                 return Result.Fail("Comic não encontrada!");
 
             var comicExcluida = _obraservice.ExcluiComic(comicEncontrada);
-            _imagemAppService.ExcluiDiretorioImagens(comicEncontrada.DiretorioImagemObra);
+            //_imagemAppService.ExcluiDiretorioImagens(comicEncontrada.DiretorioImagemObra);
 
             if (!comicExcluida)
                 return Result.Fail("Erro ao excluir a Comic!");

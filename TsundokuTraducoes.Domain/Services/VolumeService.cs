@@ -15,25 +15,25 @@ namespace TsundokuTraducoes.Domain.Services
             _volumeRepository = volumeRepository;
         }
 
-        public async Task<List<VolumeNovel>> RetornaListaVolumesNovel(Guid? idObra)
+        public List<VolumeNovel> RetornaListaVolumesNovel(Guid? idObra)
         {
-            return await _volumeRepository.RetornaListaVolumesNovel(idObra);
+            return _volumeRepository.RetornaListaVolumesNovel(idObra);
         }
 
-        public async Task<List<VolumeComic>> RetornaListaVolumesComic(Guid? idObra)
+        public List<VolumeComic> RetornaListaVolumesComic(Guid? idObra)
         {
-            return await _volumeRepository.RetornaListaVolumesComic(idObra);
+            return _volumeRepository.RetornaListaVolumesComic(idObra);
         }
 
         
-        public async Task<VolumeNovel> RetornaVolumeNovelPorId(Guid id)
+        public VolumeNovel RetornaVolumeNovelPorId(Guid id)
         {
-            return await _volumeRepository.RetornaVolumeNovelPorId(id);
+            return _volumeRepository.RetornaVolumeNovelPorId(id);
         }
 
-        public async Task<VolumeComic> RetornaVolumeComicPorId(Guid id)
+        public VolumeComic RetornaVolumeComicPorId(Guid id)
         {
-            return await _volumeRepository.RetornaVolumeComicPorId(id);
+            return _volumeRepository.RetornaVolumeComicPorId(id);
         }
 
 
@@ -73,14 +73,14 @@ namespace TsundokuTraducoes.Domain.Services
             return _volumeRepository.AlteracoesSalvass();
         }
 
-        public async Task<VolumeNovel> RetornaVolumeNovelExistente(VolumeDTO VolumeDTO)
+        public VolumeNovel RetornaVolumeNovelExistente(VolumeDTO VolumeDTO)
         {
-            return await _volumeRepository.RetornaVolumeNovelExistente(VolumeDTO);
+            return _volumeRepository.RetornaVolumeNovelExistente(VolumeDTO);
         }
 
-        public async Task<VolumeComic> RetornaVolumeComicExistente(VolumeDTO VolumeDTO)
+        public VolumeComic RetornaVolumeComicExistente(VolumeDTO VolumeDTO)
         {
-            return await _volumeRepository.RetornaVolumeComicExistente(VolumeDTO);
+            return _volumeRepository.RetornaVolumeComicExistente(VolumeDTO);
         }        
 
         public bool AlteracoesSalvas()

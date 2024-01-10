@@ -6,11 +6,11 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
 {
     public interface IVolumeService
     {        
-        Task<List<VolumeNovel>> RetornaListaVolumesNovel(Guid? idObra);
-        Task<List<VolumeComic>> RetornaListaVolumesComic(Guid? idObra);
+        List<VolumeNovel> RetornaListaVolumesNovel(Guid? idObra);
+        List<VolumeComic> RetornaListaVolumesComic(Guid? idObra);
 
-        Task<VolumeNovel> RetornaVolumeNovelPorId(Guid id);
-        Task<VolumeComic> RetornaVolumeComicPorId(Guid id);
+        VolumeNovel RetornaVolumeNovelPorId(Guid id);
+        VolumeComic RetornaVolumeComicPorId(Guid id);
 
         bool AdicionaVolumeNovel(VolumeNovel volumeNovel);
         bool AdicionaVolumeComic(VolumeComic volumeComic);
@@ -21,8 +21,8 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
         void AtualizaNovelPorVolume(Novel novel, VolumeNovel volumeNovel);
         void AtualizaComicPorVolume(Comic comic, VolumeComic volumeComic);
 
-        Task<VolumeNovel> RetornaVolumeNovelExistente(VolumeDTO VolumeDTO);
-        Task<VolumeComic> RetornaVolumeComicExistente(VolumeDTO VolumeDTO);
+        VolumeNovel RetornaVolumeNovelExistente(VolumeDTO VolumeDTO);
+        VolumeComic RetornaVolumeComicExistente(VolumeDTO VolumeDTO);
 
         bool ExcluiVolumeNovel(VolumeNovel volumeNovel);
         bool ExcluiVolumeComic(VolumeComic volumeComic);

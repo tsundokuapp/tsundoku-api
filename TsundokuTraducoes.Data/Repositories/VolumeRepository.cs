@@ -1,7 +1,5 @@
 ﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
 using TsundokuTraducoes.Data.Context;
-using TsundokuTraducoes.Data.Repositories.Base;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Entities.Entities.Volume;
@@ -12,11 +10,16 @@ using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Data.Repositories
 {
-    public class VolumeRepository : BaseRepository, IVolumeRepository
+    public class VolumeRepository : IVolumeRepository
     {
-        public VolumeRepository(ContextBase context) : base(context){}
+        private readonly ContextBase _context;
+        
+        public VolumeRepository(ContextBase context)
+        {
+            _context = context;
+        }
 
-        public async Task<List<VolumeNovel>> RetornaListaVolumesNovel(Guid? novelId = null)
+        public List<VolumeNovel> RetornaListaVolumesNovel(Guid? novelId = null)
         {
             object parametro = null;
 
@@ -25,11 +28,11 @@ namespace TsundokuTraducoes.Data.Repositories
                 parametro = new { NovelId = novelId.Value };
             }
 
-            var listaVolumesNovel = await _contextDapper.QueryAsync<VolumeNovel>(RetornaQueryListaVolumes(novelId), parametro);
+            var listaVolumesNovel = _context.Connection.Query<VolumeNovel>(RetornaQueryListaVolumes(novelId), parametro);
             return listaVolumesNovel.ToList();
         }
 
-        public async Task<List<VolumeComic>> RetornaListaVolumesComic(Guid? comicId = null)
+        public List<VolumeComic> RetornaListaVolumesComic(Guid? comicId = null)
         {
             object parametro = null;
 
@@ -38,32 +41,32 @@ namespace TsundokuTraducoes.Data.Repositories
                 parametro = new { ComicId = comicId.Value };
             }
 
-            var listaVolumesComic = await _contextDapper.QueryAsync<VolumeComic>(RetornaQueryListaComics(comicId), parametro);
+            var listaVolumesComic = _context.Connection.Query<VolumeComic>(RetornaQueryListaComics(comicId), parametro);
             return listaVolumesComic.ToList();
         }
 
 
-        public async Task<VolumeNovel> RetornaVolumeNovelPorId(Guid volumeId)
+        public VolumeNovel RetornaVolumeNovelPorId(Guid volumeId)
         {
-            var volume = await RetornaListaVolumesNovel();
+            var volume = RetornaListaVolumesNovel();
             return volume.FirstOrDefault(f => f.Id == volumeId);
         }
 
-        public async Task<VolumeComic> RetornaVolumeComicPorId(Guid volumeId)
+        public VolumeComic RetornaVolumeComicPorId(Guid volumeId)
         {
-            var volume = await RetornaListaVolumesComic();
+            var volume = RetornaListaVolumesComic();
             return volume.FirstOrDefault(f => f.Id == volumeId);
         }       
 
         
-        public async Task AdicionaVolumeNovel(VolumeNovel volumeNovel)
+        public void AdicionaVolumeNovel(VolumeNovel volumeNovel)
         {
-            await AdicionaEntidadeBancoDados(volumeNovel);
+            _context.Add(volumeNovel);
         }
 
-        public async Task AdicionaVolumeComic(VolumeComic volumeComic)
+        public void AdicionaVolumeComic(VolumeComic volumeComic)
         {
-            await AdicionaEntidadeBancoDados(volumeComic);
+            _context.Add(volumeComic);
         }
 
 
@@ -111,13 +114,13 @@ namespace TsundokuTraducoes.Data.Repositories
 
 
         public void ExcluiVolumeNovel(VolumeNovel volumeNovel)
-        {            
-            ExcluiEntidadeBancoDados(volumeNovel);
+        {
+            _context.Remove(volumeNovel);
         }
 
         public void ExcluiVolumeComic(VolumeComic volumeComic)
         {
-            ExcluiEntidadeBancoDados(volumeComic);
+            _context.Remove(volumeComic);
         }
 
 
@@ -137,7 +140,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                SlugUltimoVolume = @SlugUltimoVolume
                          WHERE Id = @Id;";
 
-            _contextDapper.Query(sql, parametros);
+            _context.Connection.Query(sql, parametros);
         }
         
         public void AtualizaComicPorVolume(Comic comic, VolumeComic volumeComic)
@@ -156,11 +159,11 @@ namespace TsundokuTraducoes.Data.Repositories
                                SlugUltimoVolume = @SlugUltimoVolume
                          WHERE Id = @Id;";
 
-            _contextDapper.Query(sql, parametros);
+            _context.Connection.Query(sql, parametros);
         }
 
 
-        public async Task<VolumeNovel> RetornaVolumeNovelExistente(VolumeDTO volumeDTO)
+        public VolumeNovel RetornaVolumeNovelExistente(VolumeDTO volumeDTO)
         {
             var parametros = new
             {
@@ -174,11 +177,11 @@ namespace TsundokuTraducoes.Data.Repositories
                          WHERE NovelId = @NovelId
                            AND (Numero LIKE @Numero OR Slug LIKE @Slug);";
 
-            var volumeExistente = await _contextDapper.QueryAsync<VolumeNovel>(sql, parametros);
+            var volumeExistente = _context.Connection.Query<VolumeNovel>(sql, parametros);
             return volumeExistente.FirstOrDefault();
         }
 
-        public async Task<VolumeComic> RetornaVolumeComicExistente(VolumeDTO volumeDTO)
+        public VolumeComic RetornaVolumeComicExistente(VolumeDTO volumeDTO)
         {
             var parametros = new
             {
@@ -192,7 +195,7 @@ namespace TsundokuTraducoes.Data.Repositories
                          WHERE ComicId = @ComicId
                            AND (Numero LIKE @Numero OR Slug LIKE @Slug);";
 
-            var volumeExistente = await _contextDapper.QueryAsync<VolumeComic>(sql, parametros);
+            var volumeExistente = _context.Connection.Query<VolumeComic>(sql, parametros);
             return volumeExistente.FirstOrDefault();
         }
 
@@ -223,7 +226,7 @@ namespace TsundokuTraducoes.Data.Repositories
 
         public bool AlteracoesSalvass()
         {
-            throw new NotImplementedException();
+            return _context.SaveChanges() > 0;
         }
     }
 }

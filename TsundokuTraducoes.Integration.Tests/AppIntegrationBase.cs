@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Text;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 
 #nullable disable
@@ -65,7 +66,7 @@ namespace TsundokuTraducoes.Integration.Tests
             var retornoSerializado = await responseNovels.Content.ReadAsStringAsync();
 
             var listaNovels = JsonConvert.DeserializeObject<List<RetornoObra>>(retornoSerializado);
-            var serializado = listaNovels?.FirstOrDefault();
+            var serializado = listaNovels?.LastOrDefault();
 
             _idObra = serializado.Id;
         }
@@ -75,8 +76,12 @@ namespace TsundokuTraducoes.Integration.Tests
             var responseNovels = await _httpClient.GetAsync($"api/volume/novel");
             var retornoSerializado = await responseNovels.Content.ReadAsStringAsync();
 
+            var pathFile = @"C:\Users\edsra\OneDrive\Área de Trabalho\log\log.txt";
+
+            File.AppendAllText(pathFile, " --- " + retornoSerializado + Environment.NewLine);
+
             var listaVolumeNovels = JsonConvert.DeserializeObject<List<RetornoVolume>>(retornoSerializado);
-            var serializado = listaVolumeNovels?.FirstOrDefault();
+            var serializado = listaVolumeNovels?.LastOrDefault();
 
             _idVolume = serializado.Id;
             _idObra = serializado.NovelId.Value;
@@ -88,7 +93,7 @@ namespace TsundokuTraducoes.Integration.Tests
             var retornoSerializado = await responseNovels.Content.ReadAsStringAsync();
 
             var listaNovels = JsonConvert.DeserializeObject<List<RetornoObra>>(retornoSerializado);
-            var serializado = listaNovels?.FirstOrDefault();
+            var serializado = listaNovels?.LastOrDefault();
 
             _idObra = serializado.Id;
         }
@@ -99,7 +104,7 @@ namespace TsundokuTraducoes.Integration.Tests
             var retornoSerializado = await responseNovels.Content.ReadAsStringAsync();
 
             var listaVolumeNovels = JsonConvert.DeserializeObject<List<RetornoVolume>>(retornoSerializado);
-            var serializado = listaVolumeNovels?.FirstOrDefault();
+            var serializado = listaVolumeNovels?.LastOrDefault();
 
             _idVolume = serializado.Id;
             _idObra = serializado.ComicId.Value;

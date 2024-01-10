@@ -79,13 +79,14 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
+        //[Fact(Skip = "Teste desativado, causa: erro de concorrência")]
         [Fact]
         public async Task DeveExcluirUmaNovel()
         {
             await CarregaIdNovelTitulo();
 
             var response = await _httpClient.DeleteAsync($"api/obra/novel/{_idObra}");
-            
+          
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
