@@ -11,14 +11,14 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
         Task<Novel> RetornaNovelPorId(Guid id);
         Task<Comic> RetornaComicPorId(Guid id);
 
-        Task<bool> AdicionaNovel(Novel novel);
-        Task<bool> AdicionaComic(Comic comic);
+        bool AdicionaNovel(Novel novel);
+        bool AdicionaComic(Comic comic);
 
         Novel AtualizaNovel(ObraDTO obraDTO);
         Comic AtualizaComic(ObraDTO comic);
 
-        Task<bool> ExcluiNovel(Novel novel);
-        Task<bool> ExcluiComic(Comic comic);
+        bool ExcluiNovel(Novel novel);
+        bool ExcluiComic(Comic comic);
 
         Task<Novel> RetornaNovelExistente(string titulo);
         Task<Comic> RetornaComicExistente(string titulo);
@@ -26,6 +26,6 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
         Task InsereGenerosNovel(Novel novel, List<string> ListaGeneros, bool inclusao);
         Task InsereGenerosComic(Comic comic, List<string> ListaGeneros, bool inclusao);
 
-        Task<bool> AlteracoesSalvas();
+        bool AlteracoesSalvas();
     }
 }

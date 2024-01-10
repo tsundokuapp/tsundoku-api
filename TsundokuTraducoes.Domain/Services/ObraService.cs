@@ -38,16 +38,16 @@ namespace TsundokuTraducoes.Domain.Services
         }
 
 
-        public async Task<bool> AdicionaNovel(Novel novel)
+        public bool AdicionaNovel(Novel novel)
         {
-            await _obraRepository.AdicionaNovel(novel);
-            return await _obraRepository.AlteracoesSalvas();
+            _obraRepository.AdicionaNovel(novel);
+            return _obraRepository.AlteracoesSalvas();
         }
 
-        public async Task<bool> AdicionaComic(Comic comic)
+        public bool AdicionaComic(Comic comic)
         {
-            await _obraRepository.AdicionaComic(comic); 
-            return await _obraRepository.AlteracoesSalvas();
+            _obraRepository.AdicionaComic(comic); 
+            return _obraRepository.AlteracoesSalvas();
         }
 
 
@@ -62,16 +62,16 @@ namespace TsundokuTraducoes.Domain.Services
         }
 
 
-        public async Task<bool> ExcluiNovel(Novel novel)
+        public bool ExcluiNovel(Novel novel)
         {
             _obraRepository.ExcluiNovel(novel);
-            return await _obraRepository.AlteracoesSalvas();
+            return _obraRepository.AlteracoesSalvas();
         }
-        
-        public async Task<bool> ExcluiComic(Comic comic)
+
+        public bool ExcluiComic(Comic comic)
         {
             _obraRepository.ExcluiComic(comic);
-            return await _obraRepository.AlteracoesSalvas();
+            return _obraRepository.AlteracoesSalvas();
         }
 
 
@@ -96,9 +96,9 @@ namespace TsundokuTraducoes.Domain.Services
             return await _obraRepository.RetornaComicExistente(titulo);
         }
 
-        public async Task<bool> AlteracoesSalvas()
+        public bool AlteracoesSalvas()
         {
-            return await _obraRepository.AlteracoesSalvas();
+            return _obraRepository.AlteracoesSalvas();
         }
     }
 }
