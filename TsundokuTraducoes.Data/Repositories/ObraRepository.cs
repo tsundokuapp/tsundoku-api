@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
 using TsundokuTraducoes.Data.Context;
-using TsundokuTraducoes.Data.Repositories.Base;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.DePara;
 using TsundokuTraducoes.Entities.Entities.Obra;
@@ -11,19 +10,21 @@ using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Data.Repositories
 {
-    public class ObraRepository : BaseRepository, IObraRepository
+    public class ObraRepository : IObraRepository
     {
         private readonly IGeneroDeParaRepository _generoRepository;
+        protected readonly ContextBase _context;
 
-        public ObraRepository(ContextBase context, IGeneroDeParaRepository generoRepository) : base(context)
+        public ObraRepository(ContextBase context, IGeneroDeParaRepository generoRepository)
         {
             _generoRepository = generoRepository;
+            _context = context;
         }
 
         public async Task<List<Novel>> RetornaListaNovels()
         {
             var listaNovels = new List<Novel>();
-            await _contextDapper.QueryAsync(RetornaQueryListaNovel(),
+            await _context.Connection.QueryAsync(RetornaQueryListaNovel(),
                 new[]
                 {
                     typeof(Novel),
@@ -54,7 +55,7 @@ namespace TsundokuTraducoes.Data.Repositories
         public async Task<List<Comic>> RetornaListaComics()
         {
             var listaComics = new List<Comic>();
-            await _contextDapper.QueryAsync(RetornaQueryListaComic(),
+            await _context.Connection.QueryAsync(RetornaQueryListaComic(),
                 new[]
                 {
                     typeof(Comic),
@@ -96,14 +97,14 @@ namespace TsundokuTraducoes.Data.Repositories
         }
 
 
-        public async Task AdicionaNovel(Novel novel)
+        public void AdicionaNovel(Novel novel)
         {
-            await AdicionaEntidadeBancoDados(novel);
+            _context.Add(novel);
         }
 
-        public async Task AdicionaComic(Comic comic)
+        public void AdicionaComic(Comic comic)
         {
-            await AdicionaEntidadeBancoDados(comic);
+            _context.Add(comic);
         }
 
 
@@ -130,12 +131,12 @@ namespace TsundokuTraducoes.Data.Repositories
 
         public void ExcluiNovel(Novel novel)
         {
-            ExcluiEntidadeBancoDados(novel);
+            _context.Remove(novel);
         }
 
         public void ExcluiComic(Comic comic)
         {
-            ExcluiEntidadeBancoDados(comic);
+            _context.Remove(comic);
         }
 
 
@@ -146,7 +147,7 @@ namespace TsundokuTraducoes.Data.Repositories
                            FROM Novels 
                           WHERE Titulo LIKE @Titulo";
 
-            var novelExistente = await _contextDapper.QueryAsync<Novel>(sql, new { Titulo = "%" + titulo + "%" });
+            var novelExistente = await _context.Connection.QueryAsync<Novel>(sql, new { Titulo = "%" + titulo + "%" });
             return novelExistente.FirstOrDefault();
         }
 
@@ -157,7 +158,7 @@ namespace TsundokuTraducoes.Data.Repositories
                            FROM Comics 
                           WHERE Titulo LIKE @Titulo";
 
-            var comicExistente = await _contextDapper.QueryAsync<Comic>(sql, new { Titulo = "%" + titulo + "%" });
+            var comicExistente = await _context.Connection.QueryAsync<Comic>(sql, new { Titulo = "%" + titulo + "%" });
             return comicExistente.FirstOrDefault();
         }
 
@@ -183,7 +184,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 {
                     var generoEncontrado = _context.Generos.Single(s => s.Slug == genero);
                     await _generoRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = generoEncontrado.Id });
-                    await AlteracoesSalvas();
+                    AlteracoesSalvas();
                 }
             }
         }
@@ -209,7 +210,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 {
                     var generoEncontrado = _context.Generos.Single(s => s.Slug == genero);
                     await _generoRepository.AdicionaGeneroComic(new GeneroComic { ComicId = comic.Id, GeneroId = generoEncontrado.Id });
-                    await AlteracoesSalvas();
+                    AlteracoesSalvas();
                 }
             }
         }
@@ -227,6 +228,10 @@ namespace TsundokuTraducoes.Data.Repositories
                 comic.GenerosComic.Add(generoComic);
         }
 
+        public bool AlteracoesSalvas()
+        {
+            return _context.SaveChanges() > 0;
+        }
 
         private string RetornaQueryListaNovel()
         {
