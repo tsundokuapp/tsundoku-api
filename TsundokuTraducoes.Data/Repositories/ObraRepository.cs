@@ -6,8 +6,6 @@ using TsundokuTraducoes.Entities.Entities.DePara;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 
-#nullable disable
-
 namespace TsundokuTraducoes.Data.Repositories
 {
     public class ObraRepository : IObraRepository
@@ -97,14 +95,14 @@ namespace TsundokuTraducoes.Data.Repositories
         }
 
 
-        public void AdicionaNovel(Novel novel)
+        public async Task AdicionaNovel(Novel novel)
         {
-            _context.Add(novel);
+            await _context.AddAsync(novel);
         }
 
-        public void AdicionaComic(Comic comic)
+        public async Task AdicionaComic(Comic comic)
         {
-            _context.Add(comic);
+            await _context.AddAsync(comic);
         }
 
 
@@ -184,7 +182,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 {
                     var generoEncontrado = _context.Generos.Single(s => s.Slug == genero);
                     await _generoRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = generoEncontrado.Id });
-                    AlteracoesSalvas();
+                    await AlteracoesSalvas();
                 }
             }
         }
@@ -210,30 +208,32 @@ namespace TsundokuTraducoes.Data.Repositories
                 {
                     var generoEncontrado = _context.Generos.Single(s => s.Slug == genero);
                     await _generoRepository.AdicionaGeneroComic(new GeneroComic { ComicId = comic.Id, GeneroId = generoEncontrado.Id });
-                    AlteracoesSalvas();
+                    await AlteracoesSalvas();
                 }
             }
         }
 
-        
-        private void AdicionaGeneroNovel(Novel novel, GeneroNovel generoNovel)
+
+        public async Task<bool> AlteracoesSalvas()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+
+        private static void AdicionaGeneroNovel(Novel novel, GeneroNovel generoNovel)
         {
             if (generoNovel != null)
                 novel.GenerosNovel.Add(generoNovel);
         }
 
-        private void AdicionaGeneroComic(Comic comic, GeneroComic generoComic)
+        private static void AdicionaGeneroComic(Comic comic, GeneroComic generoComic)
         {
             if (generoComic != null)
                 comic.GenerosComic.Add(generoComic);
         }
 
-        public bool AlteracoesSalvas()
-        {
-            return _context.SaveChanges() > 0;
-        }
 
-        private string RetornaQueryListaNovel()
+        private static string RetornaQueryListaNovel()
         {
             return @"SELECT N.*, GN.*
                        FROM Novels N
@@ -241,7 +241,7 @@ namespace TsundokuTraducoes.Data.Repositories
                       ORDER BY N.Titulo;";
         }
 
-        private string RetornaQueryListaComic()
+        private static string RetornaQueryListaComic()
         {
             return @"SELECT C.*, GC.*
                        FROM Comics C

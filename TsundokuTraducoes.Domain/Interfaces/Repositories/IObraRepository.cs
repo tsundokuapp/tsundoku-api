@@ -11,8 +11,8 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
         Task<Novel> RetornaNovelPorId(Guid obraId);
         Task<Comic> RetornaComicPorId(Guid obraId);
 
-        void AdicionaNovel(Novel novel);
-        void AdicionaComic(Comic comic);
+        Task AdicionaNovel(Novel novel);
+        Task AdicionaComic(Comic comic);
 
         Novel AtualizaNovel(ObraDTO obraDTO);
         Comic AtualizaComic(ObraDTO obraDTO);
@@ -26,6 +26,6 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
         Task<Novel> RetornaNovelExistente(string titulo);
         Task<Comic> RetornaComicExistente(string titulo);
 
-        bool AlteracoesSalvas();
+        Task<bool> AlteracoesSalvas();
     }
 }

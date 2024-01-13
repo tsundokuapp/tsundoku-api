@@ -1,5 +1,4 @@
-﻿using FluentResults;
-using TsundokuTraducoes.Domain.Interfaces.Repositories;
+﻿using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
@@ -38,16 +37,16 @@ namespace TsundokuTraducoes.Domain.Services
         }
 
 
-        public bool AdicionaNovel(Novel novel)
+        public async Task<bool> AdicionaNovel(Novel novel)
         {
-            _obraRepository.AdicionaNovel(novel);
-            return _obraRepository.AlteracoesSalvas();
+            await _obraRepository.AdicionaNovel(novel);
+            return await _obraRepository.AlteracoesSalvas();
         }
 
-        public bool AdicionaComic(Comic comic)
+        public async Task<bool> AdicionaComic(Comic comic)
         {
-            _obraRepository.AdicionaComic(comic); 
-            return _obraRepository.AlteracoesSalvas();
+            await _obraRepository.AdicionaComic(comic); 
+            return await _obraRepository.AlteracoesSalvas();
         }
 
 
@@ -62,16 +61,16 @@ namespace TsundokuTraducoes.Domain.Services
         }
 
 
-        public bool ExcluiNovel(Novel novel)
+        public async Task<bool> ExcluiNovel(Novel novel)
         {
             _obraRepository.ExcluiNovel(novel);
-            return _obraRepository.AlteracoesSalvas();
+            return await _obraRepository.AlteracoesSalvas();
         }
 
-        public bool ExcluiComic(Comic comic)
+        public async Task<bool> ExcluiComic(Comic comic)
         {
             _obraRepository.ExcluiComic(comic);
-            return _obraRepository.AlteracoesSalvas();
+            return await _obraRepository.AlteracoesSalvas();
         }
 
 
@@ -96,9 +95,9 @@ namespace TsundokuTraducoes.Domain.Services
             return await _obraRepository.RetornaComicExistente(titulo);
         }
 
-        public bool AlteracoesSalvas()
+        public async Task<bool> AlteracoesSalvas()
         {
-            return _obraRepository.AlteracoesSalvas();
+            return await  _obraRepository.AlteracoesSalvas();
         }
     }
 }
