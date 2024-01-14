@@ -29,7 +29,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveFalharAoInserirUmaNovelSemTitulo()
         {            
             var formData = MockNovel.RetornaFormDataMockAdicionarNovel(true);
-            var response = await _httpClient.PutAsync("api/obra/novel", formData);
+            var response = await _httpClient.PostAsync("api/obra/novel", formData);
             
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
