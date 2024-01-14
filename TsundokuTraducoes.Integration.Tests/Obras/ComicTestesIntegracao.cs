@@ -29,7 +29,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveFalharAoInserirUmaComicSemTitulo()
         {            
             var formData = MockComic.RetornaFormDataMockAdicionarComic(true);
-            var response = await _httpClient.PutAsync("api/obra/comic", formData);
+            var response = await _httpClient.PostAsync("api/obra/comic", formData);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
