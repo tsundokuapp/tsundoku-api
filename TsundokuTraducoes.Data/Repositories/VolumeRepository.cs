@@ -1,84 +1,138 @@
-﻿using TsundokuTraducoes.Domain.Interfaces.Repositories;
-using TsundokuTraducoes.Entities.Entities.Obra;
+﻿using Microsoft.EntityFrameworkCore;
+using TsundokuTraducoes.Data.Context;
+using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Volume;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Data.Repositories
 {
     public class VolumeRepository : IVolumeRepository
     {
-        public Task AdicionaVolumeComic(VolumeComic volumeComic)
+        private readonly ContextBase _context;
+        
+        public VolumeRepository(ContextBase context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task AdicionaVolumeNovel(VolumeNovel volumeNovel)
+        public List<VolumeNovel> RetornaListaVolumesNovel(Guid? novelId = null)
         {
-            throw new NotImplementedException();
+            var listaVolumesNovel = novelId != null ? _context.VolumesNovel.Where(w => w.NovelId == novelId.Value) : _context.VolumesNovel;
+            return listaVolumesNovel.ToList();
         }
 
-        public Task<bool> AlteracoesSalvas()
+        public List<VolumeComic> RetornaListaVolumesComic(Guid? comicId = null)
         {
-            throw new NotImplementedException();
+            var listaVolumesNovel = comicId != null ? _context.VolumesComic.Where(w => w.ComicId == comicId.Value) : _context.VolumesComic;
+            return listaVolumesNovel.ToList();
         }
 
-        public void AtualizaComicPorVolume(Comic comic, VolumeComic volumeComic)
+
+        public VolumeNovel RetornaVolumeNovelPorId(Guid volumeId)
         {
-            throw new NotImplementedException();
+            var volume = RetornaListaVolumesNovel();
+            return volume.FirstOrDefault(f => f.Id == volumeId);
         }
 
-        public void AtualizaNovelPorVolume(Novel novel, VolumeNovel volumeNovel)
+        public VolumeComic RetornaVolumeComicPorId(Guid volumeId)
         {
-            throw new NotImplementedException();
+            var volume = RetornaListaVolumesComic();
+            return volume.FirstOrDefault(f => f.Id == volumeId);
+        }       
+
+        
+        public void AdicionaVolumeNovel(VolumeNovel volumeNovel)
+        {
+            _context.Add(volumeNovel);
         }
 
-        public VolumeComic AtualizaVolumeComic(VolumeComic volumeComic)
+        public void AdicionaVolumeComic(VolumeComic volumeComic)
         {
-            throw new NotImplementedException();
+            _context.Add(volumeComic);
         }
 
-        public VolumeNovel AtualizaVolumeNovel(VolumeNovel volumeNovel)
+
+        public VolumeNovel AtualizaVolumeNovel(VolumeDTO volumeDTO)
         {
-            throw new NotImplementedException();
+            var volumeEncontrado = _context.VolumesNovel.SingleOrDefault(s => s.Id == volumeDTO.Id);
+            var tituloVolumeVazio = VerificaCampoVazio(volumeEncontrado.Titulo, volumeDTO.Titulo);
+            if (tituloVolumeVazio)
+                volumeDTO.Titulo = string.Empty;
+
+            var sinopseVolumeVazia = VerificaCampoVazio(volumeEncontrado.Sinopse, volumeDTO.Sinopse);
+            if (sinopseVolumeVazia)
+                volumeDTO.Sinopse = string.Empty;
+
+            if (string.IsNullOrEmpty(volumeDTO.ImagemVolume))
+                volumeDTO.ImagemVolume = volumeEncontrado.ImagemVolume;
+
+            volumeDTO.DiretorioImagemVolume = volumeEncontrado.DiretorioImagemVolume;
+            _context.Entry(volumeEncontrado).CurrentValues.SetValues(volumeDTO);
+            volumeEncontrado.DataAlteracao = DateTime.Now;
+
+            return volumeEncontrado;
+        }
+
+        public VolumeComic AtualizaVolumeComic(VolumeDTO volumeDTO)
+        {
+            var volumeEncontrado = _context.VolumesComic.SingleOrDefault(s => s.Id == volumeDTO.Id);
+            var tituloVolumeVazio = VerificaCampoVazio(volumeEncontrado.Titulo, volumeDTO.Titulo);
+            if (tituloVolumeVazio)
+                volumeDTO.Titulo = string.Empty;
+
+            var sinopseVolumeVazia = VerificaCampoVazio(volumeEncontrado.Sinopse, volumeDTO.Sinopse);
+            if (sinopseVolumeVazia)
+                volumeDTO.Sinopse = string.Empty;
+
+            if (string.IsNullOrEmpty(volumeDTO.ImagemVolume))
+                volumeDTO.ImagemVolume = volumeEncontrado.ImagemVolume;
+
+            volumeDTO.DiretorioImagemVolume = volumeEncontrado.DiretorioImagemVolume;
+            _context.Entry(volumeEncontrado).CurrentValues.SetValues(volumeDTO);
+            volumeEncontrado.DataAlteracao = DateTime.Now;
+
+            return volumeEncontrado;
+        }
+
+
+        public void ExcluiVolumeNovel(VolumeNovel volumeNovel)
+        {
+            _context.Remove(volumeNovel);
         }
 
         public void ExcluiVolumeComic(VolumeComic volumeComic)
         {
-            throw new NotImplementedException();
+            _context.Remove(volumeComic);
         }
 
-        public void ExcluiVolumeNovel(VolumeNovel volumeNovel)
+        public VolumeNovel RetornaVolumeNovelExistente(VolumeDTO volumeDTO)
         {
-            throw new NotImplementedException();
+            var volumeExistente = _context.VolumesNovel
+                .Where(w => w.NovelId == volumeDTO.NovelId && (EF.Functions.Like(w.Numero, volumeDTO.Numero) || EF.Functions.Like(w.Slug, volumeDTO.Slug)));
+
+            var teste = volumeExistente;
+
+            return volumeExistente.FirstOrDefault();
         }
 
-        public Task<List<VolumeComic>> RetornaListaVolumesComic(Guid? idObra)
+        public VolumeComic RetornaVolumeComicExistente(VolumeDTO volumeDTO)
         {
-            throw new NotImplementedException();
+            var volumeExistente = _context.VolumesComic
+                .Where(w => w.ComicId == volumeDTO.ComicId && (EF.Functions.Like(w.Numero, volumeDTO.Numero) || EF.Functions.Like(w.Slug, volumeDTO.Slug)));
+
+            return volumeExistente.FirstOrDefault();
         }
 
-        public Task<List<VolumeNovel>> RetornaListaVolumesNovel(Guid? idObra)
+        private static bool VerificaCampoVazio(string campoVolumeEncontrado, string campoVolumeDTO)
         {
-            throw new NotImplementedException();
+            return string.IsNullOrEmpty(campoVolumeDTO) ||
+               !string.IsNullOrEmpty(campoVolumeDTO) && campoVolumeDTO.ToLower().Contains("null") ||
+               !string.IsNullOrEmpty(campoVolumeEncontrado) && campoVolumeEncontrado.ToLower().Contains("null");
         }
 
-        public Task<VolumeComic> RetornaVolumeComicExistente(VolumeComic volumeComic)
+        public async Task<bool> AlteracoesSalvas()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<VolumeComic> RetornaVolumeComicPorId(Guid volumeId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<VolumeNovel> RetornaVolumeNovelExistente(VolumeNovel volumeNovel)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<VolumeNovel> RetornaVolumeNovelPorId(Guid volumeId)
-        {
-            throw new NotImplementedException();
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

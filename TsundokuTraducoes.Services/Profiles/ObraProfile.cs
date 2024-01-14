@@ -9,7 +9,9 @@ namespace TsundokuTraducoes.Services.Profiles
     {
         public ObraProfile()
         {
+            CreateMap<Novel, ObraDTO>();
             CreateMap<ObraDTO, Novel>();
+            CreateMap<Comic, ObraDTO>();
             CreateMap<ObraDTO, Comic>();
             CreateMap<Novel, RetornoObra>();
             CreateMap<Comic, RetornoObra>();

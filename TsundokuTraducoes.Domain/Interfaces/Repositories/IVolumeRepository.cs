@@ -1,30 +1,27 @@
-﻿using TsundokuTraducoes.Entities.Entities.Obra;
-using TsundokuTraducoes.Entities.Entities.Volume;
+﻿using TsundokuTraducoes.Entities.Entities.Volume;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Domain.Interfaces.Repositories
 {
     public interface IVolumeRepository
     {
-        Task<List<VolumeNovel>> RetornaListaVolumesNovel(Guid? idObra);
-        Task<List<VolumeComic>> RetornaListaVolumesComic(Guid? idObra);
+        List<VolumeNovel> RetornaListaVolumesNovel(Guid? idObra);
+        List<VolumeComic> RetornaListaVolumesComic(Guid? idObra);
 
-        Task<VolumeNovel> RetornaVolumeNovelPorId(Guid volumeId);
-        Task<VolumeComic> RetornaVolumeComicPorId(Guid volumeId);
+        VolumeNovel RetornaVolumeNovelPorId(Guid volumeId);
+        VolumeComic RetornaVolumeComicPorId(Guid volumeId);
 
-        Task AdicionaVolumeNovel(VolumeNovel volumeNovel);
-        Task AdicionaVolumeComic(VolumeComic volumeComic);
+        void AdicionaVolumeNovel(VolumeNovel volumeNovel);
+        void AdicionaVolumeComic(VolumeComic volumeComic);
 
-        VolumeNovel AtualizaVolumeNovel(VolumeNovel volumeNovel);
-        VolumeComic AtualizaVolumeComic(VolumeComic volumeComic);
+        VolumeNovel AtualizaVolumeNovel(VolumeDTO volumeDTO);
+        VolumeComic AtualizaVolumeComic(VolumeDTO volumeDTO);
 
         void ExcluiVolumeNovel(VolumeNovel volumeNovel);
         void ExcluiVolumeComic(VolumeComic volumeComic);
 
-        void AtualizaNovelPorVolume(Novel novel, VolumeNovel volumeNovel);
-        void AtualizaComicPorVolume(Comic comic, VolumeComic volumeComic);
-
-        Task<VolumeNovel> RetornaVolumeNovelExistente(VolumeNovel volumeNovel);
-        Task<VolumeComic> RetornaVolumeComicExistente(VolumeComic volumeComic);
+        VolumeNovel RetornaVolumeNovelExistente(VolumeDTO volumeDTO);
+        VolumeComic RetornaVolumeComicExistente(VolumeDTO volumeDTO);
 
         Task<bool> AlteracoesSalvas();
     }

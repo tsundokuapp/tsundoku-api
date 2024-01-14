@@ -32,5 +32,8 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public string? ImagemBanner { get; set; }
         public IFormFile? ImagemCapaPrincipalFile { get; set; }
         public IFormFile? ImagemBannerFile { get; set; }
+        public string? ImagemCapaUltimoVolume { get; set; }
+        public string? NumeroUltimoVolume { get; set; }
+        public string? SlugUltimoVolume { get; set; }
     }
 }

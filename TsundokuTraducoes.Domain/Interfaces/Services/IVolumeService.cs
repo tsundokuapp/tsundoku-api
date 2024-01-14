@@ -1,22 +1,28 @@
-﻿using FluentResults;
-using TsundokuTraducoes.Entities.Entities.Volume;
+﻿using TsundokuTraducoes.Entities.Entities.Volume;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Domain.Interfaces.Services
 {
     public interface IVolumeService
-    {
-        //Task<Result<List<RetornoVolume>>> RetornaListaVolumes(Guid? idObra);
+    {        
+        List<VolumeNovel> RetornaListaVolumesNovel(Guid? idObra);
+        List<VolumeComic> RetornaListaVolumesComic(Guid? idObra);
 
-        //Task<Result<RetornoVolume>> RetornaVolumeNovelPorId(Guid id);
-        //Task<Result<RetornoVolume>> RetornaVolumeComicPorId(Guid id);
+        VolumeNovel RetornaVolumeNovelPorId(Guid id);
+        VolumeComic RetornaVolumeComicPorId(Guid id);
 
-        //Task<Result<RetornoVolume>> AdicionaVolumeNovel(VolumeNovel volumeNovel);
-        //Task<Result<RetornoVolume>> AdicionaVolumeComic(VolumeComic volumeComic);
+        Task<bool> AdicionaVolumeNovel(VolumeNovel volumeNovel);
+        Task<bool> AdicionaVolumeComic(VolumeComic volumeComic);
 
-        //Task<Result<RetornoVolume>> AtualizaVolumeNovel(VolumeNovel volumeNovel);
-        //Task<Result<RetornoVolume>> AtualizaVolumeComic(VolumeComic volumeComic);
+        VolumeNovel AtualizaVolumeNovel(VolumeDTO volumeDTO);
+        VolumeComic AtualizaVolumeComic(VolumeDTO volumeDTO);
 
-        //Task<Result<bool>> ExcluiVolumeNovel(Guid novelId);
-        //Task<Result<bool>> ExcluiVolumeComic(Guid comicId);
+        VolumeNovel RetornaVolumeNovelExistente(VolumeDTO VolumeDTO);
+        VolumeComic RetornaVolumeComicExistente(VolumeDTO VolumeDTO);
+
+        Task<bool> ExcluiVolumeNovel(VolumeNovel volumeNovel);
+        Task<bool> ExcluiVolumeComic(VolumeComic volumeComic);
+
+        Task<bool> AlteracoesSalvas();
     }
 }

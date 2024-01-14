@@ -71,7 +71,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
-
+        
         [Fact]
         public async Task DeveExcluirUmaComic()
         {
