@@ -1,5 +1,4 @@
-﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.DePara;
@@ -19,78 +18,26 @@ namespace TsundokuTraducoes.Data.Repositories
             _context = context;
         }
 
-        public async Task<List<Novel>> RetornaListaNovels()
+        public List<Novel> RetornaListaNovels()
         {
-            var listaNovels = new List<Novel>();
-            await _context.Connection.QueryAsync(RetornaQueryListaNovel(),
-                new[]
-                {
-                    typeof(Novel),
-                    typeof(GeneroNovel)
-                },
-                (objects) =>
-                {
-                    var novel = (Novel)objects[0];
-                    var generoNovel = (GeneroNovel)objects[1];
-
-                    if (listaNovels.SingleOrDefault(o => o.Id == novel.Id) == null)
-                    {
-                        listaNovels.Add(novel);
-                    }
-                    else
-                    {
-                        novel = listaNovels.SingleOrDefault(o => o.Id == novel.Id);
-                    }
-
-                    AdicionaGeneroNovel(novel, generoNovel);
-
-                    return novel;
-                }, splitOn: "Id, NovelId");
-
-            return listaNovels;
+            return _context.Novels.Include(n => n.GenerosNovel).ToList();
         }
         
-        public async Task<List<Comic>> RetornaListaComics()
+        public List<Comic> RetornaListaComics()
         {
-            var listaComics = new List<Comic>();
-            await _context.Connection.QueryAsync(RetornaQueryListaComic(),
-                new[]
-                {
-                    typeof(Comic),
-                    typeof(GeneroComic)
-                },
-                (objects) =>
-                {
-                    var comic = (Comic)objects[0];
-                    var generoComic = (GeneroComic)objects[1];
-
-                    if (listaComics.SingleOrDefault(o => o.Id == comic.Id) == null)
-                    {
-                        listaComics.Add(comic);
-                    }
-                    else
-                    {
-                        comic = listaComics.SingleOrDefault(o => o.Id == comic.Id);
-                    }
-
-                    AdicionaGeneroComic(comic, generoComic);
-
-                    return comic;
-                }, splitOn: "Id, ComicId");
-
-            return listaComics;
+            return _context.Comics.Include(n => n.GenerosComic).ToList();
         }
 
 
-        public async Task<Novel> RetornaNovelPorId(Guid novelId)
+        public Novel RetornaNovelPorId(Guid novelId)
         {
-            var listaNovels = await RetornaListaNovels();
+            var listaNovels = RetornaListaNovels();
             return listaNovels.SingleOrDefault(f => f.Id == novelId);
         }
 
-        public async Task<Comic> RetornaComicPorId(Guid comicId)
+        public Comic RetornaComicPorId(Guid comicId)
         {
-            var listaComics = await RetornaListaComics();
+            var listaComics = RetornaListaComics();
             return listaComics.SingleOrDefault(f => f.Id == comicId);
         }
 
@@ -138,26 +85,14 @@ namespace TsundokuTraducoes.Data.Repositories
         }
 
 
-        public async Task<Novel> RetornaNovelExistente(string titulo)
-        {
-            titulo = titulo.Trim();
-            var sql = $@"SELECT * 
-                           FROM Novels 
-                          WHERE Titulo LIKE @Titulo";
-
-            var novelExistente = await _context.Connection.QueryAsync<Novel>(sql, new { Titulo = "%" + titulo + "%" });
-            return novelExistente.FirstOrDefault();
+        public Novel RetornaNovelExistente(string titulo)
+        {   
+            return _context.Novels.Where(w => EF.Functions.Like(w.Titulo, titulo)).FirstOrDefault();
         }
 
-        public async Task<Comic> RetornaComicExistente(string titulo)
+        public Comic RetornaComicExistente(string titulo)
         {
-            titulo = titulo.Trim();
-            var sql = $@"SELECT * 
-                           FROM Comics 
-                          WHERE Titulo LIKE @Titulo";
-
-            var comicExistente = await _context.Connection.QueryAsync<Comic>(sql, new { Titulo = "%" + titulo + "%" });
-            return comicExistente.FirstOrDefault();
+            return _context.Comics.Where(w => EF.Functions.Like(w.Titulo, titulo)).FirstOrDefault();
         }
 
 
@@ -217,36 +152,6 @@ namespace TsundokuTraducoes.Data.Repositories
         public async Task<bool> AlteracoesSalvas()
         {
             return await _context.SaveChangesAsync() > 0;
-        }
-
-
-        private static void AdicionaGeneroNovel(Novel novel, GeneroNovel generoNovel)
-        {
-            if (generoNovel != null)
-                novel.GenerosNovel.Add(generoNovel);
-        }
-
-        private static void AdicionaGeneroComic(Comic comic, GeneroComic generoComic)
-        {
-            if (generoComic != null)
-                comic.GenerosComic.Add(generoComic);
-        }
-
-
-        private static string RetornaQueryListaNovel()
-        {
-            return @"SELECT N.*, GN.*
-                       FROM Novels N
-                      INNER JOIN GenerosNovel GN ON GN.NovelId = N.Id
-                      ORDER BY N.Titulo;";
-        }
-
-        private static string RetornaQueryListaComic()
-        {
-            return @"SELECT C.*, GC.*
-                       FROM Comics C
-                      INNER JOIN GenerosComic GC ON GC.ComicId = C.Id
-                      ORDER BY C.Titulo;";
         }
     }
 }

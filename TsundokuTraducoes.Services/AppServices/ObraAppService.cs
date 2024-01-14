@@ -39,7 +39,7 @@ namespace TsundokuTraducoes.Services.AppServices
         public async Task<Result<List<RetornoObra>>> RetornaListaNovels()
         {
             var listaRetornoObras = new List<RetornoObra>();
-            var listaNovels = await _obraservice.RetornaListaNovels();
+            var listaNovels = _obraservice.RetornaListaNovels();
 
             if (listaNovels.Count > 0)
             {
@@ -55,7 +55,7 @@ namespace TsundokuTraducoes.Services.AppServices
         public async Task<Result<List<RetornoObra>>> RetornaListaComics()
         {
             var listaRetornoObras = new List<RetornoObra>();
-            var listaComics = await _obraservice.RetornaListaComics();
+            var listaComics = _obraservice.RetornaListaComics();
 
             if (listaComics.Count > 0)
             {
@@ -70,7 +70,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<Result<RetornoObra>> RetornaNovelPorId(Guid id)
         {
-            var novel = await _obraservice.RetornaNovelPorId(id);
+            var novel = _obraservice.RetornaNovelPorId(id);
             if (novel == null)
                 return Result.Fail("Novel não encontrada!");
 
@@ -80,7 +80,7 @@ namespace TsundokuTraducoes.Services.AppServices
         
         public async Task<Result<RetornoObra>> RetornaComicPorId(Guid id)
         {
-            var comic = await _obraservice.RetornaComicPorId(id);
+            var comic = _obraservice.RetornaComicPorId(id);
             if (comic == null)
                 return Result.Fail("Comic não encontrada!");
 
@@ -94,7 +94,7 @@ namespace TsundokuTraducoes.Services.AppServices
             if (!ValidaDadosRequestObra(obraDTO))
                 return Result.Fail("Verifique os campos obrigatórios e tente adicionar novamente!");
 
-            var novelExistente = await _obraservice.RetornaNovelExistente(obraDTO.Titulo);
+            var novelExistente = _obraservice.RetornaNovelExistente(obraDTO.Titulo);
 
             if (novelExistente != null)
                 return Result.Fail("Novel já postada!");
@@ -143,7 +143,7 @@ namespace TsundokuTraducoes.Services.AppServices
             if (!ValidaDadosRequestObra(obraDTO))
                 return Result.Fail("Verifique os campos obrigatórios e tente adicionar novamente!");
 
-            var comicExistente = await _obraservice.RetornaComicExistente(obraDTO.Titulo);
+            var comicExistente = _obraservice.RetornaComicExistente(obraDTO.Titulo);
 
             if (comicExistente != null)
                 return Result.Fail("Comic já postada!");
@@ -190,7 +190,7 @@ namespace TsundokuTraducoes.Services.AppServices
         
         public async Task<Result<RetornoObra>> AtualizaNovel(ObraDTO obraDTO)
         {
-            var novelEncontrada = await _obraservice.RetornaNovelPorId(obraDTO.Id);
+            var novelEncontrada = _obraservice.RetornaNovelPorId(obraDTO.Id);
             if (novelEncontrada == null)
                 return Result.Fail("Novel não encontrada!");
 
@@ -238,7 +238,7 @@ namespace TsundokuTraducoes.Services.AppServices
         
         public async Task<Result<RetornoObra>> AtualizaComic(ObraDTO obraDTO)
         {
-            var comicEncontrada = await _obraservice.RetornaComicPorId(obraDTO.Id);
+            var comicEncontrada = _obraservice.RetornaComicPorId(obraDTO.Id);
             if (comicEncontrada == null)
                 return Result.Fail("Obra não encontrada!");
 
@@ -285,7 +285,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<Result<bool>> ExcluiNovel(Guid idObra)
         {
-            var novelEncontrada = await _obraservice.RetornaNovelPorId(idObra);
+            var novelEncontrada = _obraservice.RetornaNovelPorId(idObra);
             if (novelEncontrada == null)
                 return Result.Fail("Novel não encontrada!");
 
@@ -300,7 +300,7 @@ namespace TsundokuTraducoes.Services.AppServices
         
         public async Task<Result<bool>> ExcluiComic(Guid idObra)
         {
-            var comicEncontrada = await _obraservice.RetornaComicPorId(idObra);
+            var comicEncontrada = _obraservice.RetornaComicPorId(idObra);
             if (comicEncontrada == null)
                 return Result.Fail("Comic não encontrada!");
 

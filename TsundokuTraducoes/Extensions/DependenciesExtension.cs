@@ -4,7 +4,6 @@ using TsundokuTraducoes.Api.Repository.Interfaces;
 using TsundokuTraducoes.Api.Services;
 using TsundokuTraducoes.Api.Services.Interfaces;
 using TsundokuTraducoes.Data.Context;
-using TsundokuTraducoes.Data.Context.Interface;
 using TsundokuTraducoes.Data.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Services;
@@ -20,8 +19,7 @@ namespace TsundokuTraducoes.Api.Extensions
         this IServiceCollection services,
         string stringConnection)
         {
-            services.AddDbContextFactory<ContextBase>();
-            services.AddScoped<IContextBase>(provider => provider.GetService<ContextBase>());
+            services.AddDbContext<ContextBase>();
         }
 
         public static void AddRepositories(this IServiceCollection services)

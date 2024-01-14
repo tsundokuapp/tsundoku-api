@@ -15,25 +15,25 @@ namespace TsundokuTraducoes.Domain.Services
         }
 
 
-        public async Task<List<Novel>> RetornaListaNovels()
+        public List<Novel> RetornaListaNovels()
         {
-            return await _obraRepository.RetornaListaNovels();
+            return _obraRepository.RetornaListaNovels();
         }
         
-        public async Task<List<Comic>> RetornaListaComics()
+        public List<Comic> RetornaListaComics()
         {
-            return await _obraRepository.RetornaListaComics();
+            return _obraRepository.RetornaListaComics();
         }
 
 
-        public async Task<Novel> RetornaNovelPorId(Guid id)
+        public Novel RetornaNovelPorId(Guid id)
         {
-            return await _obraRepository.RetornaNovelPorId(id);
+            return _obraRepository.RetornaNovelPorId(id);
         }
         
-        public async Task<Comic> RetornaComicPorId(Guid id)
+        public Comic RetornaComicPorId(Guid id)
         {
-            return await _obraRepository.RetornaComicPorId(id);
+            return _obraRepository.RetornaComicPorId(id);
         }
 
 
@@ -85,14 +85,14 @@ namespace TsundokuTraducoes.Domain.Services
         }
 
 
-        public async Task<Novel> RetornaNovelExistente(string titulo)
+        public Novel RetornaNovelExistente(string titulo)
         {
-            return await _obraRepository.RetornaNovelExistente(titulo);
+            return _obraRepository.RetornaNovelExistente(titulo);
         }
 
-        public async Task<Comic> RetornaComicExistente(string titulo)
+        public Comic RetornaComicExistente(string titulo)
         {
-            return await _obraRepository.RetornaComicExistente(titulo);
+            return _obraRepository.RetornaComicExistente(titulo);
         }
 
         public async Task<bool> AlteracoesSalvas()
