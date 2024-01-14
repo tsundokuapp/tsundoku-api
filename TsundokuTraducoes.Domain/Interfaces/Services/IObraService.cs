@@ -5,11 +5,11 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
 {
     public interface IObraService
     {
-        Task<List<Novel>> RetornaListaNovels();
-        Task<List<Comic>> RetornaListaComics();
+        List<Novel> RetornaListaNovels();
+        List<Comic> RetornaListaComics();
 
-        Task<Novel> RetornaNovelPorId(Guid id);
-        Task<Comic> RetornaComicPorId(Guid id);
+        Novel RetornaNovelPorId(Guid id);
+        Comic RetornaComicPorId(Guid id);
 
         Task<bool> AdicionaNovel(Novel novel);
         Task<bool> AdicionaComic(Comic comic);
@@ -20,8 +20,8 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
         Task<bool> ExcluiNovel(Novel novel);
         Task<bool> ExcluiComic(Comic comic);
 
-        Task<Novel> RetornaNovelExistente(string titulo);
-        Task<Comic> RetornaComicExistente(string titulo);
+        Novel RetornaNovelExistente(string titulo);
+        Comic RetornaComicExistente(string titulo);
 
         Task InsereGenerosNovel(Novel novel, List<string> ListaGeneros, bool inclusao);
         Task InsereGenerosComic(Comic comic, List<string> ListaGeneros, bool inclusao);

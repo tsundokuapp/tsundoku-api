@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Data;
 using TsundokuTraducoes.Data.Configuration;
-using TsundokuTraducoes.Data.Context.Interface;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Entities.Entities.DePara;
 using TsundokuTraducoes.Entities.Entities.Generos;
@@ -11,7 +9,7 @@ using TsundokuTraducoes.Helpers;
 
 namespace TsundokuTraducoes.Data.Context
 {
-    public class ContextBase : DbContext, IContextBase
+    public class ContextBase : DbContext
     {
         public DbSet<Comic> Comics { get; set; }
         public DbSet<Novel> Novels { get; set; }
@@ -22,7 +20,6 @@ namespace TsundokuTraducoes.Data.Context
         public DbSet<Genero> Generos { get; set; }
         public DbSet<GeneroNovel> GenerosNovel { get; set; }
         public DbSet<GeneroComic> GenerosComic { get; set; }
-        public IDbConnection Connection => Database.GetDbConnection();
 
         public ContextBase(DbContextOptions<ContextBase> options) : base(options) { }
 

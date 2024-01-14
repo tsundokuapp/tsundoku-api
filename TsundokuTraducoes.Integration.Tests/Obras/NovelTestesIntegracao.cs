@@ -94,8 +94,9 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarUmaListaDeNovels()
         {
             var response = await _httpClient.GetAsync($"api/obra/novels");
-            Assert.True(HttpStatusCode.OK == response.StatusCode || HttpStatusCode.NoContent == response.StatusCode);
+            Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
+
 
         private async Task<RetornoObra> AdicionaObraParaAtualizar()
         {
