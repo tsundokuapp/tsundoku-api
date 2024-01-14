@@ -13,13 +13,13 @@ namespace TsundokuTraducoes.Services.AppServices.Interfaces
         Result<RetornoVolume> RetornaVolumeNovelPorId(Guid id);
         Result<RetornoVolume> RetornaVolumeComicPorId(Guid id);
 
-        Result<RetornoVolume> AdicionaVolumeNovel(VolumeDTO volumeDTO);
-        Result<RetornoVolume> AdicionaVolumeComic(VolumeDTO volumeDTO);
+        Task<Result<RetornoVolume>> AdicionaVolumeNovel(VolumeDTO volumeDTO);
+        Task<Result<RetornoVolume>> AdicionaVolumeComic(VolumeDTO volumeDTO);
 
-        Result<RetornoVolume> AtualizaVolumeNovel(VolumeDTO volumeDTO);
-        Result<RetornoVolume> AtualizaVolumeComic(VolumeDTO volumeDTO);
+        Task<Result<RetornoVolume>> AtualizaVolumeNovel(VolumeDTO volumeDTO);
+        Task<Result<RetornoVolume>> AtualizaVolumeComic(VolumeDTO volumeDTO);
 
-        Result<bool> ExcluiVolumeNovel(Guid novelId);
-        Result<bool> ExcluiVolumeComic(Guid comicId);
+        Task<Result<bool>> ExcluiVolumeNovel(Guid novelId);
+        Task<Result<bool>> ExcluiVolumeComic(Guid comicId);
     }
 }

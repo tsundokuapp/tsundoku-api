@@ -6,8 +6,6 @@ using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 
-#nullable disable
-
 namespace TsundokuTraducoes.Services.AppServices
 {
     public class ImagemAppService : IImagemAppService
@@ -67,7 +65,7 @@ namespace TsundokuTraducoes.Services.AppServices
             if (Directory.Exists(diretorioImagemObra))
             {
                 string tituloVolumeTratado;
-                var unico = numeroVolume.ToLower() == "único";
+                var unico = numeroVolume?.ToLower() == "único";
                 if (unico)
                 {
                     tituloVolumeTratado = "Volume-Unico";

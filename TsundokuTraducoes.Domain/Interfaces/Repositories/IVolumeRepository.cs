@@ -1,5 +1,4 @@
-﻿using TsundokuTraducoes.Entities.Entities.Obra;
-using TsundokuTraducoes.Entities.Entities.Volume;
+﻿using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Domain.Interfaces.Repositories
@@ -21,12 +20,9 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
         void ExcluiVolumeNovel(VolumeNovel volumeNovel);
         void ExcluiVolumeComic(VolumeComic volumeComic);
 
-        void AtualizaNovelPorVolume(Novel novel, VolumeNovel volumeNovel);
-        void AtualizaComicPorVolume(Comic comic, VolumeComic volumeComic);
-
         VolumeNovel RetornaVolumeNovelExistente(VolumeDTO volumeDTO);
         VolumeComic RetornaVolumeComicExistente(VolumeDTO volumeDTO);
 
-        bool AlteracoesSalvass();
+        Task<bool> AlteracoesSalvas();
     }
 }

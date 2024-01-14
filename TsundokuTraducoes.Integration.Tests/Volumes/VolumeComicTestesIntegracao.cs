@@ -1,22 +1,26 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Newtonsoft.Json;
+using System.Net;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 
 namespace TsundokuTraducoes.Integration.Tests.Volumes
 {
-    public class VolumeComicTestesIntegracao : AppIntegrationBase
+    public class VolumeComicTestesIntegracao
     {
-        public MockVolumeComic _mockVolumeComic;
+        private readonly HttpClient _httpClient;
 
         public VolumeComicTestesIntegracao()
         {
-            _mockVolumeComic = new MockVolumeComic();
+            var webAppFactory = new WebApplicationFactory<Program>();
+            _httpClient = webAppFactory.CreateClient();
         }
 
         [Fact]
         public async Task DeveInserirUmVolumeComic()
         {
-            await CarregaIdComic();
+            var retornoObra = await AdicionaComic();
 
-            var formData = _mockVolumeComic.RetornaFormDataMockAdicionarVolumeComic(false, _idObra);
+            var formData = MockVolumeComic.RetornaFormDataMockAdicionarVolumeComic(false, retornoObra.Id);
             var response = await _httpClient.PostAsync("api/volume/comic", formData);
 
             Assert.NotNull(response);
@@ -26,9 +30,9 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveFalharAoInserirUmVolumeComicSemNumero()
         {
-            await CarregaIdComic();
+            var retornoObra = await AdicionaComic();
 
-            var formData = _mockVolumeComic.RetornaFormDataMockAdicionarVolumeComic(true, _idObra);
+            var formData = MockVolumeComic.RetornaFormDataMockAdicionarVolumeComic(true, retornoObra.Id);
             var response = await _httpClient.PostAsync("api/volume/comic", formData);
 
             Assert.NotNull(response);
@@ -38,9 +42,10 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveAtualizarUmVolumeComic()
         {
-            await CarregaIdVolumeComic();
+            var retornoObra = await AdicionaComic();
+            var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
-            var formData = _mockVolumeComic.RetornaFormDataMockAtualizarVolumeComic(false, _idObra, _idVolume);
+            var formData = MockVolumeComic.RetornaFormDataMockAtualizarVolumeComic(false, retornoObra.Id, retornoVolume.Id);
             var response = await _httpClient.PutAsync("api/volume/comic", formData);
 
             Assert.NotNull(response);
@@ -50,9 +55,10 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveFalharAoAtualizarUmVolumeComicSemNumeroESemLoginAlteracao()
         {
-            await CarregaIdVolumeComic();
+            var retornoObra = await AdicionaComic();
+            var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
-            var formData = _mockVolumeComic.RetornaFormDataMockAtualizarVolumeComic(true, _idObra, _idVolume);
+            var formData = MockVolumeComic.RetornaFormDataMockAtualizarVolumeComic(true, retornoObra.Id, retornoVolume.Id);
             var response = await _httpClient.PutAsync("api/volume/comic", formData);
 
             Assert.NotNull(response);
@@ -62,9 +68,10 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveRetornarUmVolumeComicPorId()
         {
-            await CarregaIdVolumeComic();
+            var retornoObra = await AdicionaComic();
+            var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
-            var response = await _httpClient.GetAsync($"api/volume/comic/{_idVolume}");
+            var response = await _httpClient.GetAsync($"api/volume/comic/{retornoVolume.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -72,18 +79,18 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveRetornarNotFoundParaVolumeComicNaoEncontrada()
         {
-            var response = await _httpClient.GetAsync($"api/volume/comic/{_idVolume.GetValueOrDefault()}");
+            var response = await _httpClient.GetAsync($"api/volume/comic/{Guid.NewGuid()}");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
-
-        //[Fact(Skip = "Teste desativado, causa: erro de concorrência")]
+                
         [Fact]
         public async Task DeveExcluirUmVolumeComic()
         {
-            await CarregaIdVolumeComic();
+            var retornoObra = await AdicionaComic();
+            var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
-            var response = await _httpClient.DeleteAsync($"api/volume/comic/{_idVolume}");
+            var response = await _httpClient.DeleteAsync($"api/volume/comic/{retornoVolume.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -91,16 +98,41 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveRetornarNotFoundAoExcluirUmVolumeComicInexistente()
         {
-            var response = await _httpClient.DeleteAsync($"api/obra/comic/{_idVolume.GetValueOrDefault()}");
+            var response = await _httpClient.DeleteAsync($"api/obra/comic/{Guid.NewGuid()}");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact]
-        public async Task DeveRetornarUmaListaDeVolumeComicsOuSemConteudo()
+        public async Task DeveRetornarUmaListaDeVolumeComics()
         {
             var response = await _httpClient.GetAsync($"api/volume/comic");
-            Assert.True(HttpStatusCode.OK == response.StatusCode || HttpStatusCode.NoContent == response.StatusCode);
+            Assert.True(HttpStatusCode.OK == response.StatusCode);
+        }
+    
+        
+        public async Task<RetornoObra> AdicionaComic()
+        {
+            var formData = MockVolumeComic.RetornaFormDataMockAdicionaComic();
+            var response = await _httpClient.PostAsync("api/obra/comic", formData);
+
+            if (!response.IsSuccessStatusCode)
+                Assert.Fail("Falha ao inserir uma comic para teste");
+
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<RetornoObra>(content);
+        }
+
+        public async Task<RetornoVolume> AdicionaVolume(Guid obraId)
+        {
+            var formData = MockVolumeComic.RetornaFormDataMockAdicionarVolumeComic(false, obraId);
+            var response = await _httpClient.PostAsync("api/volume/comic", formData);
+
+            if (!response.IsSuccessStatusCode)
+                Assert.Fail("Falha ao inserir um volume de comic para teste");
+
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<RetornoVolume>(content);
         }
     }
 }

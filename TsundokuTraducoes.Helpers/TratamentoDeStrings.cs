@@ -118,6 +118,9 @@ namespace TsundokuTraducoes.Helpers
             }
             else
             {
+                if (numero.Contains('.'))
+                    return $"Volume {numero}";
+
                 var numeroVolume = Convert.ToInt32(numero);
                 return $"Volume {numeroVolume:00}";
             }

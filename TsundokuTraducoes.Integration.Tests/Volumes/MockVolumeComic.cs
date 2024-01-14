@@ -1,10 +1,10 @@
-﻿namespace TsundokuTraducoes.Integration.Tests.Volumes
-{
-    #nullable disable
+﻿using System.Net.Http.Headers;
 
-    public class MockVolumeComic : AppIntegrationBase
+namespace TsundokuTraducoes.Integration.Tests.Volumes
+{
+    public static class MockVolumeComic
     {
-        public MultipartFormDataContent RetornaFormDataMockAdicionarVolumeComic(bool falhar, Guid obraid)
+        public static MultipartFormDataContent RetornaFormDataMockAdicionarVolumeComic(bool falhar, Guid obraId)
         {
             var form = new MultipartFormDataContent();
             var numero = $"{RetornaNumeroAleatorio()}";
@@ -18,14 +18,14 @@
             form.Add(new StringContent(numero), "Numero");
             form.Add(new StringContent("O mestre"), "Sinopse");
             form.Add(new StringContent("Bravo"), "UsuarioInclusao");
-            form.Add(new StringContent(obraid.ToString()), "ObraId");
+            form.Add(new StringContent(obraId.ToString()), "ObraId");
             var contentImagemVolume = RetornaStreamImagemMock("imagemVolume.jpeg", "ImagemVolumeFile");
             form.Add(contentImagemVolume);
 
             return form;
         }
 
-        public MultipartFormDataContent RetornaFormDataMockAtualizarVolumeComic(bool falhar, Guid obraid, Guid? idVolume)
+        public static MultipartFormDataContent RetornaFormDataMockAtualizarVolumeComic(bool falhar, Guid obraid, Guid? idVolume)
         {
             var form = new MultipartFormDataContent();
             var numero = $"{RetornaNumeroAleatorio()}";
@@ -48,6 +48,58 @@
             form.Add(contentImagemVolume);
 
             return form;
+        }
+
+        public static HttpContent RetornaFormDataMockAdicionaComic()
+        {
+            var form = new MultipartFormDataContent();
+            var titulo = $"Comic Teste Volume - {Guid.NewGuid().ToString().Substring(0, 8)}_{Guid.NewGuid().ToString().Substring(0, 8)}";
+
+            form.Add(new StringContent(titulo), "Titulo");
+            form.Add(new StringContent(titulo), "Alias");
+            form.Add(new StringContent("A Eminência nas Sombras, The Eminence in Shadow, To Be a Power in The Shadow"), "TituloAlternativo");
+            form.Add(new StringContent("Aizawa Daisuke"), "Autor");
+            form.Add(new StringContent("SAKANO Anri"), "Artista");
+            form.Add(new StringContent("2018"), "Ano");
+            form.Add(new StringContent("Bravo"), "UsuarioInclusao");
+            form.Add(new StringContent("Da mesma forma que todos já adoraram heróis em sua infância, um certo jovem admirava aqueles que agiam nas sombras."), "Sinopse");
+            form.Add(new StringContent("false"), "EhObraMaiorIdade");
+            form.Add(new StringContent("fantasia,aventura,drama"), "ListaGeneros");
+            form.Add(new StringContent("#81F7F3"), "CodigoCorHexaObra");
+            form.Add(new StringContent("japonesa"), "NacionalidadeSlug");
+            form.Add(new StringContent("em-andamento"), "StatusObraSlug");
+            form.Add(new StringContent("manga"), "TipoObraSlug");
+            form.Add(new StringContent("false"), "EhRecomendacao");
+
+            var contentImagemPrincipal = RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
+            var contentImagemBanner = RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
+            form.Add(contentImagemPrincipal);
+            form.Add(contentImagemBanner);
+
+            return form;
+        }
+
+        public static HttpContent RetornaStreamImagemMock(string nomeArquivo, string idForm)
+        {
+            var stream = new MemoryStream();
+
+            var httpcontent = new StreamContent(stream);
+            httpcontent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+            {
+                Name = idForm,
+                FileName = nomeArquivo
+            };
+
+            var teste = new MediaTypeHeaderValue("image/jpg");
+            httpcontent.Headers.ContentType = teste;
+
+            return httpcontent;
+        }
+
+        private static string RetornaNumeroAleatorio()
+        {
+            var random = new Random();
+            return $"{random.Next(1, 199)}.{random.Next(1, 199)}";
         }
     }
 }

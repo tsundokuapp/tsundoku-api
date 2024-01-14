@@ -1,6 +1,5 @@
 ﻿using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Services;
-using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 
@@ -37,16 +36,16 @@ namespace TsundokuTraducoes.Domain.Services
         }
 
 
-        public bool AdicionaVolumeNovel(VolumeNovel volumeNovel)
+        public async Task<bool> AdicionaVolumeNovel(VolumeNovel volumeNovel)
         {
             _volumeRepository.AdicionaVolumeNovel(volumeNovel);
-            return _volumeRepository.AlteracoesSalvass();
+            return await _volumeRepository.AlteracoesSalvas();
         }
 
-        public bool AdicionaVolumeComic(VolumeComic volumeComic)
+        public async Task<bool> AdicionaVolumeComic(VolumeComic volumeComic)
         {
             _volumeRepository.AdicionaVolumeComic(volumeComic);
-            return _volumeRepository.AlteracoesSalvass();
+            return await _volumeRepository.AlteracoesSalvas();
         }
 
 
@@ -61,16 +60,16 @@ namespace TsundokuTraducoes.Domain.Services
         }
 
 
-        public bool ExcluiVolumeNovel(VolumeNovel volumeNovel)
+        public async Task<bool> ExcluiVolumeNovel(VolumeNovel volumeNovel)
         {
             _volumeRepository.ExcluiVolumeNovel(volumeNovel);
-            return _volumeRepository.AlteracoesSalvass();
+            return await _volumeRepository.AlteracoesSalvas();
         }
 
-        public bool ExcluiVolumeComic(VolumeComic volumeComic)
+        public async Task<bool> ExcluiVolumeComic(VolumeComic volumeComic)
         {
             _volumeRepository.ExcluiVolumeComic(volumeComic);
-            return _volumeRepository.AlteracoesSalvass();
+            return await _volumeRepository.AlteracoesSalvas();
         }
 
         public VolumeNovel RetornaVolumeNovelExistente(VolumeDTO VolumeDTO)
@@ -83,19 +82,9 @@ namespace TsundokuTraducoes.Domain.Services
             return _volumeRepository.RetornaVolumeComicExistente(VolumeDTO);
         }        
 
-        public bool AlteracoesSalvas()
+        public async Task<bool> AlteracoesSalvas()
         {
-            return _volumeRepository.AlteracoesSalvass();
-        }
-
-        public void AtualizaNovelPorVolume(Novel novel, VolumeNovel volumeNovel)
-        {
-            _volumeRepository.AtualizaNovelPorVolume(novel, volumeNovel);
-        }
-
-        public void AtualizaComicPorVolume(Comic comic, VolumeComic volumeComic)
-        {
-            _volumeRepository.AtualizaComicPorVolume(comic, volumeComic);
+            return await _volumeRepository.AlteracoesSalvas();
         }
     }
 }
