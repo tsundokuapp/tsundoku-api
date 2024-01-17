@@ -110,8 +110,6 @@ namespace TsundokuTraducoes.Data.Repositories
             var volumeExistente = _context.VolumesNovel
                 .Where(w => w.NovelId == volumeDTO.NovelId && (EF.Functions.Like(w.Numero, volumeDTO.Numero) || EF.Functions.Like(w.Slug, volumeDTO.Slug)));
 
-            var teste = volumeExistente;
-
             return volumeExistente.FirstOrDefault();
         }
 
