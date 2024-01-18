@@ -1,30 +1,27 @@
 ﻿using TsundokuTraducoes.Entities.Entities.Capitulo;
-using TsundokuTraducoes.Entities.Entities.Obra;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Domain.Interfaces.Repositories
 {
     public interface ICapituloRepository
     {
-        Task<List<CapituloNovel>> RetornaListaCapitulosNovel(Guid? volumeId);
-        Task<List<CapituloComic>> RetornaListaCapitulosComic(Guid? volumeId);
+        List<CapituloNovel> RetornaListaCapitulosNovel(Guid? volumeId);
+        List<CapituloComic> RetornaListaCapitulosComic(Guid? volumeId);
 
-        Task<CapituloNovel> RetornaCapituloNovelPorId(Guid capituloId);
-        Task<CapituloComic> RetornaCapituloComicPorId(Guid capituloId);
+        CapituloNovel RetornaCapituloNovelPorId(Guid capituloId);
+        CapituloComic RetornaCapituloComicPorId(Guid capituloId);
 
-        Task AdicionaCapituloNovel(CapituloNovel volumeNovel);
-        Task AdicionaCapituloComic(CapituloComic volumeComic);
+        void AdicionaCapituloNovel(CapituloNovel capituloNovel);
+        void AdicionaCapituloComic(CapituloComic capituloComic);
 
-        Task<CapituloNovel> AtualizaCapituloNovel(CapituloNovel volumeNovel);
-        Task<CapituloComic> AtualizaCapituloComic(CapituloComic volumeComic);
+        CapituloNovel AtualizaCapituloNovel(CapituloDTO capituloDTO);
+        CapituloComic AtualizaCapituloComic(CapituloDTO capituloDTO);
 
-        void ExcluiCapituloNovel(CapituloNovel volumeNovel);
-        void ExcluiCapituloComic(CapituloComic volumeComic);
+        void ExcluiCapituloNovel(CapituloNovel capituloNovel);
+        void ExcluiCapituloComic(CapituloComic capituloComic);
 
-        Task<CapituloNovel> RetornaCapituloNovelExistente(CapituloNovel capituloNovel);
-        Task<CapituloComic> RetornaCapituloComicExistente(CapituloComic capituloComic);
-
-        void AtualizaNovelPorCapitulo(Novel novel, CapituloNovel capituloNovel);
-        void AtualizaComicPorCapitulo(Comic comic, CapituloComic capituloComic);
+        CapituloNovel RetornaCapituloNovelExistente(CapituloDTO capituloDTO);
+        CapituloComic RetornaCapituloComicExistente(CapituloDTO capituloDTO);
 
         Task<bool> AlteracoesSalvas();
     }
