@@ -51,6 +51,7 @@ namespace TsundokuTraducoes.Api.Extensions
             services.AddScoped<IImagemAppService, ImagemAppService>();
             services.AddScoped<IObraAppService, ObraAppService>();
             services.AddScoped<IVolumeAppService, VolumeAppService>();
+            services.AddScoped<ICapituloAppService, CapituloAppService>();
 
             services.AddScoped<ICapituloService, CapituloService>();
             services.AddScoped<IGeneroDeParaService, GeneroDeParaService>();

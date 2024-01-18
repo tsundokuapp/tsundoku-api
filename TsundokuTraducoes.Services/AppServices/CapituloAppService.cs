@@ -17,6 +17,15 @@ namespace TsundokuTraducoes.Services.AppServices
         private readonly IObraService _obraService;
         private readonly IImagemAppService _imagemAppService;
 
+        public CapituloAppService(IMapper mapper, ICapituloService capituloService, IVolumeService volumeService, IObraService obraService, IImagemAppService imagemAppService)
+        {
+            _mapper = mapper;
+            _capituloService = capituloService;
+            _volumeService = volumeService;
+            _obraService = obraService;
+            _imagemAppService = imagemAppService;
+        }
+
         public Result<List<RetornoCapitulo>> RetornaListaCapitulos(Guid? volumeId = null)
         {
             var listaCapitulos = new List<RetornoCapitulo>();
@@ -175,7 +184,7 @@ namespace TsundokuTraducoes.Services.AppServices
                     obraDTO.SlugUltimoCapitulo = capitulo.Slug;
                     obraDTO.DataAtualizacaoUltimoCapitulo = capitulo.DataInclusao;
 
-                    _obraService.AtualizaNovel(obraDTO);
+                    _obraService.AtualizaComic(obraDTO);
 
                     var novelAtualizada = await _obraService.AlteracoesSalvas();
 

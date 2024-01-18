@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Api.Services.Interfaces;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Controllers
 {
@@ -10,17 +10,17 @@ namespace TsundokuTraducoes.Controllers
     public class CapituloController : ControllerBase
     {
         // TODO - Criar as verificações de request, para saber se estar vindo corretamente.
-        private readonly ICapituloServiceOld _capituloService;
+        private readonly ICapituloAppService _capituloService;
 
-        public CapituloController(ICapituloServiceOld capituloService)
+        public CapituloController(ICapituloAppService capituloService)
         {
             _capituloService = capituloService;
         }
 
         [HttpGet("api/capitulo/")]
-        public async Task<IActionResult> RetornaListaCapitulos([FromQuery] Guid? volumeId)
+        public IActionResult RetornaListaCapitulos([FromQuery] Guid? volumeId)
         {
-            var result = await _capituloService.RetornaListaCapitulos(volumeId);
+            var result = _capituloService.RetornaListaCapitulos(volumeId);
             if (result.Value.Count == 0)
                 return NoContent();
 
@@ -29,9 +29,9 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpGet("api/capitulo/novel/{id}")]
-        public async Task<IActionResult> RetornaCapituloNovelPorId(Guid id)
+        public IActionResult RetornaCapituloNovelPorId(Guid id)
         {
-            var result = await _capituloService.RetornaCapituloNovelPorId(id);
+            var result = _capituloService.RetornaCapituloNovelPorId(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
@@ -39,9 +39,9 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/capitulo/comic/{id}")]
-        public async Task<IActionResult> RetornaCapituloComicPorId(Guid id)
+        public IActionResult RetornaCapituloComicPorId(Guid id)
         {
-            var result = await _capituloService.RetornaCapituloComicPorId(id);
+            var result = _capituloService.RetornaCapituloComicPorId(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
