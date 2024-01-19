@@ -27,6 +27,26 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Value);
         }
 
+        [HttpGet("api/capitulo/novel")]
+        public IActionResult RetornaListaCapitulosNovel([FromQuery] Guid? volumeId)
+        {
+            var result = _capituloService.RetornaListaCapitulosNovel(volumeId);
+            if (result.Value.Count == 0)
+                return NoContent();
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet("api/capitulo/comic")]
+        public IActionResult RetornaListaCapitulosComic([FromQuery] Guid? volumeId)
+        {
+            var result = _capituloService.RetornaListaCapitulosComic(volumeId);
+            if (result.Value.Count == 0)
+                return NoContent();
+
+            return Ok(result.Value);
+        }
+
 
         [HttpGet("api/capitulo/novel/{id}")]
         public IActionResult RetornaCapituloNovelPorId(Guid id)

@@ -151,6 +151,9 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<Result<RetornoCapitulo>> AdicionaCapituloComic(CapituloDTO capituloDTO)
         {
+            if (!ValidaDadosRequestCapitulo(capituloDTO))
+                return Result.Fail("Verifique os campos obrigatórios e tente adicionar novamente!");
+
             var volume = _volumeService.RetornaVolumeComicPorId(capituloDTO.VolumeId);
             var comic = _obraService.RetornaComicPorId(volume.ComicId);
 
@@ -239,6 +242,9 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<Result<RetornoCapitulo>> AtualizaCapituloComic(CapituloDTO capituloDTO)
         {
+            if (!ValidaDadosRequestEdicaoCapitulo(capituloDTO))
+                return Result.Fail("Verifique os campos obrigatórios e tente adicionar novamente!");
+
             var capituloEncontrado = _capituloService.RetornaCapituloComicPorId(capituloDTO.Id);
             if (capituloEncontrado == null)
                 return Result.Fail("Capítulo não encontrado!");
@@ -319,6 +325,36 @@ namespace TsundokuTraducoes.Services.AppServices
             retornoCapitulo.DataAlteracao = CapituloComic.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
             retornoCapitulo.UsuarioAlteracao = !string.IsNullOrEmpty(CapituloComic.UsuarioAlteracao) ? CapituloComic.UsuarioAlteracao : null;
             return retornoCapitulo;
+        }
+
+        private bool ValidaDadosRequestCapitulo(CapituloDTO capituloDTO)
+        {
+            var resquestValido =
+                VerificaString(capituloDTO.Numero) &&
+                VerificaString(capituloDTO.UsuarioInclusao) &&
+                capituloDTO.OrdemCapitulo > 0 &&
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                capituloDTO.ListaImagensForm != null &&
+                capituloDTO.ListaImagensForm.Count > 0;
+
+            return resquestValido;
+        }
+
+        private bool ValidaDadosRequestEdicaoCapitulo(CapituloDTO capituloDTO)
+        {
+            var resquestValido =
+                VerificaString(capituloDTO.Numero) &&
+                VerificaString(capituloDTO.UsuarioInclusao) &&
+                capituloDTO.OrdemCapitulo > 0 &&
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                VerificaString(capituloDTO.UsuarioAlteracao);
+
+            return resquestValido;
+        }
+
+        private static bool VerificaString(string valor)
+        {
+            return !string.IsNullOrEmpty(valor) && !valor.Contains("\"\""); ;
         }
     }
 }
