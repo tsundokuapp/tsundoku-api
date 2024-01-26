@@ -1,37 +1,56 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Api.DTOs.Admin;
-using TsundokuTraducoes.Api.Services.Interfaces;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Controllers
 {
     [ApiController]
     public class VolumeController : ControllerBase
-    {
-        // TODO - Criar as verificações de request, para saber se estar vindo corretamente.
-        private readonly IVolumeService _volumeService;
+    {         
+        private readonly IVolumeAppService _volumeAppService;
 
-        public VolumeController(IVolumeService volumeService)
+        public VolumeController(IVolumeAppService volumeAppService)
         {
-            _volumeService = volumeService;
+            _volumeAppService = volumeAppService;
         }
-                
+
         [HttpGet("api/volume/")]
-        public async Task<IActionResult> RetornaListaVolume([FromQuery] Guid? IdObra)
+        public IActionResult RetornaListaVolume([FromQuery] Guid? IdObra)
         {
-            var result = await _volumeService.RetornaListaVolumes(IdObra);
+            var result = _volumeAppService.RetornaListaVolumes(IdObra);
             if (result.Value.Count == 0)
                 return NoContent();
 
             return Ok(result.Value);
         }
 
-        
-        [HttpGet("api/volume/novel/{id}")]
-        public async Task<IActionResult> RetornaVolumeNovelPorId(Guid id)
+        [HttpGet("api/volume/novel")]
+        public IActionResult RetornaListaVolumesNovel([FromQuery] Guid? IdObra)
         {
-            var result = await _volumeService.RetornaVolumeNovelPorId(id);
+            var result = _volumeAppService.RetornaListaVolumesNovel(IdObra);
+            if (result.Value.Count == 0)
+                return NoContent();
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet("api/volume/comic")]
+        public IActionResult RetornaListaVolumesComic([FromQuery] Guid? IdObra)
+        {
+            var result = _volumeAppService.RetornaListaVolumesComic(IdObra);
+            if (result.Value.Count == 0)
+                return NoContent();
+
+            return Ok(result.Value);
+        }
+
+
+        [HttpGet("api/volume/novel/{id}")]
+        public IActionResult RetornaVolumeNovelPorId(Guid id)
+        {
+            var result = _volumeAppService.RetornaVolumeNovelPorId(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
@@ -39,9 +58,9 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/volume/comic/{id}")]
-        public async Task<IActionResult> RetornaVolumeComicPorId(Guid id)
+        public IActionResult RetornaVolumeComicPorId(Guid id)
         {
-            var result = await _volumeService.RetornaVolumeComicPorId(id);
+            var result = _volumeAppService.RetornaVolumeComicPorId(id);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
@@ -52,7 +71,7 @@ namespace TsundokuTraducoes.Controllers
         [HttpPost("api/volume/novel/")]
         public async Task<IActionResult> AdicionaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
-            var result = await _volumeService.AdicionaVolumeNovel(volumeDTO);
+            var result = await _volumeAppService.AdicionaVolumeNovel(volumeDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
@@ -62,7 +81,7 @@ namespace TsundokuTraducoes.Controllers
         [HttpPost("api/volume/comic/")]
         public async Task<IActionResult> AdicionaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
-            var result = await _volumeService.AdicionaVolumeComic(volumeDTO);
+            var result = await _volumeAppService.AdicionaVolumeComic(volumeDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
@@ -73,7 +92,7 @@ namespace TsundokuTraducoes.Controllers
         [HttpPut("api/volume/novel/")]
         public async Task<IActionResult> AtualizaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
-            var result = await _volumeService.AtualizaVolumeNovel(volumeDTO);
+            var result = await _volumeAppService.AtualizaVolumeNovel(volumeDTO);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;
@@ -89,7 +108,7 @@ namespace TsundokuTraducoes.Controllers
         [HttpPut("api/volume/comic/")]
         public async Task<IActionResult> AtualizaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
-            var result = await _volumeService.AtualizaVolumeComic(volumeDTO);
+            var result = await _volumeAppService.AtualizaVolumeComic(volumeDTO);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;
@@ -106,7 +125,7 @@ namespace TsundokuTraducoes.Controllers
         [HttpDelete("api/volume/novel/{id}")]
         public async Task<IActionResult> ExcluiVolumeNovel(Guid id)
         {
-            var result = await _volumeService.ExcluiVolumeNovel(id);
+            var result = await _volumeAppService.ExcluiVolumeNovel(id);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;
@@ -122,7 +141,7 @@ namespace TsundokuTraducoes.Controllers
         [HttpDelete("api/volume/comic/{id}")]
         public async Task<IActionResult> ExcluiVolumeComic(Guid id)
         {
-            var result = await _volumeService.ExcluiVolumeComic(id);
+            var result = await _volumeAppService.ExcluiVolumeComic(id);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;

@@ -57,10 +57,13 @@ git push -f origin main
 - Não altere versões de libs ou ferramentas.
 - Se precisar de ajuda, pergunte diretamente informando o problema que está tendo.
 
+
 ## Postman
 
-- Para realizar os testes de crud é necessário usar o Postman (Ou algum app de requisição de seu interesse). Caso use o Postman, existe uma collection e variáveis de ambiente disponível no repósitorio.
-Basta importar os arquivos jsons disponíveis e utilizar o mesmo.
+- Para realizar os testes de crud é necessário usar o Postman (Ou algum app de requisição de seu interesse). Caso use o Postman, existe uma collection e variáveis de ambiente disponível.
+  - Diretório das collections no Drive: [Collections](https://drive.google.com/drive/folders/1bhmK9wYH26zVlEMj0mxudu7KL6fvR8-t?usp=sharing)
+- Basta importar, no Postam, o arquivo json disponível e utilizar.
+
 
 ## Iniciando o projeto
 
@@ -73,3 +76,44 @@ Basta importar os arquivos jsons disponíveis e utilizar o mesmo.
     
 - E em seguida rodar o projeto para subir a api
   - Visual Studio Code > ```dotnet run```
+
+
+## Testes Unitários (Entidades)
+
+**1º** Passo
+
+- Chegar ou estar na raiz do projeto
+  - Basicamente acessar a pasta principal que foi clonada
+
+**2º** Passo
+
+- Chegar até a pasta do projeto
+  - Exemplo de comando: ```cd TsundokuTraducoes.Entities.Tests``` 
+
+**3º** Passo
+
+- Estando na pasta do projeto executar o comando de teste
+  - Exemplo de comando: ```dotnet test```
+ 
+
+## Testes de Integração (Cruds e afins)
+
+**1º** Passo
+
+- Chegar ou estar na raiz do projeto
+  - Basicamente acessar a pasta principal que foi clonada
+
+**2º** Passo
+
+- Chegar até a pasta do projeto
+  - Exemplo de comando: ```cd TsundokuTraducoes.Integration.Tests```
+
+**3º** Passo
+
+- Estando na pasta do projeto executar o comando de teste
+  - Exemplo de comando: ```dotnet test```
+ 
+## Observações sobre os testes
+
+- Até o momento eu não achei informações de rodar os testes de forma separada via comando.
+- Para mais informações, consultar a documentação do pacote: [Xunit.Net](https://xunit.net/docs/getting-started/netcore/cmdline)

@@ -10,10 +10,10 @@ namespace TsundokuTraducoes.Api.Controllers
     public class ObrasController : Controller
     {
         // TODO - Criar as verificações de request, para saber se estar vindo corretamente.
-        private readonly IInfosObrasServices _infosObrasServices;
-        private readonly IValidacaoTratamentoObrasService _validacaoTratamentoObrasService;
+        private readonly IInfosObrasServicesOld _infosObrasServices;
+        private readonly IValidacaoTratamentoObrasServiceOld _validacaoTratamentoObrasService;
 
-        public ObrasController(IInfosObrasServices infosObrasServices, IValidacaoTratamentoObrasService validacaoObrasService)
+        public ObrasController(IInfosObrasServicesOld infosObrasServices, IValidacaoTratamentoObrasServiceOld validacaoObrasService)
         {
             _infosObrasServices = infosObrasServices;
             _validacaoTratamentoObrasService = validacaoObrasService;
@@ -26,8 +26,8 @@ namespace TsundokuTraducoes.Api.Controllers
 
             if (!parametrosValidados)
                 return BadRequest("Informe ao menos uma opção para realizar a consulta!");
-                        
-            var skipTratado = _validacaoTratamentoObrasService.RetornaSkipTratado(requestObras.Skip);            
+
+            var skipTratado = _validacaoTratamentoObrasService.RetornaSkipTratado(requestObras.Skip);
             var takeTratado = _validacaoTratamentoObrasService.RetornaTakeTratado(requestObras.Take);
 
             var capitulos = await _infosObrasServices.ObterListaNovels(requestObras);
@@ -53,7 +53,7 @@ namespace TsundokuTraducoes.Api.Controllers
             var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
             var total = capitulos.Count;
 
-            return Ok(new { total = total, data = dados});
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/obras/novel")]
@@ -66,7 +66,7 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(capitulo);
         }
 
-        
+
         [HttpGet("api/obras/comics")]
         public async Task<IActionResult> ObterComics([FromQuery] RequestObras requestObras)
         {
@@ -114,7 +114,7 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(capitulo);
         }
 
-        
+
         [HttpGet("api/obras/home")]
         public async Task<IActionResult> ObterCapitulosHome([FromQuery] RequestObras requestObras)
         {

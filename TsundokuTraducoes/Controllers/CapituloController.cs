@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Api.DTOs.Admin;
 using TsundokuTraducoes.Api.Services.Interfaces;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Controllers
 {
@@ -10,9 +10,9 @@ namespace TsundokuTraducoes.Controllers
     public class CapituloController : ControllerBase
     {
         // TODO - Criar as verificações de request, para saber se estar vindo corretamente.
-        private readonly ICapituloService _capituloService;
+        private readonly ICapituloServiceOld _capituloService;
 
-        public CapituloController(ICapituloService capituloService)
+        public CapituloController(ICapituloServiceOld capituloService)
         {
             _capituloService = capituloService;
         }
@@ -112,7 +112,7 @@ namespace TsundokuTraducoes.Controllers
                 var mensagemErro = result.Errors[0].Message;
                 if (mensagemErro.Contains("não encontrado"))
                     return NotFound(mensagemErro);
-                                
+
                 return BadRequest(mensagemErro);
             }
 
@@ -128,33 +128,11 @@ namespace TsundokuTraducoes.Controllers
                 var mensagemErro = result.Errors[0].Message;
                 if (mensagemErro.Contains("não encontrado"))
                     return NotFound(mensagemErro);
-                
+
                 return BadRequest(mensagemErro);
             }
 
             return Ok(result.Successes[0].Message);
-        }
-
-
-        //Talvez seja descontinuado
-        [HttpGet("dados-obra/{id}")]
-        public async Task<IActionResult> RetornaDadosObra(Guid id)
-        {
-            var result = await _capituloService.RetornaDadosObra(id);
-            if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
-
-            return Ok(result.Value);
-        }
-
-        [HttpGet("dados-capitulo/{id}")] 
-        public async Task<IActionResult> RetornaDadosCapitulo(Guid id)
-        {
-            var result = await _capituloService.RetornaDadosCapitulo(id);
-            if (result.IsFailed)
-                return NotFound(result.Errors[0].Message);
-
-            return Ok(result.Value);
         }
     }
 }

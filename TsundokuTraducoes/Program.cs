@@ -1,17 +1,26 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using TsundokuTraducoes.Api;
 using TsundokuTraducoes.Api.Extensions;
+using TsundokuTraducoes.Data.Configuration;
+using TsundokuTraducoes.Data.Context;
+
+
+var _connectionStringConfig = new ConnectionStringConfig();
 
 var builder = WebApplication.CreateBuilder(args);
+_connectionStringConfig.ConnectionString = builder.Configuration.GetConnectionString("Default");
 
-var connStr = builder.Configuration.GetConnectionString("Default");
-builder.Services.AddSqlConnection(connStr);
+SourceConnection.SetaConnectionStringConfig(_connectionStringConfig);
+
+builder.Services.AddSqlConnection(_connectionStringConfig.ConnectionString);
+
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
@@ -68,7 +77,7 @@ app.Run();
 void LoadConfiguration(WebApplication app)
 {
     Configuration.EhAmbienteDesenvolvimento = app.Configuration.GetValue<bool>("EhAmbienteDesenvolvimento");
-    Configuration.DiretorioWeb = Configuration.EhAmbienteDesenvolvimento 
+    Configuration.DiretorioWeb = Configuration.EhAmbienteDesenvolvimento
         ? app.Environment.WebRootPath
         : app.Configuration.GetValue<string>("DiretorioWeb");
 
@@ -76,3 +85,5 @@ void LoadConfiguration(WebApplication app)
     app.Configuration.GetSection("ConnectionStrings").Bind(connectionStrings);
     Configuration.ConnectionString = connectionStrings;
 }
+
+public partial class Program { }
