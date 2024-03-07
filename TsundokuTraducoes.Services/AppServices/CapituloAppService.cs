@@ -94,6 +94,9 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<Result<RetornoCapitulo>> AdicionaCapituloNovel(CapituloDTO capituloDTO)
         {
+            if (!ValidaDadosRequestCapituloNovel(capituloDTO))
+                return Result.Fail("Verifique os campos obrigatórios e tente adicionar novamente!");
+
             var volume = _volumeService.RetornaVolumeNovelPorId(capituloDTO.VolumeId);
             var novel = _obraService.RetornaNovelPorId(volume.NovelId);
 
@@ -151,7 +154,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<Result<RetornoCapitulo>> AdicionaCapituloComic(CapituloDTO capituloDTO)
         {
-            if (!ValidaDadosRequestCapitulo(capituloDTO))
+            if (!ValidaDadosRequestCapituloComic(capituloDTO))
                 return Result.Fail("Verifique os campos obrigatórios e tente adicionar novamente!");
 
             var volume = _volumeService.RetornaVolumeComicPorId(capituloDTO.VolumeId);
@@ -209,6 +212,9 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<Result<RetornoCapitulo>> AtualizaCapituloNovel(CapituloDTO capituloDTO)
         {
+            if (!ValidaDadosRequestEdicaoCapitulo(capituloDTO))
+                return Result.Fail("Verifique os campos obrigatórios e tente adicionar novamente!");
+
             var capituloEncontrado = _capituloService.RetornaCapituloNovelPorId(capituloDTO.Id);
             if (capituloEncontrado == null)
                 return Result.Fail("Capítulo não encontrado!");
@@ -327,7 +333,26 @@ namespace TsundokuTraducoes.Services.AppServices
             return retornoCapitulo;
         }
 
-        private bool ValidaDadosRequestCapitulo(CapituloDTO capituloDTO)
+        private static bool ValidaDadosRequestCapituloNovel(CapituloDTO capituloDTO)
+        {
+            var requestListaImagemForm = true;
+            var resquestValido =
+                VerificaString(capituloDTO.Numero) &&
+                VerificaString(capituloDTO.UsuarioInclusao) &&
+                capituloDTO.OrdemCapitulo > 0 &&
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                VerificaString(capituloDTO.ConteudoNovel);
+
+            if (capituloDTO.EhIlustracoesNovel)
+            {
+                requestListaImagemForm = capituloDTO.ListaImagensForm != null &&
+                capituloDTO.ListaImagensForm.Count > 0;
+            }
+
+            return resquestValido && requestListaImagemForm;
+        }
+
+        private static bool ValidaDadosRequestCapituloComic(CapituloDTO capituloDTO)
         {
             var resquestValido =
                 VerificaString(capituloDTO.Numero) &&
@@ -340,7 +365,7 @@ namespace TsundokuTraducoes.Services.AppServices
             return resquestValido;
         }
 
-        private bool ValidaDadosRequestEdicaoCapitulo(CapituloDTO capituloDTO)
+        private static bool ValidaDadosRequestEdicaoCapitulo(CapituloDTO capituloDTO)
         {
             var resquestValido =
                 VerificaString(capituloDTO.Numero) &&

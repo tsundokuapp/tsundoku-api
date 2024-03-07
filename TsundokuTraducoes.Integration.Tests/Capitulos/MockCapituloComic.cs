@@ -29,7 +29,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
                 {
                     form.Add(contentImagemCapitulo);
                 }
-            }            
+            }
 
             return form;
         }

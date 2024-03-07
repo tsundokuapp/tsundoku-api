@@ -8,8 +8,7 @@ namespace TsundokuTraducoes.Controllers
 {
     [ApiController]
     public class CapituloController : ControllerBase
-    {
-        // TODO - Criar as verificações de request, para saber se estar vindo corretamente.
+    {        
         private readonly ICapituloAppService _capituloService;
 
         public CapituloController(ICapituloAppService capituloService)
