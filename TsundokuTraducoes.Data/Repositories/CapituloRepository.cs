@@ -1,84 +1,111 @@
-﻿using TsundokuTraducoes.Domain.Interfaces.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using TsundokuTraducoes.Data.Context;
+using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
-using TsundokuTraducoes.Entities.Entities.Obra;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Data.Repositories
 {
     public class CapituloRepository : ICapituloRepository
     {
-        public Task AdicionaCapituloComic(CapituloComic volumeComic)
+        private readonly ContextBase _context;
+
+        public CapituloRepository(ContextBase context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task AdicionaCapituloNovel(CapituloNovel volumeNovel)
+        public List<CapituloNovel> RetornaListaCapitulosNovel(Guid? volumeId = null)
         {
-            throw new NotImplementedException();
+            var listaCapitulosNovel = volumeId != null ? _context.CapitulosNovel.Where(w => w.VolumeId == volumeId.Value) : _context.CapitulosNovel;
+            return listaCapitulosNovel.ToList();
+        }
+        
+        public List<CapituloComic> RetornaListaCapitulosComic(Guid? volumeId = null)
+        {
+            var listaCapitulosComic = volumeId != null ? _context.CapitulosComic.Where(w => w.VolumeId == volumeId.Value) : _context.CapitulosComic;
+            return listaCapitulosComic.ToList();
         }
 
-        public Task<bool> AlteracoesSalvas()
+
+        public CapituloNovel RetornaCapituloNovelPorId(Guid capituloId)
         {
-            throw new NotImplementedException();
+            var capitulos = RetornaListaCapitulosNovel();
+            return capitulos.FirstOrDefault(w => w.Id == capituloId);
+        }
+        
+        public CapituloComic RetornaCapituloComicPorId(Guid capituloId)
+        {
+            var capitulos = RetornaListaCapitulosComic();
+            return capitulos.FirstOrDefault(w => w.Id == capituloId);
+        }
+        
+
+        public void AdicionaCapituloNovel(CapituloNovel capituloNovel)
+        {
+            _context.Add(capituloNovel);
+        }
+        
+        public void AdicionaCapituloComic(CapituloComic capituloComic)
+        {
+            _context.Add(capituloComic);
         }
 
-        public Task<CapituloComic> AtualizaCapituloComic(CapituloComic volumeComic)
+
+        public CapituloNovel AtualizaCapituloNovel(CapituloDTO capituloDTO)
         {
-            throw new NotImplementedException();
+            var capituloEncontrado = _context.CapitulosNovel.SingleOrDefault(s => s.Id == capituloDTO.Id);
+
+            capituloDTO.DiretorioImagemCapitulo = capituloEncontrado.DiretorioImagemCapitulo;
+            _context.Entry(capituloEncontrado).CurrentValues.SetValues(capituloDTO);
+            capituloEncontrado.DataAlteracao = DateTime.Now;
+
+            return capituloEncontrado;
         }
 
-        public Task<CapituloNovel> AtualizaCapituloNovel(CapituloNovel volumeNovel)
+        public CapituloComic AtualizaCapituloComic(CapituloDTO capituloDTO)
         {
-            throw new NotImplementedException();
+            var capituloEncontrado = _context.CapitulosComic.SingleOrDefault(s => s.Id == capituloDTO.Id);
+
+            capituloDTO.DiretorioImagemCapitulo = capituloEncontrado.DiretorioImagemCapitulo;
+            _context.Entry(capituloEncontrado).CurrentValues.SetValues(capituloDTO);
+            capituloEncontrado.DataAlteracao = DateTime.Now;
+
+            return capituloEncontrado;
         }
 
-        public void AtualizaComicPorCapitulo(Comic comic, CapituloComic capituloComic)
+        
+        public void ExcluiCapituloNovel(CapituloNovel capituloNovel)
         {
-            throw new NotImplementedException();
+            _context.Remove(capituloNovel);
         }
 
-        public void AtualizaNovelPorCapitulo(Novel novel, CapituloNovel capituloNovel)
+        public void ExcluiCapituloComic(CapituloComic capituloComic)
         {
-            throw new NotImplementedException();
+            _context.Remove(capituloComic);
         }
 
-        public void ExcluiCapituloComic(CapituloComic volumeComic)
+
+        public CapituloNovel RetornaCapituloNovelExistente(CapituloDTO capituloDTO)
         {
-            throw new NotImplementedException();
+            var capituloExistente = _context.CapitulosNovel
+                                    .Where(w => w.VolumeId == capituloDTO.VolumeId && EF.Functions.Like(w.Slug, capituloDTO.Slug));
+
+            return capituloExistente.FirstOrDefault();
         }
 
-        public void ExcluiCapituloNovel(CapituloNovel volumeNovel)
+        public CapituloComic RetornaCapituloComicExistente(CapituloDTO capituloDTO)
         {
-            throw new NotImplementedException();
+            var capituloExistente = _context.CapitulosComic
+                                    .Where(w => w.VolumeId == capituloDTO.VolumeId && EF.Functions.Like(w.Slug, capituloDTO.Slug));
+            
+            return capituloExistente.FirstOrDefault();
         }
 
-        public Task<CapituloComic> RetornaCapituloComicExistente(CapituloComic capituloComic)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<CapituloComic> RetornaCapituloComicPorId(Guid capituloId)
+        public async Task<bool> AlteracoesSalvas()
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<CapituloNovel> RetornaCapituloNovelExistente(CapituloNovel capituloNovel)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<CapituloNovel> RetornaCapituloNovelPorId(Guid capituloId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<CapituloComic>> RetornaListaCapitulosComic(Guid? volumeId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<CapituloNovel>> RetornaListaCapitulosNovel(Guid? volumeId)
-        {
-            throw new NotImplementedException();
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

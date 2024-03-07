@@ -1,22 +1,28 @@
-﻿using FluentResults;
-using TsundokuTraducoes.Entities.Entities.Capitulo;
+﻿using TsundokuTraducoes.Entities.Entities.Capitulo;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Domain.Interfaces.Services
 {
     public interface ICapituloService
     {
-        //Task<Result<List<RetornoCapitulo>>> RetornaListaCapitulos(Guid? volumeId);
+        List<CapituloNovel> RetornaListaCapitulosNovel(Guid? volumeId);
+        List<CapituloComic> RetornaListaCapitulosComic(Guid? volumeId);
 
-        //Task<Result<CapituloNovel>> RetornaCapituloNovelPorId(Guid capituloId);
-        //Task<Result<CapituloComic>> RetornaCapituloComicPorId(Guid capituloId);
+        CapituloNovel RetornaCapituloNovelPorId(Guid capituloId);
+        CapituloComic RetornaCapituloComicPorId(Guid capituloId);
 
-        //Task<Result<RetornoCapitulo>> AdicionaCapituloNovel(CapituloNovel capituloNovel);
-        //Task<Result<RetornoCapitulo>> AdicionaCapituloComic(CapituloComic capituloComic);
+        Task<bool> AdicionaCapituloNovel(CapituloNovel capituloNovel);
+        Task<bool> AdicionaCapituloComic(CapituloComic capituloComic);
 
-        //Task<Result<RetornoCapitulo>> AtualizaCapituloNovel(CapituloNovel capituloNovel);
-        //Task<Result<RetornoCapitulo>> AtualizaCapituloComic(CapituloComic capituloComic);
+        CapituloNovel AtualizaCapituloNovel(CapituloDTO capituloDTO);
+        CapituloComic AtualizaCapituloComic(CapituloDTO capituloDTO);
 
-        //Task<Result> ExcluiCapituloNovel(Guid capituloId);
-        //Task<Result> ExcluiCapituloComic(Guid capituloId);
+        Task<bool> ExcluiCapituloNovel(CapituloNovel capituloNovel);
+        Task<bool> ExcluiCapituloComic(CapituloComic capituloComic);
+
+        CapituloNovel RetornaCapituloNovelExistente(CapituloDTO capituloDTO);
+        CapituloComic RetornaCapituloComicExistente(CapituloDTO capituloDTO);
+
+        Task<bool> AlteracoesSalvas();
     }
 }
