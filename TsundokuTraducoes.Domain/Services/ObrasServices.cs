@@ -1,0 +1,32 @@
+﻿using TsundokuTraducoes.Domain.Interfaces.Repositories;
+using TsundokuTraducoes.Domain.Interfaces.Services;
+using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
+
+namespace TsundokuTraducoes.Domain.Services
+{
+    public class ObrasServices : IObrasService
+    {
+        private readonly IObrasRepository _obrasRepository;
+
+        public ObrasServices(IObrasRepository obrasRepository)
+        {
+            _obrasRepository = obrasRepository;
+        }
+
+        public async Task<List<RetornoObra>> ObterListaNovels(RequestObras requestObras)
+        {
+            return await _obrasRepository.ObterListaNovels(requestObras);
+        }
+
+        public async Task<List<RetornoObra>> ObterListaNovelsRecentes()
+        {
+            return await _obrasRepository.ObterListaNovelsRecentes();
+        }
+
+        public async Task<RetornoObra> ObterNovelPorId(RequestObras requestObras)
+        {
+            return await _obrasRepository.ObterNovelPorId(requestObras);
+        }
+    }
+}

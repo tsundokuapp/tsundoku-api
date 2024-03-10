@@ -32,6 +32,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TsundokuTraducoes.Domain\TsundokuTraducoes.Domain.csproj" />
     <ProjectReference Include="..\TsundokuTraducoes.Helpers\TsundokuTraducoes.Helpers.csproj" />
+    <ProjectReference Include="..\TsundokuTraducoes.Services\TsundokuTraducoes.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -33,7 +33,7 @@ namespace TsundokuTraducoes.Api.Extensions
             services.AddScoped<ICapituloRepository, CapituloRepository>();
             services.AddScoped<IGeneroDeParaRepository, GeneroDeParaRepository>();
             services.AddScoped<IGeneroRepository, GeneroRepository>();
-            services.AddScoped<IInfosObrasRepository, InfosObrasRepository>();
+            services.AddScoped<IObrasRepository, ObrasRepository>();
             services.AddScoped<IObraRepository, ObraRepository>();
             services.AddScoped<IVolumeRepository, VolumeRepository>();
         }
@@ -56,7 +56,7 @@ namespace TsundokuTraducoes.Api.Extensions
             services.AddScoped<ICapituloService, CapituloService>();
             services.AddScoped<IGeneroDeParaService, GeneroDeParaService>();
             services.AddScoped<IGeneroService, GeneroService>();
-            services.AddScoped<IInfosObrasServices, InfosObrasServices>();
+            services.AddScoped<IObrasService, ObrasServices>();
             services.AddScoped<IObraService, ObraService>();
             services.AddScoped<IVolumeService, VolumeService>();
         }

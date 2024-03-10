@@ -1,4 +1,4 @@
-﻿using TsundokuTraducoes.Api.DTOs.Admin.Request;
+﻿using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 
 namespace TsundokuTraducoes.Api.Services.Interfaces
 {

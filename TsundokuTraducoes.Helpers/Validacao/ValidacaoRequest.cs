@@ -1,16 +1,15 @@
 ﻿using TsundokuTraducoes.Helpers.DTOs.Public.Request;
-using TsundokuTraducoes.Api.Services.Interfaces;
 
-namespace TsundokuTraducoes.Api.Services
+namespace TsundokuTraducoes.Helpers.Validacao
 {
-    public class ValidacaoTratamentoObrasServiceOld : IValidacaoTratamentoObrasServiceOld
+    public static class ValidacaoRequest
     {
-        public bool ValidaParametrosNovel(RequestObras requestObras)
+        public static bool ValidaParametrosNovel(RequestObras requestObras)
         {
             return ValidaParametrosObra(requestObras);
         }
 
-        public bool ValidaParametrosObra(RequestObras requestObras)
+        public static bool ValidaParametrosObra(RequestObras requestObras)
         {
             return !string.IsNullOrEmpty(requestObras.Pesquisar) ||
                    !string.IsNullOrEmpty(requestObras.Nacionalidade) ||
@@ -21,12 +20,12 @@ namespace TsundokuTraducoes.Api.Services
                    requestObras.Take != null;
         }
 
-        public int RetornaSkipTratado(int? pagina)
+        public static int RetornaSkipTratado(int? pagina)
         {
             return pagina == null ? 0 : pagina.GetValueOrDefault();
         }
 
-        public int RetornaTakeTratado(int? obrasPorPagina, bool home = false)
+        public static int RetornaTakeTratado(int? obrasPorPagina, bool home = false)
         {
             var valorObrasPorPagina = home == true ? 5 : 4;
             return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
