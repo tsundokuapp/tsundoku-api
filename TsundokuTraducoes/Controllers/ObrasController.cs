@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.Validacao;
+using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Api.Controllers
 {
     [ApiController]
     public class ObrasController : Controller
     {   
-        private readonly IObrasService _obrasServices;
+        private readonly IObrasAppService _obrasAppServices;
 
-        public ObrasController(IObrasService obrasServices)
+        public ObrasController(IObrasAppService obrasAppServices)
         {
-            _obrasServices = obrasServices;
+            _obrasAppServices = obrasAppServices;
         }
 
         [HttpGet("api/obras/novels")]
@@ -28,7 +28,7 @@ namespace TsundokuTraducoes.Api.Controllers
             var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
             var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
 
-            var capitulos = await _obrasServices.ObterListaNovels(requestObras);
+            var capitulos = await _obrasAppServices.ObterListaNovels(requestObras);
             if (capitulos.Count == 0)
                 return NoContent();
 
@@ -44,7 +44,7 @@ namespace TsundokuTraducoes.Api.Controllers
             var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
             var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
 
-            var capitulos = await _obrasServices.ObterListaNovelsRecentes();
+            var capitulos = await _obrasAppServices.ObterListaNovelsRecentes();
             if (capitulos.Count == 0)
                 return NoContent();
 
@@ -57,7 +57,7 @@ namespace TsundokuTraducoes.Api.Controllers
         [HttpGet("api/obras/novel")]
         public async Task<IActionResult> ObterNovelPorId([FromQuery] RequestObras requestObras)
         {
-            var capitulo = await _obrasServices.ObterNovelPorId(requestObras);
+            var capitulo = await _obrasAppServices.ObterNovelPorId(requestObras);
             if (capitulo == null)
                 return NotFound("Novel não encontra!");
 
