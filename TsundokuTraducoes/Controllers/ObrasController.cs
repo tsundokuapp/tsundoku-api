@@ -65,52 +65,52 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
 
-        //[HttpGet("api/obras/comics")]
-        //public async Task<IActionResult> ObterComics([FromQuery] RequestObras requestObras)
-        //{
-        //    var parametrosValidados = _validacaoTratamentoObrasService.ValidaParametrosNovel(requestObras);
+        [HttpGet("api/obras/comics")]
+        public async Task<IActionResult> ObterComics([FromQuery] RequestObras requestObras)
+        {
+            var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
 
-        //    if (!parametrosValidados)
-        //        return BadRequest("Informe ao menos uma opção para realizar a consulta!");
+            if (!parametrosValidados)
+                return BadRequest("Informe ao menos uma opção para realizar a consulta!");
 
-        //    var skipTratado = _validacaoTratamentoObrasService.RetornaSkipTratado(requestObras.Skip);
-        //    var takeTratado = _validacaoTratamentoObrasService.RetornaTakeTratado(requestObras.Take);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
 
-        //    var capitulos = await _obrasServices.ObterListaComics(requestObras);
-        //    if (capitulos.Count == 0)
-        //        return NoContent();
+            var capitulos = await _obrasAppServices.ObterListaComics(requestObras);
+            if (capitulos.Count == 0)
+                return NoContent();
 
-        //    var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
-        //    var total = capitulos.Count;
+            var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = capitulos.Count;
 
-        //    return Ok(new { total = total, data = dados });
-        //}
+            return Ok(new { total = total, data = dados });
+        }
 
-        //[HttpGet("api/obras/comics/recentes")]
-        //public async Task<IActionResult> ObterComicsRecentes([FromQuery] RequestObras requestObras)
-        //{
-        //    var skipTratado = _validacaoTratamentoObrasService.RetornaSkipTratado(requestObras.Skip);
-        //    var takeTratado = _validacaoTratamentoObrasService.RetornaTakeTratado(requestObras.Take);
+        [HttpGet("api/obras/comics/recentes")]
+        public async Task<IActionResult> ObterComicsRecentes([FromQuery] RequestObras requestObras)
+        {
+            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
 
-        //    var capitulos = await _obrasServices.ObterListaComicsRecentes();
-        //    if (capitulos.Count == 0)
-        //        return NoContent();
+            var capitulos = await _obrasAppServices.ObterListaComicsRecentes();
+            if (capitulos.Count == 0)
+                return NoContent();
 
-        //    var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
-        //    var total = capitulos.Count;
+            var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = capitulos.Count;
 
-        //    return Ok(new { total = total, data = dados });
-        //}
+            return Ok(new { total = total, data = dados });
+        }
 
-        //[HttpGet("api/obras/comic")]
-        //public async Task<IActionResult> ObterComicPorId([FromQuery] RequestObras requestObras)
-        //{
-        //    var capitulo = await _obrasServices.ObterComicPorId(requestObras);
-        //    if (capitulo == null)
-        //        return NotFound();
+        [HttpGet("api/obras/comic")]
+        public async Task<IActionResult> ObterComicPorId([FromQuery] RequestObras requestObras)
+        {
+            var capitulo = await _obrasAppServices.ObterComicPorId(requestObras);
+            if (capitulo == null)
+                return NotFound();
 
-        //    return Ok(capitulo);
-        //}
+            return Ok(capitulo);
+        }
 
 
         //[HttpGet("api/obras/home")]

@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
-using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Data.Repositories
 {
@@ -35,12 +33,37 @@ namespace TsundokuTraducoes.Data.Repositories
             return TrataListaRetornoNovel(listaNovels);
         }
 
+        public async Task<List<RetornoObra>> ObterListaComics(RequestObras requestObras)
+        {
+            var listaComics = new List<Comic>();
+
+            if (!string.IsNullOrEmpty(requestObras.Pesquisar))
+            {
+                listaComics = await _context.Comics.Where(w => EF.Functions.Like(w.Titulo.ToUpper(), $"%{requestObras.Pesquisar.ToUpper()}%")).ToListAsync();
+            }
+            else
+            {
+                var sql = RetornaSqlListaComicsPorParametros(requestObras.Nacionalidade, requestObras.Status, requestObras.Tipo, requestObras.Genero);
+                listaComics = await _context.Comics.FromSqlRaw(sql).ToListAsync();
+            }
+
+            return TrataListaRetornoComic(listaComics);
+        }
+        
+        
         public async Task<List<RetornoObra>> ObterListaNovelsRecentes()
         {
             var listaNovels = await _context.Novels.OrderByDescending(o => o.DataInclusao).ToListAsync();
             return TrataListaRetornoNovel(listaNovels);
         }
+        
+        public async Task<List<RetornoObra>> ObterListaComicsRecentes()
+        {
+            var listaComics = await _context.Comics.OrderByDescending(o => o.DataInclusao).ToListAsync();
+            return TrataListaRetornoComic(listaComics);
+        }
 
+        
         public async Task<RetornoObra> ObterNovelPorId(RequestObras requestObras)
         {
             var novel = await _context.Novels.FirstOrDefaultAsync(w => w.Id.ToString() == requestObras.IdObra);
@@ -51,7 +74,16 @@ namespace TsundokuTraducoes.Data.Repositories
             return null;
         }
 
-        /***********************************************************************************************/
+        public async Task<RetornoObra> ObterComicPorId(RequestObras requestObras)
+        {
+            var comic = await _context.Comics.FirstOrDefaultAsync(w => w.Id.ToString() == requestObras.IdObra);
+
+            if (comic != null)
+                return TrataRetornoComic(comic);
+
+            return null;
+        }
+        
 
         private static string RetornaSqlListaNovelsPorParametros(string nacionalidade, string status, string tipo, string genero)
         {
@@ -99,7 +131,7 @@ namespace TsundokuTraducoes.Data.Repositories
                         {joinsGeneros} 
                         {condicaoConsulta} ";
         }
-
+        
         private static string RetornaSqlListaComicsPorParametros(string nacionalidade, string status, string tipo, string genero)
         {
             var condicaoConsulta = string.Empty;
@@ -109,22 +141,22 @@ namespace TsundokuTraducoes.Data.Repositories
 
             if (!string.IsNullOrEmpty(nacionalidade))
             {
-                listaParametroConsulta.Add($"C.NacionalidadeSlug = @nacionalidade ");
+                listaParametroConsulta.Add($"C.NacionalidadeSlug = '{nacionalidade}' ");
             }
 
             if (!string.IsNullOrEmpty(status))
             {
-                listaParametroConsulta.Add($"C.StatusObraSlug = @status ");
+                listaParametroConsulta.Add($"C.StatusObraSlug = '{status}' ");
             }
 
             if (!string.IsNullOrEmpty(tipo))
             {
-                listaParametroConsulta.Add($"C.TipoObraSlug = @tipo ");
+                listaParametroConsulta.Add($"C.TipoObraSlug = '{tipo}' ");
             }
 
             if (!string.IsNullOrEmpty(genero))
             {
-                listaParametroConsulta.Add($"G.Slug = @genero ");
+                listaParametroConsulta.Add($"G.Slug = '{genero}' ");
                 joinsGeneros = @"INNER JOIN GenerosComic GC ON GC.ComicId = C.Id
                                  INNER JOIN Generos G ON G.Id = GC.GeneroId ";
             }
@@ -141,19 +173,13 @@ namespace TsundokuTraducoes.Data.Repositories
                 }
             }
 
-            return @$"SELECT C.ImagemCapaPrincipal UrlCapaPrincipal,
-	                         C.ImagemCapaUltimoVolume UrlCapaVolume,
-	                         C.Alias,
-	                         C.Autor,
-	                         C.Slug,
-	                         C.NumeroUltimoVolume DescritivoVolume,
-	                         C.Id
+            return @$"SELECT C.*
                         FROM Comics C 
                         {joinsGeneros} 
                         {condicaoConsulta} ";
         }
-
-
+        
+        
         private static List<RetornoObra> TrataListaRetornoNovel(List<Novel> listaNovels)
         {
             var listaRetornoObra = new List<RetornoObra>();
@@ -165,7 +191,20 @@ namespace TsundokuTraducoes.Data.Repositories
 
             return listaRetornoObra;
         }
+        
+        private static List<RetornoObra> TrataListaRetornoComic(List<Comic> listaNovels)
+        {
+            var listaRetornoObra = new List<RetornoObra>();
 
+            foreach (var obra in listaNovels)
+            {
+                listaRetornoObra.Add(TrataRetornoComic(obra));
+            }
+
+            return listaRetornoObra;
+        }
+        
+        
         private static RetornoObra TrataRetornoNovel(Novel obra)
         {
             return new RetornoObra
@@ -181,6 +220,23 @@ namespace TsundokuTraducoes.Data.Repositories
                 Id = obra.Id
             };
         }
+
+        private static RetornoObra TrataRetornoComic(Comic obra)
+        {
+            return new RetornoObra
+            {
+                UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
+                ? obra.ImagemCapaUltimoVolume
+                : obra.ImagemCapaPrincipal,
+
+                Alias = obra.Alias,
+                Autor = obra.Autor,
+                DescritivoVolume = obra.NumeroUltimoVolume,
+                Slug = obra.Slug,
+                Id = obra.Id
+            };
+        }
+
 
         private static void TrataListaRetornoCapitulo(List<RetornoCapitulos> listaRetornoCapitulo)
         {

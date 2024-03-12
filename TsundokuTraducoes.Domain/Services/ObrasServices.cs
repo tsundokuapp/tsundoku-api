@@ -13,20 +13,37 @@ namespace TsundokuTraducoes.Domain.Services
         {
             _obrasRepository = obrasRepository;
         }
-
+        
         public async Task<List<RetornoObra>> ObterListaNovels(RequestObras requestObras)
         {
             return await _obrasRepository.ObterListaNovels(requestObras);
         }
-
+        
+        public async Task<List<RetornoObra>> ObterListaComics(RequestObras requestObras)
+        {
+            return await _obrasRepository.ObterListaComics(requestObras);
+        }
+        
+        
         public async Task<List<RetornoObra>> ObterListaNovelsRecentes()
         {
             return await _obrasRepository.ObterListaNovelsRecentes();
         }
-
+        
+        public async Task<List<RetornoObra>> ObterListaComicsRecentes()
+        {
+            return await _obrasRepository.ObterListaComicsRecentes();
+        }
+                
+        
         public async Task<RetornoObra> ObterNovelPorId(RequestObras requestObras)
         {
             return await _obrasRepository.ObterNovelPorId(requestObras);
+        }
+        
+        public async Task<RetornoObra> ObterComicPorId(RequestObras requestObras)
+        {
+            return await _obrasRepository.ObterComicPorId(requestObras);
         }
     }
 }

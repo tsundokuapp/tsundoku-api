@@ -20,9 +20,10 @@ namespace TsundokuTraducoes.Services.AppServices
             return listaRetornoObra;
         }
 
-        public Task<List<RetornoObra>> ObterListaComics(RequestObras requestObras)
+        public async Task<List<RetornoObra>> ObterListaComics(RequestObras requestObras)
         {
-            throw new NotImplementedException();
+            var listaRetornoObra = await _obrasService.ObterListaComics(requestObras);
+            return listaRetornoObra;
         }
 
 
@@ -32,9 +33,10 @@ namespace TsundokuTraducoes.Services.AppServices
             return listaRetornoObra;
         }
 
-        public Task<List<RetornoObra>> ObterListaComicsRecentes()
+        public async Task<List<RetornoObra>> ObterListaComicsRecentes()
         {
-            throw new NotImplementedException();
+            var listaRetornoObra = await _obrasService.ObterListaComicsRecentes();
+            return listaRetornoObra;
         }
 
 
@@ -44,13 +46,14 @@ namespace TsundokuTraducoes.Services.AppServices
             return retornoObra;
         }
 
-        public Task<RetornoObra> ObterComicPorId(RequestObras requestObras)
+        public async Task<RetornoObra> ObterComicPorId(RequestObras requestObras)
         {
-            throw new NotImplementedException();
+            var retornoObra = await _obrasService.ObterComicPorId(requestObras);
+            return retornoObra;
         }
 
 
-        public Task<List<RetornoCapitulos>> ObterCapitulosHome()
+        public async Task<List<RetornoCapitulos>> ObterCapitulosHome()
         {
             throw new NotImplementedException();
         }
