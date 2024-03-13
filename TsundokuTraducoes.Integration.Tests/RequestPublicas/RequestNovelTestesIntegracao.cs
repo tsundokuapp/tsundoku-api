@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
-using TsundokuTraducoes.Api.DTOs.Admin.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 
 namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
 {

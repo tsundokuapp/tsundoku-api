@@ -1,8 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TsundokuTraducoes.Api.Repository;
-using TsundokuTraducoes.Api.Repository.Interfaces;
-using TsundokuTraducoes.Api.Services;
-using TsundokuTraducoes.Api.Services.Interfaces;
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Data.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
@@ -24,12 +20,6 @@ namespace TsundokuTraducoes.Api.Extensions
 
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddTransient<IObraRepositoryOld, ObraRepositoryOld>();
-            services.AddTransient<IGeneroRepositoryOld, GeneroRepositoryOld>();
-            services.AddTransient<IVolumeRepositoryOld, VolumeRepositoryOld>();
-            services.AddTransient<ICapituloRepositoryOld, CapituloRepositoryOld>();
-            services.AddTransient<IInfosObrasRepositoryOld, InfosObrasRepositoryOld>();
-            
             services.AddScoped<ICapituloRepository, CapituloRepository>();
             services.AddScoped<IGeneroDeParaRepository, GeneroDeParaRepository>();
             services.AddScoped<IGeneroRepository, GeneroRepository>();
@@ -40,13 +30,6 @@ namespace TsundokuTraducoes.Api.Extensions
 
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddTransient<IObraServiceOld, ObraServiceOld>();
-            services.AddTransient<IVolumeServiceOld, VolumeServiceOld>();
-            services.AddTransient<ICapituloServiceOld, CapituloServiceOld>();
-            services.AddTransient<IInfosObrasServicesOld, InfosObrasServiceOld>();
-            services.AddTransient<IImagemServiceOld, ImagemServiceOld>();
-            services.AddTransient<IValidacaoTratamentoObrasServiceOld, ValidacaoTratamentoObrasServiceOld>();
-
             services.AddScoped<IGeneroDeParaAppService, GeneroDeParaAppService>();
             services.AddScoped<IImagemAppService, ImagemAppService>();
             services.AddScoped<IObraAppService, ObraAppService>();

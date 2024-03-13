@@ -9,7 +9,6 @@ using System;
 using TsundokuTraducoes.Api;
 using TsundokuTraducoes.Api.Extensions;
 using TsundokuTraducoes.Data.Configuration;
-using TsundokuTraducoes.Data.Context;
 
 
 var _connectionStringConfig = new ConnectionStringConfig();
