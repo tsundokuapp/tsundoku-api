@@ -12,13 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="DTOs\Admin\FiltrosDTO.cs" />
-    <Compile Remove="DTOs\Admin\InfosDTO.cs" />
-    <Compile Remove="DTOs\Admin\InfosObraDTO.cs" />
-    <Compile Remove="DTOs\Admin\InfosObraIndiceDTO.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Dapper" Version="2.0.123" />
@@ -56,7 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="TsundokuTraducoes.Integration.Tests"/>
+    <InternalsVisibleTo Include="TsundokuTraducoes.Integration.Tests" />
   </ItemGroup>
   
   <PropertyGroup>

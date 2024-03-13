@@ -64,16 +64,16 @@ namespace TsundokuTraducoes.Data.Context
             GerarSeed(modelBuilder);
         }
 
-        private void GerarSeed(ModelBuilder modelBuilder)
+        private static void GerarSeed(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Genero>()
                .HasData(CarregaListaGeneros());
 
             modelBuilder.Entity<GeneroNovel>()
-                .HasData(CarregaListaGeneroNovel());
+                .HasData(CarregaGeneroNovel());
 
             modelBuilder.Entity<GeneroComic>()
-                .HasData(CarregaListaGeneroComic());
+                .HasData(CarregaGeneroComic());
 
             modelBuilder.Entity<Novel>()
                 .HasData(CarregaNovel());
@@ -97,9 +97,8 @@ namespace TsundokuTraducoes.Data.Context
                 .HasData(CarregaCapítuloComic());
         }
 
-        private List<Genero> CarregaListaGeneros()
+        private static List<Genero> CarregaListaGeneros()
         {
-
             var listaGeneros = new List<Genero>()
                {
 
@@ -118,27 +117,25 @@ namespace TsundokuTraducoes.Data.Context
             return listaGeneros;
         }
 
-        private List<GeneroNovel> CarregaListaGeneroNovel()
+        private static GeneroNovel CarregaGeneroNovel()
         {
-            var listaGeneroNovel = new List<GeneroNovel>
+            return new GeneroNovel
             {
-                new GeneroNovel{ NovelId = Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0"), GeneroId = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8") }
+                GeneroId = Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0"),
+                NovelId = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
             };
-
-            return listaGeneroNovel;
         }
 
-        private List<GeneroComic> CarregaListaGeneroComic()
+        private static GeneroComic CarregaGeneroComic()
         {
-            var listaGeneroComic = new List<GeneroComic>
+            return new GeneroComic
             {
-                new GeneroComic{ ComicId = Guid.Parse("64329027-9111-418c-a6ff-842689916083"), GeneroId = Guid.Parse("3d6a759d-8c9e-4891-9f0e-89b8d99821cb") }
+                GeneroId = Guid.Parse("64329027-9111-418c-a6ff-842689916083"),
+                ComicId = Guid.Parse("3d6a759d-8c9e-4891-9f0e-89b8d99821cb"),
             };
-
-            return listaGeneroComic;
         }
 
-        private Novel CarregaNovel()
+        private static Novel CarregaNovel()
         {
             var novel = new Novel();
             novel.AdicionaNovel(Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
@@ -171,7 +168,7 @@ namespace TsundokuTraducoes.Data.Context
             return novel;
         }
 
-        private Comic CarregaComic()
+        private static Comic CarregaComic()
         {
             var comic = new Comic();
             comic.AdicionaComic(Guid.Parse("3d6a759d-8c9e-4891-9f0e-89b8d99821cb"),
@@ -204,7 +201,7 @@ namespace TsundokuTraducoes.Data.Context
             return comic;
         }
 
-        private VolumeNovel CarregaVolumeNovel()
+        private static VolumeNovel CarregaVolumeNovel()
         {
             var volumeNovel = new VolumeNovel();
             volumeNovel.AdicionaVolume(
@@ -224,7 +221,7 @@ namespace TsundokuTraducoes.Data.Context
             return volumeNovel;
         }
 
-        private VolumeComic CarregaVolumeComic()
+        private static VolumeComic CarregaVolumeComic()
         {
             var volumeComic = new VolumeComic();
             volumeComic.AdicionaVolume(
@@ -244,7 +241,7 @@ namespace TsundokuTraducoes.Data.Context
             return volumeComic;
         }
 
-        private CapituloNovel CarregaCapituloNovelIlustracoes()
+        private static CapituloNovel CarregaCapituloNovelIlustracoes()
         {
             var capituloNovelIlustracao = new CapituloNovel();
             capituloNovelIlustracao.AdicionaCapitulo(
@@ -269,7 +266,7 @@ namespace TsundokuTraducoes.Data.Context
             return capituloNovelIlustracao;
         }
 
-        private CapituloNovel CarregaCapituloNovel()
+        private static CapituloNovel CarregaCapituloNovel()
         {
             var capituloNovelIlustracao = new CapituloNovel();
             capituloNovelIlustracao.AdicionaCapitulo(
@@ -294,7 +291,7 @@ namespace TsundokuTraducoes.Data.Context
             return capituloNovelIlustracao;
         }
 
-        private CapituloComic CarregaCapítuloComic()
+        private static CapituloComic CarregaCapítuloComic()
         {
             var capituloComic = new CapituloComic();
             capituloComic.AdicionaCapitulo(
@@ -315,12 +312,12 @@ namespace TsundokuTraducoes.Data.Context
             return capituloComic;
         }
 
-        private string RetornaConteudoNovelIlustracoes()
+        private static string RetornaConteudoNovelIlustracoes()
         {
             return @"[{\""Id\"": 1,\""Ordem\"": 1,\""Alt\"" = \""Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg\""},{\""Id\"": 2,\""Ordem\"": 2,\""Alt\"" = \""MJ_V1_ilust_01\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_01.jpg\""},{\""Id\"": 3,\""Ordem\"": 3,\""Alt\"" = \""MJ_V1_ilust_02\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_02.jpg\""},{\""Id\"": 4,\""Ordem\"": 4,\""Alt\"" = \""MJ_V1_ilust_03\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_03.jpg\""},{\""Id\"": 5,\""Ordem\"": 5,\""Alt\"" = \""MJ_V1_ilust_04\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_04.jpg\""}]";
         }
 
-        private string RetornaConteudoNovel()
+        private static string RetornaConteudoNovel()
         {
             return @"
             <p>Era um país tranquilo, cercado por montanhas proibidas e escondido atrás de muros altos. Ninguém do mundo exterior poderia visitar.</p>
@@ -347,7 +344,7 @@ namespace TsundokuTraducoes.Data.Context
             ";
         }
 
-        private string RetornaConteudoManga()
+        private static string RetornaConteudoManga()
         {
             return @"[{\""Id\"": 1,\""Ordem\"": 1,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/0-46.jpg\""},{\""Id\"": 2,\""Ordem\"": 2,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/0-47.jpg\""},{\""Id\"": 3,\""Ordem\"": 3,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/1-60.jpg\""},{\""Id\"": 4,\""Ordem\"": 4,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/2-60.jpg\""},{\""Id\"": 5,\""Ordem\"": 5,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/3-61.jpg\""},{\""Id\"": 6,\""Ordem\"": 6,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/4-61.jpg\""},{\""Id\"": 7,\""Ordem\"": 7,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/5-61.jpg\""},{\""Id\"": 8,\""Ordem\"": 8,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/6-61.jpg\""},{\""Id\"": 9,\""Ordem\"": 9,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/7-61.jpg\""},{\""Id\"": 10,\""Ordem\"": 10,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/8-61.jpg\""},{\""Id\"": 10,\""Ordem\"": 10,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/9-61.jpg\""},{\""Id\"": 10,\""Ordem\"": 10,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/10-108.jpg\""}]";
         }
