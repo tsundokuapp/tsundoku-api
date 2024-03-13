@@ -113,20 +113,20 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
 
-        //[HttpGet("api/obras/home")]
-        //public async Task<IActionResult> ObterCapitulosHome([FromQuery] RequestObras requestObras)
-        //{
-        //    var skipTratado = _validacaoTratamentoObrasService.RetornaSkipTratado(requestObras.Skip);
-        //    var takeTratado = _validacaoTratamentoObrasService.RetornaTakeTratado(requestObras.Take, true);
+        [HttpGet("api/obras/home")]
+        public async Task<IActionResult> ObterCapitulosHome([FromQuery] RequestObras requestObras)
+        {
+            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take, true);
 
-        //    var capitulos = await _obrasServices.ObterCapitulosHome();
-        //    if (capitulos.Count == 0)
-        //        return NoContent();
+            var capitulos = await _obrasAppServices.ObterCapitulosHome();
+            if (capitulos.Count == 0)
+                return NoContent();
 
-        //    var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
-        //    var total = capitulos.Count;
+            var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = capitulos.Count;
 
-        //    return Ok(new { total = total, data = dados });
-        //}
+            return Ok(new { total = total, data = dados });
+        }
     }
 }

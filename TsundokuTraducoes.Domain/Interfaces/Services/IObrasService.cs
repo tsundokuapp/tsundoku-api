@@ -13,6 +13,6 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
         Task<List<RetornoObra>> ObterListaComicsRecentes();
         Task<RetornoObra> ObterComicPorId(RequestObras requestObras);
 
-        //Task<List<RetornoCapitulos>> ObterCapitulosHome();
+        Task<List<RetornoCapitulos>> ObterCapitulosHome();
     }
 }

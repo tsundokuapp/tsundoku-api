@@ -45,5 +45,11 @@ namespace TsundokuTraducoes.Domain.Services
         {
             return await _obrasRepository.ObterComicPorId(requestObras);
         }
+
+        
+        public async Task<List<RetornoCapitulos>> ObterCapitulosHome()
+        {
+            return await _obrasRepository.ObterCapitulosHome();
+        }
     }
 }

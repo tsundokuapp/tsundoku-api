@@ -55,7 +55,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<List<RetornoCapitulos>> ObterCapitulosHome()
         {
-            throw new NotImplementedException();
+            return await _obrasService.ObterCapitulosHome();
         }
     }
 }
