@@ -1,8 +1,8 @@
-﻿namespace TsundokuTraducoes.Helpers.DTOs.Admin.Request
+﻿namespace TsundokuTraducoes.Helpers.DTOs.Public.Request
 {
     public class RequestObras
     {
-        public string Pesquisar {  get; set; }
+        public string Pesquisar { get; set; }
         public string Nacionalidade { get; set; }
         public string Status { get; set; }
         public string Tipo { get; set; }
