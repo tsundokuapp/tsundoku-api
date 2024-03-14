@@ -44,6 +44,26 @@ namespace TsundokuTraducoes.Helpers.Validacao
             return resquestValido;
         }
 
+        public static bool ValidaDadosRequestVolume(VolumeDTO volumeDTO)
+        {
+            var resquestValido = VerificaString(volumeDTO.Numero) &&
+                VerificaString(volumeDTO.UsuarioInclusao) &&
+                volumeDTO.ObraId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                volumeDTO.ImagemVolumeFile != null;
+
+            return resquestValido;
+        }
+
+        public static bool ValidaDadosRequestVolumeAtualizacao(VolumeDTO volumeDTO)
+        {
+            var resquestValido = VerificaString(volumeDTO.Numero) &&
+                VerificaString(volumeDTO.UsuarioInclusao) &&
+                VerificaString(volumeDTO.UsuarioAlteracao) &&
+                volumeDTO.ObraId.ToString() != "00000000-0000-0000-0000-000000000000";
+
+            return resquestValido;
+        }
+
         public static bool VerificaString(string valor)
         {
             return !string.IsNullOrEmpty(valor) && !valor.Contains("\"\""); ;

@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Controllers
@@ -71,6 +72,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPost("api/volume/novel/")]
         public async Task<IActionResult> AdicionaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente adicionar o volume da novel novamente!");
+
             var result = await _volumeAppService.AdicionaVolumeNovel(volumeDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -81,6 +85,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPost("api/volume/comic/")]
         public async Task<IActionResult> AdicionaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente adicionar o volume da comic novamente!");
+
             var result = await _volumeAppService.AdicionaVolumeComic(volumeDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -92,6 +99,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPut("api/volume/novel/")]
         public async Task<IActionResult> AtualizaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente atualizar o volume da novel novamente!");
+
             var result = await _volumeAppService.AtualizaVolumeNovel(volumeDTO);
             if (result.IsFailed)
             {
@@ -108,6 +118,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPut("api/volume/comic/")]
         public async Task<IActionResult> AtualizaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente atualizar o volume da comic novamente!");
+
             var result = await _volumeAppService.AtualizaVolumeComic(volumeDTO);
             if (result.IsFailed)
             {
