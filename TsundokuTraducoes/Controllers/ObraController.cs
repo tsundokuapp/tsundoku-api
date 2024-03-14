@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Services.AppServices.Interfaces;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Helpers.Validacao;
+using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Models
 {
@@ -70,6 +71,12 @@ namespace TsundokuTraducoes.Models
         [HttpPost("api/obra/novel")]
         public async Task<IActionResult> AdicionaNovel([FromForm] ObraDTO obraDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente adicionar a Novel novamente!");
+
+            if (!ValidacaoRequest.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
+                return BadRequest("Erro ao adicionar a Novel, código hexadecimal informada fora do padrão!");
+
             var result = await _obraAppService.AdicionaNovel(obraDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -80,6 +87,12 @@ namespace TsundokuTraducoes.Models
         [HttpPost("api/obra/comic")]
         public async Task<IActionResult> AdicionaComic([FromForm] ObraDTO obraDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente adicionar a Comic novamente!");
+
+            if (!ValidacaoRequest.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
+                return BadRequest("Erro ao adicionar a Comic, código hexadecimal informada fora do padrão!");
+
             var result = await _obraAppService.AdicionaComic(obraDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -91,6 +104,12 @@ namespace TsundokuTraducoes.Models
         [HttpPut("api/obra/novel")]
         public async Task<IActionResult> AtualizarNovel([FromForm] ObraDTO obraDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestObraAtualizacao(obraDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente atualizar a Novel novamente!");
+
+            if (!ValidacaoRequest.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
+                return BadRequest("Erro ao atualizar a Novel, código hexadecimal informada fora do padrão!");
+
             var result = await _obraAppService.AtualizaNovel(obraDTO);
             if (result.IsFailed)
             {
@@ -107,6 +126,12 @@ namespace TsundokuTraducoes.Models
         [HttpPut("api/obra/comic")]
         public async Task<IActionResult> AtualizarComic([FromForm] ObraDTO obraDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestObraAtualizacao(obraDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente atualizar a Comic novamente!");
+
+            if (!ValidacaoRequest.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
+                return BadRequest("Erro ao atualizar a Comic, código hexadecimal informada fora do padrão!");
+
             var result = await _obraAppService.AtualizaComic(obraDTO);
             if (result.IsFailed)
             {

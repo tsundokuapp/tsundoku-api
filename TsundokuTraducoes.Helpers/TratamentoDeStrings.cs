@@ -66,13 +66,7 @@ namespace TsundokuTraducoes.Helpers
 
             return string.Empty;
            
-        }
-
-        public static bool ValidaCorHexaDecimal(string corHexaDeximal)
-        {
-            var regexPattern = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
-            return Regex.Match(corHexaDeximal, regexPattern).Success;
-        }
+        }       
 
         public static string RetornaDescritivoCapitulo(string numero, string parte)
         {
