@@ -33,6 +33,7 @@ namespace TsundokuTraducoes.Helpers.Validacao
                 VerificaString(obraDTO.Autor) &&
                 VerificaString(obraDTO.Ano) &&
                 VerificaString(obraDTO.UsuarioInclusao) &&
+                VerificaString(obraDTO.UsuarioAlteracao) &&
                 VerificaString(obraDTO.Sinopse) &&
                 VerificaString(obraDTO.CodigoCorHexaObra) &&
                 VerificaString(obraDTO.NacionalidadeSlug) &&
