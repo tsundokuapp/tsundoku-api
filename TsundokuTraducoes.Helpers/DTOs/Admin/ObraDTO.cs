@@ -35,5 +35,8 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public string? ImagemCapaUltimoVolume { get; set; }
         public string? NumeroUltimoVolume { get; set; }
         public string? SlugUltimoVolume { get; set; }
+        public string NumeroUltimoCapitulo { get; set; }
+        public string SlugUltimoCapitulo { get; set; }
+        public DateTime? DataAtualizacaoUltimoCapitulo { get; set; }
     }
 }

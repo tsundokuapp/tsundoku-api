@@ -9,7 +9,6 @@ using System;
 using TsundokuTraducoes.Api;
 using TsundokuTraducoes.Api.Extensions;
 using TsundokuTraducoes.Data.Configuration;
-using TsundokuTraducoes.Data.Context;
 
 
 var _connectionStringConfig = new ConnectionStringConfig();
@@ -70,6 +69,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
     endpoints.MapGet("/", () => "Você perdeu alguma coisa aqui? Volte agora de onde veio...");
     endpoints.MapGet("/api/", () => "Reveja suas decisões, você não deveria estar aqui...");
+    endpoints.MapGet("/api/obras/", () => "Você ainda não reviu suas decisões...");
 });
 
 app.Run();

@@ -1,36 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Api.DTOs.Admin.Request;
-using TsundokuTraducoes.Api.Services.Interfaces;
+using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+using TsundokuTraducoes.Helpers.Validacao;
+using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Api.Controllers
 {
     [ApiController]
     public class ObrasController : Controller
-    {
-        // TODO - Criar as verificações de request, para saber se estar vindo corretamente.
-        private readonly IInfosObrasServicesOld _infosObrasServices;
-        private readonly IValidacaoTratamentoObrasServiceOld _validacaoTratamentoObrasService;
+    {   
+        private readonly IObrasAppService _obrasAppServices;
 
-        public ObrasController(IInfosObrasServicesOld infosObrasServices, IValidacaoTratamentoObrasServiceOld validacaoObrasService)
+        public ObrasController(IObrasAppService obrasAppServices)
         {
-            _infosObrasServices = infosObrasServices;
-            _validacaoTratamentoObrasService = validacaoObrasService;
+            _obrasAppServices = obrasAppServices;
         }
 
         [HttpGet("api/obras/novels")]
         public async Task<IActionResult> ObterNovels([FromQuery] RequestObras requestObras)
         {
-            var parametrosValidados = _validacaoTratamentoObrasService.ValidaParametrosNovel(requestObras);
+            var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
 
             if (!parametrosValidados)
                 return BadRequest("Informe ao menos uma opção para realizar a consulta!");
 
-            var skipTratado = _validacaoTratamentoObrasService.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = _validacaoTratamentoObrasService.RetornaTakeTratado(requestObras.Take);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
 
-            var capitulos = await _infosObrasServices.ObterListaNovels(requestObras);
+            var capitulos = await _obrasAppServices.ObterListaNovels(requestObras);
             if (capitulos.Count == 0)
                 return NoContent();
 
@@ -43,10 +41,10 @@ namespace TsundokuTraducoes.Api.Controllers
         [HttpGet("api/obras/novels/recentes")]
         public async Task<IActionResult> ObterNovelsRecentes([FromQuery] RequestObras requestObras)
         {
-            var skipTratado = _validacaoTratamentoObrasService.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = _validacaoTratamentoObrasService.RetornaTakeTratado(requestObras.Take);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
 
-            var capitulos = await _infosObrasServices.ObterListaNovelsRecentes();
+            var capitulos = await _obrasAppServices.ObterListaNovelsRecentes();
             if (capitulos.Count == 0)
                 return NoContent();
 
@@ -59,9 +57,9 @@ namespace TsundokuTraducoes.Api.Controllers
         [HttpGet("api/obras/novel")]
         public async Task<IActionResult> ObterNovelPorId([FromQuery] RequestObras requestObras)
         {
-            var capitulo = await _infosObrasServices.ObterNovelPorId(requestObras);
+            var capitulo = await _obrasAppServices.ObterNovelPorId(requestObras);
             if (capitulo == null)
-                return NotFound();
+                return NotFound("Novel não encontra!");
 
             return Ok(capitulo);
         }
@@ -70,15 +68,15 @@ namespace TsundokuTraducoes.Api.Controllers
         [HttpGet("api/obras/comics")]
         public async Task<IActionResult> ObterComics([FromQuery] RequestObras requestObras)
         {
-            var parametrosValidados = _validacaoTratamentoObrasService.ValidaParametrosNovel(requestObras);
+            var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
 
             if (!parametrosValidados)
                 return BadRequest("Informe ao menos uma opção para realizar a consulta!");
 
-            var skipTratado = _validacaoTratamentoObrasService.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = _validacaoTratamentoObrasService.RetornaTakeTratado(requestObras.Take);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
 
-            var capitulos = await _infosObrasServices.ObterListaComics(requestObras);
+            var capitulos = await _obrasAppServices.ObterListaComics(requestObras);
             if (capitulos.Count == 0)
                 return NoContent();
 
@@ -91,10 +89,10 @@ namespace TsundokuTraducoes.Api.Controllers
         [HttpGet("api/obras/comics/recentes")]
         public async Task<IActionResult> ObterComicsRecentes([FromQuery] RequestObras requestObras)
         {
-            var skipTratado = _validacaoTratamentoObrasService.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = _validacaoTratamentoObrasService.RetornaTakeTratado(requestObras.Take);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
 
-            var capitulos = await _infosObrasServices.ObterListaComicsRecentes();
+            var capitulos = await _obrasAppServices.ObterListaComicsRecentes();
             if (capitulos.Count == 0)
                 return NoContent();
 
@@ -107,7 +105,7 @@ namespace TsundokuTraducoes.Api.Controllers
         [HttpGet("api/obras/comic")]
         public async Task<IActionResult> ObterComicPorId([FromQuery] RequestObras requestObras)
         {
-            var capitulo = await _infosObrasServices.ObterComicPorId(requestObras);
+            var capitulo = await _obrasAppServices.ObterComicPorId(requestObras);
             if (capitulo == null)
                 return NotFound();
 
@@ -118,10 +116,10 @@ namespace TsundokuTraducoes.Api.Controllers
         [HttpGet("api/obras/home")]
         public async Task<IActionResult> ObterCapitulosHome([FromQuery] RequestObras requestObras)
         {
-            var skipTratado = _validacaoTratamentoObrasService.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = _validacaoTratamentoObrasService.RetornaTakeTratado(requestObras.Take, true);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take, true);
 
-            var capitulos = await _infosObrasServices.ObterCapitulosHome();
+            var capitulos = await _obrasAppServices.ObterCapitulosHome();
             if (capitulos.Count == 0)
                 return NoContent();
 
