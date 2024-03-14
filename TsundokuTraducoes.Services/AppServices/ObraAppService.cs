@@ -2,10 +2,9 @@
 using FluentResults;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Obra;
-using TsundokuTraducoes.Helpers;
-using TsundokuTraducoes.Services.AppServices.Interfaces;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
+using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Services.AppServices
 {
@@ -91,16 +90,9 @@ namespace TsundokuTraducoes.Services.AppServices
         
         public async Task<Result<RetornoObra>> AdicionaNovel(ObraDTO obraDTO)
         {
-            if (!ValidaDadosRequestObra(obraDTO))
-                return Result.Fail("Verifique os campos obrigatórios e tente adicionar novamente!");
-
             var novelExistente = _obraservice.RetornaNovelExistente(obraDTO.Titulo);
-
             if (novelExistente != null)
                 return Result.Fail("Novel já postada!");
-
-            if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
-                return Result.Fail("Erro ao adicionar a Novel, código hexadecimal informada fora do padrão!");            
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
@@ -140,16 +132,9 @@ namespace TsundokuTraducoes.Services.AppServices
         
         public async Task<Result<RetornoObra>> AdicionaComic(ObraDTO obraDTO)
         {
-            if (!ValidaDadosRequestObra(obraDTO))
-                return Result.Fail("Verifique os campos obrigatórios e tente adicionar novamente!");
-
             var comicExistente = _obraservice.RetornaComicExistente(obraDTO.Titulo);
-
             if (comicExistente != null)
                 return Result.Fail("Comic já postada!");
-
-            if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
-                return Result.Fail("Erro ao adicionar a Comic, código hexadecimal informada fora do padrão!");
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
@@ -193,9 +178,6 @@ namespace TsundokuTraducoes.Services.AppServices
             var novelEncontrada = _obraservice.RetornaNovelPorId(obraDTO.Id);
             if (novelEncontrada == null)
                 return Result.Fail("Novel não encontrada!");
-
-            if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
-                return Result.Fail("Erro ao atualizar a Novel, código hexadecimal informada fora do padrão!");
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
@@ -241,9 +223,6 @@ namespace TsundokuTraducoes.Services.AppServices
             var comicEncontrada = _obraservice.RetornaComicPorId(obraDTO.Id);
             if (comicEncontrada == null)
                 return Result.Fail("Obra não encontrada!");
-
-            if (!TratamentoDeStrings.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
-                return Result.Fail("Erro ao atualizar a Obra, código hexadecimal informada fora do padrão!");
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
@@ -332,30 +311,6 @@ namespace TsundokuTraducoes.Services.AppServices
             retornoObra.DataAlteracao = comic.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
             retornoObra.Generos = await _generoDeParaAppService.CarregaListaGenerosComic(comic.GenerosComic);
             return retornoObra;
-        }
-
-        private bool ValidaDadosRequestObra(ObraDTO obraDTO)
-        {
-            var resquestValido = VerificaString(obraDTO.Titulo) &&
-                VerificaString(obraDTO.Alias) &&
-                VerificaString(obraDTO.TituloAlternativo) &&
-                VerificaString(obraDTO.Autor) &&
-                VerificaString(obraDTO.Ano) &&
-                VerificaString(obraDTO.UsuarioInclusao) &&
-                VerificaString(obraDTO.Sinopse) &&
-                VerificaString(obraDTO.CodigoCorHexaObra) &&
-                VerificaString(obraDTO.NacionalidadeSlug) &&
-                VerificaString(obraDTO.StatusObraSlug) &&
-                VerificaString(obraDTO.TipoObraSlug) &&
-                obraDTO.ListaGeneros.Count > 0 &&
-                obraDTO.ImagemCapaPrincipalFile != null;
-
-            return resquestValido;
-        }
-
-        private static bool VerificaString(string valor)
-        {            
-            return !string.IsNullOrEmpty(valor) && !valor.Contains("\"\""); ;
-        }
+        }        
     }
 }
