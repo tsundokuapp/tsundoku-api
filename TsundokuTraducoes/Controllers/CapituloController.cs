@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Controllers
@@ -71,6 +72,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPost("api/capitulo/novel/")]
         public async Task<IActionResult> AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloNovel(capituloDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente adicionar o capitulo novamente!");
+
             var result = await _capituloService.AdicionaCapituloNovel(capituloDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -81,6 +85,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPost("api/capitulo/comic/")]
         public async Task<IActionResult> AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloComic(capituloDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente adicionar o capitulo novamente!");
+
             var result = await _capituloService.AdicionaCapituloComic(capituloDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -92,6 +99,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPut("api/capitulo/novel/")]
         public async Task<IActionResult> AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloAtualizacao(capituloDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente atualizar o capitulo novamente!");
+
             var result = await _capituloService.AtualizaCapituloNovel(capituloDTO);
             if (result.IsFailed)
             {
@@ -108,6 +118,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPut("api/capitulo/comic/")]
         public async Task<IActionResult> AtualizaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloAtualizacao(capituloDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente atualizar o capitulo novamente!");
+
             var result = await _capituloService.AtualizaCapituloComic(capituloDTO);
             if (result.IsFailed)
             {
