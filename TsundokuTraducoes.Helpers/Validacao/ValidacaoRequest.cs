@@ -64,6 +64,50 @@ namespace TsundokuTraducoes.Helpers.Validacao
             return resquestValido;
         }
 
+        public static bool ValidaDadosRequestCapituloNovel(CapituloDTO capituloDTO)
+        {
+            var requestListaImagemForm = true;
+            var resquestValido =
+                VerificaString(capituloDTO.Numero) &&
+                VerificaString(capituloDTO.UsuarioInclusao) &&
+                capituloDTO.OrdemCapitulo > 0 &&
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                VerificaString(capituloDTO.ConteudoNovel);
+
+            if (capituloDTO.EhIlustracoesNovel)
+            {
+                requestListaImagemForm = capituloDTO.ListaImagensForm != null &&
+                capituloDTO.ListaImagensForm.Count > 0;
+            }
+
+            return resquestValido && requestListaImagemForm;
+        }
+
+        public static bool ValidaDadosRequestCapituloComic(CapituloDTO capituloDTO)
+        {
+            var resquestValido =
+                VerificaString(capituloDTO.Numero) &&
+                VerificaString(capituloDTO.UsuarioInclusao) &&
+                capituloDTO.OrdemCapitulo > 0 &&
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                capituloDTO.ListaImagensForm != null &&
+                capituloDTO.ListaImagensForm.Count > 0;
+
+            return resquestValido;
+        }
+
+        public static bool ValidaDadosRequestCapituloAtualizacao(CapituloDTO capituloDTO)
+        {
+            var resquestValido =
+                VerificaString(capituloDTO.Numero) &&
+                VerificaString(capituloDTO.UsuarioInclusao) &&
+                capituloDTO.OrdemCapitulo > 0 &&
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                VerificaString(capituloDTO.UsuarioAlteracao);
+
+            return resquestValido;
+        }        
+
         public static bool VerificaString(string valor)
         {
             return !string.IsNullOrEmpty(valor) && !valor.Contains("\"\""); ;
