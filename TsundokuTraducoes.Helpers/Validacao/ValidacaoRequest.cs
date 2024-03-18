@@ -135,7 +135,13 @@ namespace TsundokuTraducoes.Helpers.Validacao
                    requestObras.Take != null;
         }
 
-        public static int RetornaSkipTratado(int? pagina)
+        public static int RetornaTakeTratadoAdmin(int? obrasPorPagina)
+        {
+            var valorObrasPorPagina = 8;
+            return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
+        }
+
+        public static int RetornaSkipTratadoAdmin(int? pagina)
         {
             return pagina == null ? 0 : pagina.GetValueOrDefault();
         }
@@ -144,6 +150,11 @@ namespace TsundokuTraducoes.Helpers.Validacao
         {
             var valorObrasPorPagina = home == true ? 5 : 4;
             return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
+        }
+
+        public static int RetornaSkipTratado(int? pagina)
+        {
+            return pagina == null ? 0 : pagina.GetValueOrDefault();
         }
     }
 }

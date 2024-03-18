@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
+using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -18,33 +21,51 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/volume/")]
-        public IActionResult RetornaListaVolume([FromQuery] Guid? IdObra)
+        public IActionResult RetornaListaVolume([FromQuery] RequestVolume requestVolume)
         {
-            var result = _volumeAppService.RetornaListaVolumes(IdObra);
+            var result = _volumeAppService.RetornaListaVolumes(requestVolume.IdObra);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/volume/novel")]
-        public IActionResult RetornaListaVolumesNovel([FromQuery] Guid? IdObra)
+        public IActionResult RetornaListaVolumesNovel([FromQuery] RequestVolume requestVolume)
         {
-            var result = _volumeAppService.RetornaListaVolumesNovel(IdObra);
+            var result = _volumeAppService.RetornaListaVolumesNovel(requestVolume.IdObra);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/volume/comic")]
-        public IActionResult RetornaListaVolumesComic([FromQuery] Guid? IdObra)
+        public IActionResult RetornaListaVolumesComic([FromQuery] RequestVolume requestVolume)
         {
-            var result = _volumeAppService.RetornaListaVolumesComic(IdObra);
+            var result = _volumeAppService.RetornaListaVolumesComic(requestVolume.IdObra);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
 

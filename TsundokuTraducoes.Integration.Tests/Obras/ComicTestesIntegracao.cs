@@ -93,7 +93,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         [Fact]
         public async Task DeveRetornarUmaListaDeComics()
         {
-            var response = await _httpClient.GetAsync($"api/obra/comics");
+            var response = await _httpClient.GetAsync($"api/obra/comics?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 

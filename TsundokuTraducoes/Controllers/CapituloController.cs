@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -18,33 +20,51 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/capitulo/")]
-        public IActionResult RetornaListaCapitulos([FromQuery] Guid? volumeId)
+        public IActionResult RetornaListaCapitulos([FromQuery] RequestCapitulo requestCapitulo)
         {
-            var result = _capituloService.RetornaListaCapitulos(volumeId);
+            var result = _capituloService.RetornaListaCapitulos(requestCapitulo.volumeId);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestCapitulo.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestCapitulo.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/capitulo/novel")]
-        public IActionResult RetornaListaCapitulosNovel([FromQuery] Guid? volumeId)
+        public IActionResult RetornaListaCapitulosNovel([FromQuery] RequestCapitulo requestCapitulo)
         {
-            var result = _capituloService.RetornaListaCapitulosNovel(volumeId);
+            var result = _capituloService.RetornaListaCapitulosNovel(requestCapitulo.volumeId);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestCapitulo.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestCapitulo.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/capitulo/comic")]
-        public IActionResult RetornaListaCapitulosComic([FromQuery] Guid? volumeId)
+        public IActionResult RetornaListaCapitulosComic([FromQuery] RequestCapitulo requestCapitulo)
         {
-            var result = _capituloService.RetornaListaCapitulosComic(volumeId);
+            var result = _capituloService.RetornaListaCapitulosComic(requestCapitulo.volumeId);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestCapitulo.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestCapitulo.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
 

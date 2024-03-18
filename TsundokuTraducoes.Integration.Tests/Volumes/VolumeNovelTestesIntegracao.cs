@@ -102,7 +102,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveRetornarUmaListaDeVolumeNovelsOuSemConteudo()
         {
-            var response = await _httpClient.GetAsync($"api/volume/novel");
+            var response = await _httpClient.GetAsync($"api/volume/novel?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode || HttpStatusCode.NoContent == response.StatusCode);
         }
 
