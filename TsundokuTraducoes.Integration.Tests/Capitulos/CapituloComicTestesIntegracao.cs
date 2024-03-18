@@ -112,7 +112,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         [Fact]
         public async Task DeveRetornarUmaListaDeCapituloComics()
         {
-            var response = await _httpClient.GetAsync($"api/capitulo/comic");
+            var response = await _httpClient.GetAsync($"api/capitulo/comic?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 

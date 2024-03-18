@@ -20,12 +20,12 @@ namespace TsundokuTraducoes.Data.Repositories
 
         public List<Novel> RetornaListaNovels()
         {
-            return _context.Novels.Include(n => n.GenerosNovel).ToList();
+            return _context.Novels.AsNoTracking().Include(n => n.GenerosNovel).ToList();
         }
         
         public List<Comic> RetornaListaComics()
         {
-            return _context.Comics.Include(n => n.GenerosComic).ToList();
+            return _context.Comics.AsNoTracking().Include(n => n.GenerosComic).ToList();
         }
 
 
@@ -87,12 +87,12 @@ namespace TsundokuTraducoes.Data.Repositories
 
         public Novel RetornaNovelExistente(string titulo)
         {   
-            return _context.Novels.Where(w => EF.Functions.Like(w.Titulo, titulo)).FirstOrDefault();
+            return _context.Novels.AsNoTracking().Where(w => EF.Functions.Like(w.Titulo, titulo)).FirstOrDefault();
         }
 
         public Comic RetornaComicExistente(string titulo)
         {
-            return _context.Comics.Where(w => EF.Functions.Like(w.Titulo, titulo)).FirstOrDefault();
+            return _context.Comics.AsNoTracking().Where(w => EF.Functions.Like(w.Titulo, titulo)).FirstOrDefault();
         }
 
 
@@ -115,7 +115,7 @@ namespace TsundokuTraducoes.Data.Repositories
             {
                 foreach (var genero in arrayGenero)
                 {
-                    var generoEncontrado = _context.Generos.Single(s => s.Slug == genero);
+                    var generoEncontrado = _context.Generos.AsNoTracking().Single(s => s.Slug == genero);
                     await _generoRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = generoEncontrado.Id });
                     await AlteracoesSalvas();
                 }
@@ -141,7 +141,7 @@ namespace TsundokuTraducoes.Data.Repositories
             {
                 foreach (var genero in arrayGenero)
                 {
-                    var generoEncontrado = _context.Generos.Single(s => s.Slug == genero);
+                    var generoEncontrado = _context.Generos.AsNoTracking().Single(s => s.Slug == genero);
                     await _generoRepository.AdicionaGeneroComic(new GeneroComic { ComicId = comic.Id, GeneroId = generoEncontrado.Id });
                     await AlteracoesSalvas();
                 }

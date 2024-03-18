@@ -17,13 +17,13 @@ namespace TsundokuTraducoes.Data.Repositories
 
         public List<VolumeNovel> RetornaListaVolumesNovel(Guid? novelId = null)
         {
-            var listaVolumesNovel = novelId != null ? _context.VolumesNovel.Where(w => w.NovelId == novelId.Value) : _context.VolumesNovel;
+            var listaVolumesNovel = novelId != null ? _context.VolumesNovel.AsNoTracking().Where(w => w.NovelId == novelId.Value) : _context.VolumesNovel;
             return listaVolumesNovel.ToList();
         }
 
         public List<VolumeComic> RetornaListaVolumesComic(Guid? comicId = null)
         {
-            var listaVolumesNovel = comicId != null ? _context.VolumesComic.Where(w => w.ComicId == comicId.Value) : _context.VolumesComic;
+            var listaVolumesNovel = comicId != null ? _context.VolumesComic.AsNoTracking().Where(w => w.ComicId == comicId.Value) : _context.VolumesComic;
             return listaVolumesNovel.ToList();
         }
 
@@ -108,6 +108,7 @@ namespace TsundokuTraducoes.Data.Repositories
         public VolumeNovel RetornaVolumeNovelExistente(VolumeDTO volumeDTO)
         {
             var volumeExistente = _context.VolumesNovel
+                .AsNoTracking()
                 .Where(w => w.NovelId == volumeDTO.NovelId && (EF.Functions.Like(w.Numero, volumeDTO.Numero) || EF.Functions.Like(w.Slug, volumeDTO.Slug)));
 
             return volumeExistente.FirstOrDefault();
@@ -116,6 +117,7 @@ namespace TsundokuTraducoes.Data.Repositories
         public VolumeComic RetornaVolumeComicExistente(VolumeDTO volumeDTO)
         {
             var volumeExistente = _context.VolumesComic
+                .AsNoTracking()
                 .Where(w => w.ComicId == volumeDTO.ComicId && (EF.Functions.Like(w.Numero, volumeDTO.Numero) || EF.Functions.Like(w.Slug, volumeDTO.Slug)));
 
             return volumeExistente.FirstOrDefault();

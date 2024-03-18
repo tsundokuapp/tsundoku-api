@@ -138,7 +138,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         [Fact]
         public async Task DeveRetornarUmaListaDeCapituloNovels()
         {
-            var response = await _httpClient.GetAsync($"api/capitulo/novel");
+            var response = await _httpClient.GetAsync($"api/capitulo/novel?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 
