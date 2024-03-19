@@ -143,7 +143,42 @@ namespace TsundokuTraducoes.Data.Repositories
             return listaRetornoCapitulos;
         }
 
-        
+        public async Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas()
+        {
+            var query = (from comics in _context.Comics.AsNoTracking()
+                         where comics.EhRecomendacao == true
+                         select new
+                         {
+                             Titulo = comics.Alias,
+                             Capa = !string.IsNullOrEmpty(comics.ImagemCapaUltimoVolume) ? comics.ImagemCapaUltimoVolume : comics.ImagemCapaPrincipal,
+                             SlugObra = comics.Slug,
+                             Sinopse = comics.Sinopse
+                         })
+                        .Union(from novels in _context.Novels.AsNoTracking()
+                               where novels.EhRecomendacao == true
+                               select new
+                               {
+                                   Titulo = novels.Alias,
+                                   Capa = !string.IsNullOrEmpty(novels.ImagemCapaUltimoVolume) ? novels.ImagemCapaUltimoVolume : novels.ImagemCapaPrincipal,
+                                   SlugObra = novels.Slug,
+                                   Sinopse = novels.Sinopse
+                               }
+                        );
+
+            var listaRetornoObrasRecomendadas = await query
+                .Select(ror => new RetornoObrasRecomendadas
+                {
+                    Titulo = ror.Titulo,
+                    Capa = ror.Capa,
+                    SlugObra = ror.SlugObra,
+                    Sinopse = ror.Sinopse
+                })
+                .ToListAsync();
+
+            return listaRetornoObrasRecomendadas;
+        }
+
+
         private static string RetornaSqlListaNovelsPorParametros(string nacionalidade, string status, string tipo, string genero)
         {
             var condicaoConsulta = string.Empty;

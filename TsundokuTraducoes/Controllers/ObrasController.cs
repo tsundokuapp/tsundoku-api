@@ -128,5 +128,21 @@ namespace TsundokuTraducoes.Api.Controllers
 
             return Ok(new { total = total, data = dados });
         }
+
+        [HttpGet("api/obras/recomendadas")]
+        public async Task<IActionResult> ObterObrasRecomendadas([FromQuery] RequestObras requestObras)
+        {
+            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take, false);
+
+            var obrasRecomendadas = await _obrasAppServices.ObterObrasRecomendadas();
+            if (obrasRecomendadas.Count == 0)
+                return NoContent();
+
+            var dados = obrasRecomendadas.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = obrasRecomendadas.Count;
+
+            return Ok(new { total = total, data = dados });
+        }
     }
 }

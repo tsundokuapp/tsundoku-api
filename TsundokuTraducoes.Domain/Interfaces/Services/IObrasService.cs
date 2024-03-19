@@ -14,5 +14,6 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
         Task<RetornoObra> ObterComicPorId(RequestObras requestObras);
 
         Task<List<RetornoCapitulos>> ObterCapitulosHome();
+        Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas();
     }
 }
