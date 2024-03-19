@@ -51,5 +51,10 @@ namespace TsundokuTraducoes.Domain.Services
         {
             return await _obrasRepository.ObterCapitulosHome();
         }
+
+        public async Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas()
+        {
+            return await _obrasRepository.ObterObrasRecomendadas();
+        }
     }
 }
