@@ -106,7 +106,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveRetornarUmaListaDeVolumeComics()
         {
-            var response = await _httpClient.GetAsync($"api/volume/comic");
+            var response = await _httpClient.GetAsync($"api/volume/comic?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
     

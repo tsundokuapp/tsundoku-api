@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
+using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Controllers
@@ -17,33 +21,51 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/volume/")]
-        public IActionResult RetornaListaVolume([FromQuery] Guid? IdObra)
+        public IActionResult RetornaListaVolume([FromQuery] RequestVolume requestVolume)
         {
-            var result = _volumeAppService.RetornaListaVolumes(IdObra);
+            var result = _volumeAppService.RetornaListaVolumes(requestVolume.IdObra);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/volume/novel")]
-        public IActionResult RetornaListaVolumesNovel([FromQuery] Guid? IdObra)
+        public IActionResult RetornaListaVolumesNovel([FromQuery] RequestVolume requestVolume)
         {
-            var result = _volumeAppService.RetornaListaVolumesNovel(IdObra);
+            var result = _volumeAppService.RetornaListaVolumesNovel(requestVolume.IdObra);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/volume/comic")]
-        public IActionResult RetornaListaVolumesComic([FromQuery] Guid? IdObra)
+        public IActionResult RetornaListaVolumesComic([FromQuery] RequestVolume requestVolume)
         {
-            var result = _volumeAppService.RetornaListaVolumesComic(IdObra);
+            var result = _volumeAppService.RetornaListaVolumesComic(requestVolume.IdObra);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
 
@@ -71,6 +93,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPost("api/volume/novel/")]
         public async Task<IActionResult> AdicionaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente adicionar o volume da novel novamente!");
+
             var result = await _volumeAppService.AdicionaVolumeNovel(volumeDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -81,6 +106,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPost("api/volume/comic/")]
         public async Task<IActionResult> AdicionaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente adicionar o volume da comic novamente!");
+
             var result = await _volumeAppService.AdicionaVolumeComic(volumeDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -92,6 +120,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPut("api/volume/novel/")]
         public async Task<IActionResult> AtualizaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente atualizar o volume da novel novamente!");
+
             var result = await _volumeAppService.AtualizaVolumeNovel(volumeDTO);
             if (result.IsFailed)
             {
@@ -108,6 +139,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPut("api/volume/comic/")]
         public async Task<IActionResult> AtualizaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente atualizar o volume da comic novamente!");
+
             var result = await _volumeAppService.AtualizaVolumeComic(volumeDTO);
             if (result.IsFailed)
             {

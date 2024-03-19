@@ -33,6 +33,7 @@ namespace TsundokuTraducoes.Helpers.Validacao
                 VerificaString(obraDTO.Autor) &&
                 VerificaString(obraDTO.Ano) &&
                 VerificaString(obraDTO.UsuarioInclusao) &&
+                VerificaString(obraDTO.UsuarioAlteracao) &&
                 VerificaString(obraDTO.Sinopse) &&
                 VerificaString(obraDTO.CodigoCorHexaObra) &&
                 VerificaString(obraDTO.NacionalidadeSlug) &&
@@ -42,6 +43,70 @@ namespace TsundokuTraducoes.Helpers.Validacao
 
             return resquestValido;
         }
+
+        public static bool ValidaDadosRequestVolume(VolumeDTO volumeDTO)
+        {
+            var resquestValido = VerificaString(volumeDTO.Numero) &&
+                VerificaString(volumeDTO.UsuarioInclusao) &&
+                volumeDTO.ObraId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                volumeDTO.ImagemVolumeFile != null;
+
+            return resquestValido;
+        }
+
+        public static bool ValidaDadosRequestVolumeAtualizacao(VolumeDTO volumeDTO)
+        {
+            var resquestValido = VerificaString(volumeDTO.Numero) &&
+                VerificaString(volumeDTO.UsuarioInclusao) &&
+                VerificaString(volumeDTO.UsuarioAlteracao) &&
+                volumeDTO.ObraId.ToString() != "00000000-0000-0000-0000-000000000000";
+
+            return resquestValido;
+        }
+
+        public static bool ValidaDadosRequestCapituloNovel(CapituloDTO capituloDTO)
+        {
+            var requestListaImagemForm = true;
+            var resquestValido =
+                VerificaString(capituloDTO.Numero) &&
+                VerificaString(capituloDTO.UsuarioInclusao) &&
+                capituloDTO.OrdemCapitulo > 0 &&
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                VerificaString(capituloDTO.ConteudoNovel);
+
+            if (capituloDTO.EhIlustracoesNovel)
+            {
+                requestListaImagemForm = capituloDTO.ListaImagensForm != null &&
+                capituloDTO.ListaImagensForm.Count > 0;
+            }
+
+            return resquestValido && requestListaImagemForm;
+        }
+
+        public static bool ValidaDadosRequestCapituloComic(CapituloDTO capituloDTO)
+        {
+            var resquestValido =
+                VerificaString(capituloDTO.Numero) &&
+                VerificaString(capituloDTO.UsuarioInclusao) &&
+                capituloDTO.OrdemCapitulo > 0 &&
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                capituloDTO.ListaImagensForm != null &&
+                capituloDTO.ListaImagensForm.Count > 0;
+
+            return resquestValido;
+        }
+
+        public static bool ValidaDadosRequestCapituloAtualizacao(CapituloDTO capituloDTO)
+        {
+            var resquestValido =
+                VerificaString(capituloDTO.Numero) &&
+                VerificaString(capituloDTO.UsuarioInclusao) &&
+                capituloDTO.OrdemCapitulo > 0 &&
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
+                VerificaString(capituloDTO.UsuarioAlteracao);
+
+            return resquestValido;
+        }        
 
         public static bool VerificaString(string valor)
         {
@@ -70,7 +135,13 @@ namespace TsundokuTraducoes.Helpers.Validacao
                    requestObras.Take != null;
         }
 
-        public static int RetornaSkipTratado(int? pagina)
+        public static int RetornaTakeTratadoAdmin(int? obrasPorPagina)
+        {
+            var valorObrasPorPagina = 8;
+            return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
+        }
+
+        public static int RetornaSkipTratadoAdmin(int? pagina)
         {
             return pagina == null ? 0 : pagina.GetValueOrDefault();
         }
@@ -79,6 +150,11 @@ namespace TsundokuTraducoes.Helpers.Validacao
         {
             var valorObrasPorPagina = home == true ? 5 : 4;
             return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
+        }
+
+        public static int RetornaSkipTratado(int? pagina)
+        {
+            return pagina == null ? 0 : pagina.GetValueOrDefault();
         }
     }
 }

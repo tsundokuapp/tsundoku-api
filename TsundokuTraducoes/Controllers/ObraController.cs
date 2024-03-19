@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -17,33 +19,51 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpGet("api/obra/")]
-        public async Task<IActionResult> RetornaListaObras()
+        public async Task<IActionResult> RetornaListaObras([FromQuery] RequestObra requestObra)
         {
             var result = await _obraAppService.RetornaListaObras();
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestObra.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestObra.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/obra/novels")]
-        public async Task<IActionResult> RetornaListaNovels()
+        public async Task<IActionResult> RetornaListaNovels([FromQuery] RequestObra requestObra)
         {
             var result = await _obraAppService.RetornaListaNovels();
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestObra.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestObra.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/obra/comics")]
-        public async Task<IActionResult> RetornaListaComics()
+        public async Task<IActionResult> RetornaListaComics([FromQuery] RequestObra requestObra)
         {
             var result = await _obraAppService.RetornaListaComics();
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestObra.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestObra.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
 

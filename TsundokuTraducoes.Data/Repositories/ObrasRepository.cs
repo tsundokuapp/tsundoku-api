@@ -22,7 +22,7 @@ namespace TsundokuTraducoes.Data.Repositories
 
             if (!string.IsNullOrEmpty(requestObras.Pesquisar))
             {                
-                listaNovels = await _context.Novels.Where(w => EF.Functions.Like(w.Titulo.ToUpper(), $"%{requestObras.Pesquisar.ToUpper()}%")).ToListAsync();
+                listaNovels = await _context.Novels.AsNoTracking().Where(w => EF.Functions.Like(w.Titulo.ToUpper(), $"%{requestObras.Pesquisar.ToUpper()}%")).ToListAsync();
             }
             else
             {
@@ -39,7 +39,7 @@ namespace TsundokuTraducoes.Data.Repositories
 
             if (!string.IsNullOrEmpty(requestObras.Pesquisar))
             {
-                listaComics = await _context.Comics.Where(w => EF.Functions.Like(w.Titulo.ToUpper(), $"%{requestObras.Pesquisar.ToUpper()}%")).ToListAsync();
+                listaComics = await _context.Comics.AsNoTracking().Where(w => EF.Functions.Like(w.Titulo.ToUpper(), $"%{requestObras.Pesquisar.ToUpper()}%")).ToListAsync();
             }
             else
             {
@@ -53,20 +53,20 @@ namespace TsundokuTraducoes.Data.Repositories
         
         public async Task<List<RetornoObra>> ObterListaNovelsRecentes()
         {
-            var listaNovels = await _context.Novels.OrderByDescending(o => o.DataInclusao).ToListAsync();
+            var listaNovels = await _context.Novels.AsNoTracking().OrderByDescending(o => o.DataInclusao).ToListAsync();
             return TrataListaRetornoNovel(listaNovels);
         }
         
         public async Task<List<RetornoObra>> ObterListaComicsRecentes()
         {
-            var listaComics = await _context.Comics.OrderByDescending(o => o.DataInclusao).ToListAsync();
+            var listaComics = await _context.Comics.AsNoTracking().OrderByDescending(o => o.DataInclusao).ToListAsync();
             return TrataListaRetornoComic(listaComics);
         }
 
         
         public async Task<RetornoObra> ObterNovelPorId(RequestObras requestObras)
         {
-            var novel = await _context.Novels.FirstOrDefaultAsync(w => w.Id.ToString() == requestObras.IdObra);
+            var novel = await _context.Novels.AsNoTracking().FirstOrDefaultAsync(w => w.Id.ToString() == requestObras.IdObra);
 
             if (novel != null)            
                 return TrataRetornoNovel(novel);
@@ -76,7 +76,7 @@ namespace TsundokuTraducoes.Data.Repositories
 
         public async Task<RetornoObra> ObterComicPorId(RequestObras requestObras)
         {
-            var comic = await _context.Comics.FirstOrDefaultAsync(w => w.Id.ToString() == requestObras.IdObra);
+            var comic = await _context.Comics.AsNoTracking().FirstOrDefaultAsync(w => w.Id.ToString() == requestObras.IdObra);
 
             if (comic != null)
                 return TrataRetornoComic(comic);
@@ -87,10 +87,10 @@ namespace TsundokuTraducoes.Data.Repositories
         
         public async Task<List<RetornoCapitulos>> ObterCapitulosHome()
         {
-            var query = (from capitulosComic in _context.CapitulosComic
-                               join volumesComic in _context.VolumesComic
+            var query = (from capitulosComic in _context.CapitulosComic.AsNoTracking()
+                               join volumesComic in _context.VolumesComic.AsNoTracking()
                                    on capitulosComic.VolumeId equals volumesComic.Id
-                               join comics in _context.Comics
+                               join comics in _context.Comics.AsNoTracking()
                                    on volumesComic.ComicId equals comics.Id
                                select new
                                {
@@ -104,10 +104,10 @@ namespace TsundokuTraducoes.Data.Repositories
                                    AliasObra = comics.Alias,
                                    AutorObra = comics.Autor,
                                })
-                        .Union(from capitulosNovel in _context.CapitulosNovel
-                               join volumesNovel in _context.VolumesNovel
+                        .Union(from capitulosNovel in _context.CapitulosNovel.AsNoTracking()
+                               join volumesNovel in _context.VolumesNovel.AsNoTracking()
                                    on capitulosNovel.VolumeId equals volumesNovel.Id
-                               join novels in _context.Novels
+                               join novels in _context.Novels.AsNoTracking()
                                    on volumesNovel.NovelId equals novels.Id
                                select new
                                {
@@ -143,7 +143,42 @@ namespace TsundokuTraducoes.Data.Repositories
             return listaRetornoCapitulos;
         }
 
-        
+        public async Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas()
+        {
+            var query = (from comics in _context.Comics.AsNoTracking()
+                         where comics.EhRecomendacao == true
+                         select new
+                         {
+                             Titulo = comics.Alias,
+                             Capa = !string.IsNullOrEmpty(comics.ImagemCapaUltimoVolume) ? comics.ImagemCapaUltimoVolume : comics.ImagemCapaPrincipal,
+                             SlugObra = comics.Slug,
+                             Sinopse = comics.Sinopse
+                         })
+                        .Union(from novels in _context.Novels.AsNoTracking()
+                               where novels.EhRecomendacao == true
+                               select new
+                               {
+                                   Titulo = novels.Alias,
+                                   Capa = !string.IsNullOrEmpty(novels.ImagemCapaUltimoVolume) ? novels.ImagemCapaUltimoVolume : novels.ImagemCapaPrincipal,
+                                   SlugObra = novels.Slug,
+                                   Sinopse = novels.Sinopse
+                               }
+                        );
+
+            var listaRetornoObrasRecomendadas = await query
+                .Select(ror => new RetornoObrasRecomendadas
+                {
+                    Titulo = ror.Titulo,
+                    Capa = ror.Capa,
+                    SlugObra = ror.SlugObra,
+                    Sinopse = ror.Sinopse
+                })
+                .ToListAsync();
+
+            return listaRetornoObrasRecomendadas;
+        }
+
+
         private static string RetornaSqlListaNovelsPorParametros(string nacionalidade, string status, string tipo, string genero)
         {
             var condicaoConsulta = string.Empty;

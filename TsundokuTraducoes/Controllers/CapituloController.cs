@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
+using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Controllers
@@ -17,33 +20,51 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/capitulo/")]
-        public IActionResult RetornaListaCapitulos([FromQuery] Guid? volumeId)
+        public IActionResult RetornaListaCapitulos([FromQuery] RequestCapitulo requestCapitulo)
         {
-            var result = _capituloService.RetornaListaCapitulos(volumeId);
+            var result = _capituloService.RetornaListaCapitulos(requestCapitulo.volumeId);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestCapitulo.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestCapitulo.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/capitulo/novel")]
-        public IActionResult RetornaListaCapitulosNovel([FromQuery] Guid? volumeId)
+        public IActionResult RetornaListaCapitulosNovel([FromQuery] RequestCapitulo requestCapitulo)
         {
-            var result = _capituloService.RetornaListaCapitulosNovel(volumeId);
+            var result = _capituloService.RetornaListaCapitulosNovel(requestCapitulo.volumeId);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestCapitulo.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestCapitulo.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/capitulo/comic")]
-        public IActionResult RetornaListaCapitulosComic([FromQuery] Guid? volumeId)
+        public IActionResult RetornaListaCapitulosComic([FromQuery] RequestCapitulo requestCapitulo)
         {
-            var result = _capituloService.RetornaListaCapitulosComic(volumeId);
+            var result = _capituloService.RetornaListaCapitulosComic(requestCapitulo.volumeId);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            return Ok(result.Value);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestCapitulo.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestCapitulo.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
 
@@ -71,6 +92,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPost("api/capitulo/novel/")]
         public async Task<IActionResult> AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloNovel(capituloDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente adicionar o capitulo novamente!");
+
             var result = await _capituloService.AdicionaCapituloNovel(capituloDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -81,6 +105,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPost("api/capitulo/comic/")]
         public async Task<IActionResult> AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloComic(capituloDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente adicionar o capitulo novamente!");
+
             var result = await _capituloService.AdicionaCapituloComic(capituloDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -92,6 +119,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPut("api/capitulo/novel/")]
         public async Task<IActionResult> AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloAtualizacao(capituloDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente atualizar o capitulo novamente!");
+
             var result = await _capituloService.AtualizaCapituloNovel(capituloDTO);
             if (result.IsFailed)
             {
@@ -108,6 +138,9 @@ namespace TsundokuTraducoes.Controllers
         [HttpPut("api/capitulo/comic/")]
         public async Task<IActionResult> AtualizaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloAtualizacao(capituloDTO))
+                return BadRequest("Verifique os campos obrigatórios e tente atualizar o capitulo novamente!");
+
             var result = await _capituloService.AtualizaCapituloComic(capituloDTO);
             if (result.IsFailed)
             {
