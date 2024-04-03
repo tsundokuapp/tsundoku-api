@@ -156,5 +156,11 @@ namespace TsundokuTraducoes.Helpers.Validacao
         {
             return pagina == null ? 0 : pagina.GetValueOrDefault();
         }
+
+        public static bool ValidaDadosRequestGenero(GeneroDTO generoDTO)
+        {
+            var resquestValido = VerificaString(generoDTO.Descricao);
+            return resquestValido;
+        }
     }
 }
