@@ -49,27 +49,5 @@ namespace TsundokuTraducoes.Services.AppServices
 
             return listaRetornoGenero;
         }       
-
-
-        public Task AdicionaGeneroComic(GeneroComic generoComic)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task AdicionaGeneroNovel(GeneroNovel generoNovel)
-        {
-            throw new NotImplementedException();
-        }
-
-        
-        public void ExcluiGeneroComic(GeneroComic generoComic)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ExcluiGeneroNovel(GeneroNovel generoNovel)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
