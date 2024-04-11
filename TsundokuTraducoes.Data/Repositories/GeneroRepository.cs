@@ -40,6 +40,7 @@ namespace TsundokuTraducoes.Data.Repositories
         {
             var generoEncontrado = _context.Generos.SingleOrDefault(x => x.Id == generoDTO.Id);
             _context.Entry(generoEncontrado).CurrentValues.SetValues(generoDTO);
+            generoEncontrado.DataAlteracao = DateTime.Now;
 
             return generoEncontrado;
         }

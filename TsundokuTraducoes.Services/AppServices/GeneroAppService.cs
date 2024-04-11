@@ -2,6 +2,7 @@
 using FluentResults;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Generos;
+using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
@@ -26,7 +27,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             foreach (var genero in listaGenero)
             {
-                var retornoGenero = _mapper.Map<RetornoGenero>(genero);
+                var retornoGenero = TrataRetornoGenero(genero);
                 listaRetornoGenero.Add(retornoGenero);
             }
 
@@ -39,7 +40,7 @@ namespace TsundokuTraducoes.Services.AppServices
             if (genero == null)
                 return Result.Fail("Gênero não encontrado!");
 
-            var retornoGenero = _mapper.Map<RetornoGenero>(genero);
+            var retornoGenero = TrataRetornoGenero(genero);
             return Result.Ok(retornoGenero);
         }
 
@@ -50,12 +51,14 @@ namespace TsundokuTraducoes.Services.AppServices
                 return Result.Fail("Gênero já postado!");
 
             var genero = _mapper.Map<Genero>(generoDTO);
+            genero.DataInclusao = DateTime.Now;
+            genero.DataAlteracao = genero.DataInclusao;
 
             var generoCriado = await _generoService.AdicionaGenero(genero);
             if (!generoCriado)
                 return Result.Fail("Erro ao adicionar o Gênero!");
 
-            var retornoGenero = _mapper.Map<RetornoGenero>(genero);
+            var retornoGenero = TrataRetornoGenero(genero);
             return Result.Ok().ToResult(retornoGenero);
         }
 
@@ -71,7 +74,7 @@ namespace TsundokuTraducoes.Services.AppServices
             if (!generoAtualizado)
                 return Result.Fail("Erro ao atualizar o Gênero!");
 
-            var retornoGenero = _mapper.Map<RetornoGenero>(generoEncontrada);
+            var retornoGenero = TrataRetornoGenero(generoEncontrada);
             return Result.Ok(retornoGenero);
         }
 
@@ -89,6 +92,15 @@ namespace TsundokuTraducoes.Services.AppServices
                 return Result.Fail("Erro ao excluir o Gênero!");
 
             return Result.Ok().WithSuccess("Gênero excluído com sucesso!");
+        }
+
+        private RetornoGenero TrataRetornoGenero(Genero genero)
+        {
+            var retornoGenero = _mapper.Map<RetornoGenero>(genero);
+            retornoGenero.DataInclusao = genero.DataInclusao?.ToString("dd/MM/yyyy HH:mm:ss");
+            retornoGenero.UsuarioAlteracao = !string.IsNullOrEmpty(genero.UsuarioAlteracao) ? genero.UsuarioAlteracao : "";
+            retornoGenero.DataAlteracao = genero.DataAlteracao?.ToString("dd/MM/yyyy HH:mm:ss");            
+            return retornoGenero;
         }
     }
 }
