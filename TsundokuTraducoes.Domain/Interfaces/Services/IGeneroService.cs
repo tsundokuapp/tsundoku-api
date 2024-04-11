@@ -1,12 +1,16 @@
 ﻿using TsundokuTraducoes.Entities.Entities.Generos;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Domain.Interfaces.Services
 {
     public interface IGeneroService
     {
         Task<List<Genero>> RetornaListaGeneros();
-        Task AdicionaGenero(Genero genero);
-        void ExcluiGenero(Genero genero);
-        Task AtualizaGenero(Genero genero);
+        Task<Genero> RetornaGeneroPorId(Guid id);
+        Task<bool> AdicionaGenero(Genero genero);
+        Genero AtualizaGenero(GeneroDTO generoDTO);
+        Task<bool> ExcluiGenero(Genero genero);
+        Task<bool> AlteracoesSalvas();
+        Task<Genero> RetornaGeneroExistente(string slugGenero);
     }
 }

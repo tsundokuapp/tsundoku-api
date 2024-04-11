@@ -9,7 +9,7 @@ namespace TsundokuTraducoes.Entities.Tests.Generos
         {
             var id = Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0");
             var genero = new Genero();
-            genero.AdicionaGenero(id, "Aventura", "aventura");
+            genero.AdicionaGenero(id, "Aventura", "aventura", "Axios", "Bravo", DateTime.Now, DateTime.Now);
 
             Assert.NotNull(genero);
             Assert.Equal(Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0"), genero.Id);
@@ -21,7 +21,7 @@ namespace TsundokuTraducoes.Entities.Tests.Generos
         {
             var id = Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0");
             var genero = new Genero();
-            genero.AdicionaGenero(id, "", "aventura");
+            genero.AdicionaGenero(id, "", "aventura", "Axios", "Bravo", DateTime.Now, DateTime.Now);
 
             Assert.True(string.IsNullOrEmpty(genero.Descricao));
         }

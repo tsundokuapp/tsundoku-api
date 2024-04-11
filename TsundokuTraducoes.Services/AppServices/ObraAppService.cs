@@ -214,8 +214,6 @@ namespace TsundokuTraducoes.Services.AppServices
 
             var retornoObra = await TrataRetornoNovel(novelEncontrada);
             return Result.Ok().ToResult(retornoObra);
-
-            throw new NotImplementedException();
         }       
         
         public async Task<Result<RetornoObra>> AtualizaComic(ObraDTO obraDTO)
