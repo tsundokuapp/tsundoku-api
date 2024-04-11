@@ -23,11 +23,16 @@ namespace TsundokuTraducoes.Entities.Entities.Generos
             GenerosComic = new List<GeneroComic>();
         }
 
-        public void AdicionaGenero(Guid id, string descricao, string slug)
+        public void AdicionaGenero(Guid id, string descricao, string slug, string usuarioAlteracao, string usuarioInclusao, 
+            DateTime dataInclusao, DateTime dataAlteracao)
         {
             Id = id;
             Descricao = descricao;
             Slug = slug;
+            UsuarioAlteracao = usuarioAlteracao;
+            UsuarioInclusao = usuarioInclusao;
+            DataInclusao = dataInclusao; 
+            DataAlteracao = dataAlteracao;
         }
     }
 }

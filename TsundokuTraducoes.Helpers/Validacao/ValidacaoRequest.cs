@@ -159,7 +159,16 @@ namespace TsundokuTraducoes.Helpers.Validacao
 
         public static bool ValidaDadosRequestGenero(GeneroDTO generoDTO)
         {
-            var resquestValido = VerificaString(generoDTO.Descricao);
+            var resquestValido = VerificaString(generoDTO.Descricao) &&
+                VerificaString(generoDTO.UsuarioInclusao);
+            return resquestValido;
+        }
+
+        public static bool ValidaDadosRequestGeneroAtualizacao(GeneroDTO generoDTO)
+        {
+            var resquestValido = VerificaString(generoDTO.Descricao) &&
+                VerificaString(generoDTO.UsuarioInclusao);
+                VerificaString(generoDTO.UsuarioAlteracao);
             return resquestValido;
         }
     }
