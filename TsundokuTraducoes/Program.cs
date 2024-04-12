@@ -9,14 +9,18 @@ using System;
 using TsundokuTraducoes.Api;
 using TsundokuTraducoes.Api.Extensions;
 using TsundokuTraducoes.Data.Configuration;
+using TsundokuTraducoes.Helpers.Configuration;
 
 
 var _connectionStringConfig = new ConnectionStringConfig();
+var _acessoExterno = new AcessoExterno();
 
 var builder = WebApplication.CreateBuilder(args);
 _connectionStringConfig.ConnectionString = builder.Configuration.GetConnectionString("Default");
-
 SourceConnection.SetaConnectionStringConfig(_connectionStringConfig);
+
+_acessoExterno.ApiKeyTinify = builder.Configuration.GetSection("ApiTinify").GetValue<string>("ApiKey");
+ConfigurationExternal.SetaAcessoExterno(_acessoExterno);
 
 builder.Services.AddSqlConnection(_connectionStringConfig.ConnectionString);
 
@@ -76,11 +80,6 @@ app.Run();
 
 void LoadConfiguration(WebApplication app)
 {
-    Configuration.EhAmbienteDesenvolvimento = app.Configuration.GetValue<bool>("EhAmbienteDesenvolvimento");
-    Configuration.DiretorioWeb = Configuration.EhAmbienteDesenvolvimento
-        ? app.Environment.WebRootPath
-        : app.Configuration.GetValue<string>("DiretorioWeb");
-
     var connectionStrings = new Configuration.ConnectionStrings();
     app.Configuration.GetSection("ConnectionStrings").Bind(connectionStrings);
     Configuration.ConnectionString = connectionStrings;

@@ -128,11 +128,12 @@ namespace TsundokuTraducoes.Data.Repositories
                     }
                     else
                     {
-                        var novoGenero = new Genero
-                        {
-                            Descricao = genero,
-                            Slug = slugGenero
-                        };
+                        var novoGenero = new Genero();
+                        novoGenero.Descricao = genero;
+                        novoGenero.Slug = slugGenero;
+                        novoGenero.DataInclusao = DateTime.Now;
+                        novoGenero.DataAlteracao = novoGenero.DataInclusao;
+                        novoGenero.UsuarioInclusao = novel.UsuarioInclusao;
 
                         await _generoRepository.AdicionaGenero(novoGenero);
                         await _generoDeParaRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = novoGenero.Id});
@@ -171,11 +172,12 @@ namespace TsundokuTraducoes.Data.Repositories
                     }
                     else
                     {
-                        var novoGenero = new Genero
-                        {
-                            Descricao = genero,
-                            Slug = genero,
-                        };
+                        var novoGenero = new Genero();
+                        novoGenero.Descricao = genero;
+                        novoGenero.Slug = slugGenero;
+                        novoGenero.DataInclusao = DateTime.Now;
+                        novoGenero.DataAlteracao = novoGenero.DataInclusao;
+                        novoGenero.UsuarioInclusao = comic.UsuarioInclusao;
 
                         await _generoRepository.AdicionaGenero(novoGenero);
                         await _generoDeParaRepository.AdicionaGeneroComic(new GeneroComic { ComicId = comic.Id, GeneroId = generoEncontrado.Id });
