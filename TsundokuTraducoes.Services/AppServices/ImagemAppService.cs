@@ -29,6 +29,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             nomeArquivoImagem = $"Capa-Obra-{TratamentoDeStrings.RetornaStringSlugTitleCase(obraDTO.Alias)}.jpg";
             caminhoArquivoImagem = Path.Combine(diretorioImagemObra, nomeArquivoImagem);
+
             var byteImagem = OtimizacaoImagemTinify.ConverteStreamParaByteArray(imagemCapaPrincipal.OpenReadStream());
             var resultByteImagemOtimizada = OtimizacaoImagemTinify.OtimizarImagem(ApiKey, byteImagem).Result;
 
@@ -39,8 +40,8 @@ namespace TsundokuTraducoes.Services.AppServices
 
                 obraDTO.DiretorioImagemObra = diretorioImagemObra;
                 obraDTO.ImagemCapaPrincipal = caminhoArquivoImagem;
-            }            
-
+            }
+            
             return Result.Ok();
         }
 
@@ -153,7 +154,6 @@ namespace TsundokuTraducoes.Services.AppServices
                 }
 
                 var imagensJson = JsonConvert.SerializeObject(listaEnderecoImagemDTO);
-
                 capituloDTO.DiretorioImagemCapitulo = diretorioCapitulo;
                 capituloDTO.ConteudoNovel = imagensJson;
             }
