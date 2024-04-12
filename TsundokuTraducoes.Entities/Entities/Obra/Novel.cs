@@ -19,7 +19,7 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
         public string Slug { get; set; }
         public int Visualizacoes { get; set; }
         public string UsuarioInclusao { get; set; }
-        public string? UsuarioAlteracao { get; set; }
+        public string UsuarioAlteracao { get; set; }
         public string ImagemCapaPrincipal { get; set; }
         public string Sinopse { get; set; }
         public DateTime DataInclusao { get; set; }
@@ -33,12 +33,13 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
         public string StatusObraSlug { get; set; }
         public string TipoObraSlug { get; set; }
         public string NacionalidadeSlug { get; set; }
-        public string? ImagemCapaUltimoVolume { get; set; }
-        public string? NumeroUltimoVolume { get; set; }
-        public string? SlugUltimoVolume { get; set; }
-        public string? NumeroUltimoCapitulo { get; set; }
-        public string? SlugUltimoCapitulo { get; set; }
+        public string ImagemCapaUltimoVolume { get; set; }
+        public string NumeroUltimoVolume { get; set; }
+        public string SlugUltimoVolume { get; set; }
+        public string NumeroUltimoCapitulo { get; set; }
+        public string SlugUltimoCapitulo { get; set; }
         public DateTime? DataAtualizacaoUltimoCapitulo { get; set; }
+        public string Observacao { get; set; }
         public virtual List<VolumeNovel> Volumes { get; set; }
         public virtual List<GeneroNovel> GenerosNovel { get; set; }
 
@@ -51,7 +52,7 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
         public void AdicionaNovel(Guid id, string titulo, string tituloAlternativo, string alias, string autor, string artista, string ano, string slug,
             string usuarioInclusao, string usuarioAlteracao, string imagemCapaPrincipal, string sinopse, DateTime dataInclusao, DateTime dataAlteracao,
             bool ehObraMaiorIdade, bool ehRecomendacao, string codigoCorHexaObra, string imagemBanner, string cargoObraDiscord,
-            string diretorioImagemObra, string statusObraSlug, string tipoObraSlug, string nacionalidadeSlug)
+            string diretorioImagemObra, string statusObraSlug, string tipoObraSlug, string nacionalidadeSlug, string observacao)
         {
             Id = id;
             Titulo = titulo;
@@ -76,6 +77,7 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
             StatusObraSlug = statusObraSlug;
             TipoObraSlug = tipoObraSlug;
             NacionalidadeSlug = nacionalidadeSlug;
+            Observacao = observacao;
 
             Volumes = new List<VolumeNovel>();
             GenerosNovel = new List<GeneroNovel>();

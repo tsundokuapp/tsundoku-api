@@ -29,7 +29,8 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
-            
+            form.Add(new StringContent("Aqui é uma observação"), "Observacao");
+
             var contentImagemPrincipal = RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
             form.Add(contentImagemPrincipal);
@@ -64,7 +65,8 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("japonesa"), "NacionalidadeSlug");
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
-            form.Add(new StringContent("false"), "EhRecomendacao");            
+            form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("Aqui é uma observação"), "Observacao");
 
             return form;
         }
@@ -89,6 +91,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("Aqui é uma observação"), "Observacao");
 
             var contentImagemPrincipal = RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -118,6 +121,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("Aqui é uma observação"), "Observacao");
 
             var contentImagemPrincipal = RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -147,6 +151,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("Aqui é uma observação"), "Observacao");
 
             var contentImagemPrincipal = RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -176,6 +181,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("Aqui é uma observação"), "Observacao");
 
             var contentImagemPrincipal = RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
