@@ -31,7 +31,8 @@ namespace TsundokuTraducoes.Entities.Tests.Obras
                                   Diretorios.RetornaDiretorioImagemCriado("BruxaErrante"),
                                   "em-andamento",
                                   "light-novel",
-                                  "japonesa");
+                                  "japonesa",
+                                  "Uma obra muito boa");
 
             novel.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg", "Volume 01", "volume-1");
             novel.AtualizaDadosUltimoCapitulo("Ilustrações", "ilustracoes", DateTime.Now);
@@ -69,7 +70,8 @@ namespace TsundokuTraducoes.Entities.Tests.Obras
                                   Diretorios.RetornaDiretorioImagemCriado("BruxaErrante"),
                                   "em-andamento",
                                   "light-novel",
-                                  "japonesa");
+                                  "japonesa", 
+                                  "Uma obra muito boa");
 
             novel.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg", "Volume 01", "volume-1");
             novel.AtualizaDadosUltimoCapitulo("Ilustrações", "ilustracoes", DateTime.Now);
