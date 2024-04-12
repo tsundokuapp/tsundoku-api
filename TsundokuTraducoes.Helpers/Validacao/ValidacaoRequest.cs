@@ -67,12 +67,16 @@ namespace TsundokuTraducoes.Helpers.Validacao
         public static bool ValidaDadosRequestCapituloNovel(CapituloDTO capituloDTO)
         {
             var requestListaImagemForm = true;
+            var resquestValidoEhConteudoNovel = true;
+
             var resquestValido =
                 VerificaString(capituloDTO.Numero) &&
                 VerificaString(capituloDTO.UsuarioInclusao) &&
                 capituloDTO.OrdemCapitulo > 0 &&
-                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
-                VerificaString(capituloDTO.ConteudoNovel);
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000";
+
+            if (!capituloDTO.EhIlustracoesNovel)
+                resquestValidoEhConteudoNovel = VerificaString(capituloDTO.ConteudoNovel);
 
             if (capituloDTO.EhIlustracoesNovel)
             {
@@ -80,7 +84,7 @@ namespace TsundokuTraducoes.Helpers.Validacao
                 capituloDTO.ListaImagensForm.Count > 0;
             }
 
-            return resquestValido && requestListaImagemForm;
+            return resquestValido && requestListaImagemForm && resquestValidoEhConteudoNovel;
         }
 
         public static bool ValidaDadosRequestCapituloComic(CapituloDTO capituloDTO)
