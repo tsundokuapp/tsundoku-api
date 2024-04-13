@@ -24,6 +24,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TsundokuTraducoes\TsundokuTraducoes.Api.csproj" />
+  </ItemGroup> 
+
+  <ItemGroup>
+    <None Update="Recursos\assets\images\ImagemTeste.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
