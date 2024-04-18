@@ -21,6 +21,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             form.Add(new StringContent(obraid.ToString()), "ObraId");
             var contentImagemVolume = MockBase.RetornaStreamImagemMock("imagemVolume.jpeg", "ImagemVolumeFile");
             form.Add(contentImagemVolume);
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             return form;
         }
@@ -46,6 +47,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             form.Add(new StringContent(obraid.ToString()), "ObraId");
             var contentImagemVolume = MockBase.RetornaStreamImagemMock("imagemVolume.jpeg", "ImagemVolumeFile");
             form.Add(contentImagemVolume);
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             return form;
         }
@@ -70,6 +72,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");

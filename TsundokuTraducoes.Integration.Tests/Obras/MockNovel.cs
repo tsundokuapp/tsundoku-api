@@ -30,6 +30,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
             form.Add(new StringContent("Aqui é uma observação"), "Observacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -67,6 +68,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
             form.Add(new StringContent("Aqui é uma observação"), "Observacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             return form;
         }
@@ -92,6 +94,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
             form.Add(new StringContent("Aqui é uma observação"), "Observacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -122,6 +125,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
             form.Add(new StringContent("Aqui é uma observação"), "Observacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -152,6 +156,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
             form.Add(new StringContent("Aqui é uma observação"), "Observacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -182,6 +187,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
             form.Add(new StringContent("Aqui é uma observação"), "Observacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");

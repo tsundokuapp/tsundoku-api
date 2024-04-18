@@ -28,6 +28,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("Equipe Tsundoku"), "Editores");
             form.Add(new StringContent("2"), "OrdemCapitulo");
             form.Add(new StringContent("false"), "EhIlustracoesNovel");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             return form;
         }
@@ -51,6 +52,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("Equipe Tsundoku"), "Editores");
             form.Add(new StringContent("2"), "OrdemCapitulo");
             form.Add(new StringContent("true"), "EhIlustracoesNovel");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             if (!falhar)
             {
@@ -95,7 +97,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent(""), "QC");
             form.Add(new StringContent("Equipe Tsundoku"), "Editores");
             form.Add(new StringContent("2"), "OrdemCapitulo");
-            form.Add(new StringContent("false"), "EhIlustracoesNovel");            
+            form.Add(new StringContent("false"), "EhIlustracoesNovel");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             return form;
         }
@@ -120,6 +123,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("manga"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -141,6 +145,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent(obraId.ToString()), "ObraId");
             var contentImagemVolume = MockBase.RetornaStreamImagemMock("imagemVolume.jpeg", "ImagemVolumeFile");
             form.Add(contentImagemVolume);
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             return form;
         }
