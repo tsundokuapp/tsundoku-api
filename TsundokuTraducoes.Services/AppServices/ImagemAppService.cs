@@ -28,9 +28,16 @@ namespace TsundokuTraducoes.Services.AppServices
             nomeArquivoImagem = $"Capa-Obra-{TratamentoDeStrings.RetornaStringSlugTitleCase(obraDTO.Alias)}.jpg";
             caminhoArquivoImagem = Path.Combine(diretorioImagemObra, nomeArquivoImagem);
 
-            var retorno = RetornaImagemOtimizada(imagemCapaPrincipal, caminhoArquivoImagem);
-            if (!retorno.IsSuccess)
-                return Result.Fail(retorno.Errors[0].Message);
+            if (obraDTO.OtimizarImagem)
+            {
+                var retorno = RetornaImagemOtimizada(imagemCapaPrincipal, caminhoArquivoImagem);
+                if (!retorno.IsSuccess)
+                    return Result.Fail(retorno.Errors[0].Message);
+            }
+            else
+            {   
+                SalvaArquivoFormFile(imagemCapaPrincipal, caminhoArquivoImagem);
+            }
 
             obraDTO.DiretorioImagemObra = diretorioImagemObra;
             obraDTO.ImagemCapaPrincipal = caminhoArquivoImagem;
@@ -50,9 +57,16 @@ namespace TsundokuTraducoes.Services.AppServices
             nomeArquivoImagem = $"Banner-Obra-{TratamentoDeStrings.RetornaStringSlugTitleCase(obraDTO.Titulo)}.jpg";
             var caminhoArquivoImagemBanner = Path.Combine(obraDTO.DiretorioImagemObra, nomeArquivoImagem);
 
-            var retorno = RetornaImagemOtimizada(imagemBanner, caminhoArquivoImagemBanner);
-            if (!retorno.IsSuccess)
-                return Result.Fail(retorno.Errors[0].Message);
+            if (obraDTO.OtimizarImagem)
+            {
+                var retorno = RetornaImagemOtimizada(imagemBanner, caminhoArquivoImagemBanner);
+                if (!retorno.IsSuccess)
+                    return Result.Fail(retorno.Errors[0].Message);
+            }
+            else
+            {
+                SalvaArquivoFormFile(imagemBanner, caminhoArquivoImagemBanner);
+            }
 
             obraDTO.ImagemBanner = caminhoArquivoImagemBanner;
 
@@ -61,9 +75,9 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public Result ProcessaUploadCapaVolume(VolumeDTO volumeDTO, string numeroVolume, string diretorioImagemObra)
         {
-            var imagemCapa = volumeDTO.ImagemVolumeFile;
+            var imagemCapaVolume = volumeDTO.ImagemVolumeFile;
 
-            if (!ValidaImagemPorContentType(imagemCapa.ContentType))
+            if (!ValidaImagemPorContentType(imagemCapaVolume.ContentType))
                 return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
 
             if (Directory.Exists(diretorioImagemObra))
@@ -86,14 +100,21 @@ namespace TsundokuTraducoes.Services.AppServices
 
                 var nomeImagemVolume = $"Capa-{tituloVolumeTratado}.jpg";
                 var diretorioImagemVolume = Diretorios.RetornaDiretorioImagemCriado(diretorioImagemObra, $"{TratamentoDeStrings.RetornaStringDiretorio(tituloVolumeTratado.Replace("-", " "))}");
-                var caminhoArquivoImagem = Path.Combine(diretorioImagemVolume, nomeImagemVolume);
+                var caminhoArquivoImagemVolume = Path.Combine(diretorioImagemVolume, nomeImagemVolume);
 
-                var retorno = RetornaImagemOtimizada(imagemCapa, caminhoArquivoImagem);
-                if (!retorno.IsSuccess)
-                    return Result.Fail(retorno.Errors[0].Message);
+                if (volumeDTO.OtimizarImagem)
+                {
+                    var retorno = RetornaImagemOtimizada(imagemCapaVolume, caminhoArquivoImagemVolume);
+                    if (!retorno.IsSuccess)
+                        return Result.Fail(retorno.Errors[0].Message);
+                }
+                else
+                {
+                    SalvaArquivoFormFile(imagemCapaVolume, caminhoArquivoImagemVolume);
+                }
 
                 volumeDTO.DiretorioImagemVolume = diretorioImagemVolume;
-                volumeDTO.ImagemVolume = caminhoArquivoImagem;
+                volumeDTO.ImagemVolume = caminhoArquivoImagemVolume;
             }
             else
             {
@@ -125,9 +146,16 @@ namespace TsundokuTraducoes.Services.AppServices
                     var nomeArquivo = $"{nomeImagemTratada}.jpg";
                     var urlPaginasCapitulo = Path.Combine(diretorioCapitulo, nomeArquivo);
 
-                    var retorno = RetornaImagemOtimizada(ilustracaoNovel, urlPaginasCapitulo);
-                    if (!retorno.IsSuccess)
-                        return Result.Fail(retorno.Errors[0].Message);
+                    if (capituloDTO.OtimizarImagem)
+                    {
+                        var retorno = RetornaImagemOtimizada(ilustracaoNovel, urlPaginasCapitulo);
+                        if (!retorno.IsSuccess)
+                            return Result.Fail(retorno.Errors[0].Message);
+                    }
+                    else
+                    {
+                        SalvaArquivoFormFile(ilustracaoNovel, urlPaginasCapitulo);
+                    }
 
                     listaEnderecoImagemDTO.Add(new EnderecoImagemDTO { Id = contador, Ordem = contador, Alt = nomeImagemTratada, Url = urlPaginasCapitulo });
 
@@ -170,9 +198,16 @@ namespace TsundokuTraducoes.Services.AppServices
                     var nomeArquivo = $"Pagina-{contador:#00}.jpg";
                     var urlPaginasCapitulo = Path.Combine(diretorioCapitulo, nomeArquivo);
 
-                    var retorno = RetornaImagemOtimizada(imagemPagina, urlPaginasCapitulo);
-                    if (!retorno.IsSuccess)
-                        return Result.Fail(retorno.Errors[0].Message);
+                    if (capituloDTO.OtimizarImagem)
+                    {
+                        var retorno = RetornaImagemOtimizada(imagemPagina, urlPaginasCapitulo);
+                        if (!retorno.IsSuccess)
+                            return Result.Fail(retorno.Errors[0].Message);
+                    }
+                    else
+                    {
+                        SalvaArquivoFormFile(imagemPagina, urlPaginasCapitulo);
+                    }
 
                     listaEnderecoImagemDTO.Add(new EnderecoImagemDTO { Id = contador, Url = urlPaginasCapitulo, Ordem = contador });
 

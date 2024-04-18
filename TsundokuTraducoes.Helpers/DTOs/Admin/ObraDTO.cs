@@ -39,5 +39,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public string SlugUltimoCapitulo { get; set; }
         public string Observacao { get; set; }
         public DateTime? DataAtualizacaoUltimoCapitulo { get; set; }
+        public bool OtimizarImagem {  get; set; }
     }
 }
