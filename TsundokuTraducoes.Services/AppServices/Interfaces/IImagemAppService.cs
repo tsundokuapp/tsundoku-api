@@ -14,6 +14,5 @@ namespace TsundokuTraducoes.Services.AppServices.Interfaces
         Result ProcessaUploadListaImagensCapituloManga(CapituloDTO capituloDTO, VolumeComic volume, int? ordemPaginaImagem = null);
         void SalvaArquivoFormFile(IFormFile arquivoFormFile, string caminhoCompletoArquivo);
         void ExcluiDiretorioImagens(string diretorioImagens);
-        bool ValidaImagemPorContentType(string contentType);
     }
 }

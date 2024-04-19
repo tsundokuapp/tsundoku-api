@@ -16,7 +16,7 @@ namespace TsundokuTraducoes.Services.AppServices
         {
             var imagemCapaPrincipal = obraDTO.ImagemCapaPrincipalFile;
 
-            if (!ValidaImagemPorContentType(imagemCapaPrincipal.ContentType))
+            if (!UtilidadeImagem.ValidaImagemPorContentType(imagemCapaPrincipal.ContentType))
                 return Result.Fail("Verifique a extensão da imagem da capa. Extensões permitidas: JPG|JPEG|PNG");
 
             var nomeDiretorioImagensObra = TratamentoDeStrings.RetornaStringDiretorio(obraDTO.Alias);
@@ -49,7 +49,7 @@ namespace TsundokuTraducoes.Services.AppServices
         {
             var imagemBanner = obraDTO.ImagemBannerFile;
 
-            if (!ValidaImagemPorContentType(imagemBanner.ContentType))
+            if (!UtilidadeImagem.ValidaImagemPorContentType(imagemBanner.ContentType))
                 return Result.Fail("Verifique a extensão da imagem do banner. Extensões permitidas: JPG|JPEG|PNG");
 
             string nomeArquivoImagem;
@@ -77,7 +77,7 @@ namespace TsundokuTraducoes.Services.AppServices
         {
             var imagemCapaVolume = volumeDTO.ImagemVolumeFile;
 
-            if (!ValidaImagemPorContentType(imagemCapaVolume.ContentType))
+            if (!UtilidadeImagem.ValidaImagemPorContentType(imagemCapaVolume.ContentType))
                 return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
 
             if (Directory.Exists(diretorioImagemObra))
@@ -137,7 +137,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
                 foreach (var ilustracaoNovel in capituloDTO.ListaImagensForm)
                 {
-                    if (!ValidaImagemPorContentType(ilustracaoNovel.ContentType))
+                    if (!UtilidadeImagem.ValidaImagemPorContentType(ilustracaoNovel.ContentType))
                         return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
 
                     var extensaoImagem = Path.GetExtension(ilustracaoNovel.FileName);
@@ -192,7 +192,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
                 foreach (var imagemPagina in capituloDTO.ListaImagensForm)
                 {
-                    if (!ValidaImagemPorContentType(imagemPagina.ContentType))
+                    if (!UtilidadeImagem.ValidaImagemPorContentType(imagemPagina.ContentType))
                         return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
 
                     var nomeArquivo = $"Pagina-{contador:#00}.jpg";
@@ -240,13 +240,13 @@ namespace TsundokuTraducoes.Services.AppServices
 
         private static async Task<Result> OtimizarImagem(IFormFile imagemFormFile, string caminhoArquivoImagem)
         {
-            var byteImagem = OtimizacaoImagemTinify.ConverteStreamParaByteArray(imagemFormFile.OpenReadStream());
+            var byteImagem = UtilidadeImagem.ConverteStreamParaByteArray(imagemFormFile.OpenReadStream());
             var resultByteImagemOtimizada = await OtimizacaoImagemTinify.OtimizarImagem(ConfigurationExternal.RetornaApiKeyTinify(), byteImagem);
 
             if (!resultByteImagemOtimizada.IsSuccess)
                 return Result.Fail("Erro ao carregar bytes de imagem otimização");
 
-            if (!OtimizacaoImagemTinify.SalvaArquivoImagem(resultByteImagemOtimizada.Value, caminhoArquivoImagem))
+            if (!UtilidadeImagem.SalvaArquivoImagem(resultByteImagemOtimizada.Value, caminhoArquivoImagem))
                 return Result.Fail("Erro ao tentar salvar o arquivo de imagem otimizada localmente");
 
             return Result.Ok();
@@ -264,15 +264,6 @@ namespace TsundokuTraducoes.Services.AppServices
             {
                 Directory.Delete(diretorioImagens, true);
             }
-        }
-
-        public bool ValidaImagemPorContentType(string contentType)
-        {
-            var imagemValida = contentType.ToLower().Contains("png") ||
-                contentType.ToLower().Contains("jpg") ||
-                contentType.ToLower().Contains("jpeg");
-
-            return imagemValida;
         }
     }
 }
