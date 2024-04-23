@@ -1,6 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+using TsundokuTraducoes.Helpers.Imagens;
 
 namespace TsundokuTraducoes.Helpers.Validacao
 {
@@ -174,6 +176,32 @@ namespace TsundokuTraducoes.Helpers.Validacao
                 VerificaString(generoDTO.UsuarioInclusao);
                 VerificaString(generoDTO.UsuarioAlteracao);
             return resquestValido;
+        }
+
+        public static bool ValidaImagemRequest(IFormFile imagem)
+        {
+            var streamImagem = imagem.OpenReadStream();
+            var byteImagem = UtilidadeImagem.ConverteStreamParaByteArray(streamImagem);
+            var ehImagem = UtilidadeImagem.ValidaImagem(byteImagem);
+
+            return ehImagem;
+        }
+
+        public static bool ValidaListaImagemRequest(List<IFormFile> listaImagem)
+        {
+            var retorno = true;
+
+            foreach (var file in listaImagem)
+            {
+                if (retorno)
+                {
+                    var streamImagem = file.OpenReadStream();
+                    var byteImagem = UtilidadeImagem.ConverteStreamParaByteArray(streamImagem);
+                    retorno = UtilidadeImagem.ValidaImagem(byteImagem);
+                }
+            }
+
+            return retorno;
         }
     }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
-using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -12,7 +11,7 @@ namespace TsundokuTraducoes.Controllers
 {
     [ApiController]
     public class VolumeController : ControllerBase
-    {         
+    {
         private readonly IVolumeAppService _volumeAppService;
 
         public VolumeController(IVolumeAppService volumeAppService)
@@ -96,6 +95,9 @@ namespace TsundokuTraducoes.Controllers
             if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente adicionar o volume da novel novamente!");
 
+            if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
+                return BadRequest("Imagem Capa volume inválida!");
+
             var result = await _volumeAppService.AdicionaVolumeNovel(volumeDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -108,6 +110,9 @@ namespace TsundokuTraducoes.Controllers
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente adicionar o volume da comic novamente!");
+
+            if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
+                return BadRequest("Imagem Capa volume inválida!");
 
             var result = await _volumeAppService.AdicionaVolumeComic(volumeDTO);
             if (result.IsFailed)
@@ -122,6 +127,10 @@ namespace TsundokuTraducoes.Controllers
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente atualizar o volume da novel novamente!");
+
+            if (volumeDTO.ImagemVolumeFile != null)
+                if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
+                    return BadRequest("Imagem Capa volume inválida!");
 
             var result = await _volumeAppService.AtualizaVolumeNovel(volumeDTO);
             if (result.IsFailed)
@@ -141,6 +150,10 @@ namespace TsundokuTraducoes.Controllers
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente atualizar o volume da comic novamente!");
+
+            if (volumeDTO.ImagemVolumeFile != null)
+                if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
+                    return BadRequest("Imagem Capa volume inválida!");
 
             var result = await _volumeAppService.AtualizaVolumeComic(volumeDTO);
             if (result.IsFailed)

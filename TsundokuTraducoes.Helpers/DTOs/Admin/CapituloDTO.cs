@@ -53,5 +53,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public bool EhIlustracoesNovel { get; set; }
         public List<IFormFile> ListaImagensForm { get; set; }
         public string DiretorioImagemCapitulo { get; set; }
+        public bool OtimizarImagem { get; set; }
     }
 }

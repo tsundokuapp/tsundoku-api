@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Headers;
+﻿using TsundokuTraducoes.Integration.Tests.Recursos;
 
 namespace TsundokuTraducoes.Integration.Tests.Capitulos
 {
@@ -28,6 +28,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("Equipe Tsundoku"), "Editores");
             form.Add(new StringContent("2"), "OrdemCapitulo");
             form.Add(new StringContent("false"), "EhIlustracoesNovel");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             return form;
         }
@@ -51,14 +52,15 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("Equipe Tsundoku"), "Editores");
             form.Add(new StringContent("2"), "OrdemCapitulo");
             form.Add(new StringContent("true"), "EhIlustracoesNovel");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             if (!falhar)
             {
                 var listaContentImagemCapitulo = new List<HttpContent>();
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 25; i++)
                 {
-                    listaContentImagemCapitulo.Add(RetornaStreamImagemMock($"pagina{i:00}.jpeg", "ListaImagensForm"));
+                    listaContentImagemCapitulo.Add(MockBase.RetornaStreamImagemMock($"pagina{i:00}.jpeg", "ListaImagensForm"));
                 }
 
                 foreach (var contentImagemCapitulo in listaContentImagemCapitulo)
@@ -95,7 +97,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent(""), "QC");
             form.Add(new StringContent("Equipe Tsundoku"), "Editores");
             form.Add(new StringContent("2"), "OrdemCapitulo");
-            form.Add(new StringContent("false"), "EhIlustracoesNovel");            
+            form.Add(new StringContent("false"), "EhIlustracoesNovel");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             return form;
         }
@@ -120,9 +123,10 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("manga"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
-            var contentImagemPrincipal = RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
-            var contentImagemBanner = RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
+            var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
+            var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
             form.Add(contentImagemPrincipal);
             form.Add(contentImagemBanner);
 
@@ -139,27 +143,11 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("O mestre"), "Sinopse");
             form.Add(new StringContent("Bravo"), "UsuarioInclusao");
             form.Add(new StringContent(obraId.ToString()), "ObraId");
-            var contentImagemVolume = RetornaStreamImagemMock("imagemVolume.jpeg", "ImagemVolumeFile");
+            var contentImagemVolume = MockBase.RetornaStreamImagemMock("imagemVolume.jpeg", "ImagemVolumeFile");
             form.Add(contentImagemVolume);
+            form.Add(new StringContent("false"), "OtimizarImagem");
 
             return form;
-        }
-
-        public static HttpContent RetornaStreamImagemMock(string nomeArquivo, string idForm)
-        {
-            var stream = new MemoryStream();
-
-            var httpcontent = new StreamContent(stream);
-            httpcontent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-            {
-                Name = idForm,
-                FileName = nomeArquivo
-            };
-
-            var teste = new MediaTypeHeaderValue("image/jpg");
-            httpcontent.Headers.ContentType = teste;
-
-            return httpcontent;
         }
 
         private static string RetornaNumeroAleatorio()
