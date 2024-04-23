@@ -70,6 +70,9 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             form.Add(new StringContent("Aqui é uma observação"), "Observacao");
             form.Add(new StringContent("false"), "OtimizarImagem");
 
+            var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpg", "ImagemCapaPrincipalFile");
+            form.Add(contentImagemPrincipal);
+
             return form;
         }
 
