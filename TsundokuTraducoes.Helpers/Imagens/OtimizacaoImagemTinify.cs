@@ -25,37 +25,5 @@ namespace TsundokuTraducoes.Helpers.Imagens
 
             return FluentResults.Result.Ok(response.ToBuffer());
         }
-
-        public static byte[] ConverteStreamParaByteArray(Stream stream)
-        {
-            byte[] byteArray = new byte[16 * 1024];
-            using (MemoryStream mStream = new MemoryStream())
-            {
-                int bit;
-                while ((bit = stream.Read(byteArray, 0, byteArray.Length)) > 0)
-                {
-                    mStream.Write(byteArray, 0, bit);
-                }
-                return mStream.ToArray();
-            }
-        }
-
-        public static bool SalvaArquivoImagem(byte[] array, string caminhoArquivoImagem)
-        {
-            try
-            {
-                using MemoryStream ms = new(array);
-                string nome = Path.GetRandomFileName();
-                FileStream file = new(caminhoArquivoImagem, FileMode.Create, FileAccess.Write);
-                ms.WriteTo(file);
-                file.Close();
-                ms.Close();
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
     }
 }

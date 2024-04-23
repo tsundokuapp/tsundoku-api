@@ -94,6 +94,13 @@ namespace TsundokuTraducoes.Models
             if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente adicionar a Novel novamente!");
 
+            if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
+                return BadRequest("Imagem Capa principal inválida!");
+
+            if (obraDTO.ImagemBannerFile != null)
+                if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemBannerFile))
+                    return BadRequest("Imagem banner inválida!");
+
             if (!ValidacaoRequest.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
                 return BadRequest("Erro ao adicionar a Novel, código hexadecimal informada fora do padrão!");
 
@@ -109,6 +116,13 @@ namespace TsundokuTraducoes.Models
         {
             if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente adicionar a Comic novamente!");
+
+            if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
+                return BadRequest("Imagem Capa principal inválida!");
+
+            if (obraDTO.ImagemBannerFile != null)
+                if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemBannerFile))
+                    return BadRequest("Imagem banner inválida!");
 
             if (!ValidacaoRequest.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
                 return BadRequest("Erro ao adicionar a Comic, código hexadecimal informada fora do padrão!");
@@ -126,6 +140,14 @@ namespace TsundokuTraducoes.Models
         {
             if (!ValidacaoRequest.ValidaDadosRequestObraAtualizacao(obraDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente atualizar a Novel novamente!");
+
+            if (obraDTO.ImagemBannerFile != null)
+                if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
+                    return BadRequest("Imagem Capa principal inválida!");
+
+            if (obraDTO.ImagemBannerFile != null)
+                if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemBannerFile))
+                    return BadRequest("Imagem banner inválida!");
 
             if (!ValidacaoRequest.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
                 return BadRequest("Erro ao atualizar a Novel, código hexadecimal informada fora do padrão!");
@@ -148,6 +170,13 @@ namespace TsundokuTraducoes.Models
         {
             if (!ValidacaoRequest.ValidaDadosRequestObraAtualizacao(obraDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente atualizar a Comic novamente!");
+
+            if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
+                return BadRequest("Imagem Capa principal inválida!");
+
+            if (obraDTO.ImagemBannerFile != null)
+                if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemBannerFile))
+                    return BadRequest("Imagem banner inválida!");
 
             if (!ValidacaoRequest.ValidaCorHexaDecimal(obraDTO.CodigoCorHexaObra))
                 return BadRequest("Erro ao atualizar a Comic, código hexadecimal informada fora do padrão!");

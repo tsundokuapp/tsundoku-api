@@ -12,13 +12,11 @@ namespace TsundokuTraducoes.Services.AppServices
 {
     public class ImagemAppService : IImagemAppService
     {
-        public string ApiKey = ConfigurationExternal.RetornaApiKeyTinify();
-
         public Result ProcessaUploadCapaObra(ObraDTO obraDTO)
         {
             var imagemCapaPrincipal = obraDTO.ImagemCapaPrincipalFile;
 
-            if (!ValidaImagemPorContentType(imagemCapaPrincipal.ContentType))
+            if (!UtilidadeImagem.ValidaImagemPorContentType(imagemCapaPrincipal.ContentType))
                 return Result.Fail("Verifique a extensão da imagem da capa. Extensões permitidas: JPG|JPEG|PNG");
 
             var nomeDiretorioImagensObra = TratamentoDeStrings.RetornaStringDiretorio(obraDTO.Alias);
@@ -30,18 +28,20 @@ namespace TsundokuTraducoes.Services.AppServices
             nomeArquivoImagem = $"Capa-Obra-{TratamentoDeStrings.RetornaStringSlugTitleCase(obraDTO.Alias)}.jpg";
             caminhoArquivoImagem = Path.Combine(diretorioImagemObra, nomeArquivoImagem);
 
-            var byteImagem = OtimizacaoImagemTinify.ConverteStreamParaByteArray(imagemCapaPrincipal.OpenReadStream());
-            var resultByteImagemOtimizada = OtimizacaoImagemTinify.OtimizarImagem(ApiKey, byteImagem).Result;
-
-            if (resultByteImagemOtimizada.IsSuccess)
+            if (obraDTO.OtimizarImagem)
             {
-                if(!OtimizacaoImagemTinify.SalvaArquivoImagem(resultByteImagemOtimizada.Value, caminhoArquivoImagem))
-                    return Result.Fail("Erro ao tentar salvar o arquivo de imagem otimizada localmente");
-
-                obraDTO.DiretorioImagemObra = diretorioImagemObra;
-                obraDTO.ImagemCapaPrincipal = caminhoArquivoImagem;
+                var retorno = RetornaImagemOtimizada(imagemCapaPrincipal, caminhoArquivoImagem);
+                if (!retorno.IsSuccess)
+                    return Result.Fail(retorno.Errors[0].Message);
             }
-            
+            else
+            {   
+                SalvaArquivoFormFile(imagemCapaPrincipal, caminhoArquivoImagem);
+            }
+
+            obraDTO.DiretorioImagemObra = diretorioImagemObra;
+            obraDTO.ImagemCapaPrincipal = caminhoArquivoImagem;
+
             return Result.Ok();
         }
 
@@ -49,32 +49,35 @@ namespace TsundokuTraducoes.Services.AppServices
         {
             var imagemBanner = obraDTO.ImagemBannerFile;
 
-            if (!ValidaImagemPorContentType(imagemBanner.ContentType))
+            if (!UtilidadeImagem.ValidaImagemPorContentType(imagemBanner.ContentType))
                 return Result.Fail("Verifique a extensão da imagem do banner. Extensões permitidas: JPG|JPEG|PNG");
 
             string nomeArquivoImagem;
 
             nomeArquivoImagem = $"Banner-Obra-{TratamentoDeStrings.RetornaStringSlugTitleCase(obraDTO.Titulo)}.jpg";
             var caminhoArquivoImagemBanner = Path.Combine(obraDTO.DiretorioImagemObra, nomeArquivoImagem);
-            var byteImagem = OtimizacaoImagemTinify.ConverteStreamParaByteArray(imagemBanner.OpenReadStream());
-            var resultByteImagemOtimizada = OtimizacaoImagemTinify.OtimizarImagem(ApiKey, byteImagem).Result;
 
-            if (resultByteImagemOtimizada.IsSuccess)
+            if (obraDTO.OtimizarImagem)
             {
-                if (!OtimizacaoImagemTinify.SalvaArquivoImagem(resultByteImagemOtimizada.Value, caminhoArquivoImagemBanner))
-                    return Result.Fail("Erro ao tentar salvar o arquivo de imagem otimizada localmente");
+                var retorno = RetornaImagemOtimizada(imagemBanner, caminhoArquivoImagemBanner);
+                if (!retorno.IsSuccess)
+                    return Result.Fail(retorno.Errors[0].Message);
+            }
+            else
+            {
+                SalvaArquivoFormFile(imagemBanner, caminhoArquivoImagemBanner);
+            }
 
-                obraDTO.ImagemBanner = caminhoArquivoImagemBanner;
-            }            
+            obraDTO.ImagemBanner = caminhoArquivoImagemBanner;
 
             return Result.Ok();
         }
 
         public Result ProcessaUploadCapaVolume(VolumeDTO volumeDTO, string numeroVolume, string diretorioImagemObra)
         {
-            var imagemCapa = volumeDTO.ImagemVolumeFile;
+            var imagemCapaVolume = volumeDTO.ImagemVolumeFile;
 
-            if (!ValidaImagemPorContentType(imagemCapa.ContentType))
+            if (!UtilidadeImagem.ValidaImagemPorContentType(imagemCapaVolume.ContentType))
                 return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
 
             if (Directory.Exists(diretorioImagemObra))
@@ -88,27 +91,30 @@ namespace TsundokuTraducoes.Services.AppServices
                 else
                 {
                     var ehNumeroDouble = double.TryParse(numeroVolume, out double numeroVolumeTratado);
-                    
+
                     if (!ehNumeroDouble)
                         return Result.Fail("Verifique o valor informado no campo Número!");
 
-                    tituloVolumeTratado = $"Volume-{numeroVolumeTratado:00}";                    
+                    tituloVolumeTratado = $"Volume-{numeroVolumeTratado:00}";
                 }
 
                 var nomeImagemVolume = $"Capa-{tituloVolumeTratado}.jpg";
                 var diretorioImagemVolume = Diretorios.RetornaDiretorioImagemCriado(diretorioImagemObra, $"{TratamentoDeStrings.RetornaStringDiretorio(tituloVolumeTratado.Replace("-", " "))}");
-                var caminhoArquivoImagem = Path.Combine(diretorioImagemVolume, nomeImagemVolume);
-                var byteImagem = OtimizacaoImagemTinify.ConverteStreamParaByteArray(imagemCapa.OpenReadStream());
-                var resultByteImagemOtimizada = OtimizacaoImagemTinify.OtimizarImagem(ApiKey, byteImagem).Result;
+                var caminhoArquivoImagemVolume = Path.Combine(diretorioImagemVolume, nomeImagemVolume);
 
-                if (resultByteImagemOtimizada.IsSuccess)
+                if (volumeDTO.OtimizarImagem)
                 {
-                    if (!OtimizacaoImagemTinify.SalvaArquivoImagem(resultByteImagemOtimizada.Value, caminhoArquivoImagem))
-                        return Result.Fail("Erro ao tentar salvar o arquivo de imagem otimizada localmente");
+                    var retorno = RetornaImagemOtimizada(imagemCapaVolume, caminhoArquivoImagemVolume);
+                    if (!retorno.IsSuccess)
+                        return Result.Fail(retorno.Errors[0].Message);
+                }
+                else
+                {
+                    SalvaArquivoFormFile(imagemCapaVolume, caminhoArquivoImagemVolume);
+                }
 
-                    volumeDTO.DiretorioImagemVolume = diretorioImagemVolume;
-                    volumeDTO.ImagemVolume = caminhoArquivoImagem;
-                }                
+                volumeDTO.DiretorioImagemVolume = diretorioImagemVolume;
+                volumeDTO.ImagemVolume = caminhoArquivoImagemVolume;
             }
             else
             {
@@ -131,7 +137,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
                 foreach (var ilustracaoNovel in capituloDTO.ListaImagensForm)
                 {
-                    if (!ValidaImagemPorContentType(ilustracaoNovel.ContentType))
+                    if (!UtilidadeImagem.ValidaImagemPorContentType(ilustracaoNovel.ContentType))
                         return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
 
                     var extensaoImagem = Path.GetExtension(ilustracaoNovel.FileName);
@@ -139,16 +145,19 @@ namespace TsundokuTraducoes.Services.AppServices
                     var nomeImagemTratada = nomeImagem.Replace(extensaoImagem, "");
                     var nomeArquivo = $"{nomeImagemTratada}.jpg";
                     var urlPaginasCapitulo = Path.Combine(diretorioCapitulo, nomeArquivo);
-                    var byteImagem = OtimizacaoImagemTinify.ConverteStreamParaByteArray(ilustracaoNovel.OpenReadStream());
-                    var resultByteImagemOtimizada = OtimizacaoImagemTinify.OtimizarImagem(ApiKey, byteImagem).Result;
 
-                    if (resultByteImagemOtimizada.IsSuccess)
+                    if (capituloDTO.OtimizarImagem)
                     {
-                        if (!OtimizacaoImagemTinify.SalvaArquivoImagem(resultByteImagemOtimizada.Value, urlPaginasCapitulo))
-                            return Result.Fail("Erro ao tentar salvar o arquivo de imagem otimizada localmente");
-                                                
-                        listaEnderecoImagemDTO.Add(new EnderecoImagemDTO { Id = contador, Ordem = contador, Alt = nomeImagemTratada, Url = urlPaginasCapitulo });
+                        var retorno = RetornaImagemOtimizada(ilustracaoNovel, urlPaginasCapitulo);
+                        if (!retorno.IsSuccess)
+                            return Result.Fail(retorno.Errors[0].Message);
                     }
+                    else
+                    {
+                        SalvaArquivoFormFile(ilustracaoNovel, urlPaginasCapitulo);
+                    }
+
+                    listaEnderecoImagemDTO.Add(new EnderecoImagemDTO { Id = contador, Ordem = contador, Alt = nomeImagemTratada, Url = urlPaginasCapitulo });
 
                     contador++;
                 }
@@ -183,27 +192,29 @@ namespace TsundokuTraducoes.Services.AppServices
 
                 foreach (var imagemPagina in capituloDTO.ListaImagensForm)
                 {
-                    if (!ValidaImagemPorContentType(imagemPagina.ContentType))
+                    if (!UtilidadeImagem.ValidaImagemPorContentType(imagemPagina.ContentType))
                         return Result.Fail("Verifique a extensão da imagem. Extensões permitidas: JPG|JPEG|PNG");
 
                     var nomeArquivo = $"Pagina-{contador:#00}.jpg";
                     var urlPaginasCapitulo = Path.Combine(diretorioCapitulo, nomeArquivo);
-                    var byteImagem = OtimizacaoImagemTinify.ConverteStreamParaByteArray(imagemPagina.OpenReadStream());
-                    var resultByteImagemOtimizada = OtimizacaoImagemTinify.OtimizarImagem(ApiKey, byteImagem).Result;
 
-                    if (resultByteImagemOtimizada.IsSuccess)
+                    if (capituloDTO.OtimizarImagem)
                     {
-                        if (!OtimizacaoImagemTinify.SalvaArquivoImagem(resultByteImagemOtimizada.Value, urlPaginasCapitulo))
-                            return Result.Fail("Erro ao tentar salvar o arquivo de imagem otimizada localmente");
-
-                        listaEnderecoImagemDTO.Add(new EnderecoImagemDTO { Id = contador, Url = urlPaginasCapitulo, Ordem = contador });
+                        var retorno = RetornaImagemOtimizada(imagemPagina, urlPaginasCapitulo);
+                        if (!retorno.IsSuccess)
+                            return Result.Fail(retorno.Errors[0].Message);
                     }
+                    else
+                    {
+                        SalvaArquivoFormFile(imagemPagina, urlPaginasCapitulo);
+                    }
+
+                    listaEnderecoImagemDTO.Add(new EnderecoImagemDTO { Id = contador, Url = urlPaginasCapitulo, Ordem = contador });
 
                     contador++;
                 }
 
                 var imagensJson = JsonConvert.SerializeObject(listaEnderecoImagemDTO);
-
                 capituloDTO.ListaImagemCapitulo = imagensJson;
                 capituloDTO.DiretorioImagemCapitulo = diretorioCapitulo;
             }
@@ -211,6 +222,32 @@ namespace TsundokuTraducoes.Services.AppServices
             {
                 return Result.Fail("Não foi encontrado o diretório do volume!");
             }
+
+            return Result.Ok();
+        }
+
+        private static Result RetornaImagemOtimizada(IFormFile imagemFormFile, string caminhoArquivoImagem)
+        {
+            var retornoTask = Task.Run(() => OtimizarImagem(imagemFormFile, caminhoArquivoImagem));
+            if (!retornoTask.Wait(TimeSpan.FromMinutes(2)))
+                return Result.Fail("Erro de Time out ao tentar otimizar as imagens!");
+
+            if (!retornoTask.Result.IsSuccess)
+                return Result.Fail(retornoTask.Result.Errors[0].Message);
+
+            return Result.Ok();
+        }
+
+        private static async Task<Result> OtimizarImagem(IFormFile imagemFormFile, string caminhoArquivoImagem)
+        {
+            var byteImagem = UtilidadeImagem.ConverteStreamParaByteArray(imagemFormFile.OpenReadStream());
+            var resultByteImagemOtimizada = await OtimizacaoImagemTinify.OtimizarImagem(ConfigurationExternal.RetornaApiKeyTinify(), byteImagem);
+
+            if (!resultByteImagemOtimizada.IsSuccess)
+                return Result.Fail("Erro ao carregar bytes de imagem otimização");
+
+            if (!UtilidadeImagem.SalvaArquivoImagem(resultByteImagemOtimizada.Value, caminhoArquivoImagem))
+                return Result.Fail("Erro ao tentar salvar o arquivo de imagem otimizada localmente");
 
             return Result.Ok();
         }
@@ -227,15 +264,6 @@ namespace TsundokuTraducoes.Services.AppServices
             {
                 Directory.Delete(diretorioImagens, true);
             }
-        }
-
-        public bool ValidaImagemPorContentType(string contentType)
-        {
-            var imagemValida = contentType.ToLower().Contains("png") ||
-                contentType.ToLower().Contains("jpg") ||
-                contentType.ToLower().Contains("jpeg");
-
-            return imagemValida;
         }
     }
 }
