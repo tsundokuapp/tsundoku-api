@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.IO;
+using System.Net.Http.Headers;
 
 namespace TsundokuTraducoes.Integration.Tests.Recursos
 {
@@ -16,6 +17,22 @@ namespace TsundokuTraducoes.Integration.Tests.Recursos
             var imagem = Path.Combine(diretorio, "ImagemTeste.png");
             var imagemByte = File.ReadAllBytes($"{imagem}");
             var stream = new MemoryStream(imagemByte);
+            return stream;
+        }
+
+        public static MemoryStream RetornaImagemTesteFalha()
+        {
+            var diretorio = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Recursos"), "assets", "images");
+
+            if (!Directory.Exists(diretorio))
+            {
+                Directory.CreateDirectory(diretorio);
+            }
+
+            var imagem = Path.Combine(diretorio, "ImagemTesteFalha.jpg");
+            var imagemByte = File.ReadAllBytes($"{imagem}");
+            var stream = new MemoryStream(imagemByte);
+
             return stream;
         }
 
