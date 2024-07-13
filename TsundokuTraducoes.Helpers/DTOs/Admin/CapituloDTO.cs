@@ -54,5 +54,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public List<IFormFile> ListaImagensForm { get; set; }
         public string DiretorioImagemCapitulo { get; set; }
         public bool OtimizarImagem { get; set; }
+        public bool SalvarLocal { get; set; }
     }
 }

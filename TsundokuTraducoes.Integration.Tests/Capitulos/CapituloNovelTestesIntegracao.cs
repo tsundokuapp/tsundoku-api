@@ -122,7 +122,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
             var retornoCapitulo = await AdicionaCapitulo(retornoVolume.Id);
 
-            var response = await _httpClient.DeleteAsync($"api/capitulo/novel/{retornoCapitulo.Id}");
+            var response = await _httpClient.DeleteAsync($"api/capitulo/novel/{retornoCapitulo.Id}/true");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -130,7 +130,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         [Fact]
         public async Task DeveRetornarNotFoundAoExcluirUmCapituloNovelInexistente()
         {
-            var response = await _httpClient.DeleteAsync($"api/capitulo/novel/{Guid.NewGuid()}");
+            var response = await _httpClient.DeleteAsync($"api/capitulo/novel/{Guid.NewGuid()}/true");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }

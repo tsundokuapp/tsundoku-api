@@ -24,6 +24,8 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("light-novel"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");

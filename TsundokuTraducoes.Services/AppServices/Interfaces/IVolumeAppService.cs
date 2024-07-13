@@ -19,7 +19,7 @@ namespace TsundokuTraducoes.Services.AppServices.Interfaces
         Task<Result<RetornoVolume>> AtualizaVolumeNovel(VolumeDTO volumeDTO);
         Task<Result<RetornoVolume>> AtualizaVolumeComic(VolumeDTO volumeDTO);
 
-        Task<Result<bool>> ExcluiVolumeNovel(Guid novelId);
-        Task<Result<bool>> ExcluiVolumeComic(Guid comicId);
+        Task<Result<bool>> ExcluiVolumeNovel(Guid novelId, bool arquivoLocal);
+        Task<Result<bool>> ExcluiVolumeComic(Guid comicId, bool arquivoLocal);
     }
 }

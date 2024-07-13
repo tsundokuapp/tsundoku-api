@@ -90,7 +90,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var retornoObra = await AdicionaComic();
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
-            var response = await _httpClient.DeleteAsync($"api/volume/comic/{retornoVolume.Id}");
+            var response = await _httpClient.DeleteAsync($"api/volume/comic/{retornoVolume.Id}/true");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -98,7 +98,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveRetornarNotFoundAoExcluirUmVolumeComicInexistente()
         {
-            var response = await _httpClient.DeleteAsync($"api/obra/comic/{Guid.NewGuid()}");
+            var response = await _httpClient.DeleteAsync($"api/obra/comic/{Guid.NewGuid()}/true");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }

@@ -93,10 +93,10 @@ namespace TsundokuTraducoes.Services.AppServices
             var novelExistente = _obraservice.RetornaNovelExistente(obraDTO.Titulo);
             if (novelExistente != null)
                 return Result.Fail("Novel já postada!");
-
+                        
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
-                var result = _imagemAppService.ProcessaUploadCapaObra(obraDTO);
+                var result = await _imagemAppService.ProcessaUploadCapaObra(obraDTO, false);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
             }
@@ -107,7 +107,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             if (obraDTO.ImagemBannerFile != null)
             {
-                var result = _imagemAppService.ProcessaUploadBannerObra(obraDTO);
+                var result = await _imagemAppService.ProcessaUploadBannerObra(obraDTO, false);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
             }
@@ -138,7 +138,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
-                var result = _imagemAppService.ProcessaUploadCapaObra(obraDTO);
+                var result = await _imagemAppService.ProcessaUploadCapaObra(obraDTO, false);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
             }
@@ -149,7 +149,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             if (obraDTO.ImagemBannerFile != null)
             {
-                var result = _imagemAppService.ProcessaUploadBannerObra(obraDTO);
+                var result = await _imagemAppService.ProcessaUploadBannerObra(obraDTO, false);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
             }
@@ -181,7 +181,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
-                var result = _imagemAppService.ProcessaUploadCapaObra(obraDTO);
+                var result = await _imagemAppService.ProcessaUploadCapaObra(obraDTO, true);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
             }
@@ -192,7 +192,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             if (obraDTO.ImagemBannerFile != null)
             {
-                var result = _imagemAppService.ProcessaUploadBannerObra(obraDTO);
+                var result = await _imagemAppService.ProcessaUploadBannerObra(obraDTO, true);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
             }
@@ -224,7 +224,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
-                var result = _imagemAppService.ProcessaUploadCapaObra(obraDTO);
+                var result = await _imagemAppService.ProcessaUploadCapaObra(obraDTO, true);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
             }
@@ -235,7 +235,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             if (obraDTO.ImagemBannerFile != null)
             {
-                var result = _imagemAppService.ProcessaUploadBannerObra(obraDTO);
+                var result = await _imagemAppService.ProcessaUploadBannerObra(obraDTO, true);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
             }
@@ -260,32 +260,49 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        public async Task<Result<bool>> ExcluiNovel(Guid idObra)
+        public async Task<Result<bool>> ExcluiNovel(Guid idObra, bool arquivoLocal)
         {
             var novelEncontrada = _obraservice.RetornaNovelPorId(idObra);
             if (novelEncontrada == null)
                 return Result.Fail("Novel não encontrada!");
 
             var novelExcluida = await _obraservice.ExcluiNovel(novelEncontrada);
-            _imagemAppService.ExcluiDiretorioImagens(novelEncontrada.DiretorioImagemObra);
 
-            if (!novelExcluida)
+            if (novelExcluida)
+            {
+                var diretorioExcluido = await _imagemAppService.ExcluiDiretorioImagens(novelEncontrada.DiretorioImagemObra, arquivoLocal);
+                if (!diretorioExcluido)
+                {
+                    return Result.Fail("Erro ao tentar excluir diretório da Novel!");
+                }
+            }
+            else
+            {
                 return Result.Fail("Erro ao excluir a Novel!");
+            }   
 
             return Result.Ok().WithSuccess("Novel excluída com sucesso!");
         }
         
-        public async Task<Result<bool>> ExcluiComic(Guid idObra)
+        public async Task<Result<bool>> ExcluiComic(Guid idObra, bool arquivoLocal)
         {
             var comicEncontrada = _obraservice.RetornaComicPorId(idObra);
             if (comicEncontrada == null)
                 return Result.Fail("Comic não encontrada!");
 
             var comicExcluida = await _obraservice.ExcluiComic(comicEncontrada);
-            _imagemAppService.ExcluiDiretorioImagens(comicEncontrada.DiretorioImagemObra);
-
-            if (!comicExcluida)
+            if (comicExcluida)
+            {
+                var diretorioExcluido = await _imagemAppService.ExcluiDiretorioImagens(comicEncontrada.DiretorioImagemObra, arquivoLocal);
+                if (!diretorioExcluido)
+                {
+                    return Result.Fail("Erro ao tentar excluir diretório da Comic!");
+                }
+            }
+            else
+            {
                 return Result.Fail("Erro ao excluir a Comic!");
+            }
 
             return Result.Ok().WithSuccess("Comic excluída com sucesso!");
         }

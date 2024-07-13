@@ -76,7 +76,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveExcluirUmaComic()
         {
             var retornoObra = await AdicionaObraParaExclurUmaComic();
-            var response = await _httpClient.DeleteAsync($"api/obra/comic/{retornoObra.Id}");
+            var response = await _httpClient.DeleteAsync($"api/obra/comic/{retornoObra.Id}/true");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -85,7 +85,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarNotFoundAoExcluirUmaComiclInexistente()
         {
             var idNovelInexistente = "97722a6d-2210-434b-ae48-1a3c6da4c7a2";
-            var response = await _httpClient.DeleteAsync($"api/obra/comic/{idNovelInexistente}");
+            var response = await _httpClient.DeleteAsync($"api/obra/comic/{idNovelInexistente}/true");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }

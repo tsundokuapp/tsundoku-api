@@ -40,5 +40,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public string Observacao { get; set; }
         public DateTime? DataAtualizacaoUltimoCapitulo { get; set; }
         public bool OtimizarImagem {  get; set; }
+        public bool SalvarLocal { get; set; }
     }
 }

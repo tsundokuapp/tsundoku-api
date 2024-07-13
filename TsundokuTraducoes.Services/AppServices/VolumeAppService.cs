@@ -104,7 +104,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             if (volumeDTO.ImagemVolumeFile != null)
             {
-                var result = _imagemAppService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, novel.DiretorioImagemObra);
+                var result = await _imagemAppService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, novel.DiretorioImagemObra, false);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
 
@@ -154,7 +154,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             if (volumeDTO.ImagemVolumeFile != null)
             {
-                var result = _imagemAppService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, comic.DiretorioImagemObra);
+                var result = await _imagemAppService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, comic.DiretorioImagemObra, false);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
 
@@ -190,7 +190,6 @@ namespace TsundokuTraducoes.Services.AppServices
             return Result.Fail("Erro ao adicionar volume da obra!");
         }
 
-
         public async Task<Result<RetornoVolume>> AtualizaVolumeNovel(VolumeDTO volumeDTO)
         {
             var volumeEncontrado = _volumeService.RetornaVolumeNovelPorId(volumeDTO.Id);
@@ -203,7 +202,7 @@ namespace TsundokuTraducoes.Services.AppServices
                 if (novel == null)
                     return Result.Fail("Não foi encontrada a obra informada");
 
-                var result = _imagemAppService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, novel.DiretorioImagemObra);
+                var result = await _imagemAppService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, novel.DiretorioImagemObra, true);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
 
@@ -233,7 +232,7 @@ namespace TsundokuTraducoes.Services.AppServices
                 if (comic == null)
                     return Result.Fail("Não foi encontrada a obra informada");
 
-                var result = _imagemAppService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, comic.DiretorioImagemObra);
+                var result = await _imagemAppService.ProcessaUploadCapaVolume(volumeDTO, volumeDTO.Numero, comic.DiretorioImagemObra, true);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
 
@@ -252,33 +251,48 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        public async Task<Result<bool>> ExcluiVolumeNovel(Guid novelId)
+        public async Task<Result<bool>> ExcluiVolumeNovel(Guid novelId, bool arquivoLocal)
         {
             var volumeEncontrado = _volumeService.RetornaVolumeNovelPorId(novelId);
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
             var volumeExcluido = await _volumeService.ExcluiVolumeNovel(volumeEncontrado);
-            _imagemAppService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume);
-
-            if (!volumeExcluido)
+            if (volumeExcluido)
+            {
+                var diretorioExcluido = await _imagemAppService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume, arquivoLocal);
+                if (!diretorioExcluido)
+                {
+                    return Result.Fail("Erro ao tentar excluir diretório do volume!");
+                }
+            }
+            else
+            {
                 return Result.Fail("Erro ao excluir o volume!");
-
+            }
 
             return Result.Ok().WithSuccess("Volume excluído com sucesso!");
         }
 
-        public async Task<Result<bool>> ExcluiVolumeComic(Guid comicId)
+        public async Task<Result<bool>> ExcluiVolumeComic(Guid comicId, bool arquivoLocal)
         {
             var volumeEncontrado = _volumeService.RetornaVolumeComicPorId(comicId);
             if (volumeEncontrado == null)
                 return Result.Fail("Volume não encontrado!");
 
             var volumeExcluido = await _volumeService.ExcluiVolumeComic(volumeEncontrado);
-            _imagemAppService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume);
-
-            if (!volumeExcluido)
+            if (volumeExcluido)
+            {
+                var diretorioExcluido = await _imagemAppService.ExcluiDiretorioImagens(volumeEncontrado.DiretorioImagemVolume, arquivoLocal);
+                if (!diretorioExcluido)
+                {
+                    return Result.Fail("Erro ao tentar excluir diretório do volume!");
+                }
+            }
+            else
+            {
                 return Result.Fail("Erro ao excluir o volume!");
+            }
 
             return Result.Ok().WithSuccess("Volume excluído com sucesso!");
         }

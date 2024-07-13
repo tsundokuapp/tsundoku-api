@@ -111,7 +111,7 @@ namespace TsundokuTraducoes.Services.AppServices
                     {
                         if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
                         {
-                            var result = _imagemAppService.ProcessaUploadListaImagensCapituloNovel(capituloDTO, volume);
+                            var result = await _imagemAppService.ProcessaUploadListaImagensCapituloNovel(capituloDTO, volume, false);
                             if (result.IsFailed)
                                 return Result.Fail(result.Errors[0].Message);
 
@@ -166,7 +166,7 @@ namespace TsundokuTraducoes.Services.AppServices
                 {
                     if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
                     {
-                        var result = _imagemAppService.ProcessaUploadListaImagensCapituloManga(capituloDTO, volume);
+                        var result = await _imagemAppService.ProcessaUploadListaImagensCapituloManga(capituloDTO, volume, false);
                         if (result.IsFailed)
                             return Result.Fail(result.Errors[0].Message);
 
@@ -216,9 +216,14 @@ namespace TsundokuTraducoes.Services.AppServices
             {
                 if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
                 {
-                    _imagemAppService.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo);
-                    var result = _imagemAppService.ProcessaUploadListaImagensCapituloNovel(capituloDTO, volume);
+                    if (capituloDTO.SalvarLocal)
+                    {
+                        var diretorioExcluido = await _imagemAppService.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo, capituloDTO.SalvarLocal);
+                        if (!diretorioExcluido)
+                            return Result.Fail("Erro ao excluir diretório local!");
+                    }
 
+                    var result = await _imagemAppService.ProcessaUploadListaImagensCapituloNovel(capituloDTO, volume, true);
                     if (result.IsFailed)
                         return Result.Fail(result.Errors[0].Message);
 
@@ -247,9 +252,14 @@ namespace TsundokuTraducoes.Services.AppServices
 
             if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
             {
-                _imagemAppService.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo);
-                var result = _imagemAppService.ProcessaUploadListaImagensCapituloManga(capituloDTO, volume);
+                if (capituloDTO.SalvarLocal)
+                {
+                    var diretorioExcluido = await _imagemAppService.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo, capituloDTO.SalvarLocal);
+                    if (!diretorioExcluido)
+                        return Result.Fail("Erro ao excluir diretório local!");
+                }
 
+                var result = await _imagemAppService.ProcessaUploadListaImagensCapituloManga(capituloDTO, volume, true);
                 if (result.IsFailed)
                     return Result.Fail(result.Errors[0].Message);
 
@@ -268,36 +278,51 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        public async Task<Result<bool>> ExcluiCapituloNovel(Guid capituloId)
+        public async Task<Result<bool>> ExcluiCapituloNovel(Guid capituloId, bool arquivoLocal)
         {
             var capituloEncontrado = _capituloService.RetornaCapituloNovelPorId(capituloId);
             if (capituloEncontrado == null)
                 return Result.Fail("Capítulo não encontrado!");
 
             var capituloExcluido = await _capituloService.ExcluiCapituloNovel(capituloEncontrado);
-
-            if (capituloEncontrado.EhIlustracoesNovel)
+            if (capituloExcluido)
             {
-                _imagemAppService.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo);
+                if (capituloEncontrado.EhIlustracoesNovel)
+                {
+                    var diretorioExcluido = await _imagemAppService.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo, arquivoLocal);
+                    if (!diretorioExcluido)
+                    {
+                        return Result.Fail("Erro ao tentar excluir diretório do capítulo!");
+                    }
+                }   
             }
-
-            if (!capituloExcluido)
+            else
+            {
                 return Result.Fail("Erro ao excluir o capítulo!");
+            }
 
             return Result.Ok().WithSuccess("Capítulo excluído com sucesso!");
         }
 
-        public async Task<Result<bool>> ExcluiCapituloComic(Guid capituloId)
+        public async Task<Result<bool>> ExcluiCapituloComic(Guid capituloId, bool arquivoLocal)
         {
             var capituloEncontrado = _capituloService.RetornaCapituloComicPorId(capituloId);
             if (capituloEncontrado == null)
                 return Result.Fail("Capítulo não encontrado!");
 
-            var capituloExcluido = await  _capituloService.ExcluiCapituloComic(capituloEncontrado);
-            _imagemAppService.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo);
-
-            if (!capituloExcluido)
+            var capituloExcluido = await _capituloService.ExcluiCapituloComic(capituloEncontrado);
+            if (capituloExcluido)
+            {
+                var diretorioExcluido = await _imagemAppService.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo, arquivoLocal);
+                if (!diretorioExcluido)
+                {
+                    return Result.Fail("Erro ao tentar excluir diretório do capítulo!");
+                }
+            }
+            else
+            {
                 return Result.Fail("Erro ao excluir o capítulo!");
+            }
 
             return Result.Ok().WithSuccess("Capítulo excluído com sucesso!");
         }

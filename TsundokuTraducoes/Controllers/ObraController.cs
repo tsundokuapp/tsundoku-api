@@ -195,10 +195,10 @@ namespace TsundokuTraducoes.Models
         }
 
 
-        [HttpDelete("api/obra/novel/{id}")]
-        public async Task<IActionResult> ExcluirNovel(Guid id)
+        [HttpDelete("api/obra/novel/{id}/{arquivoLocal}")]
+        public async Task<IActionResult> ExcluirNovel(Guid id, bool arquivoLocal)
         {
-            var result = await _obraAppService.ExcluiNovel(id);
+            var result = await _obraAppService.ExcluiNovel(id, arquivoLocal);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;
@@ -211,10 +211,10 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Successes[0].Message);
         }
 
-        [HttpDelete("api/obra/comic/{id}")]
-        public async Task<IActionResult> ExcluirComic(Guid id)
+        [HttpDelete("api/obra/comic/{id}/{arquivoLocal}")]
+        public async Task<IActionResult> ExcluirComic(Guid id, bool arquivoLocal)
         {
-            var result = await _obraAppService.ExcluiComic(id);
+            var result = await _obraAppService.ExcluiComic(id, arquivoLocal);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;

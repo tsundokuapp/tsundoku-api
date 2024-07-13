@@ -171,10 +171,10 @@ namespace TsundokuTraducoes.Controllers
         }
 
 
-        [HttpDelete("api/capitulo/novel/{id}")]
-        public async Task<IActionResult> ExcluiCapituloNovel(Guid id)
+        [HttpDelete("api/capitulo/novel/{id}/{arquivoLocal}")]
+        public async Task<IActionResult> ExcluiCapituloNovel(Guid id, bool arquivoLocal)
         {
-            var result = await _capituloService.ExcluiCapituloNovel(id);
+            var result = await _capituloService.ExcluiCapituloNovel(id, arquivoLocal);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;
@@ -187,10 +187,10 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Successes[0].Message);
         }
 
-        [HttpDelete("api/capitulo/comic/{id}")]
-        public async Task<IActionResult> ExcluiCapituloComic(Guid id)
+        [HttpDelete("api/capitulo/comic/{id}/{arquivoLocal}")]
+        public async Task<IActionResult> ExcluiCapituloComic(Guid id, bool arquivoLocal)
         {
-            var result = await _capituloService.ExcluiCapituloComic(id);
+            var result = await _capituloService.ExcluiCapituloComic(id, arquivoLocal);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;

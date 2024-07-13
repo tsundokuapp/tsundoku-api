@@ -88,14 +88,14 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var retornoObra = await AdicionaNovel();
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
-            var response = await _httpClient.DeleteAsync($"api/volume/novel/{retornoVolume.Id}");
+            var response = await _httpClient.DeleteAsync($"api/volume/novel/{retornoVolume.Id}/true");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
         [Fact]
         public async Task DeveRetornarNotFoundAoExcluirUmVolumeNovelInexistente()
         {
-            var response = await _httpClient.DeleteAsync($"api/obra/novel/{Guid.NewGuid()}");
+            var response = await _httpClient.DeleteAsync($"api/obra/novel/{Guid.NewGuid()}/true");
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
