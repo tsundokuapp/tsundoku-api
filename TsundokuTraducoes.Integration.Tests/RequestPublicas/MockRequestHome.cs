@@ -24,6 +24,8 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("manga"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -45,6 +47,8 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             form.Add(new StringContent(obraId.ToString()), "ObraId");
             var contentImagemVolume = MockBase.RetornaStreamImagemMock("imagemVolume.jpeg", "ImagemVolumeFile");
             form.Add(contentImagemVolume);
+            form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             return form;
         }
@@ -60,6 +64,8 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             form.Add(new StringContent("Bravo"), "UsuarioInclusao");
             form.Add(new StringContent(volumeId.ToString()), "VolumeId");
             form.Add(new StringContent("1"), "OrdemCapitulo");
+            form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             var listaContentImagemCapitulo = new List<HttpContent>();
 
@@ -96,6 +102,8 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             form.Add(new StringContent("em-andamento"), "StatusObraSlug");
             form.Add(new StringContent("manga"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
+            form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -117,6 +125,8 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             form.Add(new StringContent(obraId.ToString()), "ObraId");
             var contentImagemVolume = MockBase.RetornaStreamImagemMock("imagemVolume.jpeg", "ImagemVolumeFile");
             form.Add(contentImagemVolume);
+            form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             return form;
         }
@@ -140,6 +150,8 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             form.Add(new StringContent("Equipe Tsundoku"), "Editores");
             form.Add(new StringContent("2"), "OrdemCapitulo");
             form.Add(new StringContent("false"), "EhIlustracoesNovel");
+            form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             return form;
         }

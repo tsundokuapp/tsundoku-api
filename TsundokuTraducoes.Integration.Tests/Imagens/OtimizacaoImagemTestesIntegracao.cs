@@ -1,5 +1,5 @@
 ﻿using FluentResults;
-using System.Configuration;
+using TsundokuTraducoes.Helpers.Configuration;
 using TsundokuTraducoes.Helpers.Imagens;
 using TsundokuTraducoes.Integration.Tests.Recursos;
 
@@ -43,7 +43,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
 
         private static string RetornaApiKey()
         {
-            return ConfigurationManager.AppSettings["ApiKey"];
+            return ConfigurationExternal.RetornaApiKeyTinify();
         }
     }
 }

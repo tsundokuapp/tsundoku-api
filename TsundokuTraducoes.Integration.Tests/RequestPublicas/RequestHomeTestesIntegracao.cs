@@ -26,7 +26,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             {
                 await AdicionaCapituloComic(retornoVolumeComic.Id);
                 quantidadeCapitulosComic++;
-                Thread.Sleep(500);
+                Thread.Sleep(250);
             }
 
             var retornoNovel = await AdicionaNovel();
@@ -37,7 +37,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             {
                 await AdicionaCapituloNovel(retornoVolumeNovel.Id);
                 quantidadeCapitulosNovel++;
-                Thread.Sleep(500);
+                Thread.Sleep(250);
             }
 
             var response = await _httpClient.GetAsync($"api/obras/home?skip=&take=6");

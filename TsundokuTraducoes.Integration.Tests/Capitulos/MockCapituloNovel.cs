@@ -29,6 +29,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("2"), "OrdemCapitulo");
             form.Add(new StringContent("false"), "EhIlustracoesNovel");
             form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             return form;
         }
@@ -53,6 +54,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("2"), "OrdemCapitulo");
             form.Add(new StringContent("true"), "EhIlustracoesNovel");
             form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             if (!falhar)
             {
@@ -99,6 +101,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("2"), "OrdemCapitulo");
             form.Add(new StringContent("false"), "EhIlustracoesNovel");
             form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             return form;
         }
@@ -124,6 +127,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("manga"), "TipoObraSlug");
             form.Add(new StringContent("false"), "EhRecomendacao");
             form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             var contentImagemPrincipal = MockBase.RetornaStreamImagemMock("imagemPrincipal.jpeg", "ImagemCapaPrincipalFile");
             var contentImagemBanner = MockBase.RetornaStreamImagemMock("imagemBanner.jpeg", "ImagemBannerFile");
@@ -146,6 +150,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var contentImagemVolume = MockBase.RetornaStreamImagemMock("imagemVolume.jpeg", "ImagemVolumeFile");
             form.Add(contentImagemVolume);
             form.Add(new StringContent("false"), "OtimizarImagem");
+            form.Add(new StringContent("true"), "SalvarLocal");
 
             return form;
         }

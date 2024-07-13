@@ -18,5 +18,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public Guid NovelId { get { return ObraId; } }
         public Guid ComicId { get { return ObraId; } }
         public bool OtimizarImagem { get; set; }
+        public bool SalvarLocal { get; set; }
     }
 }

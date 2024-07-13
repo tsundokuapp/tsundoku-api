@@ -76,7 +76,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveExcluirUmaNovel()
         {
             var retornoObra = await AdicionaObraParaExclurUmaNovel();
-            var response = await _httpClient.DeleteAsync($"api/obra/novel/{retornoObra.Id}");
+            var response = await _httpClient.DeleteAsync($"api/obra/novel/{retornoObra.Id}/true");
             
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -85,7 +85,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarNotFoundAoExcluirUmaNovelInexistente()
         {
             var idNovelInexistente = "97722a6d-2210-434b-ae48-1a3c6da4c7a2";
-            var response = await _httpClient.DeleteAsync($"api/obra/novel/{idNovelInexistente}");
+            var response = await _httpClient.DeleteAsync($"api/obra/novel/{idNovelInexistente}/true");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
