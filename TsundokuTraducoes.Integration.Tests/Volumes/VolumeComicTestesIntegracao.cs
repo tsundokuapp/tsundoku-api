@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
+using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 
 namespace TsundokuTraducoes.Integration.Tests.Volumes
@@ -25,6 +26,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -37,6 +40,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -50,6 +55,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -63,6 +70,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -74,6 +83,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var response = await _httpClient.GetAsync($"api/volume/comic/{retornoVolume.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -93,6 +104,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var response = await _httpClient.DeleteAsync($"api/volume/comic/{retornoVolume.Id}/true");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]

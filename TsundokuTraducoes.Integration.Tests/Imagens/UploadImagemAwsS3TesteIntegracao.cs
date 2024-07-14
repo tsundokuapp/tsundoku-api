@@ -13,6 +13,8 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             var pastaCriadaAwsS3 = await servicoAmazon.CriarPastaS3(nomePasta);
 
             Assert.True(pastaCriadaAwsS3);
+
+            await Dispose(nomePasta);
         }
 
         [Fact]
@@ -23,6 +25,8 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             var pastaCriadaAwsS3 = await servicoAmazon.CriarPastaS3(nomePasta);
 
             Assert.True(!pastaCriadaAwsS3);
+
+            await Dispose(nomePasta);
         }
 
         [Fact]
@@ -37,6 +41,8 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
                 pastaCriadaAwsS3 = await servicoAmazon.CriarPastaS3(nomePasta);
 
             Assert.True(pastaCriadaAwsS3);
+
+            await Dispose(nomePasta);
         }
 
         [Fact]
@@ -63,6 +69,8 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             var uploadImagemRealizada = await servicoAmazon.UploadImagem(streamImagem, caminhoCompletoImagem, false);
 
             Assert.True(uploadImagemRealizada);
+
+            await Dispose(nomePasta);
         }
 
         [Fact]
@@ -76,6 +84,8 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             var uploadImagemRealizada = await servicoAmazon.UploadImagem(streamImagem, caminhoCompletoImagem, false);
 
             Assert.True(!uploadImagemRealizada);
+
+            await Dispose(nomePasta);
         }
 
         [Fact]
@@ -122,6 +132,12 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
                 pastaCriadaAwsS3 = await servicoAmazon.CriarPastaS3(nomePasta);
 
             return nomePasta;
+        }
+    
+        public static async Task Dispose(string nomePasta)
+        {
+            var servicoAmazon = new ServicosImagemAmazonS3();
+            await servicoAmazon.ExcluiObjetoBucket(nomePasta);
         }
     }
 }

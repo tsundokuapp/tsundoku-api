@@ -32,6 +32,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin.Retorno
         public string Nacionalidade { get { return SlugAuxiliar.RetornaNacionalidadePorSlug(NacionalidadeSlug); } }
         public List<RetornoGenero> Generos { get; set; }
         public string Observacao { get; set; }
+        public string DiretorioImagemObra { get; set; }
 
         public RetornoObra()
         {
