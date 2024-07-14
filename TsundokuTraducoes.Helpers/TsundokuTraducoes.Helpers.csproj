@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>disable</Nullable>
   </PropertyGroup>
@@ -9,14 +9,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.1" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="Tinify" Version="1.6.0" />
-    <PackageReference Include="FluentResults" Version="3.15.2" />
-    <PackageReference Include="AWSSDK.CloudFront" Version="3.7.303" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.308.1" />
-    <PackageReference Include="AWSSDK.SecurityToken" Version="3.7.300.93" />
-    <PackageReference Include="AWSSDK.SSO" Version="3.7.300.92" />
-    <PackageReference Include="AWSSDK.SSOOIDC" Version="3.7.302.3" />
+    <PackageReference Include="FluentResults" Version="3.16.0" />
+    <PackageReference Include="AWSSDK.CloudFront" Version="3.7.303.25" />
+    <PackageReference Include="AWSSDK.S3" Version="3.7.310.6" />
+    <PackageReference Include="AWSSDK.SecurityToken" Version="3.7.300.119" />
+    <PackageReference Include="AWSSDK.SSO" Version="3.7.300.118" />
+    <PackageReference Include="AWSSDK.SSOOIDC" Version="3.7.302.29" />
   </ItemGroup>
 
   <ItemGroup>

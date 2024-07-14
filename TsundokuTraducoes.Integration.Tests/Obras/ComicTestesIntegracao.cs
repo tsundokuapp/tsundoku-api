@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
+using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 
 namespace TsundokuTraducoes.Integration.Tests.Obras
@@ -23,6 +24,10 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            var retornoObra = JsonConvert.DeserializeObject<RetornoObra>(stringResponse);
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -42,6 +47,8 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             var response = await _httpClient.PutAsync("api/obra/comic", formData);
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -52,6 +59,8 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             var response = await _httpClient.PutAsync("api/obra/comic", formData);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }        
 
         [Fact]
@@ -61,6 +70,8 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             var response = await _httpClient.GetAsync($"api/obra/comic/{retornoObra.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -79,6 +90,8 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             var response = await _httpClient.DeleteAsync($"api/obra/comic/{retornoObra.Id}/true");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -93,8 +106,12 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         [Fact]
         public async Task DeveRetornarUmaListaDeComics()
         {
+            var retornoObra = await AdicionaObraParaAtualizar();
+
             var response = await _httpClient.GetAsync($"api/obra/comics?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         private async Task<RetornoObra> AdicionaObraParaAtualizar()

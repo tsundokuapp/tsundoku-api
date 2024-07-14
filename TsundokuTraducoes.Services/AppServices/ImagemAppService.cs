@@ -295,14 +295,9 @@ namespace TsundokuTraducoes.Services.AppServices
         {
             bool diretorioExcluido;
             
-            if (diretorioLocal) 
+            if (diretorioLocal)
             {
-                if (Directory.Exists(diretorioImagens))
-                {
-                    Directory.Delete(diretorioImagens, true);
-                }
-
-                diretorioExcluido = true;
+                diretorioExcluido = Diretorios.ExcluirDiretorioLocal(diretorioImagens);
             }
             else
             {
@@ -311,7 +306,7 @@ namespace TsundokuTraducoes.Services.AppServices
             }
 
             return diretorioExcluido;
-        }
+        }        
 
         private static byte[] RetornaByteArray(IFormFile imagemCapaPrincipal, Result<byte[]> result)
         {

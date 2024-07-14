@@ -18,5 +18,26 @@
             CriaDiretorio(diretorioCriado);
             return diretorioCriado;
         }
+
+        public static bool ExcluirDiretorioLocal(string diretorioImagens)
+        {
+            bool diretorioExcluido;
+
+            try
+            {
+                if (Directory.Exists(diretorioImagens))
+                {
+                    Directory.Delete(diretorioImagens, true);
+                }
+
+                diretorioExcluido = true;
+            }
+            catch (Exception)
+            {
+                diretorioExcluido = false;
+            }
+
+            return diretorioExcluido;
+        }
     }    
 }

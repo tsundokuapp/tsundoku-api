@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
+using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 
 namespace TsundokuTraducoes.Integration.Tests.Obras
@@ -23,6 +24,10 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+            var stringResponse = await response.Content.ReadAsStringAsync();
+            var retornoObra = JsonConvert.DeserializeObject<RetornoObra>(stringResponse);
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -42,6 +47,8 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             var response = await _httpClient.PutAsync("api/obra/novel", formData);
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }        
 
         [Fact]
@@ -52,6 +59,8 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             var response = await _httpClient.PutAsync("api/obra/novel", formData);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -60,7 +69,9 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             var retornoObra = await AdicionaObraParaRetornarUmaNovelPorId();
             var response = await _httpClient.GetAsync($"api/obra/novel/{retornoObra.Id}");           
             
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);            
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -79,6 +90,8 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             var response = await _httpClient.DeleteAsync($"api/obra/novel/{retornoObra.Id}/true");
             
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
