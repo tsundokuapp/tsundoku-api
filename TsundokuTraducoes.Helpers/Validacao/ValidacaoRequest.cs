@@ -1,6 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+using TsundokuTraducoes.Helpers.Imagens;
 
 namespace TsundokuTraducoes.Helpers.Validacao
 {
@@ -67,12 +69,16 @@ namespace TsundokuTraducoes.Helpers.Validacao
         public static bool ValidaDadosRequestCapituloNovel(CapituloDTO capituloDTO)
         {
             var requestListaImagemForm = true;
+            var resquestValidoEhConteudoNovel = true;
+
             var resquestValido =
                 VerificaString(capituloDTO.Numero) &&
                 VerificaString(capituloDTO.UsuarioInclusao) &&
                 capituloDTO.OrdemCapitulo > 0 &&
-                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
-                VerificaString(capituloDTO.ConteudoNovel);
+                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000";
+
+            if (!capituloDTO.EhIlustracoesNovel)
+                resquestValidoEhConteudoNovel = VerificaString(capituloDTO.ConteudoNovel);
 
             if (capituloDTO.EhIlustracoesNovel)
             {
@@ -80,7 +86,7 @@ namespace TsundokuTraducoes.Helpers.Validacao
                 capituloDTO.ListaImagensForm.Count > 0;
             }
 
-            return resquestValido && requestListaImagemForm;
+            return resquestValido && requestListaImagemForm && resquestValidoEhConteudoNovel;
         }
 
         public static bool ValidaDadosRequestCapituloComic(CapituloDTO capituloDTO)
@@ -155,6 +161,47 @@ namespace TsundokuTraducoes.Helpers.Validacao
         public static int RetornaSkipTratado(int? pagina)
         {
             return pagina == null ? 0 : pagina.GetValueOrDefault();
+        }
+
+        public static bool ValidaDadosRequestGenero(GeneroDTO generoDTO)
+        {
+            var resquestValido = VerificaString(generoDTO.Descricao) &&
+                VerificaString(generoDTO.UsuarioInclusao);
+            return resquestValido;
+        }
+
+        public static bool ValidaDadosRequestGeneroAtualizacao(GeneroDTO generoDTO)
+        {
+            var resquestValido = VerificaString(generoDTO.Descricao) &&
+                VerificaString(generoDTO.UsuarioInclusao);
+                VerificaString(generoDTO.UsuarioAlteracao);
+            return resquestValido;
+        }
+
+        public static bool ValidaImagemRequest(IFormFile imagem)
+        {
+            var streamImagem = imagem.OpenReadStream();
+            var byteImagem = UtilidadeImagem.ConverteStreamParaByteArray(streamImagem);
+            var ehImagem = UtilidadeImagem.ValidaImagem(byteImagem);
+
+            return ehImagem;
+        }
+
+        public static bool ValidaListaImagemRequest(List<IFormFile> listaImagem)
+        {
+            var retorno = true;
+
+            foreach (var file in listaImagem)
+            {
+                if (retorno)
+                {
+                    var streamImagem = file.OpenReadStream();
+                    var byteImagem = UtilidadeImagem.ConverteStreamParaByteArray(streamImagem);
+                    retorno = UtilidadeImagem.ValidaImagem(byteImagem);
+                }
+            }
+
+            return retorno;
         }
     }
 }

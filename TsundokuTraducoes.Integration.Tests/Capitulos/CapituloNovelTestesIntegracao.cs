@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
+using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 
 namespace TsundokuTraducoes.Integration.Tests.Capitulos
@@ -26,6 +27,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -39,6 +42,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -52,6 +57,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -65,6 +72,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -79,6 +88,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -93,6 +104,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -105,6 +118,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var response = await _httpClient.GetAsync($"api/capitulo/novel/{retornoCapitulo.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -122,15 +137,17 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
             var retornoCapitulo = await AdicionaCapitulo(retornoVolume.Id);
 
-            var response = await _httpClient.DeleteAsync($"api/capitulo/novel/{retornoCapitulo.Id}");
+            var response = await _httpClient.DeleteAsync($"api/capitulo/novel/{retornoCapitulo.Id}/true");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
         public async Task DeveRetornarNotFoundAoExcluirUmCapituloNovelInexistente()
         {
-            var response = await _httpClient.DeleteAsync($"api/capitulo/novel/{Guid.NewGuid()}");
+            var response = await _httpClient.DeleteAsync($"api/capitulo/novel/{Guid.NewGuid()}/true");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -138,8 +155,14 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         [Fact]
         public async Task DeveRetornarUmaListaDeCapituloNovels()
         {
+            var retornoObra = await AdicionaNovel();
+            var retornoVolume = await AdicionaVolume(retornoObra.Id);
+            var retornoCapitulo = await AdicionaCapitulo(retornoVolume.Id);
+
             var response = await _httpClient.GetAsync($"api/capitulo/novel?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         public async Task<RetornoObra> AdicionaNovel()

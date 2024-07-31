@@ -95,6 +95,11 @@ namespace TsundokuTraducoes.Controllers
             if (!ValidacaoRequest.ValidaDadosRequestCapituloNovel(capituloDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente adicionar o capitulo novamente!");
 
+            var listaImagemEnviada = capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0;
+            if (listaImagemEnviada)
+                if (!ValidacaoRequest.ValidaListaImagemRequest(capituloDTO.ListaImagensForm))
+                    return BadRequest("Alguma imagem da lista de imagens é invalida!");
+
             var result = await _capituloService.AdicionaCapituloNovel(capituloDTO);
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
@@ -107,6 +112,9 @@ namespace TsundokuTraducoes.Controllers
         {
             if (!ValidacaoRequest.ValidaDadosRequestCapituloComic(capituloDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente adicionar o capitulo novamente!");
+
+            if (!ValidacaoRequest.ValidaListaImagemRequest(capituloDTO.ListaImagensForm))
+                return BadRequest("Alguma imagem da lista de imagens é invalida!");
 
             var result = await _capituloService.AdicionaCapituloComic(capituloDTO);
             if (result.IsFailed)
@@ -121,6 +129,11 @@ namespace TsundokuTraducoes.Controllers
         {
             if (!ValidacaoRequest.ValidaDadosRequestCapituloAtualizacao(capituloDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente atualizar o capitulo novamente!");
+
+            var listaImagemEnviada = capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0;
+            if (listaImagemEnviada)
+                if (!ValidacaoRequest.ValidaListaImagemRequest(capituloDTO.ListaImagensForm))
+                    return BadRequest("Alguma imagem da lista de imagens é invalida!");
 
             var result = await _capituloService.AtualizaCapituloNovel(capituloDTO);
             if (result.IsFailed)
@@ -141,6 +154,9 @@ namespace TsundokuTraducoes.Controllers
             if (!ValidacaoRequest.ValidaDadosRequestCapituloAtualizacao(capituloDTO))
                 return BadRequest("Verifique os campos obrigatórios e tente atualizar o capitulo novamente!");
 
+            if (!ValidacaoRequest.ValidaListaImagemRequest(capituloDTO.ListaImagensForm))
+                return BadRequest("Alguma imagem da lista de imagens é invalida!");
+
             var result = await _capituloService.AtualizaCapituloComic(capituloDTO);
             if (result.IsFailed)
             {
@@ -155,10 +171,10 @@ namespace TsundokuTraducoes.Controllers
         }
 
 
-        [HttpDelete("api/capitulo/novel/{id}")]
-        public async Task<IActionResult> ExcluiCapituloNovel(Guid id)
+        [HttpDelete("api/capitulo/novel/{id}/{arquivoLocal}")]
+        public async Task<IActionResult> ExcluiCapituloNovel(Guid id, bool arquivoLocal)
         {
-            var result = await _capituloService.ExcluiCapituloNovel(id);
+            var result = await _capituloService.ExcluiCapituloNovel(id, arquivoLocal);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;
@@ -171,10 +187,10 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Successes[0].Message);
         }
 
-        [HttpDelete("api/capitulo/comic/{id}")]
-        public async Task<IActionResult> ExcluiCapituloComic(Guid id)
+        [HttpDelete("api/capitulo/comic/{id}/{arquivoLocal}")]
+        public async Task<IActionResult> ExcluiCapituloComic(Guid id, bool arquivoLocal)
         {
-            var result = await _capituloService.ExcluiCapituloComic(id);
+            var result = await _capituloService.ExcluiCapituloComic(id, arquivoLocal);
             if (result.IsFailed)
             {
                 var mensagemErro = result.Errors[0].Message;

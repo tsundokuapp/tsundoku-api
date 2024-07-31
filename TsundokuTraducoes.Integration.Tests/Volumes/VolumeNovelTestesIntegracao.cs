@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
+using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 
 namespace TsundokuTraducoes.Integration.Tests.Volumes
@@ -25,6 +26,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -37,6 +40,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -50,6 +55,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -63,6 +70,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -73,6 +82,8 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
 
             var response = await _httpClient.GetAsync($"api/volume/novel/{retornoVolume.Id}");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -88,14 +99,16 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var retornoObra = await AdicionaNovel();
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
-            var response = await _httpClient.DeleteAsync($"api/volume/novel/{retornoVolume.Id}");
+            var response = await _httpClient.DeleteAsync($"api/volume/novel/{retornoVolume.Id}/true");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
         public async Task DeveRetornarNotFoundAoExcluirUmVolumeNovelInexistente()
         {
-            var response = await _httpClient.DeleteAsync($"api/obra/novel/{Guid.NewGuid()}");
+            var response = await _httpClient.DeleteAsync($"api/obra/novel/{Guid.NewGuid()}/true");
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 

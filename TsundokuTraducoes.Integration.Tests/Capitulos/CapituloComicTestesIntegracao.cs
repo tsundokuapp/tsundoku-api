@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
+using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 
 namespace TsundokuTraducoes.Integration.Tests.Capitulos
@@ -26,6 +27,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -39,6 +42,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -53,6 +58,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -67,6 +74,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -79,6 +88,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var response = await _httpClient.GetAsync($"api/capitulo/comic/{retornoCapitulo.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
@@ -96,15 +107,17 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
             var retornoCapitulo = await AdicionaCapitulo(retornoVolume.Id);
 
-            var response = await _httpClient.DeleteAsync($"api/capitulo/comic/{retornoCapitulo.Id}");
+            var response = await _httpClient.DeleteAsync($"api/capitulo/comic/{retornoCapitulo.Id}/true");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+            Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
         [Fact]
         public async Task DeveRetornarNotFoundAoExcluirUmCapituloComicInexistente()
         {
-            var response = await _httpClient.DeleteAsync($"api/capitulo/comic/{Guid.NewGuid()}");
+            var response = await _httpClient.DeleteAsync($"api/capitulo/comic/{Guid.NewGuid()}/true");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }

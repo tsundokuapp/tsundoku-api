@@ -1,29 +1,54 @@
-﻿using TsundokuTraducoes.Domain.Interfaces.Services;
+﻿using TsundokuTraducoes.Domain.Interfaces.Repositories;
+using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Generos;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Domain.Services
 {
     public class GeneroService : IGeneroService
     {
-        public Task<List<Genero>> RetornaListaGeneros()
+        private readonly IGeneroRepository _generoRepository;
+
+        public GeneroService(IGeneroRepository generoRepository)
         {
-            throw new NotImplementedException();
-        }
-        
-        public Task AdicionaGenero(Genero genero)
-        {
-            throw new NotImplementedException();
+            _generoRepository = generoRepository;
         }
 
-        public Task AtualizaGenero(Genero genero)
+        public async Task<List<Genero>> RetornaListaGeneros()
         {
-            throw new NotImplementedException();
+            return await _generoRepository.RetornaListaGeneros();
         }
 
-        public void ExcluiGenero(Genero genero)
+        public async Task<Genero> RetornaGeneroPorId(Guid id)
         {
-            throw new NotImplementedException();
+            return await _generoRepository.RetornaGeneroPorId(id);
         }
 
+        public async Task<bool> AdicionaGenero(Genero genero)
+        {
+            await _generoRepository.AdicionaGenero(genero);
+            return await AlteracoesSalvas();
+        }
+
+        public Genero AtualizaGenero(GeneroDTO generoDTO)
+        {
+            return _generoRepository.AtualizaGenero(generoDTO);            
+        }
+
+        public async Task<bool> ExcluiGenero(Genero genero)
+        {
+            _generoRepository.ExcluiGenero(genero);
+            return await AlteracoesSalvas();
+        }
+
+        public async Task<Genero> RetornaGeneroExistente(string slugGenero)
+        {
+            return await _generoRepository.RetornaGeneroExistente(slugGenero);
+        }
+
+        public async Task<bool> AlteracoesSalvas()
+        {
+            return await _generoRepository.AlteracoesSalvas();
+        }
     }
 }

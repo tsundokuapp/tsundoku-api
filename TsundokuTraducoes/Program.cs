@@ -9,14 +9,26 @@ using System;
 using TsundokuTraducoes.Api;
 using TsundokuTraducoes.Api.Extensions;
 using TsundokuTraducoes.Data.Configuration;
+using TsundokuTraducoes.Helpers.Configuration;
 
 
 var _connectionStringConfig = new ConnectionStringConfig();
+var _acessoExternoTinify = new AcessoExternoTinify();
+var _acessoExternoAws = new AcessoExternoAws();
 
 var builder = WebApplication.CreateBuilder(args);
 _connectionStringConfig.ConnectionString = builder.Configuration.GetConnectionString("Default");
-
 SourceConnection.SetaConnectionStringConfig(_connectionStringConfig);
+
+_acessoExternoTinify.ApiKeyTinify = builder.Configuration.GetSection("ApiTinify").GetValue<string>("ApiKey");
+
+_acessoExternoAws.AwsAccessKeyId = builder.Configuration.GetSection("ApiAws").GetValue<string>("AwsAccessKeyId");
+_acessoExternoAws.AwsSecretAccessKey = builder.Configuration.GetSection("ApiAws").GetValue<string>("AwsSecretAccessKey");
+_acessoExternoAws.BucketName = builder.Configuration.GetSection("ApiAws").GetValue<string>("BucketName");
+_acessoExternoAws.DistributionId = builder.Configuration.GetSection("ApiAws").GetValue<string>("DistributionId");
+_acessoExternoAws.DistributionDomainName = builder.Configuration.GetSection("ApiAws").GetValue<string>("DistributionDomainName");
+
+ConfigurationExternal.SetaAcessoExterno(_acessoExternoTinify, _acessoExternoAws);
 
 builder.Services.AddSqlConnection(_connectionStringConfig.ConnectionString);
 
@@ -76,11 +88,6 @@ app.Run();
 
 void LoadConfiguration(WebApplication app)
 {
-    Configuration.EhAmbienteDesenvolvimento = app.Configuration.GetValue<bool>("EhAmbienteDesenvolvimento");
-    Configuration.DiretorioWeb = Configuration.EhAmbienteDesenvolvimento
-        ? app.Environment.WebRootPath
-        : app.Configuration.GetValue<string>("DiretorioWeb");
-
     var connectionStrings = new Configuration.ConnectionStrings();
     app.Configuration.GetSection("ConnectionStrings").Bind(connectionStrings);
     Configuration.ConnectionString = connectionStrings;

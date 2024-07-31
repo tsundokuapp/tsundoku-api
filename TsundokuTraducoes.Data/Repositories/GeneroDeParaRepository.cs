@@ -3,7 +3,6 @@ using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.DePara;
 using TsundokuTraducoes.Entities.Entities.Generos;
-using TsundokuTraducoes.Entities.Entities.Obra;
 
 namespace TsundokuTraducoes.Data.Repositories
 {

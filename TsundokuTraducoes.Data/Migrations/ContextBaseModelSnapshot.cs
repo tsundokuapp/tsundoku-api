@@ -71,8 +71,8 @@ namespace TsundokuTraducoes.Data.Migrations
                         new
                         {
                             Id = new Guid("08dba6c0-f903-469b-866c-223f5ab45e56"),
-                            DataAlteracao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9938),
-                            DataInclusao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9937),
+                            DataAlteracao = new DateTime(2024, 4, 12, 10, 39, 34, 44, DateTimeKind.Local).AddTicks(187),
+                            DataInclusao = new DateTime(2024, 4, 12, 10, 39, 34, 44, DateTimeKind.Local).AddTicks(187),
                             DiretorioImagemCapitulo = "G:\\Tsundoku\\BackEnd\\tsundoku-api\\TsundokuTraducoes\\wwwroot\\assets\\images\\HatsukoiLosstime\\Volume01\\Capitulo01",
                             ListaImagens = "[{\\\"Id\\\": 1,\\\"Ordem\\\": 1,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/0-46.jpg\\\"},{\\\"Id\\\": 2,\\\"Ordem\\\": 2,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/0-47.jpg\\\"},{\\\"Id\\\": 3,\\\"Ordem\\\": 3,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/1-60.jpg\\\"},{\\\"Id\\\": 4,\\\"Ordem\\\": 4,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/2-60.jpg\\\"},{\\\"Id\\\": 5,\\\"Ordem\\\": 5,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/3-61.jpg\\\"},{\\\"Id\\\": 6,\\\"Ordem\\\": 6,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/4-61.jpg\\\"},{\\\"Id\\\": 7,\\\"Ordem\\\": 7,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/5-61.jpg\\\"},{\\\"Id\\\": 8,\\\"Ordem\\\": 8,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/6-61.jpg\\\"},{\\\"Id\\\": 9,\\\"Ordem\\\": 9,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/7-61.jpg\\\"},{\\\"Id\\\": 10,\\\"Ordem\\\": 10,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/8-61.jpg\\\"},{\\\"Id\\\": 10,\\\"Ordem\\\": 10,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/9-61.jpg\\\"},{\\\"Id\\\": 10,\\\"Ordem\\\": 10,\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2022/01/10-108.jpg\\\"}]",
                             Numero = "1",
@@ -151,8 +151,8 @@ namespace TsundokuTraducoes.Data.Migrations
                         {
                             Id = new Guid("08dba6b4-3619-4cc6-8857-0bbe53a6f670"),
                             ConteudoNovel = "[{\\\"Id\\\": 1,\\\"Ordem\\\": 1,\\\"Alt\\\" = \\\"Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01\\\",\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg\\\"},{\\\"Id\\\": 2,\\\"Ordem\\\": 2,\\\"Alt\\\" = \\\"MJ_V1_ilust_01\\\",\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_01.jpg\\\"},{\\\"Id\\\": 3,\\\"Ordem\\\": 3,\\\"Alt\\\" = \\\"MJ_V1_ilust_02\\\",\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_02.jpg\\\"},{\\\"Id\\\": 4,\\\"Ordem\\\": 4,\\\"Alt\\\" = \\\"MJ_V1_ilust_03\\\",\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_03.jpg\\\"},{\\\"Id\\\": 5,\\\"Ordem\\\": 5,\\\"Alt\\\" = \\\"MJ_V1_ilust_04\\\",\\\"Url\\\": \\\"http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_04.jpg\\\"}]",
-                            DataAlteracao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9759),
-                            DataInclusao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9758),
+                            DataAlteracao = new DateTime(2024, 4, 12, 10, 39, 34, 44, DateTimeKind.Local).AddTicks(59),
+                            DataInclusao = new DateTime(2024, 4, 12, 10, 39, 34, 44, DateTimeKind.Local).AddTicks(58),
                             DiretorioImagemCapitulo = "G:\\Tsundoku\\BackEnd\\tsundoku-api\\TsundokuTraducoes\\wwwroot\\assets\\images\\BruxaErrante\\Volume01\\Ilustracoes",
                             EhIlustracoesNovel = true,
                             Numero = "Ilustrações",
@@ -171,8 +171,8 @@ namespace TsundokuTraducoes.Data.Migrations
                         {
                             Id = new Guid("08dba6bb-8faf-4ce3-85d7-7cfe5b59648b"),
                             ConteudoNovel = "\r\n            <p>Era um país tranquilo, cercado por montanhas proibidas e escondido atrás de muros altos. Ninguém do mundo exterior poderia visitar.</p>\r\n            <p>Acima de uma face rochosa brilhando com o calor da luz do sol, uma única vassoura voava pelo ar quente. A pessoa que a pilotava era uma linda jovem. Ela usava um robe preto e um chapéu pontudo, e seus cabelos cinzentos voavam ao vento. Se alguém estivesse por perto, viraria-se para olhar, imaginando com um suspiro quem seria aquela beldade a voar...</p>\r\n            <p>Isso aí. Eu mesma.</p>\r\n            <p>Ah, era uma piada.</p>\r\n            <p>— Quase lá...</p>\r\n            <p>O muro alto parecia ter sido esculpido na própria montanha. Olhando um pouco para baixo, vi o portão e guiei minha vassoura na direção dele.</p>\r\n            <p>Com certeza foi trabalhoso, mas suponho que as pessoas que moravam aqui o haviam planejado dessa maneira – para impedir que as pessoas entrassem por engano. Afinal, não há como alguém caminhar por um lugar desses sem uma boa razão.</p>\r\n            <p>Desci da minha vassoura bem em frente ao portão. Um sentinela local, aparentemente conduzindo inspeções de imigração, aproximou-se de mim.</p>\r\n            <p>Depois de me olhar lentamente da cabeça aos pés e examinar o broche no meu peito, sorriu alegremente.</p>\r\n            <p>— Bem-vinda ao País dos Magos. Por aqui, Madame Bruxa.</p>\r\n            <p>— Hmm? Você não precisa testar se posso fazer magia ou não?</p>\r\n            <p>Ouvi dizer que quem visitava este país tinha que provar sua capacidade mágica antes de entrar; qualquer pessoa que não alcançasse um determinado nível teria seu acesso negado.</p>\r\n            <p>— Eu a vi voando. E, além disso, esse broche que está usando indica que é uma bruxa. Então, por favor, continue em frente.</p>\r\n            <p><em>Ah sim, é mesmo. Ser capaz de voar em uma vassoura é um dos pré-requisitos mínimos para a entrada. É claro que puderam ver minha aproximação lá da guarita. Que boba que fui!</em></p>\r\n            <p>Depois de me inclinar um pouco para o guarda, passei pelo portão enorme. Aqui estava o País dos Magos. Usuários iniciantes de magia, aprendizes e bruxas de pleno direito – desde que pudessem usar magia, estariam autorizados a entrar neste país curioso, enquanto todos os outros seriam impedidos.</p>\r\n            <p>Ao passar pelo imenso portão, duas placas estranhas, lado a lado, chamaram minha atenção. Olhei para elas um pouco confusa.</p>\r\n            <p>A primeira mostrava um mago montado em uma vassoura, com um círculo ao seu redor. Aquela ao lado mostrava a imagem de um soldado andando, com um triângulo em sua volta.</p>\r\n            <p><em>O que há com essas placas?</em></p>\r\n            <p>Eu soube a resposta assim que olhei para cima – acima do monte de casas de tijolos e sob o sol cintilante, magos de todos os tipos atravessavam o céu em todas as direções.</p>\r\n            <p><em>Entendo. Deve ser uma regra nos países em que permitem apenas a entrada de magos – quase todo mundo está voando em uma vassoura, por isso poucas pessoas escolhem andar.</em></p>\r\n            <p>Satisfeita com minha explicação para as placas, peguei minha vassoura e me sentei de lado. Com um impulso, levantei suavemente no ar em uma demonstração viva do desenho da placa.</p>\r\n            ",
-                            DataAlteracao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9875),
-                            DataInclusao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9874),
+                            DataAlteracao = new DateTime(2024, 4, 12, 10, 39, 34, 44, DateTimeKind.Local).AddTicks(126),
+                            DataInclusao = new DateTime(2024, 4, 12, 10, 39, 34, 44, DateTimeKind.Local).AddTicks(125),
                             DiretorioImagemCapitulo = "G:\\Tsundoku\\BackEnd\\tsundoku-api\\TsundokuTraducoes\\wwwroot\\assets\\images\\BruxaErrante\\Volume01\\Ilustracoes",
                             EhIlustracoesNovel = false,
                             Numero = "1",
@@ -239,10 +239,22 @@ namespace TsundokuTraducoes.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime?>("DataAlteracao")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DataInclusao")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Descricao")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Slug")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioAlteracao")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UsuarioInclusao")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -264,49 +276,49 @@ namespace TsundokuTraducoes.Data.Migrations
                         },
                         new
                         {
-                            Id = new Guid("3dc4debc-7712-44db-aad0-2816e2560bfb"),
+                            Id = new Guid("9f67c7bc-494d-4581-86f6-89a40f15868f"),
                             Descricao = "Ação",
                             Slug = "acao"
                         },
                         new
                         {
-                            Id = new Guid("9acb8e7b-c0c8-4a47-b0df-3ebadbaf63bb"),
+                            Id = new Guid("25830544-1fac-4857-90f8-e99e84d1123a"),
                             Descricao = "Comédia",
                             Slug = "comedia"
                         },
                         new
                         {
-                            Id = new Guid("1b21f901-79a6-4b52-9655-977c8b75e02b"),
+                            Id = new Guid("904904b2-8a7e-42ce-a98a-cbccab680324"),
                             Descricao = "Drama",
                             Slug = "drama"
                         },
                         new
                         {
-                            Id = new Guid("1c4764bc-a51a-4c20-928b-a3de4383f3d0"),
+                            Id = new Guid("0ded2fcc-e11f-4a2b-9326-784255ca52ed"),
                             Descricao = "Slice of Life",
                             Slug = "slice-of-life"
                         },
                         new
                         {
-                            Id = new Guid("3b2056b1-7e0a-4671-a97f-15075c78e133"),
+                            Id = new Guid("89eaaa6c-0942-442e-b30c-b9335439017b"),
                             Descricao = "Isekai",
                             Slug = "isekai"
                         },
                         new
                         {
-                            Id = new Guid("73f3dc77-f599-4b20-adf6-b6d5bfdd707e"),
+                            Id = new Guid("e41792af-c24b-4e6d-8bc7-6dcd7c2f5ffc"),
                             Descricao = "Harém",
                             Slug = "harem"
                         },
                         new
                         {
-                            Id = new Guid("86bd1103-39ef-4976-8665-d2aec2029817"),
+                            Id = new Guid("b953494a-a405-4bdf-8191-0daf69079c8d"),
                             Descricao = "Horror",
                             Slug = "horror"
                         },
                         new
                         {
-                            Id = new Guid("fbe71c34-39f7-43ac-9f70-297cabdea5ee"),
+                            Id = new Guid("48e33c46-bf45-4f93-b4d0-a23a617f63f1"),
                             Descricao = "Fantasia",
                             Slug = "fantasia"
                         });
@@ -372,6 +384,9 @@ namespace TsundokuTraducoes.Data.Migrations
                     b.Property<string>("NumeroUltimoVolume")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Observacao")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Sinopse")
                         .HasColumnType("longtext");
 
@@ -419,9 +434,9 @@ namespace TsundokuTraducoes.Data.Migrations
                             Autor = "Nishina Yuuki",
                             CargoObraDiscord = "@Hatsukoi Losstime",
                             CodigoCorHexaObra = "#01DFD7",
-                            DataAlteracao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9514),
-                            DataAtualizacaoUltimoCapitulo = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9592),
-                            DataInclusao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9514),
+                            DataAlteracao = new DateTime(2024, 4, 12, 10, 39, 34, 43, DateTimeKind.Local).AddTicks(9788),
+                            DataAtualizacaoUltimoCapitulo = new DateTime(2024, 4, 12, 10, 39, 34, 43, DateTimeKind.Local).AddTicks(9887),
+                            DataInclusao = new DateTime(2024, 4, 12, 10, 39, 34, 43, DateTimeKind.Local).AddTicks(9787),
                             DiretorioImagemObra = "G:\\Tsundoku\\BackEnd\\tsundoku-api\\TsundokuTraducoes\\wwwroot\\assets\\images\\HatsukoiLosstime",
                             EhObraMaiorIdade = false,
                             EhRecomendacao = false,
@@ -431,6 +446,7 @@ namespace TsundokuTraducoes.Data.Migrations
                             NacionalidadeSlug = "japonesa",
                             NumeroUltimoCapitulo = "Capítulo 01",
                             NumeroUltimoVolume = "Volume 01",
+                            Observacao = "",
                             Sinopse = "Em um mundo onde apenas duas pessoas se moviam...",
                             Slug = "hatsukoi-losstime",
                             SlugUltimoCapitulo = "capitulo-1",
@@ -505,6 +521,9 @@ namespace TsundokuTraducoes.Data.Migrations
                     b.Property<string>("NumeroUltimoVolume")
                         .HasColumnType("longtext");
 
+                    b.Property<string>("Observacao")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Sinopse")
                         .HasColumnType("longtext");
 
@@ -552,9 +571,9 @@ namespace TsundokuTraducoes.Data.Migrations
                             Autor = "Shiraishi Jougi",
                             CargoObraDiscord = "@Bruxa Errante, a Jornada de Elaina",
                             CodigoCorHexaObra = "#81F7F3",
-                            DataAlteracao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9330),
-                            DataAtualizacaoUltimoCapitulo = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9493),
-                            DataInclusao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9327),
+                            DataAlteracao = new DateTime(2024, 4, 12, 10, 39, 34, 43, DateTimeKind.Local).AddTicks(9608),
+                            DataAtualizacaoUltimoCapitulo = new DateTime(2024, 4, 12, 10, 39, 34, 43, DateTimeKind.Local).AddTicks(9768),
+                            DataInclusao = new DateTime(2024, 4, 12, 10, 39, 34, 43, DateTimeKind.Local).AddTicks(9605),
                             DiretorioImagemObra = "G:\\Tsundoku\\BackEnd\\tsundoku-api\\TsundokuTraducoes\\wwwroot\\assets\\images\\BruxaErrante",
                             EhObraMaiorIdade = false,
                             EhRecomendacao = false,
@@ -564,6 +583,7 @@ namespace TsundokuTraducoes.Data.Migrations
                             NacionalidadeSlug = "japonesa",
                             NumeroUltimoCapitulo = "Ilustrações",
                             NumeroUltimoVolume = "Volume 01",
+                            Observacao = "",
                             Sinopse = "A Bruxa, Sim, sou eu.",
                             Slug = "bruxa-errante-a-jornada-de-elaina",
                             SlugUltimoCapitulo = "ilustracoes",
@@ -628,8 +648,8 @@ namespace TsundokuTraducoes.Data.Migrations
                         {
                             Id = new Guid("08dba651-ec33-4964-8f67-eecd4cbaea50"),
                             ComicId = new Guid("3d6a759d-8c9e-4891-9f0e-89b8d99821cb"),
-                            DataAlteracao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9684),
-                            DataInclusao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9683),
+                            DataAlteracao = new DateTime(2024, 4, 12, 10, 39, 34, 43, DateTimeKind.Local).AddTicks(9986),
+                            DataInclusao = new DateTime(2024, 4, 12, 10, 39, 34, 43, DateTimeKind.Local).AddTicks(9986),
                             DiretorioImagemVolume = "G:\\Tsundoku\\BackEnd\\tsundoku-api\\TsundokuTraducoes\\wwwroot\\assets\\images\\HatsukoiLosstime\\Volume01",
                             ImagemVolume = "https://tsundoku.com.br/wp-content/uploads/2022/01/Hatsukoi_cover.jpg",
                             Numero = "1",
@@ -690,8 +710,8 @@ namespace TsundokuTraducoes.Data.Migrations
                         new
                         {
                             Id = new Guid("08dba651-c8ee-460a-8b4a-56573c446d2a"),
-                            DataAlteracao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9606),
-                            DataInclusao = new DateTime(2024, 3, 13, 18, 30, 10, 860, DateTimeKind.Local).AddTicks(9606),
+                            DataAlteracao = new DateTime(2024, 4, 12, 10, 39, 34, 43, DateTimeKind.Local).AddTicks(9905),
+                            DataInclusao = new DateTime(2024, 4, 12, 10, 39, 34, 43, DateTimeKind.Local).AddTicks(9904),
                             DiretorioImagemVolume = "G:\\Tsundoku\\BackEnd\\tsundoku-api\\TsundokuTraducoes\\wwwroot\\assets\\images\\BruxaErrante\\Volume01",
                             ImagemVolume = "https://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg",
                             NovelId = new Guid("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),

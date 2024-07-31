@@ -107,6 +107,7 @@ git push -f origin main
 
 - Chegar até a pasta do projeto
   - Exemplo de comando: ```cd TsundokuTraducoes.Integration.Tests```
+- Adicionar o arquivo App.Config no projeto para adicionar a ApiKey da api para otimizar as imagens
 
 **3º** Passo
 

@@ -2,18 +2,22 @@
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.DePara;
+using TsundokuTraducoes.Entities.Entities.Generos;
 using TsundokuTraducoes.Entities.Entities.Obra;
+using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Data.Repositories
 {
     public class ObraRepository : IObraRepository
     {
-        private readonly IGeneroDeParaRepository _generoRepository;
+        private readonly IGeneroDeParaRepository _generoDeParaRepository;
+        private readonly IGeneroRepository _generoRepository;
         protected readonly ContextBase _context;
 
-        public ObraRepository(ContextBase context, IGeneroDeParaRepository generoRepository)
+        public ObraRepository(ContextBase context, IGeneroDeParaRepository generoDeParaRepository, IGeneroRepository generoRepository)
         {
+            _generoDeParaRepository = generoDeParaRepository;
             _generoRepository = generoRepository;
             _context = context;
         }
@@ -105,8 +109,8 @@ namespace TsundokuTraducoes.Data.Repositories
             else
             {
                 foreach (var generoNovel in novel.GenerosNovel)
-                {                    
-                    _generoRepository.ExcluiGeneroNovel(generoNovel);
+                {
+                    _generoDeParaRepository.ExcluiGeneroNovel(generoNovel);
                 }
             }
 
@@ -115,8 +119,26 @@ namespace TsundokuTraducoes.Data.Repositories
             {
                 foreach (var genero in arrayGenero)
                 {
-                    var generoEncontrado = _context.Generos.AsNoTracking().Single(s => s.Slug == genero);
-                    await _generoRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = generoEncontrado.Id });
+                    var slugGenero = TratamentoDeStrings.RetornaStringSlug(genero);
+                    var generoEncontrado = _context.Generos.AsNoTracking().SingleOrDefault(s => s.Slug == genero);
+
+                    if (generoEncontrado != null)
+                    {
+                        await _generoDeParaRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = generoEncontrado.Id });
+                    }
+                    else
+                    {
+                        var novoGenero = new Genero();
+                        novoGenero.Descricao = genero;
+                        novoGenero.Slug = slugGenero;
+                        novoGenero.DataInclusao = DateTime.Now;
+                        novoGenero.DataAlteracao = novoGenero.DataInclusao;
+                        novoGenero.UsuarioInclusao = novel.UsuarioInclusao;
+
+                        await _generoRepository.AdicionaGenero(novoGenero);
+                        await _generoDeParaRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = novoGenero.Id});
+                    }
+
                     await AlteracoesSalvas();
                 }
             }
@@ -132,7 +154,7 @@ namespace TsundokuTraducoes.Data.Repositories
             {
                 foreach (var generosComic in comic.GenerosComic)
                 {
-                    _generoRepository.ExcluiGeneroComic(generosComic);
+                    _generoDeParaRepository.ExcluiGeneroComic(generosComic);
                 }
             }
 
@@ -141,8 +163,26 @@ namespace TsundokuTraducoes.Data.Repositories
             {
                 foreach (var genero in arrayGenero)
                 {
-                    var generoEncontrado = _context.Generos.AsNoTracking().Single(s => s.Slug == genero);
-                    await _generoRepository.AdicionaGeneroComic(new GeneroComic { ComicId = comic.Id, GeneroId = generoEncontrado.Id });
+                    var slugGenero = TratamentoDeStrings.RetornaStringSlug(genero);
+                    var generoEncontrado = _context.Generos.AsNoTracking().SingleOrDefault(s => s.Slug == genero);
+
+                    if (generoEncontrado != null)
+                    {
+                        await _generoDeParaRepository.AdicionaGeneroComic(new GeneroComic { ComicId = comic.Id, GeneroId = generoEncontrado.Id });
+                    }
+                    else
+                    {
+                        var novoGenero = new Genero();
+                        novoGenero.Descricao = genero;
+                        novoGenero.Slug = slugGenero;
+                        novoGenero.DataInclusao = DateTime.Now;
+                        novoGenero.DataAlteracao = novoGenero.DataInclusao;
+                        novoGenero.UsuarioInclusao = comic.UsuarioInclusao;
+
+                        await _generoRepository.AdicionaGenero(novoGenero);
+                        await _generoDeParaRepository.AdicionaGeneroComic(new GeneroComic { ComicId = comic.Id, GeneroId = generoEncontrado.Id });
+                    }
+
                     await AlteracoesSalvas();
                 }
             }
