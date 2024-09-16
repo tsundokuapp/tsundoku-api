@@ -10,8 +10,8 @@ COPY ["TsundokuTraducoes.Domain/TsundokuTraducoes.Domain.csproj", "TsundokuTradu
 COPY ["TsundokuTraducoes.Entities/TsundokuTraducoes.Entities.csproj", "TsundokuTraducoes.Entities/"]
 COPY ["TsundokuTraducoes.Helpers/TsundokuTraducoes.Helpers.csproj", "TsundokuTraducoes.Helpers/"]
 COPY ["TsundokuTraducoes.Services/TsundokuTraducoes.Services.csproj", "TsundokuTraducoes.Services/"]
-COPY ["TsundokuTraducoes.Services/TsundokuTraducoes.Entities.Tests.csproj", "TsundokuTraducoes.Entities.Tests/"]
-COPY ["TsundokuTraducoes.Services/TsundokuTraducoes.Integration.Tests.csproj", "TsundokuTraducoes.Integration.Tests/"]
+COPY ["TsundokuTraducoes.Entities.Tests/TsundokuTraducoes.Entities.Tests.csproj", "TsundokuTraducoes.Entities.Tests/"]
+COPY ["TsundokuTraducoes.Integration.Tests/TsundokuTraducoes.Integration.Tests.csproj", "TsundokuTraducoes.Integration.Tests/"]
 
 RUN dotnet restore "./TsundokuTraducoes/TsundokuTraducoes.Api.csproj"
 
