@@ -23,4 +23,7 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build /app/out .
 
+RUN mkdir -p /app/certificados
+COPY TsundokuTraducoes.Helpers/Certifidos/aspnetapp.pfx /app/certificados
+
 ENTRYPOINT [ "dotnet", "TsundokuTraducoes.Api.dll" ]
