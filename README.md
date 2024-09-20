@@ -81,7 +81,7 @@ git push -f origin main
 
 Comandos docker:
 
-- Após realizar o clone dentro do ambiente Docker, acessar as seguintes pastas:
+- Após realizar o clone dentro do ambiente Docker, acessar a seguinte pasta:
   - cd tsundoku-api/
 
 - Criando uma rede para comunicação entre os containers
