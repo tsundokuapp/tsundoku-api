@@ -61,6 +61,8 @@ LoadConfiguration(app);
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
@@ -73,15 +75,13 @@ app.UseCors(c =>
     c.AllowAnyOrigin();
 });
 
-app.UseSwagger();
-app.UseSwaggerUI();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapGet("/", () => "Você perdeu alguma coisa aqui? Volte agora de onde veio...");
-    endpoints.MapGet("/api/", () => "Reveja suas decisões, você não deveria estar aqui...");
-    endpoints.MapGet("/api/obras/", () => "Você ainda não reviu suas decisões...");
+    endpoints.MapGet("/", () => "VocÃª perdeu alguma coisa aqui? Volte agora de onde veio...");
+    endpoints.MapGet("/api/", () => "Reveja suas decisÃµes, vocÃª nÃ£o deveria estar aqui...");
+    endpoints.MapGet("/api/obras/", () => "VocÃª ainda nÃ£o reviu suas decisÃµes...");
 });
 
 app.Run();
