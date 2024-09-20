@@ -65,7 +65,7 @@ git push -f origin main
 - Basta importar, no Postam, o arquivo json disponível e utilizar.
 
 
-## Iniciando o projeto
+## Iniciando o projeto (ambiente windows)
 
 - Copie o arquivo appsettingsExample.json e altere seu nome para appsettings.json, adicionando a connectionString do banco local ou remoto.
 - Adicionar diretórios wwwroot/image (_Enquanto salvar arquivos locais_)
@@ -77,6 +77,57 @@ git push -f origin main
 - E em seguida rodar o projeto para subir a api
   - Visual Studio Code > ```dotnet run```
 
+## Iniciando o projeto (ambiente docker)
+
+Comandos docker:
+
+- Após realizar o clone dentro do ambiente Docker, acessar as seguintes pastas:
+  - cd tsundoku-api/
+
+- Criando uma rede para comunicação entre os containers
+  - ```docker network create --driver bridge tsundokuapi-bridge```
+
+- Subindo banco MySql 
+Criando um container MySql com a nova rede
+Lembrando que esse nome vai no arquivo appconfig que está no Drive
+  - ```docker run --name=mysql -e MYSQL_ROOT_PASSWORD=1234 -d --network tsundokuapi-bridge mysql:5.6```
+
+- O certificado já está no projeto, caso precise gerar um novo, procedimentos abaixo:
+Gerar certificados locais para poder liberar porta https
+Ambiente windows
+  - ```dotnet dev-certs https -ep C:\Users\edsra\.aspnet\https\aspnetapp.pfx -p tsundokuapi```
+    - Onde "C:\Users\edsra\" é a pasta raíz da máquina.
+    - Onde "-p tsundokuapi" senha do certificado
+
+  - ```dotnet dev-certs https --trust```
+
+- Outros ambientes pode ser consultado no artigo [aqui](https://learn.microsoft.com/pt-br/aspnet/core/security/docker-https?view=aspnetcore-8.0).
+
+- Buildar imagem
+  - ```docker build -t tsundokuapi:1.0 -f Dockerfile .```
+     - Onde "tsundokuapi:1.0" seria o nome da imagem e versão
+
+- criando um container tsundokuapi com a nova rede
+```docker run --rm -it -p 8080:80 -p 8081:443 -e ASPNETCORE_URLS="https://+;http://+" -e ASPNETCORE_HTTPS_PORTS=8081 -e ASPNETCORE_Kestrel__Certificates__Default__Password="tsundokuapi" -e ASPNETCORE_ENVIRONMENT=Development -e ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificados/aspnetapp.pfx -v \TsundokuTraducoes\.aspnet\https:/https/ --name tsundoku-api --network tsundokuapi-bridge tsundokuapi:1.0```
+
+- Acessar BD 
+   - Usar id do container do banco de dados
+      - ```docker exec -it id_imagem bash```
+
+   - Onde -p1234 seria a senha do banco já definida para acessar
+      - ```mysql -u root -p1234```
+
+  - Lista as tabelas
+     - ```show databases;```
+
+  - Seta a tabela para poder realizar as consultas sql
+    - ```use DbTsundoku;```
+
+  - Lista as tabelas
+    - ```show tables;```
+
+  - Consulta de tabelas
+    - ```select * from Novels;```
 
 ## Testes Unitários (Entidades)
 
