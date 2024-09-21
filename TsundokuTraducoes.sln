@@ -33,7 +33,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6-Helpers", "6-Helpers", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TsundokuTraducoes.Helpers", "TsundokuTraducoes.Helpers\TsundokuTraducoes.Helpers.csproj", "{A3A354CA-151A-40AC-A2BF-4902387D9818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsundokuTraducoes.Integration.Tests", "TsundokuTraducoes.Integration.Tests\TsundokuTraducoes.Integration.Tests.csproj", "{83BD4DF9-8F8D-42C7-B732-72A3BCE51724}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TsundokuTraducoes.Integration.Tests", "TsundokuTraducoes.Integration.Tests\TsundokuTraducoes.Integration.Tests.csproj", "{83BD4DF9-8F8D-42C7-B732-72A3BCE51724}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{B56CDA4C-C475-4733-B28A-0358643D1C3E}"
+	ProjectSection(SolutionItems) = preProject
+		Dockerfile = Dockerfile
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
