@@ -14,7 +14,7 @@
         public static string RetornaDiretorioImagemCriado(params string[] paths)
         {
 
-            var diretorioCriado = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot"), "assets", "images", Path.Combine(paths));            
+            var diretorioCriado = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "assets", "images", Path.Combine(paths));            
             CriaDiretorio(diretorioCriado);
             return diretorioCriado;
         }
