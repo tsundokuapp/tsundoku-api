@@ -6,9 +6,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Linq;
 using TsundokuTraducoes.Api;
 using TsundokuTraducoes.Api.Extensions;
 using TsundokuTraducoes.Data.Configuration;
+using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Helpers.Configuration;
 
 
@@ -83,6 +85,17 @@ app.UseEndpoints(endpoints =>
     endpoints.MapGet("/api/", () => "Reveja suas decisões, você não deveria estar aqui...");
     endpoints.MapGet("/api/obras/", () => "Você ainda não reviu suas decisões...");
 });
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<ContextBase>();
+    if (context.Database.GetPendingMigrations().Any())
+    {
+        context.Database.Migrate();
+    }
+}
 
 app.Run();
 
