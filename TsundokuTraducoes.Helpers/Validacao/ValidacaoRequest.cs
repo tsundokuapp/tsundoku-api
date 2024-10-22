@@ -203,5 +203,11 @@ namespace TsundokuTraducoes.Helpers.Validacao
 
             return retorno;
         }
+    
+        public static bool ValidaListaVolumeCapitulo(RequestObras requestObras)
+        {
+            return !string.IsNullOrEmpty(requestObras.IdObra) &&
+                   requestObras.IdObra.ToString() != "00000000-0000-0000-0000-000000000000";
+        }
     }
 }
