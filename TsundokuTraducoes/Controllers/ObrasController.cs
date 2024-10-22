@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MySqlX.XDevAPI;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -141,6 +145,26 @@ namespace TsundokuTraducoes.Api.Controllers
 
             var dados = obrasRecomendadas.Skip(skipTratado).Take(takeTratado).ToList();
             var total = obrasRecomendadas.Count;
+
+            return Ok(new { total = total, data = dados });
+        }
+
+        [HttpGet("api/obras/volumes")]
+        [ProducesResponseType(typeof(List<RetornoVolume>), statusCode:200)]
+        public async Task<IActionResult> ObterListaVolumeCapitulos([FromQuery] RequestObras requestObras)
+        {
+            if (!ValidacaoRequest.ValidaListaVolumeCapitulo(requestObras))
+                return BadRequest("Não informado o código da obra, verificar com os admins do site!");
+
+            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take, false);
+
+            var volumes = await Task.Run(() => _obrasAppServices.ObterListaVolumeCapitulos(requestObras));
+            if (volumes.Count == 0) 
+                return NoContent();
+
+            var dados = volumes.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = volumes.Count;
 
             return Ok(new { total = total, data = dados });
         }

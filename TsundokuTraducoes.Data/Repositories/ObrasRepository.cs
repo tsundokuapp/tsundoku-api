@@ -2,6 +2,7 @@
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Obra;
+using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
@@ -345,6 +346,76 @@ namespace TsundokuTraducoes.Data.Repositories
                 retornoCapitulo.UrlCapaVolume = null;
                 retornoCapitulo.UrlCapaPrincipal = null;
             }
+        }
+
+        public List<RetornoVolume> ObterListaVolumeCapitulos(string idObra)
+        {
+            var listaRetornoVolume = (from volumesComic in _context.VolumesComic.AsNoTracking()
+                                             select new RetornoVolume()
+                                             {
+                                                 Id = volumesComic.Id,
+                                                 IdObra = volumesComic.ComicId,
+                                                 NumeroVolume = volumesComic.Numero,
+                                                 SlugVolume = volumesComic.Slug,
+                                                 UrlCapaVolume = volumesComic.ImagemVolume,
+                                                 DataInclusao = volumesComic.DataInclusao,
+                                                 Sinopse = volumesComic.Sinopse,
+
+                                                 ListaCapitulos =
+                                                 (
+                                                     from capitulo in _context.CapitulosComic.AsNoTracking()
+                                                     orderby capitulo.DataInclusao
+                                                     where capitulo.VolumeId == volumesComic.Id
+                                                     select new RetornoCapitulo()
+                                                     {
+                                                         Id = capitulo.Id,
+                                                         IdVolume = capitulo.VolumeId,
+                                                         DataInclusao = capitulo.DataInclusao,
+                                                         NumeroCapitulo = capitulo.Numero,
+                                                         ParteCapitulo = capitulo.Parte,
+                                                         SlugCapitulo = capitulo.Slug,
+                                                         TituloCapitulo = capitulo.Titulo
+                                                     }
+                                                 )
+                                                 .OrderByDescending(o => o.DataInclusao)
+                                                 .ToList()
+                                             })
+                                      .AsEnumerable()
+                                      .Union(from volumesNovel in _context.VolumesNovel.AsNoTracking()
+                                             select new RetornoVolume()
+                                             {
+                                                 Id = volumesNovel.Id,
+                                                 IdObra = volumesNovel.NovelId,
+                                                 NumeroVolume = volumesNovel.Numero,
+                                                 SlugVolume = volumesNovel.Slug,
+                                                 UrlCapaVolume = volumesNovel.ImagemVolume,
+                                                 DataInclusao = volumesNovel.DataInclusao,
+                                                 Sinopse = volumesNovel.Sinopse,
+
+                                                 ListaCapitulos =
+                                                 (
+                                                     from capitulo in _context.CapitulosNovel.AsNoTracking()
+                                                     orderby capitulo.DataInclusao
+                                                     where capitulo.VolumeId == volumesNovel.Id
+                                                     select new RetornoCapitulo()
+                                                     {
+                                                         Id = capitulo.Id,
+                                                         IdVolume = capitulo.VolumeId,
+                                                         DataInclusao = capitulo.DataInclusao,
+                                                         NumeroCapitulo = capitulo.Numero,
+                                                         ParteCapitulo = capitulo.Parte,
+                                                         SlugCapitulo = capitulo.Slug,
+                                                         TituloCapitulo = capitulo.Titulo
+                                                     }
+                                                 )
+                                                 .OrderByDescending(o => o.DataInclusao)
+                                                 .ToList()
+                                             })
+                                          .Where(w => w.IdObra.ToString() == idObra)
+                                          .AsEnumerable()
+                                          .OrderByDescending(o => o.DataInclusao);
+
+            return listaRetornoVolume.ToList();
         }
     }
 }

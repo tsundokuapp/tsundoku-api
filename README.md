@@ -92,16 +92,18 @@ Criando um container MySql com a nova rede
 Lembrando que esse nome vai no arquivo appconfig que está no Drive
   - ```docker run --name=mysql -e MYSQL_ROOT_PASSWORD=1234 -d --network tsundokuapi-bridge mysql:5.6```
 
-- O certificado já está no projeto, caso precise gerar um novo, procedimentos abaixo:
-Gerar certificados locais para poder liberar porta https
-Ambiente windows
-  - ```dotnet dev-certs https -ep C:\Users\edsra\.aspnet\https\aspnetapp.pfx -p tsundokuapi```
-    - Onde "C:\Users\edsra\" é a pasta raíz da máquina.
-    - Onde "-p tsundokuapi" senha do certificado
-
-  - ```dotnet dev-certs https --trust```
-
-- Outros ambientes pode ser consultado no artigo [aqui](https://learn.microsoft.com/pt-br/aspnet/core/security/docker-https?view=aspnetcore-8.0).
+--------------------
+   > - O certificado já está no projeto, caso precise gerar um novo, seguir procedimentos abaixo:
+   > Gerar certificados locais para poder liberar porta https
+   > Ambiente windows
+   >   - ```dotnet dev-certs https -ep C:\Users\edsra\.aspnet\https\aspnetapp.pfx -p tsundokuapi```
+   >     - Onde "C:\Users\edsra\" é a pasta raíz da máquina.
+   >     - Onde "-p tsundokuapi" senha do certificado
+   > 
+   >   - ```dotnet dev-certs https --trust```
+   > 
+   > - Outros ambientes pode ser consultado no artigo [aqui](https://learn.microsoft.com/pt-br/aspnet/core/security/docker-https?view=aspnetcore-8.0).
+--------------------
 
 - Buildar imagem
   - ```docker build -t tsundokuapi:1.0 -f Dockerfile .```

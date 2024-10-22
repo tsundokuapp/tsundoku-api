@@ -56,5 +56,10 @@ namespace TsundokuTraducoes.Domain.Services
         {
             return await _obrasRepository.ObterObrasRecomendadas();
         }
+
+        public List<RetornoVolume> ObterListaVolumeCapitulos(string idObra)
+        {
+            return _obrasRepository.ObterListaVolumeCapitulos(idObra);
+        }
     }
 }

@@ -15,5 +15,6 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
 
         Task<List<RetornoCapitulos>> ObterCapitulosHome();
         Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas();
+        List<RetornoVolume> ObterListaVolumeCapitulos(string idObra);
     }
 }
