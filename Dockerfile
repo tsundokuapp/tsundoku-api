@@ -1,4 +1,4 @@
-# Acesse https://aka.ms/customizecontainer para saber como personalizar seu contêiner de depuração e como o Visual Studio usa este Dockerfile para criar suas imagens para uma depuração mais rápida.
+# Esta fase é usada para baixar o .net runtime
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
@@ -14,8 +14,6 @@ COPY ["/TsundokuTraducoes.Domain/TsundokuTraducoes.Domain.csproj", "TsundokuTrad
 COPY ["/TsundokuTraducoes.Entities/TsundokuTraducoes.Entities.csproj", "TsundokuTraducoes.Entities/"]
 COPY ["/TsundokuTraducoes.Helpers/TsundokuTraducoes.Helpers.csproj", "TsundokuTraducoes.Helpers/"]
 COPY ["/TsundokuTraducoes.Services/TsundokuTraducoes.Services.csproj", "TsundokuTraducoes.Services/"]
-# COPY ["/TsundokuTraducoes.Entities.Tests/TsundokuTraducoes.Entities.Tests.csproj", "TsundokuTraducoes.Entities.Tests/"]
-# COPY ["/TsundokuTraducoes.Integration.Tests/TsundokuTraducoes.Integration.Tests.csproj", "TsundokuTraducoes.Integration.Tests/"]
 
 RUN dotnet restore "./TsundokuTraducoes/TsundokuTraducoes.Api.csproj"
 COPY . .
