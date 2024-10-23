@@ -19,7 +19,7 @@ namespace TsundokuTraducoes.Controllers
             _volumeAppService = volumeAppService;
         }
 
-        [HttpGet("api/volume/")]
+        [HttpGet("api/admin/volume/")]
         public IActionResult RetornaListaVolume([FromQuery] RequestVolume requestVolume)
         {
             var result = _volumeAppService.RetornaListaVolumes(requestVolume.IdObra);
@@ -35,7 +35,7 @@ namespace TsundokuTraducoes.Controllers
             return Ok(new { total = total, data = dados });
         }
 
-        [HttpGet("api/volume/novel")]
+        [HttpGet("api/admin/volume/novel")]
         public IActionResult RetornaListaVolumesNovel([FromQuery] RequestVolume requestVolume)
         {
             var result = _volumeAppService.RetornaListaVolumesNovel(requestVolume.IdObra);
@@ -51,7 +51,7 @@ namespace TsundokuTraducoes.Controllers
             return Ok(new { total = total, data = dados });
         }
 
-        [HttpGet("api/volume/comic")]
+        [HttpGet("api/admin/volume/comic")]
         public IActionResult RetornaListaVolumesComic([FromQuery] RequestVolume requestVolume)
         {
             var result = _volumeAppService.RetornaListaVolumesComic(requestVolume.IdObra);
@@ -68,7 +68,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
 
-        [HttpGet("api/volume/novel/{id}")]
+        [HttpGet("api/admin/volume/novel/{id}")]
         public IActionResult RetornaVolumeNovelPorId(Guid id)
         {
             var result = _volumeAppService.RetornaVolumeNovelPorId(id);
@@ -78,7 +78,7 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Value);
         }
 
-        [HttpGet("api/volume/comic/{id}")]
+        [HttpGet("api/admin/volume/comic/{id}")]
         public IActionResult RetornaVolumeComicPorId(Guid id)
         {
             var result = _volumeAppService.RetornaVolumeComicPorId(id);
@@ -89,7 +89,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
 
-        [HttpPost("api/volume/novel/")]
+        [HttpPost("api/admin/volume/novel/")]
         public async Task<IActionResult> AdicionaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
@@ -102,10 +102,10 @@ namespace TsundokuTraducoes.Controllers
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Created($"api/volume/novel/{result.Value.Id}", result.Value);
+            return Created($"api/admin/volume/novel/{result.Value.Id}", result.Value);
         }
 
-        [HttpPost("api/volume/comic/")]
+        [HttpPost("api/admin/volume/comic/")]
         public async Task<IActionResult> AdicionaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
@@ -118,11 +118,11 @@ namespace TsundokuTraducoes.Controllers
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Created($"api/volume/comic/{result.Value.Id}", result.Value);
+            return Created($"api/admin/volume/comic/{result.Value.Id}", result.Value);
         }
 
 
-        [HttpPut("api/volume/novel/")]
+        [HttpPut("api/admin/volume/novel/")]
         public async Task<IActionResult> AtualizaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
@@ -145,7 +145,7 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Value);
         }
 
-        [HttpPut("api/volume/comic/")]
+        [HttpPut("api/admin/volume/comic/")]
         public async Task<IActionResult> AtualizaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
@@ -169,7 +169,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
 
-        [HttpDelete("api/volume/novel/{id}/{arquivoLocal}")]
+        [HttpDelete("api/admin/volume/novel/{id}/{arquivoLocal}")]
         public async Task<IActionResult> ExcluiVolumeNovel(Guid id, bool arquivoLocal)
         {
             var result = await _volumeAppService.ExcluiVolumeNovel(id, arquivoLocal);
@@ -185,7 +185,7 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Successes[0].Message);
         }
 
-        [HttpDelete("api/volume/comic/{id}/{arquivoLocal}")]
+        [HttpDelete("api/admin/volume/comic/{id}/{arquivoLocal}")]
         public async Task<IActionResult> ExcluiVolumeComic(Guid id, bool arquivoLocal)
         {
             var result = await _volumeAppService.ExcluiVolumeComic(id, arquivoLocal);

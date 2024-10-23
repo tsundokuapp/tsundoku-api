@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -85,13 +86,10 @@ app.UseCors(c =>
 });
 
 app.UseAuthorization();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllers();
-    endpoints.MapGet("/", () => "Você perdeu alguma coisa aqui? Volte agora de onde veio...");
-    endpoints.MapGet("/api/", () => "Reveja suas decisões, você não deveria estar aqui...");
-    endpoints.MapGet("/api/obras/", () => "Você ainda não reviu suas decisões...");
-});
+app.MapControllers();
+app.MapGet("/", () => Results.Redirect("/swagger/index.html"));
+app.MapGet("/api/", () => Results.Redirect("/swagger/index.html"));
+app.MapGet("/api/obras/", () => Results.Redirect("/swagger/index.html"));
 
 using (var scope = app.Services.CreateScope())
 {

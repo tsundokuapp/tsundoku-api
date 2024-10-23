@@ -18,7 +18,7 @@ namespace TsundokuTraducoes.Api.Controllers
             _generoAppService = generoAppService;
         }
 
-        [HttpGet("api/genero")]
+        [HttpGet("api/admin/genero")]
         public async Task<IActionResult> RetornaListaGeneros([FromQuery] RequestGenero requestGenero)
         {
             var result = await _generoAppService.RetornaListaGeneros();
@@ -34,7 +34,7 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(new { total = total, data = dados });
         }
 
-        [HttpGet("api/genero/{id}")]
+        [HttpGet("api/admin/genero/{id}")]
         public async Task<IActionResult> RetornaGeneroPorId(Guid id)
         {
             var result = await _generoAppService.RetornaGeneroPorId(id);
@@ -44,7 +44,7 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpPost("api/genero")]
+        [HttpPost("api/admin/genero")]
         public async Task<IActionResult> AdicionaGenero([FromForm] GeneroDTO generoDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestGenero(generoDTO))
@@ -54,10 +54,10 @@ namespace TsundokuTraducoes.Api.Controllers
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Created($"api/genero/{result.Value.Id}", result.Value);
+            return Created($"api/admin/genero/{result.Value.Id}", result.Value);
         }
 
-        [HttpPut("api/genero")]
+        [HttpPut("api/admin/genero")]
         public async Task<IActionResult> AtualizarGenero([FromForm] GeneroDTO generoDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestGenero(generoDTO))
@@ -76,7 +76,7 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpDelete("api/genero/{id}")]
+        [HttpDelete("api/admin/genero/{id}")]
         public async Task<IActionResult> ExcluirGenero(Guid id)
         {
             var result = await _generoAppService.ExcluiGenero(id);
