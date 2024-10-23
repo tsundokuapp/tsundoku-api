@@ -64,8 +64,10 @@ git push -f origin main
   - Diretório das collections no Drive: [Collections](https://drive.google.com/drive/folders/1bhmK9wYH26zVlEMj0mxudu7KL6fvR8-t?usp=sharing)
 - Basta importar, no Postam, o arquivo json disponível e utilizar.
 
+<br />
+<br />
 
-## Iniciando o projeto (ambiente windows)
+# Iniciando o projeto (ambiente windows)
 
 - Copie o arquivo appsettingsExample.json e altere seu nome para appsettings.json, adicionando a connectionString do banco local ou remoto.
 - Adicionar diretórios wwwroot/image (_Enquanto salvar arquivos locais_)
@@ -77,7 +79,9 @@ git push -f origin main
 - E em seguida rodar o projeto para subir a api
   - Visual Studio Code > ```dotnet run```
 
-## Iniciando o projeto (ambiente docker)
+<br />
+
+# Iniciando o projeto (ambiente docker)
 
 Comandos docker:
 
@@ -85,32 +89,22 @@ Comandos docker:
   - cd tsundoku-api/
 
 - Criando uma rede para comunicação entre os containers
-  - ```docker network create --driver bridge tsundokuapi-bridge```
+  - ```docker network create tsundoku```
 
 - Subindo banco MySql 
 Criando um container MySql com a nova rede
 Lembrando que esse nome vai no arquivo appconfig que está no Drive
-  - ```docker run --name=mysql -e MYSQL_ROOT_PASSWORD=1234 -d --network tsundokuapi-bridge mysql:5.6```
+  - ```docker run --name=mysql -e MYSQL_ROOT_PASSWORD=1234 -d --network tsundoku mysql```
 
---------------------
-   > - O certificado já está no projeto, caso precise gerar um novo, seguir procedimentos abaixo:
-   > Gerar certificados locais para poder liberar porta https
-   > Ambiente windows
-   >   - ```dotnet dev-certs https -ep C:\Users\edsra\.aspnet\https\aspnetapp.pfx -p tsundokuapi```
-   >     - Onde "C:\Users\edsra\" é a pasta raíz da máquina.
-   >     - Onde "-p tsundokuapi" senha do certificado
-   > 
-   >   - ```dotnet dev-certs https --trust```
-   > 
-   > - Outros ambientes pode ser consultado no artigo [aqui](https://learn.microsoft.com/pt-br/aspnet/core/security/docker-https?view=aspnetcore-8.0).
---------------------
-
+- Antes de gerar o build da imagem
+  - Baixar o arquivo **"appsettings.json"** que se encontra no drive ``15 - Tsun Dev > Arquivos Config Api Tsun > TsundokuTraducoes `` e adicionar na pasta **"TsundokuTraducoes"**, dentro do projeto
+   
 - Buildar imagem
-  - ```docker build -t tsundokuapi:1.0 -f Dockerfile .```
+  - ```docker build -t tsundokuapi:1.0 .```
      - Onde "tsundokuapi:1.0" seria o nome da imagem e versão
 
 - criando um container tsundokuapi com a nova rede
-```docker run --rm -it -p 8080:80 -p 8081:443 -e ASPNETCORE_URLS="https://+;http://+" -e ASPNETCORE_HTTPS_PORTS=8081 -e ASPNETCORE_Kestrel__Certificates__Default__Password="tsundokuapi" -e ASPNETCORE_ENVIRONMENT=Development -e ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificados/aspnetapp.pfx -v \TsundokuTraducoes\.aspnet\https:/https/ --name tsundoku-api --network tsundokuapi-bridge tsundokuapi:1.0```
+```docker run --rm -it -p 8080:80 -p 8081:443 -e ASPNETCORE_URLS="https://+;http://+" -e ASPNETCORE_HTTPS_PORTS=8081 -e ASPNETCORE_Kestrel__Certificates__Default__Password="tsundokuapi" -e ASPNETCORE_ENVIRONMENT=Development -e ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificados/aspnetapp.pfx -v \TsundokuTraducoes\.aspnet\https:/https/ --name tsundoku-api --network tsundoku tsundokuapi:1.0```
 
 - Acessar BD 
    - Usar id do container do banco de dados
@@ -130,6 +124,9 @@ Lembrando que esse nome vai no arquivo appconfig que está no Drive
 
   - Consulta de tabelas
     - ```select * from Novels;```
+
+<br />
+<br />
 
 ## Testes Unitários (Entidades)
 
