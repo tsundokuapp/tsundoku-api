@@ -12,10 +12,10 @@ namespace TsundokuTraducoes.Entities.Entities.Volume
         public string Numero { get; set; }
         public string ImagemVolume { get; set; }
         public string Slug { get; set; }
-        public string? Titulo { get; set; }
+        public string Titulo { get; set; }
         public string Sinopse { get; set; }
         public string UsuarioInclusao { get; set; }
-        public string? UsuarioAlteracao { get; set; }
+        public string UsuarioAlteracao { get; set; }
         public DateTime DataInclusao { get; set; }
         public DateTime DataAlteracao { get; set; }
         public string DiretorioImagemVolume { get; set; }
@@ -28,8 +28,8 @@ namespace TsundokuTraducoes.Entities.Entities.Volume
             ListaCapitulo = new List<CapituloNovel>();
         }
 
-        public void AdicionaVolume(Guid id, string numero, string imagemVolume, string slug, string? titulo, string sinopse, string usuarioInclusao,
-            string? usuarioAlteracao, DateTime dataInclusao, DateTime dataAlteracao, string diretorioImagemVolume, Guid novelId)
+        public void AdicionaVolume(Guid id, string numero, string imagemVolume, string slug, string titulo, string sinopse, string usuarioInclusao,
+            string usuarioAlteracao, DateTime dataInclusao, DateTime dataAlteracao, string diretorioImagemVolume, Guid novelId)
         {
             Id = id;
             Numero = numero;
