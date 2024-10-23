@@ -19,7 +19,7 @@ namespace TsundokuTraducoes.Integration.Tests.Generos
         public async Task DeveInserirUmGenero()
         {
             var formData = MockGenero.RetornaFormDataMockAdicionarGenero();
-            var response = await _httpClient.PostAsync("api/genero", formData);
+            var response = await _httpClient.PostAsync("api/admin/genero", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -30,7 +30,7 @@ namespace TsundokuTraducoes.Integration.Tests.Generos
         {
             var retornoGenero = await AdicionaGeneroParaTeste();
             var formData = MockGenero.RetornaFormDataMockAdicionarGenero(true, retornoGenero.Descricao);
-            var response = await _httpClient.PostAsync("api/genero", formData);
+            var response = await _httpClient.PostAsync("api/admin/genero", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -41,7 +41,7 @@ namespace TsundokuTraducoes.Integration.Tests.Generos
         {
             var retornoGenero = await AdicionaGeneroParaTeste();
             var formData = MockGenero.RetornaFormDataMockAtualizarGenero(false, retornoGenero.Id);
-            var response = await _httpClient.PutAsync("api/genero", formData);
+            var response = await _httpClient.PutAsync("api/admin/genero", formData);
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -51,7 +51,7 @@ namespace TsundokuTraducoes.Integration.Tests.Generos
         {
             var retornoGenero = await AdicionaGeneroParaTeste();
             var formData = MockGenero.RetornaFormDataMockAtualizarGenero(true, retornoGenero.Id);
-            var response = await _httpClient.PutAsync("api/genero", formData);
+            var response = await _httpClient.PutAsync("api/admin/genero", formData);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -60,7 +60,7 @@ namespace TsundokuTraducoes.Integration.Tests.Generos
         public async Task DeveExcluirUmGenero()
         {
             var retornoGenero = await AdicionaGeneroParaTeste();
-            var response = await _httpClient.DeleteAsync($"api/genero/{retornoGenero.Id}");
+            var response = await _httpClient.DeleteAsync($"api/admin/genero/{retornoGenero.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
@@ -69,7 +69,7 @@ namespace TsundokuTraducoes.Integration.Tests.Generos
         public async Task DeveRetornarNotFoundAoExcluirUmGenerolInexistente()
         {
             var idNovelInexistente = "97722a6d-2210-434b-ae48-1a3c6da4c7a2";
-            var response = await _httpClient.DeleteAsync($"api/genero/{idNovelInexistente}");
+            var response = await _httpClient.DeleteAsync($"api/admin/genero/{idNovelInexistente}");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -77,7 +77,7 @@ namespace TsundokuTraducoes.Integration.Tests.Generos
         private async Task<RetornoGenero> AdicionaGeneroParaTeste()
         {
             var formData = MockGenero.RetornaFormDataMockAdicionarGeneroParaTeste();
-            var response = await _httpClient.PostAsync("api/genero", formData);
+            var response = await _httpClient.PostAsync("api/admin/genero", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao tentar adicionar uma genero para teste");

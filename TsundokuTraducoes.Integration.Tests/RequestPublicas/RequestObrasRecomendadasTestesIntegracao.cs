@@ -41,7 +41,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
         public async Task<RetornoObra> AdicionaComic(int quantidadeCapitulosComic)
         {
             var formData = MockRequestObrasRecomendadas.RetornaFormDataMockAdicionaComic(quantidadeCapitulosComic);
-            var response = await _httpClient.PostAsync("api/obra/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/comic", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao inserir uma comic para teste");
@@ -53,7 +53,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
         public async Task<RetornoObra> AdicionaNovel(int quantidadeCapitulosNovel)
         {
             var formData = MockRequestObrasRecomendadas.RetornaFormDataMockAdicionaNovel(quantidadeCapitulosNovel);
-            var response = await _httpClient.PostAsync("api/obra/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/novel", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao inserir uma novel para teste");
