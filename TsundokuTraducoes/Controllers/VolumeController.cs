@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -20,6 +22,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/volume/")]
+        [ProducesResponseType(typeof(List<RetornoVolume>), statusCode: 200)]
         public IActionResult RetornaListaVolume([FromQuery] RequestVolume requestVolume)
         {
             var result = _volumeAppService.RetornaListaVolumes(requestVolume.IdObra);
@@ -36,6 +39,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/volume/novel")]
+        [ProducesResponseType(typeof(List<RetornoVolume>), statusCode: 200)]
         public IActionResult RetornaListaVolumesNovel([FromQuery] RequestVolume requestVolume)
         {
             var result = _volumeAppService.RetornaListaVolumesNovel(requestVolume.IdObra);
@@ -52,6 +56,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/volume/comic")]
+        [ProducesResponseType(typeof(List<RetornoVolume>), statusCode: 200)]
         public IActionResult RetornaListaVolumesComic([FromQuery] RequestVolume requestVolume)
         {
             var result = _volumeAppService.RetornaListaVolumesComic(requestVolume.IdObra);
@@ -69,6 +74,7 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpGet("api/admin/volume/novel/{id}")]
+        [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public IActionResult RetornaVolumeNovelPorId(Guid id)
         {
             var result = _volumeAppService.RetornaVolumeNovelPorId(id);
@@ -79,6 +85,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/volume/comic/{id}")]
+        [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public IActionResult RetornaVolumeComicPorId(Guid id)
         {
             var result = _volumeAppService.RetornaVolumeComicPorId(id);
@@ -90,6 +97,7 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpPost("api/admin/volume/novel/")]
+        [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AdicionaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
@@ -106,6 +114,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpPost("api/admin/volume/comic/")]
+        [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AdicionaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
@@ -123,6 +132,7 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpPut("api/admin/volume/novel/")]
+        [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AtualizaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
@@ -146,6 +156,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpPut("api/admin/volume/comic/")]
+        [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AtualizaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
+using RetornoVolume = TsundokuTraducoes.Helpers.DTOs.Admin.Retorno.RetornoVolume;
 
 namespace TsundokuTraducoes.Api.Controllers
 {
@@ -20,6 +21,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/obras/novels")]
+        [ProducesResponseType(typeof(List<RetornoObra>), statusCode: 200)]
         public async Task<IActionResult> ObterNovels([FromQuery] RequestObras requestObras)
         {
             var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
@@ -41,6 +43,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/obras/novels/recentes")]
+        [ProducesResponseType(typeof(List<RetornoObra>), statusCode: 200)]
         public async Task<IActionResult> ObterNovelsRecentes([FromQuery] RequestObras requestObras)
         {
             var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
@@ -57,6 +60,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/obras/novel")]
+        [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> ObterNovelPorId([FromQuery] RequestObras requestObras)
         {
             var capitulo = await _obrasAppServices.ObterNovelPorId(requestObras);
@@ -68,6 +72,7 @@ namespace TsundokuTraducoes.Api.Controllers
 
 
         [HttpGet("api/obras/comics")]
+        [ProducesResponseType(typeof(List<RetornoObra>), statusCode: 200)]
         public async Task<IActionResult> ObterComics([FromQuery] RequestObras requestObras)
         {
             var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
@@ -89,6 +94,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/obras/comics/recentes")]
+        [ProducesResponseType(typeof(List<RetornoObra>), statusCode: 200)]
         public async Task<IActionResult> ObterComicsRecentes([FromQuery] RequestObras requestObras)
         {
             var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
@@ -105,6 +111,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/obras/comic")]
+        [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> ObterComicPorId([FromQuery] RequestObras requestObras)
         {
             var capitulo = await _obrasAppServices.ObterComicPorId(requestObras);
@@ -116,6 +123,7 @@ namespace TsundokuTraducoes.Api.Controllers
 
 
         [HttpGet("api/obras/home")]
+        [ProducesResponseType(typeof(List<RetornoCapitulos>), statusCode: 200)]
         public async Task<IActionResult> ObterCapitulosHome([FromQuery] RequestObras requestObras)
         {
             var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
@@ -132,6 +140,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/obras/recomendadas")]
+        [ProducesResponseType(typeof(List<RetornoObrasRecomendadas>), statusCode: 200)]
         public async Task<IActionResult> ObterObrasRecomendadas([FromQuery] RequestObras requestObras)
         {
             var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
@@ -147,7 +156,7 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(new { total = total, data = dados });
         }
 
-        [HttpGet("api/obras/volumes")]
+        [HttpGet("api/obras/volume/indice")]
         [ProducesResponseType(typeof(List<RetornoVolume>), statusCode:200)]
         public async Task<IActionResult> ObterListaVolumeCapitulos([FromQuery] RequestObras requestObras)
         {
