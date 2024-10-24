@@ -29,7 +29,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
                 Thread.Sleep(250);
             }           
 
-            var response = await _httpClient.GetAsync($"api/obras/volumes?IdObra={retornoComic.Id.ToString()}");
+            var response = await _httpClient.GetAsync($"api/obras/volume/indice?IdObra={retornoComic.Id.ToString()}");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 
@@ -47,7 +47,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
                 Thread.Sleep(250);
             }
 
-            var response = await _httpClient.GetAsync($"api/obras/volumes?IdObra={retornoNovel.Id.ToString()}");
+            var response = await _httpClient.GetAsync($"api/obras/volume/indice?IdObra={retornoNovel.Id.ToString()}");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 
