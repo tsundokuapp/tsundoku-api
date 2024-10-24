@@ -2,7 +2,6 @@
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Obra;
-using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
@@ -17,7 +16,7 @@ namespace TsundokuTraducoes.Data.Repositories
             _context = context;
         }
 
-        public async Task<List<RetornoObra>> ObterListaNovels(RequestObras requestObras)
+        public async Task<List<RetornoObras>> ObterListaNovels(RequestObras requestObras)
         {
             var listaNovels = new List<Novel>();
 
@@ -34,7 +33,7 @@ namespace TsundokuTraducoes.Data.Repositories
             return TrataListaRetornoNovel(listaNovels);
         }
 
-        public async Task<List<RetornoObra>> ObterListaComics(RequestObras requestObras)
+        public async Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras)
         {
             var listaComics = new List<Comic>();
 
@@ -52,20 +51,20 @@ namespace TsundokuTraducoes.Data.Repositories
         }
         
         
-        public async Task<List<RetornoObra>> ObterListaNovelsRecentes()
+        public async Task<List<RetornoObras>> ObterListaNovelsRecentes()
         {
             var listaNovels = await _context.Novels.AsNoTracking().OrderByDescending(o => o.DataInclusao).ToListAsync();
             return TrataListaRetornoNovel(listaNovels);
         }
         
-        public async Task<List<RetornoObra>> ObterListaComicsRecentes()
+        public async Task<List<RetornoObras>> ObterListaComicsRecentes()
         {
             var listaComics = await _context.Comics.AsNoTracking().OrderByDescending(o => o.DataInclusao).ToListAsync();
             return TrataListaRetornoComic(listaComics);
         }
 
         
-        public async Task<RetornoObra> ObterNovelPorId(RequestObras requestObras)
+        public async Task<RetornoObras> ObterNovelPorId(RequestObras requestObras)
         {
             var novel = await _context.Novels.AsNoTracking().FirstOrDefaultAsync(w => w.Id.ToString() == requestObras.IdObra);
 
@@ -75,7 +74,7 @@ namespace TsundokuTraducoes.Data.Repositories
             return null;
         }
 
-        public async Task<RetornoObra> ObterComicPorId(RequestObras requestObras)
+        public async Task<RetornoObras> ObterComicPorId(RequestObras requestObras)
         {
             var comic = await _context.Comics.AsNoTracking().FirstOrDefaultAsync(w => w.Id.ToString() == requestObras.IdObra);
 
@@ -86,7 +85,7 @@ namespace TsundokuTraducoes.Data.Repositories
         }
         
         
-        public async Task<List<RetornoCapitulos>> ObterCapitulosHome()
+        public async Task<List<RetornoCapitulosHome>> ObterCapitulosHome()
         {
             var query = (from capitulosComic in _context.CapitulosComic.AsNoTracking()
                                join volumesComic in _context.VolumesComic.AsNoTracking()
@@ -125,7 +124,7 @@ namespace TsundokuTraducoes.Data.Repositories
                         );
 
             var listaRetornoCapitulos = await query
-                .Select(rc => new RetornoCapitulos
+                .Select(rc => new RetornoCapitulosHome
                     {
                         NumeroCapitulo = rc.NumeroCapitulo,
                         ParteCapitulo = rc.ParteCapitulo,
@@ -275,9 +274,9 @@ namespace TsundokuTraducoes.Data.Repositories
         }
         
 
-        private static List<RetornoObra> TrataListaRetornoNovel(List<Novel> listaNovels)
+        private static List<RetornoObras> TrataListaRetornoNovel(List<Novel> listaNovels)
         {
-            var listaRetornoObra = new List<RetornoObra>();
+            var listaRetornoObra = new List<RetornoObras>();
 
             foreach (var obra in listaNovels)
             {
@@ -287,9 +286,9 @@ namespace TsundokuTraducoes.Data.Repositories
             return listaRetornoObra;
         }
         
-        private static List<RetornoObra> TrataListaRetornoComic(List<Comic> listaNovels)
+        private static List<RetornoObras> TrataListaRetornoComic(List<Comic> listaNovels)
         {
-            var listaRetornoObra = new List<RetornoObra>();
+            var listaRetornoObra = new List<RetornoObras>();
 
             foreach (var obra in listaNovels)
             {
@@ -300,9 +299,9 @@ namespace TsundokuTraducoes.Data.Repositories
         }
         
         
-        private static RetornoObra TrataRetornoNovel(Novel obra)
+        private static RetornoObras TrataRetornoNovel(Novel obra)
         {
-            return new RetornoObra
+            return new RetornoObras
             {
                 UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
                 ? obra.ImagemCapaUltimoVolume
@@ -316,9 +315,9 @@ namespace TsundokuTraducoes.Data.Repositories
             };
         }
 
-        private static RetornoObra TrataRetornoComic(Comic obra)
+        private static RetornoObras TrataRetornoComic(Comic obra)
         {
-            return new RetornoObra
+            return new RetornoObras
             {
                 UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
                 ? obra.ImagemCapaUltimoVolume
@@ -332,7 +331,7 @@ namespace TsundokuTraducoes.Data.Repositories
             };
         }
 
-        private static void TrataListaRetornoCapitulo(List<RetornoCapitulos> listaRetornoCapitulos)
+        private static void TrataListaRetornoCapitulo(List<RetornoCapitulosHome> listaRetornoCapitulos)
         {
             foreach (var retornoCapitulo in listaRetornoCapitulos)
             {
@@ -348,10 +347,10 @@ namespace TsundokuTraducoes.Data.Repositories
             }
         }
 
-        public List<RetornoVolume> ObterListaVolumeCapitulos(string idObra)
+        public List<RetornoVolumes> ObterListaVolumeCapitulos(string idObra)
         {
             var listaRetornoVolume = (from volumesComic in _context.VolumesComic.AsNoTracking()
-                                             select new RetornoVolume()
+                                             select new RetornoVolumes()
                                              {
                                                  Id = volumesComic.Id,
                                                  IdObra = volumesComic.ComicId,
@@ -366,7 +365,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                                      from capitulo in _context.CapitulosComic.AsNoTracking()
                                                      orderby capitulo.DataInclusao
                                                      where capitulo.VolumeId == volumesComic.Id
-                                                     select new RetornoCapitulo()
+                                                     select new RetornoCapitulos()
                                                      {
                                                          Id = capitulo.Id,
                                                          IdVolume = capitulo.VolumeId,
@@ -382,7 +381,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                              })
                                       .AsEnumerable()
                                       .Union(from volumesNovel in _context.VolumesNovel.AsNoTracking()
-                                             select new RetornoVolume()
+                                             select new RetornoVolumes()
                                              {
                                                  Id = volumesNovel.Id,
                                                  IdObra = volumesNovel.NovelId,
@@ -397,7 +396,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                                      from capitulo in _context.CapitulosNovel.AsNoTracking()
                                                      orderby capitulo.DataInclusao
                                                      where capitulo.VolumeId == volumesNovel.Id
-                                                     select new RetornoCapitulo()
+                                                     select new RetornoCapitulos()
                                                      {
                                                          Id = capitulo.Id,
                                                          IdVolume = capitulo.VolumeId,

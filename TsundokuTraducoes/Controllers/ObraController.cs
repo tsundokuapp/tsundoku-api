@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -18,7 +20,8 @@ namespace TsundokuTraducoes.Models
             _obraAppService = obraAppService;
         }
 
-        [HttpGet("api/obra/")]
+        [HttpGet("api/admin/obra/")]
+        [ProducesResponseType(typeof(List<RetornoObra>), statusCode: 200)]
         public async Task<IActionResult> RetornaListaObras([FromQuery] RequestObra requestObra)
         {
             var result = await _obraAppService.RetornaListaObras();
@@ -34,7 +37,8 @@ namespace TsundokuTraducoes.Models
             return Ok(new { total = total, data = dados });
         }
 
-        [HttpGet("api/obra/novels")]
+        [HttpGet("api/admin/obra/novels")]
+        [ProducesResponseType(typeof(List<RetornoObra>), statusCode: 200)]
         public async Task<IActionResult> RetornaListaNovels([FromQuery] RequestObra requestObra)
         {
             var result = await _obraAppService.RetornaListaNovels();
@@ -50,7 +54,8 @@ namespace TsundokuTraducoes.Models
             return Ok(new { total = total, data = dados });
         }
 
-        [HttpGet("api/obra/comics")]
+        [HttpGet("api/admin/obra/comics")]
+        [ProducesResponseType(typeof(List<RetornoObra>), statusCode: 200)]
         public async Task<IActionResult> RetornaListaComics([FromQuery] RequestObra requestObra)
         {
             var result = await _obraAppService.RetornaListaComics();
@@ -67,7 +72,8 @@ namespace TsundokuTraducoes.Models
         }
 
 
-        [HttpGet("api/obra/novel/{id}")]
+        [HttpGet("api/admin/obra/novel/{id}")]
+        [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> RetornaNovelPorId(Guid id)
         {
             var result = await _obraAppService.RetornaNovelPorId(id);
@@ -77,7 +83,8 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Value);
         }
 
-        [HttpGet("api/obra/comic/{id}")]
+        [HttpGet("api/admin/obra/comic/{id}")]
+        [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> RetornaComicPorId(Guid id)
         {
             var result = await _obraAppService.RetornaComicPorId(id);
@@ -88,7 +95,8 @@ namespace TsundokuTraducoes.Models
         }
 
         
-        [HttpPost("api/obra/novel")]
+        [HttpPost("api/admin/obra/novel")]
+        [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaNovel([FromForm] ObraDTO obraDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
@@ -108,10 +116,11 @@ namespace TsundokuTraducoes.Models
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Created($"api/obra/novel/{result.Value.Id}", result.Value);
+            return Created($"api/admin/obra/novel/{result.Value.Id}", result.Value);
         }
 
-        [HttpPost("api/obra/comic")]
+        [HttpPost("api/admin/obra/comic")]
+        [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaComic([FromForm] ObraDTO obraDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
@@ -131,11 +140,12 @@ namespace TsundokuTraducoes.Models
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Created($"api/obra/comic/{result.Value.Id}", result.Value);
+            return Created($"api/admin/obra/comic/{result.Value.Id}", result.Value);
         }
 
 
-        [HttpPut("api/obra/novel")]
+        [HttpPut("api/admin/obra/novel")]
+        [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AtualizarNovel([FromForm] ObraDTO obraDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestObraAtualizacao(obraDTO))
@@ -165,7 +175,8 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Value);
         }
 
-        [HttpPut("api/obra/comic")]
+        [HttpPut("api/admin/obra/comic")]
+        [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AtualizarComic([FromForm] ObraDTO obraDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestObraAtualizacao(obraDTO))
@@ -195,7 +206,7 @@ namespace TsundokuTraducoes.Models
         }
 
 
-        [HttpDelete("api/obra/novel/{id}/{arquivoLocal}")]
+        [HttpDelete("api/admin/obra/novel/{id}/{arquivoLocal}")]
         public async Task<IActionResult> ExcluirNovel(Guid id, bool arquivoLocal)
         {
             var result = await _obraAppService.ExcluiNovel(id, arquivoLocal);
@@ -211,7 +222,7 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Successes[0].Message);
         }
 
-        [HttpDelete("api/obra/comic/{id}/{arquivoLocal}")]
+        [HttpDelete("api/admin/obra/comic/{id}/{arquivoLocal}")]
         public async Task<IActionResult> ExcluirComic(Guid id, bool arquivoLocal)
         {
             var result = await _obraAppService.ExcluiComic(id, arquivoLocal);

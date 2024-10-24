@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using TsundokuTraducoes.Data.Configuration;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Entities.Entities.DePara;
@@ -6,6 +7,7 @@ using TsundokuTraducoes.Entities.Entities.Generos;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers;
+using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Data.Context
 {
@@ -252,7 +254,7 @@ namespace TsundokuTraducoes.Data.Context
                     "",
                     1,
                     "",
-                    RetornaConteudoNovelIlustracoes(),
+                    "",
                     "ilustracoes",
                     "Bravo",
                     "Bravo",
@@ -263,7 +265,9 @@ namespace TsundokuTraducoes.Data.Context
                     "",
                     "",
                     "",
-                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"));
+                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+                    RetornaConteudoNovelIlustracoes()
+                    );
 
             return capituloNovelIlustracao;
         }
@@ -288,7 +292,8 @@ namespace TsundokuTraducoes.Data.Context
                     "",
                     "",
                     "",
-                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"));
+                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+                    "");
 
             return capituloNovelIlustracao;
         }
@@ -316,7 +321,41 @@ namespace TsundokuTraducoes.Data.Context
 
         private static string RetornaConteudoNovelIlustracoes()
         {
-            return @"[{\""Id\"": 1,\""Ordem\"": 1,\""Alt\"" = \""Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg\""},{\""Id\"": 2,\""Ordem\"": 2,\""Alt\"" = \""MJ_V1_ilust_01\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_01.jpg\""},{\""Id\"": 3,\""Ordem\"": 3,\""Alt\"" = \""MJ_V1_ilust_02\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_02.jpg\""},{\""Id\"": 4,\""Ordem\"": 4,\""Alt\"" = \""MJ_V1_ilust_03\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_03.jpg\""},{\""Id\"": 5,\""Ordem\"": 5,\""Alt\"" = \""MJ_V1_ilust_04\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_04.jpg\""}]";
+            var lista = new List<EnderecoImagemDTO>
+            {
+                new EnderecoImagemDTO {
+                    Id=1,
+                    Ordem=1,
+                    Alt="Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01",
+                    Url="http://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg"
+                },
+                new EnderecoImagemDTO {
+                    Id=2,
+                    Ordem=2,
+                    Alt="MJ_V1_ilust_01",
+                    Url="http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_01.jpg"
+                },
+                new EnderecoImagemDTO {
+                    Id=3,
+                    Ordem=3,
+                    Alt="MJ_V1_ilust_02",
+                    Url="http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_02.jpg"
+                },
+                new EnderecoImagemDTO {
+                    Id=4,
+                    Ordem=4,
+                    Alt="MJ_V1_ilust_03",
+                    Url="http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_03.jpg"
+                },
+                new EnderecoImagemDTO {
+                    Id=5,
+                    Ordem=5,
+                    Alt="MJ_V1_ilust_04",
+                    Url="http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_04.jpg"
+                }
+            };
+
+            return JsonConvert.SerializeObject(lista);
         }
 
         private static string RetornaConteudoNovel()
@@ -348,7 +387,73 @@ namespace TsundokuTraducoes.Data.Context
 
         private static string RetornaConteudoManga()
         {
-            return @"[{\""Id\"": 1,\""Ordem\"": 1,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/0-46.jpg\""},{\""Id\"": 2,\""Ordem\"": 2,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/0-47.jpg\""},{\""Id\"": 3,\""Ordem\"": 3,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/1-60.jpg\""},{\""Id\"": 4,\""Ordem\"": 4,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/2-60.jpg\""},{\""Id\"": 5,\""Ordem\"": 5,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/3-61.jpg\""},{\""Id\"": 6,\""Ordem\"": 6,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/4-61.jpg\""},{\""Id\"": 7,\""Ordem\"": 7,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/5-61.jpg\""},{\""Id\"": 8,\""Ordem\"": 8,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/6-61.jpg\""},{\""Id\"": 9,\""Ordem\"": 9,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/7-61.jpg\""},{\""Id\"": 10,\""Ordem\"": 10,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/8-61.jpg\""},{\""Id\"": 10,\""Ordem\"": 10,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/9-61.jpg\""},{\""Id\"": 10,\""Ordem\"": 10,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/10-108.jpg\""}]";
+            var lista = new List<EnderecoImagemDTO>
+            {
+               new EnderecoImagemDTO {
+                   Id=1,
+                   Ordem=1,
+                   Url="http://tsundoku.com.br/wp-content/uploads/2022/01/0-46.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=2,
+                  Ordem=2,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/0-47.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=3,
+                  Ordem=3,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/1-60.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=4,
+                  Ordem=4,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/2-60.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=5,
+                  Ordem=5,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/3-61.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=6,
+                  Ordem=6,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/4-61.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=7,
+                  Ordem=7,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/5-61.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=8,
+                  Ordem=8,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/6-61.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=9,
+                  Ordem=9,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/7-61.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=10,
+                  Ordem=10,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/8-61.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=10,
+                  Ordem=10,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/9-61.jpg"
+               },
+               new EnderecoImagemDTO {
+                  Id=10,
+                  Ordem=10,
+                  Url="http://tsundoku.com.br/wp-content/uploads/2022/01/10-108.jpg"
+
+                }
+            };
+
+            return JsonConvert.SerializeObject(lista);
+
         }
     }
 }

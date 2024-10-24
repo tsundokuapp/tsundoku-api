@@ -25,7 +25,7 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
             Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"));
 
             Assert.Equal("capitulo-1", capituloComic.Slug);
-            Assert.NotEmpty(capituloComic.ListaImagens);
+            Assert.NotEmpty(capituloComic.ListaImagensJson);
             Assert.NotEmpty(capituloComic.Id.ToString());
             Assert.NotNull(capituloComic);
         }
@@ -49,7 +49,7 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                 Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime", "Volume01", "Capitulo01"),
                 Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"));
 
-            Assert.Empty(capituloComic.ListaImagens);
+            Assert.Empty(capituloComic.ListaImagensJson);
         }
 
         private string RetornaConteudoManga()

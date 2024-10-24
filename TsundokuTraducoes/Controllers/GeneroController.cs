@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -18,7 +20,8 @@ namespace TsundokuTraducoes.Api.Controllers
             _generoAppService = generoAppService;
         }
 
-        [HttpGet("api/genero")]
+        [HttpGet("api/admin/genero")]
+        [ProducesResponseType(typeof(List<RetornoGenero>), statusCode: 200)]
         public async Task<IActionResult> RetornaListaGeneros([FromQuery] RequestGenero requestGenero)
         {
             var result = await _generoAppService.RetornaListaGeneros();
@@ -34,7 +37,8 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(new { total = total, data = dados });
         }
 
-        [HttpGet("api/genero/{id}")]
+        [HttpGet("api/admin/genero/{id}")]
+        [ProducesResponseType(typeof(RetornoGenero), statusCode: 200)]
         public async Task<IActionResult> RetornaGeneroPorId(Guid id)
         {
             var result = await _generoAppService.RetornaGeneroPorId(id);
@@ -44,7 +48,8 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpPost("api/genero")]
+        [HttpPost("api/admin/genero")]
+        [ProducesResponseType(typeof(RetornoGenero), statusCode: 200)]
         public async Task<IActionResult> AdicionaGenero([FromForm] GeneroDTO generoDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestGenero(generoDTO))
@@ -54,10 +59,11 @@ namespace TsundokuTraducoes.Api.Controllers
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Created($"api/genero/{result.Value.Id}", result.Value);
+            return Created($"api/admin/genero/{result.Value.Id}", result.Value);
         }
 
-        [HttpPut("api/genero")]
+        [HttpPut("api/admin/genero")]
+        [ProducesResponseType(typeof(RetornoGenero), statusCode: 200)]
         public async Task<IActionResult> AtualizarGenero([FromForm] GeneroDTO generoDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestGenero(generoDTO))
@@ -76,7 +82,7 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpDelete("api/genero/{id}")]
+        [HttpDelete("api/admin/genero/{id}")]
         public async Task<IActionResult> ExcluirGenero(Guid id)
         {
             var result = await _generoAppService.ExcluiGenero(id);

@@ -9,7 +9,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public string Parte { get; set; }
         public string Titulo { get; set; }
         public string ConteudoNovel { get; set; }
-        public string ListaImagemCapitulo { get; set; }
+        public string ListaImagensJson { get; set; }
         public string Slug
         {
             get

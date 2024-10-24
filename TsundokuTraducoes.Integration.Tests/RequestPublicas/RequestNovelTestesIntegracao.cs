@@ -67,7 +67,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             foreach (var generos in listaGenerosAgrupados)
             {
                 var formData = MockResquestNovel.RetornaFormDataMockAdicionarNovel(generos);
-                var response = await _httpClient.PostAsync("api/obra/novel", formData);
+                var response = await _httpClient.PostAsync("api/admin/obra/novel", formData);
 
                 if (!response.IsSuccessStatusCode)
                 {

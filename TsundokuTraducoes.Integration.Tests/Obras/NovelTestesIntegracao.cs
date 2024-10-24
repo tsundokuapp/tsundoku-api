@@ -20,7 +20,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveInserirUmaNovel()
         {            
             var formData = MockNovel.RetornaFormDataMockAdicionarNovel(false);
-            var response = await _httpClient.PostAsync("api/obra/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/novel", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -34,7 +34,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveFalharAoInserirUmaNovelSemTitulo()
         {            
             var formData = MockNovel.RetornaFormDataMockAdicionarNovel(true);
-            var response = await _httpClient.PostAsync("api/obra/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/novel", formData);
             
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -44,7 +44,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         {
             var retornoObra = await AdicionaObraParaAtualizar();
             var formData = MockNovel.RetornaFormDataMockAtualizarNovel(retornoObra.Id, retornoObra.Titulo, false);
-            var response = await _httpClient.PutAsync("api/obra/novel", formData);
+            var response = await _httpClient.PutAsync("api/admin/obra/novel", formData);
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -56,7 +56,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         {
             var retornoObra = await AdicionaObraParaAtualizarEFalhar();
             var formData = MockNovel.RetornaFormDataMockAtualizarNovel(retornoObra.Id, retornoObra.Titulo, true);
-            var response = await _httpClient.PutAsync("api/obra/novel", formData);
+            var response = await _httpClient.PutAsync("api/admin/obra/novel", formData);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
@@ -67,7 +67,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarUmaNovelPorId()
         {
             var retornoObra = await AdicionaObraParaRetornarUmaNovelPorId();
-            var response = await _httpClient.GetAsync($"api/obra/novel/{retornoObra.Id}");           
+            var response = await _httpClient.GetAsync($"api/admin/obra/novel/{retornoObra.Id}");           
             
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -78,7 +78,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarNotFoundParaNovelNaoEncontrada()
         {
             var idNovelInexistente = "97722a6d-2210-434b-ae48-1a3c6da4c7a2";
-            var response = await _httpClient.GetAsync($"api/obra/novel/{idNovelInexistente}");
+            var response = await _httpClient.GetAsync($"api/admin/obra/novel/{idNovelInexistente}");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -87,7 +87,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveExcluirUmaNovel()
         {
             var retornoObra = await AdicionaObraParaExclurUmaNovel();
-            var response = await _httpClient.DeleteAsync($"api/obra/novel/{retornoObra.Id}/true");
+            var response = await _httpClient.DeleteAsync($"api/admin/obra/novel/{retornoObra.Id}/true");
             
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -98,7 +98,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarNotFoundAoExcluirUmaNovelInexistente()
         {
             var idNovelInexistente = "97722a6d-2210-434b-ae48-1a3c6da4c7a2";
-            var response = await _httpClient.DeleteAsync($"api/obra/novel/{idNovelInexistente}/true");
+            var response = await _httpClient.DeleteAsync($"api/admin/obra/novel/{idNovelInexistente}/true");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -106,7 +106,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         [Fact]
         public async Task DeveRetornarUmaListaDeNovels()
         {
-            var response = await _httpClient.GetAsync($"api/obra/novels?skip=&take=");
+            var response = await _httpClient.GetAsync($"api/admin/obra/novels?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 
@@ -114,7 +114,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         private async Task<RetornoObra> AdicionaObraParaAtualizar()
         {
             var formData = MockNovel.RetornaFormDataMockAdicionarNovelAtualizar();
-            var response = await _httpClient.PostAsync("api/obra/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/novel", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao tentar adicionar uma novel para teste e atualizar");
@@ -128,7 +128,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         private async Task<RetornoObra> AdicionaObraParaAtualizarEFalhar()
         {
             var formData = MockNovel.RetornaFormDataMockAdicionarNovelAtualizarFalhar();
-            var response = await _httpClient.PostAsync("api/obra/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/novel", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao tentar adicionar uma novel para teste de atualizar e falhar");
@@ -142,7 +142,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         private async Task<RetornoObra> AdicionaObraParaRetornarUmaNovelPorId()
         {
             var formData = MockNovel.RetornaFormDataMockAdicionaObraParaRetornarUmaNovelPorId();
-            var response = await _httpClient.PostAsync("api/obra/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/novel", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao tentar adicionar uma novel para teste de retornar Novel por Id");
@@ -156,7 +156,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         private async Task<RetornoObra> AdicionaObraParaExclurUmaNovel()
         {
             var formData = MockNovel.RetornaFormDataMockAdicionaObraParaExclurUmaNovel();
-            var response = await _httpClient.PostAsync("api/obra/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/novel", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao tentar adicionar uma novel para teste de exclusão de novel");
