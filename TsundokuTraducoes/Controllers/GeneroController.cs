@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -19,6 +21,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/admin/genero")]
+        [ProducesResponseType(typeof(List<RetornoGenero>), statusCode: 200)]
         public async Task<IActionResult> RetornaListaGeneros([FromQuery] RequestGenero requestGenero)
         {
             var result = await _generoAppService.RetornaListaGeneros();
@@ -35,6 +38,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/admin/genero/{id}")]
+        [ProducesResponseType(typeof(RetornoGenero), statusCode: 200)]
         public async Task<IActionResult> RetornaGeneroPorId(Guid id)
         {
             var result = await _generoAppService.RetornaGeneroPorId(id);
@@ -45,6 +49,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpPost("api/admin/genero")]
+        [ProducesResponseType(typeof(RetornoGenero), statusCode: 200)]
         public async Task<IActionResult> AdicionaGenero([FromForm] GeneroDTO generoDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestGenero(generoDTO))
@@ -58,6 +63,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpPut("api/admin/genero")]
+        [ProducesResponseType(typeof(RetornoGenero), statusCode: 200)]
         public async Task<IActionResult> AtualizarGenero([FromForm] GeneroDTO generoDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestGenero(generoDTO))
