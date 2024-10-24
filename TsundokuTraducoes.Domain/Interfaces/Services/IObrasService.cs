@@ -5,16 +5,16 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
 {
     public interface IObrasService
     {
-        Task<List<RetornoObra>> ObterListaNovels(RequestObras requestObras);
-        Task<List<RetornoObra>> ObterListaNovelsRecentes();
-        Task<RetornoObra> ObterNovelPorId(RequestObras requestObras);
+        Task<List<RetornoObras>> ObterListaNovels(RequestObras requestObras);
+        Task<List<RetornoObras>> ObterListaNovelsRecentes();
+        Task<RetornoObras> ObterNovelPorId(RequestObras requestObras);
 
-        Task<List<RetornoObra>> ObterListaComics(RequestObras requestObras);
-        Task<List<RetornoObra>> ObterListaComicsRecentes();
-        Task<RetornoObra> ObterComicPorId(RequestObras requestObras);
+        Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras);
+        Task<List<RetornoObras>> ObterListaComicsRecentes();
+        Task<RetornoObras> ObterComicPorId(RequestObras requestObras);
 
-        Task<List<RetornoCapitulos>> ObterCapitulosHome();
+        Task<List<RetornoCapitulosHome>> ObterCapitulosHome();
         Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas();
-        List<RetornoVolume> ObterListaVolumeCapitulos(string idObra);
+        List<RetornoVolumes> ObterListaVolumeCapitulos(string idObra);
     }
 }

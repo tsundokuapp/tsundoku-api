@@ -31,7 +31,7 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                     );
 
             Assert.Equal("Ilustrações", capituloNovelIlustracoes.Numero);
-            Assert.NotEmpty(capituloNovelIlustracoes.ConteudoNovel);
+            Assert.NotEmpty(capituloNovelIlustracoes.ListaImagensJson);
             Assert.NotNull(capituloNovelIlustracoes);
         }
 

@@ -229,7 +229,7 @@ namespace TsundokuTraducoes.Services.AppServices
                         return Result.Fail(result.Errors[0].Message);
 
                     capituloEncontrado.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
-                    capituloEncontrado.ConteudoNovel = capituloDTO.ListaImagensJson;
+                    capituloEncontrado.ListaImagensJson = capituloDTO.ListaImagensJson;
                 }
             }
 
