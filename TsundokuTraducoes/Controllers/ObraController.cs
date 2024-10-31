@@ -26,9 +26,9 @@ namespace TsundokuTraducoes.Models
         {
             var result = await _obraAppService.RetornaListaObras();
             if (result.Value == null || result.Value.Count == 0)
-                return NoContent();            
+                return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoObra(HttpContext, result.Value, requestObra);
+            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
             return Ok(objetoRetorno);
         }        
 
@@ -40,7 +40,7 @@ namespace TsundokuTraducoes.Models
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoObra(HttpContext, result.Value, requestObra);
+            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
             return Ok(objetoRetorno);
         }
 
@@ -52,7 +52,7 @@ namespace TsundokuTraducoes.Models
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoObra(HttpContext, result.Value, requestObra);
+            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
             return Ok(objetoRetorno);
         }
 
