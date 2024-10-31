@@ -14,40 +14,40 @@ namespace TsundokuTraducoes.Domain.Services
             _obrasRepository = obrasRepository;
         }
         
-        public async Task<List<RetornoObra>> ObterListaNovels(RequestObras requestObras)
+        public async Task<List<RetornoObras>> ObterListaNovels(RequestObras requestObras)
         {
             return await _obrasRepository.ObterListaNovels(requestObras);
         }
         
-        public async Task<List<RetornoObra>> ObterListaComics(RequestObras requestObras)
+        public async Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras)
         {
             return await _obrasRepository.ObterListaComics(requestObras);
         }
         
         
-        public async Task<List<RetornoObra>> ObterListaNovelsRecentes()
+        public async Task<List<RetornoObras>> ObterListaNovelsRecentes()
         {
             return await _obrasRepository.ObterListaNovelsRecentes();
         }
         
-        public async Task<List<RetornoObra>> ObterListaComicsRecentes()
+        public async Task<List<RetornoObras>> ObterListaComicsRecentes()
         {
             return await _obrasRepository.ObterListaComicsRecentes();
         }
                 
         
-        public async Task<RetornoObra> ObterNovelPorId(RequestObras requestObras)
+        public async Task<RetornoObras> ObterNovelPorId(RequestObras requestObras)
         {
             return await _obrasRepository.ObterNovelPorId(requestObras);
         }
         
-        public async Task<RetornoObra> ObterComicPorId(RequestObras requestObras)
+        public async Task<RetornoObras> ObterComicPorId(RequestObras requestObras)
         {
             return await _obrasRepository.ObterComicPorId(requestObras);
         }
 
         
-        public async Task<List<RetornoCapitulos>> ObterCapitulosHome()
+        public async Task<List<RetornoCapitulosHome>> ObterCapitulosHome()
         {
             return await _obrasRepository.ObterCapitulosHome();
         }
@@ -57,7 +57,7 @@ namespace TsundokuTraducoes.Domain.Services
             return await _obrasRepository.ObterObrasRecomendadas();
         }
 
-        public List<RetornoVolume> ObterListaVolumeCapitulos(string idObra)
+        public List<RetornoVolumes> ObterListaVolumeCapitulos(string idObra)
         {
             return _obrasRepository.ObterListaVolumeCapitulos(idObra);
         }

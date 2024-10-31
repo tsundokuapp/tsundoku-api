@@ -15,7 +15,7 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                     "",
                     0,
                     "",
-                    RetornaConteudoNovelIlustracoes(),
+                    "",
                     "ilustracoes",                    
                     "Bravo",
                     "Bravo",
@@ -26,10 +26,12 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                     "",
                     "",
                     "",
-                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"));
+                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+                    RetornaConteudoNovelIlustracoes()
+                    );
 
             Assert.Equal("Ilustrações", capituloNovelIlustracoes.Numero);
-            Assert.NotEmpty(capituloNovelIlustracoes.ConteudoNovel);
+            Assert.NotEmpty(capituloNovelIlustracoes.ListaImagensJson);
             Assert.NotNull(capituloNovelIlustracoes);
         }
 
@@ -54,7 +56,8 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                     "",
                     "",
                     "",
-                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"));
+                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+                    "");
                         
             Assert.Empty(capituloNovelIlustracoes.ConteudoNovel);
         }
@@ -80,7 +83,8 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                     "",
                     "",
                     "",
-                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"));
+                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+                    "");
 
             Assert.Equal("capitulo-1-pais-dos-magos", capituloNovelIlustracoes.Slug);
             Assert.NotEmpty(capituloNovelIlustracoes.ConteudoNovel);
@@ -108,7 +112,8 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                     "",
                     "",
                     "",
-                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"));
+                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+                    "");
                         
             Assert.Empty(capituloNovelIlustracoes.ConteudoNovel);
         }

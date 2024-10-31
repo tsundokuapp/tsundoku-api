@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentResults;
+using Newtonsoft.Json;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Helpers;
@@ -116,7 +117,7 @@ namespace TsundokuTraducoes.Services.AppServices
                                 return Result.Fail(result.Errors[0].Message);
 
                             capitulo.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
-                            capitulo.ConteudoNovel = capituloDTO.ConteudoNovel;
+                            capitulo.ListaImagensJson = capituloDTO.ListaImagensJson;
                         }
                         else
                         {
@@ -171,7 +172,7 @@ namespace TsundokuTraducoes.Services.AppServices
                             return Result.Fail(result.Errors[0].Message);
 
                         capitulo.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
-                        capitulo.ListaImagens = capituloDTO.ListaImagemCapitulo;
+                        capitulo.ListaImagensJson = capituloDTO.ListaImagensJson;
                     }
                     else
                     {
@@ -228,7 +229,7 @@ namespace TsundokuTraducoes.Services.AppServices
                         return Result.Fail(result.Errors[0].Message);
 
                     capituloEncontrado.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
-                    capituloEncontrado.ConteudoNovel = capituloDTO.ConteudoNovel;
+                    capituloEncontrado.ListaImagensJson = capituloDTO.ListaImagensJson;
                 }
             }
 
@@ -264,7 +265,7 @@ namespace TsundokuTraducoes.Services.AppServices
                     return Result.Fail(result.Errors[0].Message);
 
                 capituloEncontrado.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
-                capituloEncontrado.ListaImagens = capituloDTO.ListaImagemCapitulo;
+                capituloEncontrado.ListaImagensJson = capituloDTO.ListaImagensJson;
             }
 
             capituloEncontrado = _capituloService.AtualizaCapituloComic(capituloDTO);
@@ -334,6 +335,12 @@ namespace TsundokuTraducoes.Services.AppServices
             retornoCapitulo.DataInclusao = capituloNovel.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
             retornoCapitulo.DataAlteracao = capituloNovel.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
             retornoCapitulo.UsuarioAlteracao = !string.IsNullOrEmpty(capituloNovel.UsuarioAlteracao) ? capituloNovel.UsuarioAlteracao : null;
+
+            if (capituloNovel.EhIlustracoesNovel && !string.IsNullOrEmpty(capituloNovel.ListaImagensJson))
+            {
+                retornoCapitulo.ListaImagens = JsonConvert.DeserializeObject<List<EnderecoImagemDTO>>(capituloNovel.ListaImagensJson);
+            }
+
             return retornoCapitulo;
         }
 
@@ -343,6 +350,12 @@ namespace TsundokuTraducoes.Services.AppServices
             retornoCapitulo.DataInclusao = CapituloComic.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
             retornoCapitulo.DataAlteracao = CapituloComic.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
             retornoCapitulo.UsuarioAlteracao = !string.IsNullOrEmpty(CapituloComic.UsuarioAlteracao) ? CapituloComic.UsuarioAlteracao : null;
+
+            if (!string.IsNullOrEmpty(CapituloComic.ListaImagensJson))
+            {
+                retornoCapitulo.ListaImagens = JsonConvert.DeserializeObject<List<EnderecoImagemDTO>>(CapituloComic.ListaImagensJson);
+            }
+
             return retornoCapitulo;
         }               
     }

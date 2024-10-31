@@ -67,7 +67,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             foreach (var generos in listaGenerosAgrupados)
             {
                 var formData = MockRequestComic.RetornaFormDataMockAdicionarComic(generos);
-                var response = await _httpClient.PostAsync("api/obra/comic", formData);
+                var response = await _httpClient.PostAsync("api/admin/obra/comic", formData);
 
                 if (!response.IsSuccessStatusCode)
                 {

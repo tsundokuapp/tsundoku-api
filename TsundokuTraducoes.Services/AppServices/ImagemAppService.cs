@@ -218,8 +218,8 @@ namespace TsundokuTraducoes.Services.AppServices
             }
 
             var imagensJson = JsonConvert.SerializeObject(listaEnderecoImagemDTO);
+            capituloDTO.ListaImagensJson = imagensJson;
             capituloDTO.DiretorioImagemCapitulo = resultImagem.Value.Diretorio;
-            capituloDTO.ConteudoNovel = imagensJson;
 
             return Result.Ok();
         }
@@ -285,7 +285,7 @@ namespace TsundokuTraducoes.Services.AppServices
             }
 
             var imagensJson = JsonConvert.SerializeObject(listaEnderecoImagemDTO);
-            capituloDTO.ListaImagemCapitulo = imagensJson;
+            capituloDTO.ListaImagensJson = imagensJson;
             capituloDTO.DiretorioImagemCapitulo = resultImagem.Value.Diretorio;
 
             return Result.Ok();

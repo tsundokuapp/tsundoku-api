@@ -83,14 +83,14 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
             GenerosNovel = new List<GeneroNovel>();
         }
 
-        public void AtualizaDadosUltimoVolume(string? imagemCapaUltimoVolume, string? numeroUltimoVolume, string? slugUltimoVolume)
+        public void AtualizaDadosUltimoVolume(string imagemCapaUltimoVolume, string numeroUltimoVolume, string slugUltimoVolume)
         {
             ImagemCapaUltimoVolume = imagemCapaUltimoVolume;
             NumeroUltimoVolume = numeroUltimoVolume;
             SlugUltimoVolume = slugUltimoVolume;
         }
 
-        public void AtualizaDadosUltimoCapitulo(string? numeroUltimoCapitulo, string? slugUltimoCapitulo, DateTime? dataAtualizacaoUltimoCapitulo)
+        public void AtualizaDadosUltimoCapitulo(string numeroUltimoCapitulo, string slugUltimoCapitulo, DateTime? dataAtualizacaoUltimoCapitulo)
         {
             NumeroUltimoCapitulo = numeroUltimoCapitulo;
             SlugUltimoCapitulo = slugUltimoCapitulo;

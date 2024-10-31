@@ -2,7 +2,7 @@
 
 namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
 {
-    public class RetornoObra
+    public class RetornoObras
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string UrlCapaPrincipal { get; set; }

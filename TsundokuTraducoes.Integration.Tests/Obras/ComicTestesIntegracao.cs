@@ -20,7 +20,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveInserirUmaComic()
         {   
             var formData = MockComic.RetornaFormDataMockAdicionarComic(false);
-            var response = await _httpClient.PostAsync("api/obra/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/comic", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -34,7 +34,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveFalharAoInserirUmaComicSemTitulo()
         {            
             var formData = MockComic.RetornaFormDataMockAdicionarComic(true);
-            var response = await _httpClient.PostAsync("api/obra/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/comic", formData);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -44,7 +44,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         {
             var retornoObra = await AdicionaObraParaAtualizar();
             var formData = MockComic.RetornaFormDataMockAtualizarComic(retornoObra.Id, retornoObra.Titulo, retornoObra.Alias, false);
-            var response = await _httpClient.PutAsync("api/obra/comic", formData);
+            var response = await _httpClient.PutAsync("api/admin/obra/comic", formData);
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -56,7 +56,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         {
             var retornoObra = await AdicionaObraParaAtualizarEFalhar();
             var formData = MockComic.RetornaFormDataMockAtualizarComic(retornoObra.Id, retornoObra.Titulo, retornoObra.Alias, true);
-            var response = await _httpClient.PutAsync("api/obra/comic", formData);
+            var response = await _httpClient.PutAsync("api/admin/obra/comic", formData);
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 
@@ -67,7 +67,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarUmaComicPorId()
         {
             var retornoObra = await AdicionaObraParaRetornarUmaComicPorId();
-            var response = await _httpClient.GetAsync($"api/obra/comic/{retornoObra.Id}");
+            var response = await _httpClient.GetAsync($"api/admin/obra/comic/{retornoObra.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -78,7 +78,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarNotFoundParaComicNaoEncontrada()
         {
             var idNovelInexistente = "97722a6d-2210-434b-ae48-1a3c6da4c7a2";
-            var response = await _httpClient.GetAsync($"api/obra/comic/{idNovelInexistente}");
+            var response = await _httpClient.GetAsync($"api/admin/obra/comic/{idNovelInexistente}");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -87,7 +87,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveExcluirUmaComic()
         {
             var retornoObra = await AdicionaObraParaExclurUmaComic();
-            var response = await _httpClient.DeleteAsync($"api/obra/comic/{retornoObra.Id}/true");
+            var response = await _httpClient.DeleteAsync($"api/admin/obra/comic/{retornoObra.Id}/true");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -98,7 +98,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarNotFoundAoExcluirUmaComiclInexistente()
         {
             var idNovelInexistente = "97722a6d-2210-434b-ae48-1a3c6da4c7a2";
-            var response = await _httpClient.DeleteAsync($"api/obra/comic/{idNovelInexistente}/true");
+            var response = await _httpClient.DeleteAsync($"api/admin/obra/comic/{idNovelInexistente}/true");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -108,7 +108,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         {
             var retornoObra = await AdicionaObraParaAtualizar();
 
-            var response = await _httpClient.GetAsync($"api/obra/comics?skip=&take=");
+            var response = await _httpClient.GetAsync($"api/admin/obra/comics?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
 
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
@@ -117,7 +117,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         private async Task<RetornoObra> AdicionaObraParaAtualizar()
         {
             var formData = MockComic.RetornaFormDataMockAdicionarComicAtualizar();
-            var response = await _httpClient.PostAsync("api/obra/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/comic", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao tentar adicionar uma comic para teste e atualizar");
@@ -131,7 +131,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         private async Task<RetornoObra> AdicionaObraParaAtualizarEFalhar()
         {
             var formData = MockComic.RetornaFormDataMockAdicionarComicAtualizarFalhar();
-            var response = await _httpClient.PostAsync("api/obra/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/comic", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao tentar adicionar uma comic para teste de atualizar e falhar");
@@ -145,7 +145,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         private async Task<RetornoObra> AdicionaObraParaRetornarUmaComicPorId()
         {
             var formData = MockComic.RetornaFormDataMockAdicionaObraParaRetornarUmaComicPorId();
-            var response = await _httpClient.PostAsync("api/obra/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/comic", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao tentar adicionar uma comic para teste de retornar Comic por Id");
@@ -159,7 +159,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         private async Task<RetornoObra> AdicionaObraParaExclurUmaComic()
         {
             var formData = MockComic.RetornaFormDataMockAdicionaObraParaExclurUmaComic();
-            var response = await _httpClient.PostAsync("api/obra/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/comic", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao tentar adicionar uma comic para teste de exclusão de comic");

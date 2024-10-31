@@ -22,7 +22,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var retornoObra = await AdicionaNovel();
 
             var formData = MockVolumeNovel.RetornaFormDataMockAdicionarVolumeNovel(false, retornoObra.Id);
-            var response = await _httpClient.PostAsync("api/volume/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/volume/novel", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -36,7 +36,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var retornoObra = await AdicionaNovel();
 
             var formData = MockVolumeNovel.RetornaFormDataMockAdicionarVolumeNovel(true, retornoObra.Id);
-            var response = await _httpClient.PostAsync("api/volume/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/volume/novel", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -51,7 +51,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
             var formData = MockVolumeNovel.RetornaFormDataMockAtualizarVolumeNovel(false, retornoObra.Id, retornoVolume.Id);
-            var response = await _httpClient.PutAsync("api/volume/novel", formData);
+            var response = await _httpClient.PutAsync("api/admin/volume/novel", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -66,7 +66,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
             var formData = MockVolumeNovel.RetornaFormDataMockAtualizarVolumeNovel(true, retornoObra.Id, retornoVolume.Id);
-            var response = await _httpClient.PutAsync("api/volume/novel", formData);
+            var response = await _httpClient.PutAsync("api/admin/volume/novel", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -80,7 +80,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var retornoObra = await AdicionaNovel();
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
-            var response = await _httpClient.GetAsync($"api/volume/novel/{retornoVolume.Id}");
+            var response = await _httpClient.GetAsync($"api/admin/volume/novel/{retornoVolume.Id}");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
@@ -89,7 +89,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveRetornarNotFoundParaVolumeNovelNaoEncontrada()
         {
-            var response = await _httpClient.GetAsync($"api/volume/novel/{Guid.NewGuid()}");
+            var response = await _httpClient.GetAsync($"api/admin/volume/novel/{Guid.NewGuid()}");
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
                 
@@ -99,7 +99,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             var retornoObra = await AdicionaNovel();
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
-            var response = await _httpClient.DeleteAsync($"api/volume/novel/{retornoVolume.Id}/true");
+            var response = await _httpClient.DeleteAsync($"api/admin/volume/novel/{retornoVolume.Id}/true");
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
@@ -108,21 +108,21 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         [Fact]
         public async Task DeveRetornarNotFoundAoExcluirUmVolumeNovelInexistente()
         {
-            var response = await _httpClient.DeleteAsync($"api/obra/novel/{Guid.NewGuid()}/true");
+            var response = await _httpClient.DeleteAsync($"api/admin/obra/novel/{Guid.NewGuid()}/true");
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
         [Fact]
         public async Task DeveRetornarUmaListaDeVolumeNovelsOuSemConteudo()
         {
-            var response = await _httpClient.GetAsync($"api/volume/novel?skip=&take=");
+            var response = await _httpClient.GetAsync($"api/admin/volume/novel?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode || HttpStatusCode.NoContent == response.StatusCode);
         }
 
         public async Task<RetornoObra> AdicionaNovel()
         {
             var formData = MockVolumeNovel.RetornaFormDataMockAdicionaUmaNovel();
-            var response = await _httpClient.PostAsync("api/obra/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/novel", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao inserir uma novel para teste");
@@ -134,7 +134,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
         public async Task<RetornoVolume> AdicionaVolume(Guid obraId)
         {
             var formData = MockVolumeNovel.RetornaFormDataMockAdicionarVolumeNovel(false, obraId);
-            var response = await _httpClient.PostAsync("api/volume/novel", formData);
+            var response = await _httpClient.PostAsync("api/admin/volume/novel", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao inserir um volume de novel para teste");

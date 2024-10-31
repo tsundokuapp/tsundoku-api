@@ -23,7 +23,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
             var formData = MockCapituloComic.RetornaFormDataMockAdicionarCapituloComic(false, retornoVolume.Id);
-            var response = await _httpClient.PostAsync("api/capitulo/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/capitulo/comic", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -38,7 +38,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
 
             var formData = MockCapituloComic.RetornaFormDataMockAdicionarCapituloComic(true, retornoVolume.Id);
-            var response = await _httpClient.PostAsync("api/capitulo/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/capitulo/comic", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -54,7 +54,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var retornoCapitulo = await AdicionaCapitulo(retornoVolume.Id);
 
             var formData = MockCapituloComic.RetornaFormDataMockAtualizarCapituloComic(false, retornoVolume.Id, retornoCapitulo.Id);
-            var response = await _httpClient.PutAsync("api/capitulo/comic", formData);
+            var response = await _httpClient.PutAsync("api/admin/capitulo/comic", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -70,7 +70,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var retornoCapitulo = await AdicionaCapitulo(retornoVolume.Id);
 
             var formData = MockCapituloComic.RetornaFormDataMockAtualizarCapituloComic(true, retornoVolume.Id, retornoCapitulo.Id);
-            var response = await _httpClient.PutAsync("api/capitulo/comic", formData);
+            var response = await _httpClient.PutAsync("api/admin/capitulo/comic", formData);
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
@@ -85,7 +85,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
             var retornoCapitulo = await AdicionaCapitulo(retornoVolume.Id);
 
-            var response = await _httpClient.GetAsync($"api/capitulo/comic/{retornoCapitulo.Id}");
+            var response = await _httpClient.GetAsync($"api/admin/capitulo/comic/{retornoCapitulo.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -95,7 +95,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         [Fact]
         public async Task DeveRetornarNotFoundParaCapituloComicNaoEncontrada()
         {
-            var response = await _httpClient.GetAsync($"api/capitulo/comic/{Guid.NewGuid()}");
+            var response = await _httpClient.GetAsync($"api/admin/capitulo/comic/{Guid.NewGuid()}");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -107,7 +107,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
             var retornoCapitulo = await AdicionaCapitulo(retornoVolume.Id);
 
-            var response = await _httpClient.DeleteAsync($"api/capitulo/comic/{retornoCapitulo.Id}/true");
+            var response = await _httpClient.DeleteAsync($"api/admin/capitulo/comic/{retornoCapitulo.Id}/true");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -117,7 +117,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         [Fact]
         public async Task DeveRetornarNotFoundAoExcluirUmCapituloComicInexistente()
         {
-            var response = await _httpClient.DeleteAsync($"api/capitulo/comic/{Guid.NewGuid()}/true");
+            var response = await _httpClient.DeleteAsync($"api/admin/capitulo/comic/{Guid.NewGuid()}/true");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -125,7 +125,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         [Fact]
         public async Task DeveRetornarUmaListaDeCapituloComics()
         {
-            var response = await _httpClient.GetAsync($"api/capitulo/comic?skip=&take=");
+            var response = await _httpClient.GetAsync($"api/admin/capitulo/comic?skip=&take=");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 
@@ -133,7 +133,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         public async Task<RetornoObra> AdicionaComic()
         {
             var formData = MockCapituloComic.RetornaFormDataMockAdicionaComic();
-            var response = await _httpClient.PostAsync("api/obra/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/obra/comic", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao inserir uma comic para teste");
@@ -145,7 +145,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         public async Task<RetornoVolume> AdicionaVolume(Guid obraId)
         {
             var formData = MockCapituloComic.RetornaFormDataMockAdicionarVolumeComic(obraId);
-            var response = await _httpClient.PostAsync("api/volume/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/volume/comic", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao inserir um volume de comic para teste");
@@ -157,7 +157,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         public async Task<RetornoCapitulo> AdicionaCapitulo(Guid volumeId)
         {
             var formData = MockCapituloComic.RetornaFormDataMockAdicionarCapituloComic(false, volumeId);
-            var response = await _httpClient.PostAsync("api/capitulo/comic", formData);
+            var response = await _httpClient.PostAsync("api/admin/capitulo/comic", formData);
 
             if (!response.IsSuccessStatusCode)
                 Assert.Fail("Falha ao inserir um capitulo de comic para teste");

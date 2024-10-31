@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -19,7 +21,8 @@ namespace TsundokuTraducoes.Controllers
             _capituloService = capituloService;
         }
 
-        [HttpGet("api/capitulo/")]
+        [HttpGet("api/admin/capitulo/")]
+        [ProducesResponseType(typeof(List<RetornoCapitulo>), statusCode: 200)]
         public IActionResult RetornaListaCapitulos([FromQuery] RequestCapitulo requestCapitulo)
         {
             var result = _capituloService.RetornaListaCapitulos(requestCapitulo.volumeId);
@@ -35,7 +38,8 @@ namespace TsundokuTraducoes.Controllers
             return Ok(new { total = total, data = dados });
         }
 
-        [HttpGet("api/capitulo/novel")]
+        [HttpGet("api/admin/capitulo/novel")]
+        [ProducesResponseType(typeof(List<RetornoCapitulo>), statusCode: 200)]
         public IActionResult RetornaListaCapitulosNovel([FromQuery] RequestCapitulo requestCapitulo)
         {
             var result = _capituloService.RetornaListaCapitulosNovel(requestCapitulo.volumeId);
@@ -51,7 +55,8 @@ namespace TsundokuTraducoes.Controllers
             return Ok(new { total = total, data = dados });
         }
 
-        [HttpGet("api/capitulo/comic")]
+        [HttpGet("api/admin/capitulo/comic")]
+        [ProducesResponseType(typeof(List<RetornoCapitulo>), statusCode: 200)]
         public IActionResult RetornaListaCapitulosComic([FromQuery] RequestCapitulo requestCapitulo)
         {
             var result = _capituloService.RetornaListaCapitulosComic(requestCapitulo.volumeId);
@@ -68,7 +73,8 @@ namespace TsundokuTraducoes.Controllers
         }
 
 
-        [HttpGet("api/capitulo/novel/{id}")]
+        [HttpGet("api/admin/capitulo/novel/{id}")]
+        [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public IActionResult RetornaCapituloNovelPorId(Guid id)
         {
             var result = _capituloService.RetornaCapituloNovelPorId(id);
@@ -78,7 +84,8 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Value);
         }
 
-        [HttpGet("api/capitulo/comic/{id}")]
+        [HttpGet("api/admin/capitulo/comic/{id}")]
+        [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public IActionResult RetornaCapituloComicPorId(Guid id)
         {
             var result = _capituloService.RetornaCapituloComicPorId(id);
@@ -89,7 +96,8 @@ namespace TsundokuTraducoes.Controllers
         }
 
 
-        [HttpPost("api/capitulo/novel/")]
+        [HttpPost("api/admin/capitulo/novel/")]
+        [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestCapituloNovel(capituloDTO))
@@ -104,10 +112,11 @@ namespace TsundokuTraducoes.Controllers
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Created($"api/capitulo/novel/{result.Value.Id}", result.Value);
+            return Created($"api/admin/capitulo/novel/{result.Value.Id}", result.Value);
         }
 
-        [HttpPost("api/capitulo/comic/")]
+        [HttpPost("api/admin/capitulo/comic/")]
+        [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestCapituloComic(capituloDTO))
@@ -120,11 +129,12 @@ namespace TsundokuTraducoes.Controllers
             if (result.IsFailed)
                 return BadRequest(result.Errors[0].Message);
 
-            return Created($"api/capitulo/comic/{result.Value.Id}", result.Value);
+            return Created($"api/admin/capitulo/comic/{result.Value.Id}", result.Value);
         }
 
 
-        [HttpPut("api/capitulo/novel/")]
+        [HttpPut("api/admin/capitulo/novel/")]
+        [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestCapituloAtualizacao(capituloDTO))
@@ -148,7 +158,8 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Value);
         }
 
-        [HttpPut("api/capitulo/comic/")]
+        [HttpPut("api/admin/capitulo/comic/")]
+        [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AtualizaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestCapituloAtualizacao(capituloDTO))
@@ -171,7 +182,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
 
-        [HttpDelete("api/capitulo/novel/{id}/{arquivoLocal}")]
+        [HttpDelete("api/admin/capitulo/novel/{id}/{arquivoLocal}")]
         public async Task<IActionResult> ExcluiCapituloNovel(Guid id, bool arquivoLocal)
         {
             var result = await _capituloService.ExcluiCapituloNovel(id, arquivoLocal);
@@ -187,7 +198,7 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Successes[0].Message);
         }
 
-        [HttpDelete("api/capitulo/comic/{id}/{arquivoLocal}")]
+        [HttpDelete("api/admin/capitulo/comic/{id}/{arquivoLocal}")]
         public async Task<IActionResult> ExcluiCapituloComic(Guid id, bool arquivoLocal)
         {
             var result = await _capituloService.ExcluiCapituloComic(id, arquivoLocal);
