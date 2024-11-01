@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Helpers;
@@ -139,6 +140,28 @@ namespace TsundokuTraducoes.Api.Controllers
 
             var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, volumes, requestObras);
             return Ok(objetoRetorno);
+        }
+
+        [HttpGet("api/obras/comic/capitulo/{id}")]
+        [ProducesResponseType(typeof(RetornoCapituloComic), statusCode:200)]
+        public async Task<IActionResult> ObterCapituloComicPorId(Guid id)
+        {
+            var capituloComic = await _obrasAppServices.ObterCapituloComicPorId(id);
+            if (capituloComic == null)
+                return BadRequest("Capitulo não encontrado!");            
+            
+            return Ok(capituloComic);
+        }
+
+        [HttpGet("api/obras/novel/capitulo/{id}")]
+        [ProducesResponseType(typeof(RetornoCapituloNovel), statusCode: 200)]
+        public async Task<IActionResult> ObterCapituloNovelPorId(Guid id)
+        {
+            var capituloNovel = await _obrasAppServices.ObterCapituloNovelPorId(id);
+            if (capituloNovel == null)
+                return BadRequest("Capitulo não encontrado!");
+
+            return Ok(capituloNovel);
         }
     }
 }
