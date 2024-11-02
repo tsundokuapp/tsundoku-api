@@ -1,4 +1,5 @@
-﻿using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+﻿using TsundokuTraducoes.Entities.Entities.Capitulo;
+using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
 namespace TsundokuTraducoes.Domain.Interfaces.Repositories
@@ -18,5 +19,7 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
         Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas();
 
         List<RetornoVolumes> ObterListaVolumeCapitulos(string idObra);
+        Task<CapituloComic> ObterCapituloComicPorId(Guid id);
+        Task<CapituloNovel> ObterCapituloNovelPorId(Guid id);
     }
 }
