@@ -1,0 +1,37 @@
+services:
+
+  apiTsundoku: 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: tsundokuapi:1.0
+    container_name: tsundokuapi
+    tty: true
+    ports:
+      - "8080:80"
+      - "8081:443"
+    environment: 
+      - ASPNETCORE_ENVIRONMENT=Development 
+      - ASPNETCORE_URLS=https://+;http://+
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=tsundokuapi
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificados/aspnetapp.pfx
+    volumes:
+      - ~/.aspnet/https:/https/
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql
+    command: --innodb-use-native-aio=0
+    container_name: mysql
+    tty: true
+    volumes:
+      - db-volume:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_DATABASE=DbTsundoku
+      - MYSQL_ROOT_PASSWORD=1234
+
+volumes:
+  db-volume:
