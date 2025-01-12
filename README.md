@@ -72,7 +72,11 @@ git push -f origin main
 - Copie o arquivo appsettingsExample.json e altere seu nome para appsettings.json, adicionando a connectionString do banco local ou remoto.
 - Adicionar diretórios wwwroot/image (_Enquanto salvar arquivos locais_)
 
-- instalar o pacote dotnet-ef > ```dotnet tool install --global dotnet-ef``` (_Geralmente é necessário no VSCode_)
+- instalar o pacote dotnet-ef >
+```sh
+dotnet tool install --global dotnet-ef
+```
+(_Geralmente é necessário no VSCode_)
   - Rodar o comando ```update-database``` 
     - Visual Studio Code > ```dotnet ef database update```
     
@@ -89,22 +93,29 @@ Comandos docker:
   - cd tsundoku-api/
 
 - Criando uma rede para comunicação entre os containers
-  - ```docker network create tsundoku```
+```sh
+docker network create tsundoku
+```
 
 - Subindo banco MySql 
-Criando um container MySql com a nova rede
-Lembrando que esse nome vai no arquivo appconfig que está no Drive
-  - ```docker run --name=mysql -e MYSQL_ROOT_PASSWORD=1234 -d --network tsundoku mysql```
+Criando um container MySql com a nova rede, lembrando que esse nome vai no arquivo appconfig que está no Drive
+```sh
+docker run --name=mysql -e MYSQL_ROOT_PASSWORD=1234 -d --network tsundoku mysql
+```
 
 - Antes de gerar o build da imagem
   - Baixar o arquivo **"appsettings.json"** que se encontra no drive ``15 - Tsun Dev > Arquivos Config Api Tsun > TsundokuTraducoes `` e adicionar na pasta **"TsundokuTraducoes"**, dentro do projeto
    
 - Buildar imagem
-  - ```docker build -t tsundokuapi:1.0 .```
+  ```sh
+  docker build -t tsundokuapi:1.0 .
+  ```
      - Onde "tsundokuapi:1.0" seria o nome da imagem e versão
 
 - criando um container tsundokuapi com a nova rede
-```docker run --rm -it -p 8080:80 -p 8081:443 -e ASPNETCORE_URLS="https://+;http://+" -e ASPNETCORE_HTTPS_PORTS=8081 -e ASPNETCORE_Kestrel__Certificates__Default__Password="tsundokuapi" -e ASPNETCORE_ENVIRONMENT=Development -e ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificados/aspnetapp.pfx -v \TsundokuTraducoes\.aspnet\https:/https/ --name tsundoku-api --network tsundoku tsundokuapi:1.0```
+```sh
+docker run --rm -it -p 8080:80 -p 8081:443 -e ASPNETCORE_URLS="https://+;http://+" -e ASPNETCORE_HTTPS_PORTS=8081 -e ASPNETCORE_Kestrel__Certificates__Default__Password="tsundokuapi" -e ASPNETCORE_ENVIRONMENT=Development -e ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificados/aspnetapp.pfx -v \TsundokuTraducoes\.aspnet\https:/https/ --name tsundoku-api --network tsundoku tsundokuapi:1.0
+```
 
 - Acessar BD 
    - Usar id do container do banco de dados
