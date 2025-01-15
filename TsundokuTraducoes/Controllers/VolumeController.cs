@@ -80,14 +80,10 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Value);
         }
 
-
         [HttpPost("api/admin/volume/novel/")]
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AdicionaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente adicionar o volume da novel novamente!");
-
             if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
                 return BadRequest("Imagem Capa volume inválida!");
 

@@ -24,5 +24,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin.Retorno
         public string QC { get; set; }
         public string DescritivoCapitulo => TratamentoDeStrings.RetornaDescritivoCapitulo(Numero, Parte);
         public List<EnderecoImagemDTO> ListaImagens { get; set; }
+        public bool Publicado { get; set; }
     }   
 }

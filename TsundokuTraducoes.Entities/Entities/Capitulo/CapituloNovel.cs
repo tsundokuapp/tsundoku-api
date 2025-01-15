@@ -24,8 +24,10 @@ namespace TsundokuTraducoes.Entities.Entities.Capitulo
         public string Revisor { get; set; }
         public string QC { get; set; }
         public Guid VolumeId { get; set; }
-        public virtual VolumeNovel Volume { get; set; }
         public string ListaImagensJson { get; set; }
+        public bool Publicado { get; set; }
+        public virtual VolumeNovel Volume { get; set; }
+
 
         public CapituloNovel()
         {
@@ -34,7 +36,7 @@ namespace TsundokuTraducoes.Entities.Entities.Capitulo
 
         public void AdicionaCapitulo(Guid id, string numero, string parte, int ordemCapitulo, string titulo, string conteudoNovel, string slug,
             string usuarioInclusao, string usuarioAlteracao, DateTime dataInclusao, DateTime dataAlteracao, string diretorioImagemCapitulo,
-            bool ehIlustracoesNovel, string tradutor, string revisor, string qC, Guid volumeId, string listaImagensJson)
+            bool ehIlustracoesNovel, string tradutor, string revisor, string qC, Guid volumeId, string listaImagensJson, bool publicado)
         {
             Id = id;
             Numero = numero;
@@ -54,6 +56,7 @@ namespace TsundokuTraducoes.Entities.Entities.Capitulo
             QC = qC;
             VolumeId = volumeId;
             ListaImagensJson = listaImagensJson;
+            Publicado = publicado;
         }
     }
 }

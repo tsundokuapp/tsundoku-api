@@ -84,9 +84,6 @@ namespace TsundokuTraducoes.Models
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaNovel([FromForm] ObraDTO obraDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente adicionar a Novel novamente!");
-
             if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
                 return BadRequest("Imagem Capa principal inválida!");
 
@@ -108,9 +105,6 @@ namespace TsundokuTraducoes.Models
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaComic([FromForm] ObraDTO obraDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente adicionar a Comic novamente!");
-
             if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
                 return BadRequest("Imagem Capa principal inválida!");
 
@@ -133,9 +127,6 @@ namespace TsundokuTraducoes.Models
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AtualizarNovel([FromForm] ObraDTO obraDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestObraAtualizacao(obraDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente atualizar a Novel novamente!");
-
             if (obraDTO.ImagemBannerFile != null)
                 if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
                     return BadRequest("Imagem Capa principal inválida!");
@@ -164,9 +155,6 @@ namespace TsundokuTraducoes.Models
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AtualizarComic([FromForm] ObraDTO obraDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestObraAtualizacao(obraDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente atualizar a Comic novamente!");
-
             if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
                 return BadRequest("Imagem Capa principal inválida!");
 

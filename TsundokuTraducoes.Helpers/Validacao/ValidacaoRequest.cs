@@ -68,17 +68,17 @@ namespace TsundokuTraducoes.Helpers.Validacao
 
         public static bool ValidaDadosRequestCapituloNovel(CapituloDTO capituloDTO)
         {
-            var requestListaImagemForm = true;
             var resquestValidoEhConteudoNovel = true;
 
-            var resquestValido =
-                VerificaString(capituloDTO.Numero) &&
-                VerificaString(capituloDTO.UsuarioInclusao) &&
-                capituloDTO.OrdemCapitulo > 0 &&
-                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000";
-
             if (!capituloDTO.EhIlustracoesNovel)
-                resquestValidoEhConteudoNovel = VerificaString(capituloDTO.ConteudoNovel);
+                resquestValidoEhConteudoNovel = VerificaString(capituloDTO.ConteudoNovel);            
+
+            return resquestValidoEhConteudoNovel;
+        }
+
+        public static bool ValidaDadosRequestCapituloNovelImagens(CapituloDTO capituloDTO)
+        {
+            var requestListaImagemForm = true;        
 
             if (capituloDTO.EhIlustracoesNovel)
             {
@@ -86,33 +86,16 @@ namespace TsundokuTraducoes.Helpers.Validacao
                 capituloDTO.ListaImagensForm.Count > 0;
             }
 
-            return resquestValido && requestListaImagemForm && resquestValidoEhConteudoNovel;
+            return requestListaImagemForm;
         }
 
         public static bool ValidaDadosRequestCapituloComic(CapituloDTO capituloDTO)
         {
-            var resquestValido =
-                VerificaString(capituloDTO.Numero) &&
-                VerificaString(capituloDTO.UsuarioInclusao) &&
-                capituloDTO.OrdemCapitulo > 0 &&
-                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
-                capituloDTO.ListaImagensForm != null &&
+            var resquestValido = capituloDTO.ListaImagensForm != null &&
                 capituloDTO.ListaImagensForm.Count > 0;
 
             return resquestValido;
         }
-
-        public static bool ValidaDadosRequestCapituloAtualizacao(CapituloDTO capituloDTO)
-        {
-            var resquestValido =
-                VerificaString(capituloDTO.Numero) &&
-                VerificaString(capituloDTO.UsuarioInclusao) &&
-                capituloDTO.OrdemCapitulo > 0 &&
-                capituloDTO.VolumeId.ToString() != "00000000-0000-0000-0000-000000000000" &&
-                VerificaString(capituloDTO.UsuarioAlteracao);
-
-            return resquestValido;
-        }        
 
         public static bool VerificaString(string valor)
         {
@@ -125,7 +108,7 @@ namespace TsundokuTraducoes.Helpers.Validacao
             return Regex.Match(corHexaDeximal, regexPattern).Success;
         }
 
-        public static bool ValidaParametrosNovel(RequestObras requestObras)
+        public static bool VerificaParametrosObras(RequestObras requestObras)
         {
             return ValidaParametrosObra(requestObras);
         }
@@ -136,14 +119,12 @@ namespace TsundokuTraducoes.Helpers.Validacao
                    !string.IsNullOrEmpty(requestObras.Nacionalidade) ||
                    !string.IsNullOrEmpty(requestObras.Status) ||
                    !string.IsNullOrEmpty(requestObras.Tipo) ||
-                   !string.IsNullOrEmpty(requestObras.Genero) ||
-                   requestObras.Skip != null ||
-                   requestObras.Take != null;
+                   !string.IsNullOrEmpty(requestObras.Genero);
         }
 
         public static int RetornaTakeTratado(int? obrasPorPagina)
         {
-            var valorObrasPorPagina = 8;
+            var valorObrasPorPagina = 6;
             return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
         }
 

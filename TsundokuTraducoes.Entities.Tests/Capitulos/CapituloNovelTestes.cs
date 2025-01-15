@@ -27,7 +27,8 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                     "",
                     "",
                     Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
-                    RetornaConteudoNovelIlustracoes()
+                    RetornaConteudoNovelIlustracoes(),
+                    false
                     );
 
             Assert.Equal("Ilustrações", capituloNovelIlustracoes.Numero);
@@ -57,7 +58,8 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                     "",
                     "",
                     Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
-                    "");
+                    "", 
+                    false);
                         
             Assert.Empty(capituloNovelIlustracoes.ConteudoNovel);
         }
@@ -84,7 +86,8 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                     "",
                     "",
                     Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
-                    "");
+                    "",
+                    false);
 
             Assert.Equal("capitulo-1-pais-dos-magos", capituloNovelIlustracoes.Slug);
             Assert.NotEmpty(capituloNovelIlustracoes.ConteudoNovel);
@@ -113,7 +116,8 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                     "",
                     "",
                     Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
-                    "");
+                    "", 
+                    false);
                         
             Assert.Empty(capituloNovelIlustracoes.ConteudoNovel);
         }

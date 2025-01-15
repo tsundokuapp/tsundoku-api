@@ -24,11 +24,6 @@ namespace TsundokuTraducoes.Api.Controllers
         [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
         public async Task<IActionResult> ObterNovels([FromQuery] RequestObras requestObras)
         {
-            var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
-
-            if (!parametrosValidados)
-                return BadRequest("Informe ao menos uma opção para realizar a consulta!");
-
             var capitulos = await _obrasAppServices.ObterListaNovels(requestObras);
             if (capitulos.Count == 0)
                 return NoContent();
@@ -66,11 +61,6 @@ namespace TsundokuTraducoes.Api.Controllers
         [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
         public async Task<IActionResult> ObterComics([FromQuery] RequestObras requestObras)
         {
-            var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
-
-            if (!parametrosValidados)
-                return BadRequest("Informe ao menos uma opção para realizar a consulta!");
-
             var capitulos = await _obrasAppServices.ObterListaComics(requestObras);
             if (capitulos.Count == 0)
                 return NoContent();

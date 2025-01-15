@@ -18,5 +18,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
         public string UrlCapa { get; set; }
         public string AliasObra { get; set; }
         public string AutorObra { get; set; }
+        public string TipoObra { get; set; }
+        public string SlugObra { get; set; }
     }
 }
