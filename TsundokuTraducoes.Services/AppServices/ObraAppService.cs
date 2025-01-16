@@ -86,8 +86,27 @@ namespace TsundokuTraducoes.Services.AppServices
             var retornoComic = await TrataRetornoComic(comic);
             return Result.Ok().ToResult(retornoComic);
         }
-        
-        
+
+        public async Task<Result<RetornoObra>> RetornaNovelPorSlug(string slug)
+        {
+            var novel = _obraservice.RetornaNovelPorSlug(slug);
+            if (novel == null)
+                return Result.Fail("Novel não encontrada!");
+
+            var retornoNovel = await TrataRetornoNovel(novel);
+            return Result.Ok().ToResult(retornoNovel);
+        }
+
+        public async Task<Result<RetornoObra>> RetornaComicPorSlug(string slug)
+        {
+            var comic = _obraservice.RetornaComicPorSlug(slug);
+            if (comic == null)
+                return Result.Fail("Comic não encontrada!");
+
+            var retornoComic = await TrataRetornoComic(comic);
+            return Result.Ok().ToResult(retornoComic);
+        }
+
         public async Task<Result<RetornoObra>> AdicionaNovel(ObraDTO obraDTO)
         {
             var novelExistente = _obraservice.RetornaNovelExistente(obraDTO.Titulo);

@@ -94,7 +94,28 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Value);
         }
 
-        
+        [HttpGet("api/admin/obra/novel/slug/{slug}")]
+        [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
+        public async Task<IActionResult> RetornaNovelPorSlug(string slug)
+        {
+            var result = await _obraAppService.RetornaNovelPorSlug(slug);
+            if (result.IsFailed)
+                return NotFound(result.Errors[0].Message);
+
+            return Ok(result.Value);
+        }
+
+        [HttpGet("api/admin/obra/comic/slug/{slug}")]
+        [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
+        public async Task<IActionResult> RetornaComicPorSlug(string slug)
+        {
+            var result = await _obraAppService.RetornaComicPorSlug(slug);
+            if (result.IsFailed)
+                return NotFound(result.Errors[0].Message);
+
+            return Ok(result.Value);
+        }
+
         [HttpPost("api/admin/obra/novel")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaNovel([FromForm] ObraDTO obraDTO)

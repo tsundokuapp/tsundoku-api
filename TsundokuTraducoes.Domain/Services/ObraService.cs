@@ -36,6 +36,15 @@ namespace TsundokuTraducoes.Domain.Services
             return _obraRepository.RetornaComicPorId(id);
         }
 
+        public Novel RetornaNovelPorSlug(string slug)
+        {
+            return _obraRepository.RetornaNovelPorSlug(slug);
+        }
+
+        public Comic RetornaComicPorSlug(string slug)
+        {
+            return _obraRepository.RetornaComicPorSlug(slug);
+        }
 
         public async Task<bool> AdicionaNovel(Novel novel)
         {

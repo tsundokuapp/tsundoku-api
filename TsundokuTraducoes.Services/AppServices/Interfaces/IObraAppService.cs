@@ -13,6 +13,9 @@ namespace TsundokuTraducoes.Services.AppServices.Interfaces
         Task<Result<RetornoObra>> RetornaNovelPorId(Guid id);
         Task<Result<RetornoObra>> RetornaComicPorId(Guid id);
 
+        Task<Result<RetornoObra>> RetornaNovelPorSlug(string slug);
+        Task<Result<RetornoObra>> RetornaComicPorSlug(string slug);
+
         Task<Result<RetornoObra>> AdicionaNovel(ObraDTO obraDTO);
         Task<Result<RetornoObra>> AdicionaComic(ObraDTO obraDTO);
 

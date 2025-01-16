@@ -11,6 +11,9 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
         Novel RetornaNovelPorId(Guid obraId);
         Comic RetornaComicPorId(Guid obraId);
 
+        Novel RetornaNovelPorSlug(string slug);
+        Comic RetornaComicPorSlug(string slug);
+
         Task AdicionaNovel(Novel novel);
         Task AdicionaComic(Comic comic);
 

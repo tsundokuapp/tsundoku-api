@@ -10,6 +10,7 @@
         public int? Skip { get; set; }
         public int? Take { get; set; }
         public string IdObra { get; set; }
+        public string SlugObra { get; set; }
         public string IdCapitulo { get; set; }
     }
 }

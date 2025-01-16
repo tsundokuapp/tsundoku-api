@@ -45,6 +45,18 @@ namespace TsundokuTraducoes.Data.Repositories
             return listaComics.SingleOrDefault(f => f.Id == comicId);
         }
 
+        public Novel RetornaNovelPorSlug(string novelSlug)
+        {
+            var listaNovels = RetornaListaNovels();
+            return listaNovels.SingleOrDefault(f => f.Slug == novelSlug);
+        }
+
+        public Comic RetornaComicPorSlug(string comicSlug)
+        {
+            var listaComics = RetornaListaComics();
+            return listaComics.SingleOrDefault(f => f.Slug == comicSlug);
+        }
+
 
         public async Task AdicionaNovel(Novel novel)
         {
