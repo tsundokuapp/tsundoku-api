@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
@@ -58,7 +57,7 @@ namespace TsundokuTraducoes.Models
         }
 
 
-        [HttpGet("api/admin/obra/novel/{id}")]
+        [HttpGet("api/admin/obra/novel/id/{id}")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> RetornaNovelPorId(Guid id)
         {
@@ -69,7 +68,7 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Value);
         }
 
-        [HttpGet("api/admin/obra/comic/{id}")]
+        [HttpGet("api/admin/obra/comic/id/{id}")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> RetornaComicPorId(Guid id)
         {
