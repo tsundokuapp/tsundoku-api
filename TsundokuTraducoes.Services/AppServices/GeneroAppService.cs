@@ -48,7 +48,7 @@ namespace TsundokuTraducoes.Services.AppServices
         {
             var generoExistente = await _generoService.RetornaGeneroExistente(generoDTO.Slug);
             if (generoExistente != null)
-                return Result.Fail("Gênero já postado!");
+                return Result.Fail("Gênero já cadastrado!");
 
             var genero = _mapper.Map<Genero>(generoDTO);
             genero.DataInclusao = DateTime.Now;

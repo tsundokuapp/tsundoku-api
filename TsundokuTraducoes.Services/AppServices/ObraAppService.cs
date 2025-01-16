@@ -111,7 +111,7 @@ namespace TsundokuTraducoes.Services.AppServices
         {
             var novelExistente = _obraservice.RetornaNovelExistente(obraDTO.Titulo);
             if (novelExistente != null)
-                return Result.Fail("Novel já postada!");
+                return Result.Fail("Novel já cadastrada!");
                         
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
@@ -153,7 +153,7 @@ namespace TsundokuTraducoes.Services.AppServices
         {
             var comicExistente = _obraservice.RetornaComicExistente(obraDTO.Titulo);
             if (comicExistente != null)
-                return Result.Fail("Comic já postada!");
+                return Result.Fail("Comic já cadastrada!");
 
             if (obraDTO.ImagemCapaPrincipalFile != null)
             {
