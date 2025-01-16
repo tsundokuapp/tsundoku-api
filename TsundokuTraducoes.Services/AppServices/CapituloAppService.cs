@@ -357,6 +357,6 @@ namespace TsundokuTraducoes.Services.AppServices
             }
 
             return retornoCapitulo;
-        }
+        }               
     }
 }

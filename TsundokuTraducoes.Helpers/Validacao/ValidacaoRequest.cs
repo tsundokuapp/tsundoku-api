@@ -141,15 +141,26 @@ namespace TsundokuTraducoes.Helpers.Validacao
                    requestObras.Take != null;
         }
 
-        public static int RetornaTakeTratado(int? obrasPorPagina)
+        public static int RetornaTakeTratadoAdmin(int? obrasPorPagina)
         {
             var valorObrasPorPagina = 8;
             return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
         }
 
-        public static int RetornaSkipTratado(int? pagina, int obrasPorPagina)
+        public static int RetornaSkipTratadoAdmin(int? pagina)
         {
-            return pagina == null ? 0 : (pagina.GetValueOrDefault() < 0 ? 0 : pagina.GetValueOrDefault());
+            return pagina == null ? 0 : pagina.GetValueOrDefault();
+        }
+
+        public static int RetornaTakeTratado(int? obrasPorPagina, bool home = false)
+        {
+            var valorObrasPorPagina = home == true ? 5 : 4;
+            return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
+        }
+
+        public static int RetornaSkipTratado(int? pagina)
+        {
+            return pagina == null ? 0 : pagina.GetValueOrDefault();
         }
 
         public static bool ValidaDadosRequestGenero(GeneroDTO generoDTO)
