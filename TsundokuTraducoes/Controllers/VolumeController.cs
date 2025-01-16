@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
@@ -29,13 +30,8 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
-
-            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = result.Value.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/admin/volume/novel")]
@@ -46,13 +42,8 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
-
-            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = result.Value.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/admin/volume/comic")]
@@ -63,13 +54,8 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
-
-            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = result.Value.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
+            return Ok(objetoRetorno);
         }
 
 

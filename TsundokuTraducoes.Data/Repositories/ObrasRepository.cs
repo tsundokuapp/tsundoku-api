@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
+using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
@@ -440,6 +441,24 @@ namespace TsundokuTraducoes.Data.Repositories
                                           .OrderByDescending(o => o.DataInclusao);
 
             return listaRetornoVolume.ToList();
+        }
+
+        public async Task<CapituloComic> ObterCapituloComicPorId(Guid id)
+        {
+            var capitulo = await _context.CapitulosComic
+                                    .AsNoTracking()
+                                    .Where(w => w.Id == id).FirstOrDefaultAsync();
+
+            return capitulo;
+        }
+
+        public async Task<CapituloNovel> ObterCapituloNovelPorId(Guid id)
+        {
+            var capitulo = await _context.CapitulosNovel
+                                    .AsNoTracking()
+                                    .Where(w => w.Id == id).FirstOrDefaultAsync();
+
+            return capitulo;
         }
     }
 }

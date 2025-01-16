@@ -81,16 +81,18 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var titulo = $"O Destino de Alguns Aventureiros - Teste - {Guid.NewGuid().ToString().Substring(0, 8)}";
             var loginAlteracao = "Araragui";
 
+            var conteudoCapitulo = RetornoConteudoCapituloNovel();
+
             if (falhar)
             {
-                loginAlteracao = string.Empty;
+                conteudoCapitulo = "";
             }
 
             form.Add(new StringContent(capituloId.ToString()), "Id");
             form.Add(new StringContent(numero), "Numero");
             form.Add(new StringContent(""), "Parte");
             form.Add(new StringContent(titulo), "Titulo");
-            form.Add(new StringContent(RetornoConteudoCapituloNovel()), "ConteudoNovel");
+            form.Add(new StringContent(conteudoCapitulo), "ConteudoNovel");
             form.Add(new StringContent("Bravo"), "UsuarioInclusao");
             form.Add(new StringContent(loginAlteracao), "UsuarioAlteracao");
             form.Add(new StringContent(volumeId.ToString()), "VolumeId");

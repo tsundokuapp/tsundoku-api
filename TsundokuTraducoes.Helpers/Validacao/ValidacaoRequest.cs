@@ -71,14 +71,14 @@ namespace TsundokuTraducoes.Helpers.Validacao
             var resquestValidoEhConteudoNovel = true;
 
             if (!capituloDTO.EhIlustracoesNovel)
-                resquestValidoEhConteudoNovel = VerificaString(capituloDTO.ConteudoNovel);            
+                resquestValidoEhConteudoNovel = VerificaString(capituloDTO.ConteudoNovel);
 
             return resquestValidoEhConteudoNovel;
         }
 
         public static bool ValidaDadosRequestCapituloNovelImagens(CapituloDTO capituloDTO)
         {
-            var requestListaImagemForm = true;        
+            var requestListaImagemForm = true;
 
             if (capituloDTO.EhIlustracoesNovel)
             {
@@ -122,26 +122,15 @@ namespace TsundokuTraducoes.Helpers.Validacao
                    !string.IsNullOrEmpty(requestObras.Genero);
         }
 
-        public static int RetornaTakeTratado(int? obrasPorPagina, bool ehHome = false)
+        public static int RetornaTakeTratado(int? obrasPorPagina)
         {
-            var valorObrasPorPagina = 8;
-
-            if (ehHome)
-                valorObrasPorPagina = 6;
-
+            var valorObrasPorPagina = 6;
             return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
         }
 
-        public static int RetornaSkipTratadoAdmin(int? pagina)
+        public static int RetornaSkipTratado(int? pagina, int obrasPorPagina)
         {
-            return pagina == null ? 0 : pagina.GetValueOrDefault();
-        }
-
-        
-
-        public static int RetornaSkipTratado(int? pagina)
-        {
-            return pagina == null ? 0 : pagina.GetValueOrDefault();
+            return pagina == null ? 0 : (pagina.GetValueOrDefault() < 0 ? 0 : pagina.GetValueOrDefault());
         }
 
         public static bool ValidaDadosRequestGenero(GeneroDTO generoDTO)
@@ -155,7 +144,7 @@ namespace TsundokuTraducoes.Helpers.Validacao
         {
             var resquestValido = VerificaString(generoDTO.Descricao) &&
                 VerificaString(generoDTO.UsuarioInclusao);
-                VerificaString(generoDTO.UsuarioAlteracao);
+            VerificaString(generoDTO.UsuarioAlteracao);
             return resquestValido;
         }
 
@@ -184,7 +173,7 @@ namespace TsundokuTraducoes.Helpers.Validacao
 
             return retorno;
         }
-    
+
         public static bool ValidaListaVolumeCapitulo(RequestObras requestObras)
         {
             return !string.IsNullOrEmpty(requestObras.IdObra) &&
