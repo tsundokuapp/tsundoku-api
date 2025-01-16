@@ -119,13 +119,5 @@ namespace TsundokuTraducoes.Helpers
                 return $"Volume {numeroVolume:00}";
             }
         }
-    
-        public static string RetornaStringTratadaSemNull(string valor)
-        {
-            if (string.IsNullOrEmpty(valor))
-                return string.Empty;
-
-            return valor;
-        }
     }
 }

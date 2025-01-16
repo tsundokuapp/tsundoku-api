@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
@@ -28,8 +28,13 @@ namespace TsundokuTraducoes.Api.Controllers
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestGenero.Skip, requestGenero.Take);
-            return Ok(objetoRetorno);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestGenero.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestGenero.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/admin/genero/{id}")]

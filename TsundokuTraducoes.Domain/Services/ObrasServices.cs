@@ -1,6 +1,5 @@
 ﻿using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Services;
-using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
@@ -61,17 +60,6 @@ namespace TsundokuTraducoes.Domain.Services
         public List<RetornoVolumes> ObterListaVolumeCapitulos(string idObra)
         {
             return _obrasRepository.ObterListaVolumeCapitulos(idObra);
-        }
-
-
-        public async Task<CapituloComic> ObterCapituloComicPorId(Guid id)
-        {
-            return await _obrasRepository.ObterCapituloComicPorId(id);
-        }
-
-        public async Task<CapituloNovel> ObterCapituloNovelPorId(Guid id)
-        {
-            return await _obrasRepository.ObterCapituloNovelPorId(id);
         }
     }
 }

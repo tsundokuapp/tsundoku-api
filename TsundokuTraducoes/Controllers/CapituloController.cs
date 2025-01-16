@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
@@ -25,36 +25,51 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(List<RetornoCapitulo>), statusCode: 200)]
         public IActionResult RetornaListaCapitulos([FromQuery] RequestCapitulo requestCapitulo)
         {
-            var result = _capituloService.RetornaListaCapitulos(requestCapitulo.IdVolume);
+            var result = _capituloService.RetornaListaCapitulos(requestCapitulo.volumeId);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoCapitulo(HttpContext, result.Value, requestCapitulo);
-            return Ok(objetoRetorno);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestCapitulo.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestCapitulo.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/admin/capitulo/novel")]
         [ProducesResponseType(typeof(List<RetornoCapitulo>), statusCode: 200)]
         public IActionResult RetornaListaCapitulosNovel([FromQuery] RequestCapitulo requestCapitulo)
         {
-            var result = _capituloService.RetornaListaCapitulosNovel(requestCapitulo.IdVolume);
+            var result = _capituloService.RetornaListaCapitulosNovel(requestCapitulo.volumeId);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoCapitulo(HttpContext, result.Value, requestCapitulo);
-            return Ok(objetoRetorno);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestCapitulo.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestCapitulo.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/admin/capitulo/comic")]
         [ProducesResponseType(typeof(List<RetornoCapitulo>), statusCode: 200)]
         public IActionResult RetornaListaCapitulosComic([FromQuery] RequestCapitulo requestCapitulo)
         {
-            var result = _capituloService.RetornaListaCapitulosComic(requestCapitulo.IdVolume);
+            var result = _capituloService.RetornaListaCapitulosComic(requestCapitulo.volumeId);
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoCapitulo(HttpContext, result.Value, requestCapitulo);
-            return Ok(objetoRetorno);
+            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestCapitulo.Skip);
+            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestCapitulo.Take);
+
+            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
+            var total = result.Value.Count;
+
+            return Ok(new { total = total, data = dados });
         }
 
 
