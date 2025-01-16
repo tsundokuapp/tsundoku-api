@@ -141,9 +141,13 @@ namespace TsundokuTraducoes.Helpers.Validacao
                    requestObras.Take != null;
         }
 
-        public static int RetornaTakeTratado(int? obrasPorPagina)
+        public static int RetornaTakeTratado(int? obrasPorPagina, bool ehHome = false)
         {
             var valorObrasPorPagina = 8;
+
+            if (ehHome)
+                valorObrasPorPagina = 6;
+
             return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
         }
 

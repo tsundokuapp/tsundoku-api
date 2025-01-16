@@ -146,7 +146,7 @@ namespace TsundokuTraducoes.Services.AppServices
             }
             else
             {
-                return Result.Fail("Capítulo já postado!");
+                return Result.Fail("Capítulo já cadastrado!");
             }
         }
 
@@ -200,7 +200,7 @@ namespace TsundokuTraducoes.Services.AppServices
             }
             else
             {
-                return Result.Fail("Capítulo já postado!");
+                return Result.Fail("Capítulo já cadastrado!");
             }
         }
 
