@@ -101,7 +101,10 @@ namespace TsundokuTraducoes.Controllers
         public async Task<IActionResult> AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestCapituloNovel(capituloDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente adicionar o capitulo novamente!");
+                return BadRequest("Não contém conteúdo para o capítulo da novel!");
+
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloNovelImagens(capituloDTO))
+                return BadRequest("Não contém imagens para o capítulo da novel!");
 
             var listaImagemEnviada = capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0;
             if (listaImagemEnviada)
@@ -120,7 +123,7 @@ namespace TsundokuTraducoes.Controllers
         public async Task<IActionResult> AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestCapituloComic(capituloDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente adicionar o capitulo novamente!");
+                return BadRequest("Não contém imagens para o capítulo da comic!");
 
             if (!ValidacaoRequest.ValidaListaImagemRequest(capituloDTO.ListaImagensForm))
                 return BadRequest("Alguma imagem da lista de imagens é invalida!");
@@ -137,8 +140,11 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestCapituloAtualizacao(capituloDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente atualizar o capitulo novamente!");
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloNovel(capituloDTO))
+                return BadRequest("Não contém conteúdo para o capítulo da novel!");
+
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloNovelImagens(capituloDTO))
+                return BadRequest("Não contém imagens para o capítulo da novel!");
 
             var listaImagemEnviada = capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0;
             if (listaImagemEnviada)
@@ -162,8 +168,8 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AtualizaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestCapituloAtualizacao(capituloDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente atualizar o capitulo novamente!");
+            if (!ValidacaoRequest.ValidaDadosRequestCapituloComic(capituloDTO))
+                return BadRequest("Não contém imagens para o capítulo da comic!");
 
             if (!ValidacaoRequest.ValidaListaImagemRequest(capituloDTO.ListaImagensForm))
                 return BadRequest("Alguma imagem da lista de imagens é invalida!");

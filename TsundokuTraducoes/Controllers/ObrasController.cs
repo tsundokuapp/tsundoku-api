@@ -23,39 +23,25 @@ namespace TsundokuTraducoes.Api.Controllers
         [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
         public async Task<IActionResult> ObterNovels([FromQuery] RequestObras requestObras)
         {
-            var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
-
-            if (!parametrosValidados)
-                return BadRequest("Informe ao menos uma opção para realizar a consulta!");
-
-            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
-
             var capitulos = await _obrasAppServices.ObterListaNovels(requestObras);
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = capitulos.Count;
+            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, capitulos, requestObras);
+            return Ok(objetoRetorno);
 
-            return Ok(new { total = total, data = dados });
         }
 
         [HttpGet("api/obras/novels/recentes")]
         [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
         public async Task<IActionResult> ObterNovelsRecentes([FromQuery] RequestObras requestObras)
         {
-            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
-
             var capitulos = await _obrasAppServices.ObterListaNovelsRecentes();
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = capitulos.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, capitulos, requestObras);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/obras/novel")]
@@ -74,39 +60,24 @@ namespace TsundokuTraducoes.Api.Controllers
         [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
         public async Task<IActionResult> ObterComics([FromQuery] RequestObras requestObras)
         {
-            var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
-
-            if (!parametrosValidados)
-                return BadRequest("Informe ao menos uma opção para realizar a consulta!");
-
-            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
-
             var capitulos = await _obrasAppServices.ObterListaComics(requestObras);
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = capitulos.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, capitulos, requestObras);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/obras/comics/recentes")]
         [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
         public async Task<IActionResult> ObterComicsRecentes([FromQuery] RequestObras requestObras)
         {
-            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
-
             var capitulos = await _obrasAppServices.ObterListaComicsRecentes();
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = capitulos.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, capitulos, requestObras);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/obras/comic")]
@@ -125,34 +96,24 @@ namespace TsundokuTraducoes.Api.Controllers
         [ProducesResponseType(typeof(List<RetornoCapitulos>), statusCode: 200)]
         public async Task<IActionResult> ObterCapitulosHome([FromQuery] RequestObras requestObras)
         {
-            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take, true);
-
             var capitulos = await _obrasAppServices.ObterCapitulosHome();
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = capitulos.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, capitulos, requestObras, true);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/obras/recomendadas")]
         [ProducesResponseType(typeof(List<RetornoObrasRecomendadas>), statusCode: 200)]
         public async Task<IActionResult> ObterObrasRecomendadas([FromQuery] RequestObras requestObras)
         {
-            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take, false);
-
             var obrasRecomendadas = await _obrasAppServices.ObterObrasRecomendadas();
             if (obrasRecomendadas.Count == 0)
                 return NoContent();
 
-            var dados = obrasRecomendadas.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = obrasRecomendadas.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, obrasRecomendadas, requestObras);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/obras/volume/indice")]
@@ -162,17 +123,34 @@ namespace TsundokuTraducoes.Api.Controllers
             if (!ValidacaoRequest.ValidaListaVolumeCapitulo(requestObras))
                 return BadRequest("Não informado o código da obra, verificar com os admins do site!");
 
-            var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take, false);
-
             var volumes = await Task.Run(() => _obrasAppServices.ObterListaVolumeCapitulos(requestObras));
             if (volumes.Count == 0) 
                 return NoContent();
 
-            var dados = volumes.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = volumes.Count;
+            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, volumes, requestObras);
+            return Ok(objetoRetorno);
+        }
 
-            return Ok(new { total = total, data = dados });
+        [HttpGet("api/obras/comic/capitulo/{id}")]
+        [ProducesResponseType(typeof(RetornoCapituloComic), statusCode:200)]
+        public async Task<IActionResult> ObterCapituloComicPorId(Guid id)
+        {
+            var capituloComic = await _obrasAppServices.ObterCapituloComicPorId(id);
+            if (capituloComic == null)
+                return BadRequest("Capitulo não encontrado!");            
+            
+            return Ok(capituloComic);
+        }
+
+        [HttpGet("api/obras/novel/capitulo/{id}")]
+        [ProducesResponseType(typeof(RetornoCapituloNovel), statusCode: 200)]
+        public async Task<IActionResult> ObterCapituloNovelPorId(Guid id)
+        {
+            var capituloNovel = await _obrasAppServices.ObterCapituloNovelPorId(id);
+            if (capituloNovel == null)
+                return BadRequest("Capitulo não encontrado!");
+
+            return Ok(capituloNovel);
         }
     }
 }

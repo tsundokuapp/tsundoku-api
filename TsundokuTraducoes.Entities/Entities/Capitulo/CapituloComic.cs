@@ -20,6 +20,7 @@ namespace TsundokuTraducoes.Entities.Entities.Capitulo
         public DateTime DataAlteracao { get; set; }
         public string DiretorioImagemCapitulo { get; set; }
         public Guid VolumeId { get; set; }
+        public bool Publicado { get; set; }
         public virtual VolumeComic Volume { get; set; }
 
         public CapituloComic()
@@ -28,7 +29,7 @@ namespace TsundokuTraducoes.Entities.Entities.Capitulo
         }
 
         public void AdicionaCapitulo(Guid id, string numero, int ordemCapitulo, string parte, string titulo, string listaImagens, string slug, string usuarioInclusao, 
-            string usuarioAlteracao, DateTime dataInclusao, DateTime dataAlteracao, string diretorioImagemCapitulo, Guid volumeId)
+            string usuarioAlteracao, DateTime dataInclusao, DateTime dataAlteracao, string diretorioImagemCapitulo, Guid volumeId, bool publicado)
         {
             Id = id;
             Numero = numero;
@@ -43,6 +44,7 @@ namespace TsundokuTraducoes.Entities.Entities.Capitulo
             DataAlteracao = dataAlteracao;
             DiretorioImagemCapitulo = diretorioImagemCapitulo;
             VolumeId = volumeId;
+            Publicado = publicado;
         }
     }
 }
