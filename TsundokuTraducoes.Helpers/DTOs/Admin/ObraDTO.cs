@@ -38,8 +38,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public string CargoObraDiscord { get { return string.Concat("@", Titulo); } }
         public string DiretorioImagemObra { get; set; }
         public string ImagemCapaPrincipal { get; set; }
-        public string ImagemBanner { get; set; }
-        [Required]
+        public string ImagemBanner { get; set; }        
         public IFormFile ImagemCapaPrincipalFile { get; set; }
         public IFormFile ImagemBannerFile { get; set; }
         public string ImagemCapaUltimoVolume { get; set; }

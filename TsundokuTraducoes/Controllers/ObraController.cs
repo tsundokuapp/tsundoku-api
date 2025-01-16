@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
@@ -28,13 +29,8 @@ namespace TsundokuTraducoes.Models
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestObra.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestObra.Take);
-
-            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = result.Value.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/admin/obra/novels")]
@@ -45,13 +41,8 @@ namespace TsundokuTraducoes.Models
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestObra.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestObra.Take);
-
-            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = result.Value.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/admin/obra/comics")]
@@ -62,13 +53,8 @@ namespace TsundokuTraducoes.Models
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestObra.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestObra.Take);
-
-            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = result.Value.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
+            return Ok(objetoRetorno);
         }
 
 

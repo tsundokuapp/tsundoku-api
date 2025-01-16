@@ -93,7 +93,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
         }
 
         [Fact]
-        public async Task DeveFalharAoAtualizarUmCapituloNovelSemImagensAlteracao()
+        public async Task DeveFalharAoAtualizarUmCapituloNovel()
         {
             var retornoObra = await AdicionaNovel();
             var retornoVolume = await AdicionaVolume(retornoObra.Id);
@@ -101,6 +101,8 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
 
             var formData = MockCapituloNovel.RetornaFormDataMockAtualizarCapituloNovel(true, retornoVolume.Id, retornoCapitulo.Id);
             var response = await _httpClient.PutAsync("api/admin/capitulo/novel", formData);
+
+            var ret = response.Content.ReadAsStringAsync();
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);

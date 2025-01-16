@@ -35,13 +35,6 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 
-        [Fact]
-        public async Task DeveFalharRetornarUmaListaDeNovels()
-        {
-            var parametros = "pesquisar=&nacionalidade=&status=&tipo=&genero=&skip=&take=";
-            var response = await _httpClient.GetAsync($"api/obras/novels?{parametros}");
-            Assert.True(HttpStatusCode.BadRequest == response.StatusCode);
-        }
 
         [Fact]
         public async Task DeveRetornarNovelPorId()

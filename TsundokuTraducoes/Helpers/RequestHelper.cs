@@ -64,7 +64,7 @@ namespace TsundokuTraducoes.Api.Helpers
 
         internal static object CriaObjetoRetonoObras<T>(HttpContext httpContext, List<T> listaGenerica, RequestObras requestObras, bool ehHome = false)
         {
-            var obrasPorPagina = ValidacaoRequest.RetornaTakeTratado(requestObras.Take, ehHome);
+            var obrasPorPagina = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
             var numeroPagina = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip, obrasPorPagina);
 
             var dados = listaGenerica.Skip(numeroPagina).Take(obrasPorPagina).ToList();
