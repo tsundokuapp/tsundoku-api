@@ -10,9 +10,9 @@
         public string Ilustrador { get; set; }
         public string SlugObra { get; set; }
         public string SlugStatus { get; set; }
-        public string StatusObra { get { return SlugAuxiliar.RetornaStatusObraPorSlug(SlugStatus); } }
+        public string StatusObra { get; set; }
         public string SlugTipoObra { get; set; }
-        public string TipoObra { get { return SlugAuxiliar.RetornaTipoObraPorSlug(SlugTipoObra); } }
+        public string TipoObra { get; set; }
 
         public List<GeneroDTO> Generos { get; set; }
         public List<VolumeDTO> Volumes { get; set; }

@@ -28,12 +28,9 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         [Required]
         public List<string> ListaGeneros { get; set; }
         public string CodigoCorHexaObra { get; set; }
-        public string NacionalidadeSlug { get; set; }
-        public string StatusObraSlug { get; set; }
-        public string TipoObraSlug { get; set; }
-        public string StatusObra { get { return SlugAuxiliar.RetornaStatusObraPorSlug(StatusObraSlug); } }
-        public string TipoObra { get { return SlugAuxiliar.RetornaTipoObraPorSlug(TipoObraSlug); } }
-        public string Nacionalidade { get { return SlugAuxiliar.RetornaNacionalidadePorSlug(NacionalidadeSlug); } }
+        public string StatusObra { get; set; }
+        public string TipoObra { get; set; }
+        public string Nacionalidade { get; set; }
         public string CargoObraDiscord { get { return string.Concat("@", Titulo); } }
         public string DiretorioImagemObra { get; set; }
         public string ImagemCapaPrincipal { get; set; }

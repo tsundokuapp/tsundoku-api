@@ -24,9 +24,6 @@ namespace TsundokuTraducoes.Helpers.Validacao
                 VerificaString(obraDTO.UsuarioAlteracao) &&
                 VerificaString(obraDTO.Sinopse) &&
                 VerificaString(obraDTO.CodigoCorHexaObra) &&
-                VerificaString(obraDTO.NacionalidadeSlug) &&
-                VerificaString(obraDTO.StatusObraSlug) &&
-                VerificaString(obraDTO.TipoObraSlug) &&
                 obraDTO.ListaGeneros.Count > 0;
 
             return resquestValido;

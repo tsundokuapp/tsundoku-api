@@ -20,7 +20,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
         {
             await AdicionaObra();
 
-            var parametros = "pesquisar=&nacionalidade=japonesa&status=em-andamento&tipo=light-novel&genero=aventura&skip=&take=6";
+            var parametros = "pesquisar=&nacionalidade=Japonesa&status=Em andamento&tipo=Light Novel&genero=aventura&skip=&take=6";
             var response = await _httpClient.GetAsync($"api/obras/novels?{parametros}");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
