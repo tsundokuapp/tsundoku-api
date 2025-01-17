@@ -105,6 +105,9 @@ namespace TsundokuTraducoes.Models
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaNovel([FromForm] ObraDTO obraDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
+                return BadRequest("Informe uma capa principal para a noval!");
+
             if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
                 return BadRequest("Imagem Capa principal inválida!");
 
@@ -126,6 +129,9 @@ namespace TsundokuTraducoes.Models
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaComic([FromForm] ObraDTO obraDTO)
         {
+            if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
+                return BadRequest("Informe uma capa principal para a comic!");
+
             if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
                 return BadRequest("Imagem Capa principal inválida!");
 

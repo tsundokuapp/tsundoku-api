@@ -17,7 +17,7 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
         public string Artista { get; set; }
         public string Ano { get; set; }
         public string Slug { get; set; }
-        public int Visualizacoes { get; set; }
+        public int? Visualizacoes { get; set; }
         public string UsuarioInclusao { get; set; }
         public string UsuarioAlteracao { get; set; }
         public string ImagemCapaPrincipal { get; set; }

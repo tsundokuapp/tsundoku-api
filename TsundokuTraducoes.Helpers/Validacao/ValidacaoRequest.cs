@@ -10,21 +10,7 @@ namespace TsundokuTraducoes.Helpers.Validacao
     {
         public static bool ValidaDadosRequestObra(ObraDTO obraDTO)
         {
-            var resquestValido = VerificaString(obraDTO.Titulo) &&
-                VerificaString(obraDTO.Alias) &&
-                VerificaString(obraDTO.TituloAlternativo) &&
-                VerificaString(obraDTO.Autor) &&
-                VerificaString(obraDTO.Ano) &&
-                VerificaString(obraDTO.UsuarioInclusao) &&
-                VerificaString(obraDTO.Sinopse) &&
-                VerificaString(obraDTO.CodigoCorHexaObra) &&
-                VerificaString(obraDTO.NacionalidadeSlug) &&
-                VerificaString(obraDTO.StatusObraSlug) &&
-                VerificaString(obraDTO.TipoObraSlug) &&
-                obraDTO.ListaGeneros.Count > 0 &&
-                obraDTO.ImagemCapaPrincipalFile != null;
-
-            return resquestValido;
+            return obraDTO.ImagemCapaPrincipalFile != null;
         }
 
         public static bool ValidaDadosRequestObraAtualizacao(ObraDTO obraDTO)
@@ -48,12 +34,7 @@ namespace TsundokuTraducoes.Helpers.Validacao
 
         public static bool ValidaDadosRequestVolume(VolumeDTO volumeDTO)
         {
-            var resquestValido = VerificaString(volumeDTO.Numero) &&
-                VerificaString(volumeDTO.UsuarioInclusao) &&
-                volumeDTO.ObraId.ToString() != "00000000-0000-0000-0000-000000000000" &&
-                volumeDTO.ImagemVolumeFile != null;
-
-            return resquestValido;
+            return volumeDTO.ImagemVolumeFile != null;
         }
 
         public static bool ValidaDadosRequestVolumeAtualizacao(VolumeDTO volumeDTO)
@@ -104,8 +85,15 @@ namespace TsundokuTraducoes.Helpers.Validacao
 
         public static bool ValidaCorHexaDecimal(string corHexaDeximal)
         {
-            var regexPattern = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
-            return Regex.Match(corHexaDeximal, regexPattern).Success;
+            var retorno = true;
+
+            if (!string.IsNullOrEmpty(corHexaDeximal))
+            {
+                var regexPattern = "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$";
+                retorno = Regex.Match(corHexaDeximal, regexPattern).Success;
+            }
+
+            return retorno;
         }
 
         public static bool VerificaParametrosObras(RequestObras requestObras)

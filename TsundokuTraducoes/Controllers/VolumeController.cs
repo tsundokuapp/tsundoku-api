@@ -100,7 +100,7 @@ namespace TsundokuTraducoes.Controllers
         public async Task<IActionResult> AdicionaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
             if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente adicionar o volume da comic novamente!");
+                return BadRequest("Capa do volume não informada!");
 
             if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
                 return BadRequest("Imagem Capa volume inválida!");
@@ -117,9 +117,6 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AtualizaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente atualizar o volume da novel novamente!");
-
             if (volumeDTO.ImagemVolumeFile != null)
                 if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
                     return BadRequest("Imagem Capa volume inválida!");
@@ -141,9 +138,6 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AtualizaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente atualizar o volume da comic novamente!");
-
             if (volumeDTO.ImagemVolumeFile != null)
                 if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
                     return BadRequest("Imagem Capa volume inválida!");
