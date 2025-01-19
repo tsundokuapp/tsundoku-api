@@ -306,7 +306,10 @@ namespace TsundokuTraducoes.Data.Repositories
                 UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
                 ? obra.ImagemCapaUltimoVolume
                 : obra.ImagemCapaPrincipal,
-
+                
+                Titulo = obra.Titulo,
+                // TODO: Remover tipoObraSlug se TipoObra for adicionado no banco.
+                TipoObraSlug = obra.TipoObraSlug,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 DescritivoVolume = obra.NumeroUltimoVolume,
@@ -322,7 +325,10 @@ namespace TsundokuTraducoes.Data.Repositories
                 UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
                 ? obra.ImagemCapaUltimoVolume
                 : obra.ImagemCapaPrincipal,
-
+                
+                Titulo = obra.Titulo,
+                // TODO: Remover tipoObraSlug se TipoObra for adicionado no banco.
+                TipoObraSlug = obra.TipoObraSlug,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 DescritivoVolume = obra.NumeroUltimoVolume,

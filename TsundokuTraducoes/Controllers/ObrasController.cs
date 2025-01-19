@@ -23,11 +23,6 @@ namespace TsundokuTraducoes.Api.Controllers
         [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
         public async Task<IActionResult> ObterNovels([FromQuery] RequestObras requestObras)
         {
-            var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
-
-            if (!parametrosValidados)
-                return BadRequest("Informe ao menos uma opção para realizar a consulta!");
-
             var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
             var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
 
@@ -38,7 +33,7 @@ namespace TsundokuTraducoes.Api.Controllers
             var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
             var total = capitulos.Count;
 
-            return Ok(new { total = total, data = dados });
+            return Ok(new { total, data = dados });
         }
 
         [HttpGet("api/obras/novels/recentes")]
@@ -74,11 +69,6 @@ namespace TsundokuTraducoes.Api.Controllers
         [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
         public async Task<IActionResult> ObterComics([FromQuery] RequestObras requestObras)
         {
-            var parametrosValidados = ValidacaoRequest.ValidaParametrosNovel(requestObras);
-
-            if (!parametrosValidados)
-                return BadRequest("Informe ao menos uma opção para realizar a consulta!");
-
             var skipTratado = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip);
             var takeTratado = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
 
@@ -89,7 +79,7 @@ namespace TsundokuTraducoes.Api.Controllers
             var dados = capitulos.Skip(skipTratado).Take(takeTratado).ToList();
             var total = capitulos.Count;
 
-            return Ok(new { total = total, data = dados });
+            return Ok(new { total, data = dados });
         }
 
         [HttpGet("api/obras/comics/recentes")]

@@ -125,11 +125,7 @@ namespace TsundokuTraducoes.Helpers.Validacao
             return Regex.Match(corHexaDeximal, regexPattern).Success;
         }
 
-        public static bool ValidaParametrosNovel(RequestObras requestObras)
-        {
-            return ValidaParametrosObra(requestObras);
-        }
-
+        // TODO: Não está sendo usado em nenhum lugar, considerar a remoção.
         public static bool ValidaParametrosObra(RequestObras requestObras)
         {
             return !string.IsNullOrEmpty(requestObras.Pesquisar) ||

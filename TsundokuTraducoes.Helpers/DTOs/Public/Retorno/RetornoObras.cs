@@ -10,11 +10,14 @@ namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string UrlCapaVolume { get; set; }
         
+        public string Titulo { get; set; }
         public string UrlCapa { get; set; }
         public string Alias { get; set; }        
         public string Autor { get; set; }
         public string DescritivoVolume { get; set; }
         public string Slug { get; set; }
+        // TODO: Remover tipoObraSlug se TipoObra for adicionado no banco.
+        public string TipoObraSlug { get; set; }
         public Guid Id { get; set; }
     }
 }
