@@ -2,6 +2,7 @@
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Obra;
+using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
@@ -64,14 +65,18 @@ namespace TsundokuTraducoes.Data.Repositories
         }
 
         
-        public async Task<RetornoObras> ObterNovelPorId(RequestObras requestObras)
+        public async Task<RetornoNovel> ObterNovelPorId(Guid id)
         {
-            var novel = await _context.Novels.AsNoTracking().FirstOrDefaultAsync(w => w.Id.ToString() == requestObras.IdObra);
+            var novel = await _context.Novels.AsNoTracking().FirstOrDefaultAsync(w => w.Id == id);
 
-            if (novel != null)            
-                return TrataRetornoNovel(novel);
+            return novel is null ? null : TrataRetornoNovelUnica(novel);
+        }
+        
+        public async Task<RetornoNovel> ObterNovelPorSlug(string slug)
+        {
+            var novel = await _context.Novels.AsNoTracking().FirstOrDefaultAsync(w => w.Slug == slug);
 
-            return null;
+            return novel is null ? null : TrataRetornoNovelUnica(novel);
         }
 
         public async Task<RetornoObras> ObterComicPorId(RequestObras requestObras)
@@ -315,6 +320,37 @@ namespace TsundokuTraducoes.Data.Repositories
                 DescritivoVolume = obra.NumeroUltimoVolume,
                 Slug = obra.Slug,
                 Id = obra.Id
+            };
+        }
+        
+        internal static RetornoNovel TrataRetornoNovelUnica(Novel obra)
+        {
+            return new RetornoNovel()
+            {
+                UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
+                    ? obra.ImagemCapaUltimoVolume
+                    : obra.ImagemCapaPrincipal,
+                
+                Titulo = obra.Titulo,
+                TituloAlternativo = obra.TituloAlternativo,
+                TipoObraSlug = obra.TipoObraSlug,
+                TipoObra = SlugAuxiliar.RetornaTipoObraPorSlug(obra.TipoObraSlug),
+                Alias = obra.Alias,
+                Autor = obra.Autor,
+                Artista = obra.Artista,
+                Ano = obra.Ano,
+                Visualizacoes = obra.Visualizacoes.ToString(),
+                Sinopse = obra.Sinopse,
+                EhRecomdacao = obra.EhRecomendacao,
+                EhObraMaiorIdade = obra.EhObraMaiorIdade,
+                DescritivoVolume = obra.NumeroUltimoVolume,
+                Slug = obra.Slug,
+                Id = obra.Id,
+                NacionalidadeSlug = obra.NacionalidadeSlug,
+                Nacionalidade = SlugAuxiliar.RetornaNacionalidadePorSlug(obra.NacionalidadeSlug),
+                StatusObraSlug = obra.StatusObraSlug,
+                StatusObra = SlugAuxiliar.RetornaStatusObraPorSlug(obra.StatusObraSlug),
+                Observacao = obra.Observacao
             };
         }
 

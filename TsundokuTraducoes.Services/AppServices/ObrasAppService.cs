@@ -40,10 +40,16 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        public async Task<RetornoObras> ObterNovelPorId(RequestObras requestObras)
+        public async Task<RetornoNovel> ObterNovelPorId(Guid id)
         {
-            var retornoObra = await _obrasService.ObterNovelPorId(requestObras);
-            return retornoObra;
+            var retornoNovel = await _obrasService.ObterNovelPorId(id);
+            return retornoNovel;
+        }
+        
+        public async Task<RetornoNovel> ObterNovelPorSlug(string slug)
+        {
+            var retornoNovel = await _obrasService.ObterNovelPorSlug(slug);
+            return retornoNovel;
         }
 
         public async Task<RetornoObras> ObterComicPorId(RequestObras requestObras)

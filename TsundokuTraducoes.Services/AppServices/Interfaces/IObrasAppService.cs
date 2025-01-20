@@ -7,8 +7,8 @@ namespace TsundokuTraducoes.Services.AppServices.Interfaces
     {
         Task<List<RetornoObras>> ObterListaNovels(RequestObras requestObras);
         Task<List<RetornoObras>> ObterListaNovelsRecentes();
-        Task<RetornoObras> ObterNovelPorId(RequestObras requestObras);
-
+        Task<RetornoNovel> ObterNovelPorId(Guid id);
+        Task<RetornoNovel> ObterNovelPorSlug(string slug);
         Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras);
         Task<List<RetornoObras>> ObterListaComicsRecentes();
         Task<RetornoObras> ObterComicPorId(RequestObras requestObras);

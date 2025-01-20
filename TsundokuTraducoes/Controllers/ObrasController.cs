@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -53,15 +54,26 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(new { total = total, data = dados });
         }
 
-        [HttpGet("api/obras/novel")]
-        [ProducesResponseType(typeof(RetornoObras), statusCode: 200)]
-        public async Task<IActionResult> ObterNovelPorId([FromQuery] RequestObras requestObras)
+        [HttpGet("api/obras/novel/id/{id}")]
+        [ProducesResponseType(typeof(RetornoNovel), statusCode: 200)]
+        public async Task<IActionResult> ObterNovelPorId(Guid id)
         {
-            var capitulo = await _obrasAppServices.ObterNovelPorId(requestObras);
-            if (capitulo == null)
+            var novel = await _obrasAppServices.ObterNovelPorId(id);
+            if (novel == null)
                 return NotFound("Novel não encontra!");
 
-            return Ok(capitulo);
+            return Ok(novel);
+        }
+        
+        [HttpGet("api/obras/novel/slug/{slug}")]
+        [ProducesResponseType(typeof(RetornoNovel), statusCode: 200)]
+        public async Task<IActionResult> ObterNovelPorSlug(string slug)
+        {
+            var novel = await _obrasAppServices.ObterNovelPorSlug(slug);
+            if (novel == null)
+                return NotFound("Novel não encontra!");
+
+            return Ok(novel);
         }
 
 
