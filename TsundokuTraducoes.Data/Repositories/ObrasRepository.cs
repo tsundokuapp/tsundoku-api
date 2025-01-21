@@ -350,7 +350,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 Nacionalidade = SlugAuxiliar.RetornaNacionalidadePorSlug(obra.NacionalidadeSlug),
                 StatusObraSlug = obra.StatusObraSlug,
                 StatusObra = SlugAuxiliar.RetornaStatusObraPorSlug(obra.StatusObraSlug),
-                Observacao = obra.Observacao
+                Observacao = obra.Observacao,
             };
         }
 
