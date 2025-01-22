@@ -83,14 +83,18 @@ namespace TsundokuTraducoes.Data.Repositories
         }
 
         
-        public async Task<RetornoObras> ObterNovelPorId(RequestObras requestObras)
+        public async Task<RetornoNovel> ObterNovelPorId(Guid id)
         {
-            var novel = await _context.Novels.AsNoTracking().FirstOrDefaultAsync(w => w.Id.ToString() == requestObras.IdObra);
+            var novel = await _context.Novels.AsNoTracking().FirstOrDefaultAsync(w => w.Id == id);
 
-            if (novel != null)            
-                return TrataRetornoNovel(novel);
+            return novel is null ? null : TrataRetornoNovelUnica(novel);
+        }
+        
+        public async Task<RetornoNovel> ObterNovelPorSlug(string slug)
+        {
+            var novel = await _context.Novels.AsNoTracking().FirstOrDefaultAsync(w => w.Slug == slug);
 
-            return null;
+            return novel is null ? null : TrataRetornoNovelUnica(novel);
         }
 
         public async Task<RetornoObras> ObterComicPorId(RequestObras requestObras)
@@ -332,12 +336,46 @@ namespace TsundokuTraducoes.Data.Repositories
                 UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
                 ? obra.ImagemCapaUltimoVolume
                 : obra.ImagemCapaPrincipal,
-
+                
+                Titulo = obra.Titulo,
+                // TODO: Remover tipoObraSlug se TipoObra for adicionado no banco.
+                TipoObraSlug = obra.TipoObraSlug,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 DescritivoVolume = obra.NumeroUltimoVolume,
                 Slug = obra.Slug,
                 Id = obra.Id
+            };
+        }
+        
+        internal static RetornoNovel TrataRetornoNovelUnica(Novel obra)
+        {
+            return new RetornoNovel()
+            {
+                UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
+                    ? obra.ImagemCapaUltimoVolume
+                    : obra.ImagemCapaPrincipal,
+                
+                Titulo = obra.Titulo,
+                TituloAlternativo = obra.TituloAlternativo,
+                TipoObraSlug = obra.TipoObraSlug,
+                TipoObra = SlugAuxiliar.RetornaTipoObraPorSlug(obra.TipoObraSlug),
+                Alias = obra.Alias,
+                Autor = obra.Autor,
+                Artista = obra.Artista,
+                Ano = obra.Ano,
+                Visualizacoes = obra.Visualizacoes.ToString(),
+                Sinopse = obra.Sinopse,
+                EhRecomdacao = obra.EhRecomendacao,
+                EhObraMaiorIdade = obra.EhObraMaiorIdade,
+                DescritivoVolume = obra.NumeroUltimoVolume,
+                Slug = obra.Slug,
+                Id = obra.Id,
+                NacionalidadeSlug = obra.NacionalidadeSlug,
+                Nacionalidade = SlugAuxiliar.RetornaNacionalidadePorSlug(obra.NacionalidadeSlug),
+                StatusObraSlug = obra.StatusObraSlug,
+                StatusObra = SlugAuxiliar.RetornaStatusObraPorSlug(obra.StatusObraSlug),
+                Observacao = obra.Observacao
             };
         }
 
@@ -348,7 +386,10 @@ namespace TsundokuTraducoes.Data.Repositories
                 UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
                 ? obra.ImagemCapaUltimoVolume
                 : obra.ImagemCapaPrincipal,
-
+                
+                Titulo = obra.Titulo,
+                // TODO: Remover tipoObraSlug se TipoObra for adicionado no banco.
+                TipoObraSlug = obra.TipoObraSlug,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 DescritivoVolume = obra.NumeroUltimoVolume,
