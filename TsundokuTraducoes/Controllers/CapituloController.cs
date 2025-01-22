@@ -30,7 +30,7 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoCapitulo(HttpContext, result.Value, requestCapitulo);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoCapitulo(HttpContext, result.Value, requestCapitulo);
             return Ok(objetoRetorno);
         }
 
@@ -42,7 +42,7 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoCapitulo(HttpContext, result.Value, requestCapitulo);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoCapitulo(HttpContext, result.Value, requestCapitulo);
             return Ok(objetoRetorno);
         }
 
@@ -54,7 +54,7 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoCapitulo(HttpContext, result.Value, requestCapitulo);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoCapitulo(HttpContext, result.Value, requestCapitulo);
             return Ok(objetoRetorno);
         }
 
@@ -86,10 +86,10 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestCapituloNovel(capituloDTO))
+            if (!ValidacaoRequest.ValidaConteudoTextoCapituloNovel(capituloDTO))
                 return BadRequest("Não contém conteúdo para o capítulo da novel!");
 
-            if (!ValidacaoRequest.ValidaDadosRequestCapituloNovelImagens(capituloDTO))
+            if (!ValidacaoRequest.ValidaConteudoImagemCapituloNovel(capituloDTO))
                 return BadRequest("Não contém imagens para o capítulo da novel!");
 
             var listaImagemEnviada = capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0;
@@ -126,10 +126,10 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestCapituloNovel(capituloDTO))
+            if (!ValidacaoRequest.ValidaConteudoTextoCapituloNovel(capituloDTO))
                 return BadRequest("Não contém conteúdo para o capítulo da novel!");
 
-            if (!ValidacaoRequest.ValidaDadosRequestCapituloNovelImagens(capituloDTO))
+            if (!ValidacaoRequest.ValidaConteudoImagemCapituloNovel(capituloDTO))
                 return BadRequest("Não contém imagens para o capítulo da novel!");
 
             var listaImagemEnviada = capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0;

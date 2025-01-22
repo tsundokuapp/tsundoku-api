@@ -29,7 +29,7 @@ namespace TsundokuTraducoes.Api.Controllers
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, capitulos, requestObras);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, capitulos, requestObras);
             return Ok(objetoRetorno);
 
         }
@@ -42,7 +42,7 @@ namespace TsundokuTraducoes.Api.Controllers
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, capitulos, requestObras);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, capitulos, requestObras);
             return Ok(objetoRetorno);
         }
 
@@ -66,7 +66,7 @@ namespace TsundokuTraducoes.Api.Controllers
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, capitulos, requestObras);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, capitulos, requestObras);
             return Ok(objetoRetorno);
         }
 
@@ -78,7 +78,7 @@ namespace TsundokuTraducoes.Api.Controllers
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, capitulos, requestObras);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, capitulos, requestObras);
             return Ok(objetoRetorno);
         }
 
@@ -102,7 +102,7 @@ namespace TsundokuTraducoes.Api.Controllers
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, capitulos, requestObras, true);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, capitulos, requestObras, true);
             return Ok(objetoRetorno);
         }
 
@@ -114,7 +114,7 @@ namespace TsundokuTraducoes.Api.Controllers
             if (obrasRecomendadas.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, obrasRecomendadas, requestObras);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, obrasRecomendadas, requestObras);
             return Ok(objetoRetorno);
         }
 
@@ -129,7 +129,7 @@ namespace TsundokuTraducoes.Api.Controllers
             if (volumes.Count == 0) 
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoObras(HttpContext, volumes, requestObras);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, volumes, requestObras);
             return Ok(objetoRetorno);
         }
 

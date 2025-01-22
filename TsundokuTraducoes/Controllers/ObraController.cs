@@ -28,7 +28,7 @@ namespace TsundokuTraducoes.Models
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
+            var objetoRetorno = RequestHelper.CriarObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
             return Ok(objetoRetorno);
         }
 
@@ -40,7 +40,7 @@ namespace TsundokuTraducoes.Models
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
+            var objetoRetorno = RequestHelper.CriarObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
             return Ok(objetoRetorno);
         }
 
@@ -52,7 +52,7 @@ namespace TsundokuTraducoes.Models
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
+            var objetoRetorno = RequestHelper.CriarObjetoRetono(HttpContext, result.Value, requestObra.Skip, requestObra.Take);
             return Ok(objetoRetorno);
         }
 
@@ -105,7 +105,7 @@ namespace TsundokuTraducoes.Models
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaNovel([FromForm] ObraDTO obraDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
+            if (!ValidacaoRequest.ValidaImagemCapaPrincipalObra(obraDTO))
                 return BadRequest("Informe uma capa principal para a noval!");
 
             if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
@@ -129,7 +129,7 @@ namespace TsundokuTraducoes.Models
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaComic([FromForm] ObraDTO obraDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestObra(obraDTO))
+            if (!ValidacaoRequest.ValidaImagemCapaPrincipalObra(obraDTO))
                 return BadRequest("Informe uma capa principal para a comic!");
 
             if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))

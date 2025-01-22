@@ -11,91 +11,91 @@ namespace TsundokuTraducoes.Api.Helpers
 {
     public static class RequestHelper
     {
-        public static object CriaObjetoRetono<T>(HttpContext httpContext, List<T> listaGenerica, int? skip, int? take)
+        public static object CriarObjetoRetono<T>(HttpContext httpContext, List<T> listaGenerica, int? skip, int? take)
         {
-            var obrasPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
-            var numeroPagina = ValidacaoRequest.RetornaSkipTratado(skip, obrasPorPagina);
+            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
+            var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
 
-            var dados = listaGenerica.Skip(numeroPagina).Take(obrasPorPagina).ToList();
+            var dados = listaGenerica.Skip(itensPulados).Take(itensPorPagina).ToList();
             var total = listaGenerica.Count;
 
             var request = httpContext.Request;
             var url = $"{request.Scheme}://{request.Host}{request.Path}";
 
-            string proxima = RetornaLinkPaginacaoProxima(obrasPorPagina, numeroPagina, dados, url);
-            string anterior = RetornaLinkPaginacaoAnterior(obrasPorPagina, numeroPagina, url);
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
 
             return new { total = total, proxima = proxima, anterior = anterior, data = dados };
         }
 
-        public static object CriaObjetoRetonoVolume(HttpContext httpContext, List<RetornoVolume> listaRetornoVolume, RequestVolume requestVolume)
+        public static object CriarObjetoRetonoVolume(HttpContext httpContext, List<RetornoVolume> listaRetornoVolume, RequestVolume requestVolume)
         {
-            var obrasPorPagina = ValidacaoRequest.RetornaTakeTratado(requestVolume.Take);
-            var numeroPagina = ValidacaoRequest.RetornaSkipTratado(requestVolume.Skip, obrasPorPagina);
+            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(requestVolume.Take);
+            var itensPulados = ValidacaoRequest.RetornaSkipTratado(requestVolume.Skip, itensPorPagina);
 
-            var dados = listaRetornoVolume.Skip(numeroPagina).Take(obrasPorPagina).ToList();
+            var dados = listaRetornoVolume.Skip(itensPulados).Take(itensPorPagina).ToList();
             var total = listaRetornoVolume.Count;
 
             var request = httpContext.Request;
             var url = $"{request.Scheme}://{request.Host}{request.Path}";
 
-            string proxima = RetornaLinkPaginacaoProxima(obrasPorPagina, numeroPagina, dados, url);
-            string anterior = RetornaLinkPaginacaoAnterior(obrasPorPagina, numeroPagina, url);
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
 
             return new { total = total, proxima = proxima, anterior = anterior, data = dados };
         }
 
-        public static object CriaObjetoRetonoCapitulo(HttpContext httpContext, List<RetornoCapitulo> ListaRetornoCapitulo, RequestCapitulo requestCapitulo)
+        public static object CriarObjetoRetonoCapitulo(HttpContext httpContext, List<RetornoCapitulo> ListaRetornoCapitulo, RequestCapitulo requestCapitulo)
         {
-            var obrasPorPagina = ValidacaoRequest.RetornaTakeTratado(requestCapitulo.Take);
-            var numeroPagina = ValidacaoRequest.RetornaSkipTratado(requestCapitulo.Skip, obrasPorPagina);
+            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(requestCapitulo.Take);
+            var itensPulados = ValidacaoRequest.RetornaSkipTratado(requestCapitulo.Skip, itensPorPagina);
 
-            var dados = ListaRetornoCapitulo.Skip(numeroPagina).Take(obrasPorPagina).ToList();
+            var dados = ListaRetornoCapitulo.Skip(itensPulados).Take(itensPorPagina).ToList();
             var total = ListaRetornoCapitulo.Count;
 
             var request = httpContext.Request;
             var url = $"{request.Scheme}://{request.Host}{request.Path}";
 
-            string proxima = RetornaLinkPaginacaoProxima(obrasPorPagina, numeroPagina, dados, url);
-            string anterior = RetornaLinkPaginacaoAnterior(obrasPorPagina, numeroPagina, url);
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
 
             return new { total = total, proxima = proxima, anterior = anterior, data = dados };
         }
 
-        internal static object CriaObjetoRetonoObras<T>(HttpContext httpContext, List<T> listaGenerica, RequestObras requestObras, bool ehHome = false)
+        internal static object CriarObjetoRetonoObras<T>(HttpContext httpContext, List<T> listaGenerica, RequestObras requestObras, bool ehHome = false)
         {
-            var obrasPorPagina = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
-            var numeroPagina = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip, obrasPorPagina);
+            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(requestObras.Take);
+            var itensPulados = ValidacaoRequest.RetornaSkipTratado(requestObras.Skip, itensPorPagina);
 
-            var dados = listaGenerica.Skip(numeroPagina).Take(obrasPorPagina).ToList();
+            var dados = listaGenerica.Skip(itensPulados).Take(itensPorPagina).ToList();
             var total = listaGenerica.Count;
 
             var request = httpContext.Request;
             var url = $"{request.Scheme}://{request.Host}{request.Path}";
 
-            string proxima = RetornaLinkPaginacaoProxima(obrasPorPagina, numeroPagina, dados, url) + RetornaQuery(requestObras);
-            string anterior = RetornaLinkPaginacaoAnterior(obrasPorPagina, numeroPagina, url);
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url) + RetornaQuery(requestObras);
+            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
 
             return new { total = total, proxima = proxima, anterior = anterior, data = dados };
         }
 
-        private static string RetornaLinkPaginacaoAnterior(int obrasPorPagina, int numeroPagina, string url)
+        private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)
         {
             string anterior = null;
-            if (numeroPagina > 0)
+            if (itensPulados > 0)
             {
-                anterior = $"{url}?Skip={numeroPagina - obrasPorPagina}&Take={obrasPorPagina}";
+                anterior = $"{url}?Skip={itensPulados - itensPorPagina}&Take={itensPorPagina}";
             }
 
             return anterior;
         }
 
-        private static string RetornaLinkPaginacaoProxima<T>(int obrasPorPagina, int numeroPagina, List<T> dados, string url)
+        private static string RetornaLinkPaginacaoProxima<T>(int itensPorPagina, int itensPulados, List<T> dados, string url)
         {
             string proxima = null;
-            if (dados.Count >= obrasPorPagina)
+            if (dados.Count >= itensPorPagina)
             {
-                proxima = $"{url}?Skip={numeroPagina + obrasPorPagina}&Take={obrasPorPagina}";
+                proxima = $"{url}?Skip={itensPulados + itensPorPagina}&Take={itensPorPagina}";
             }
 
             return proxima;
