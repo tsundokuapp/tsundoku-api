@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
@@ -31,7 +30,6 @@ namespace TsundokuTraducoes.Api.Controllers
 
             var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, capitulos, requestObras);
             return Ok(objetoRetorno);
-
         }
 
         [HttpGet("api/obras/novels/recentes")]
@@ -46,15 +44,26 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(objetoRetorno);
         }
 
-        [HttpGet("api/obras/novel")]
-        [ProducesResponseType(typeof(RetornoObras), statusCode: 200)]
-        public async Task<IActionResult> ObterNovelPorId([FromQuery] RequestObras requestObras)
+        [HttpGet("api/obras/novel/id/{id}")]
+        [ProducesResponseType(typeof(RetornoNovel), statusCode: 200)]
+        public async Task<IActionResult> ObterNovelPorId(Guid id)
         {
-            var capitulo = await _obrasAppServices.ObterNovelPorId(requestObras);
-            if (capitulo == null)
+            var novel = await _obrasAppServices.ObterNovelPorId(id);
+            if (novel == null)
                 return NotFound("Novel não encontra!");
 
-            return Ok(capitulo);
+            return Ok(novel);
+        }
+        
+        [HttpGet("api/obras/novel/slug/{slug}")]
+        [ProducesResponseType(typeof(RetornoNovel), statusCode: 200)]
+        public async Task<IActionResult> ObterNovelPorSlug(string slug)
+        {
+            var novel = await _obrasAppServices.ObterNovelPorSlug(slug);
+            if (novel == null)
+                return NotFound("Novel não encontra!");
+
+            return Ok(novel);
         }
 
 
@@ -65,7 +74,7 @@ namespace TsundokuTraducoes.Api.Controllers
             var capitulos = await _obrasAppServices.ObterListaComics(requestObras);
             if (capitulos.Count == 0)
                 return NoContent();
-
+                
             var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, capitulos, requestObras);
             return Ok(objetoRetorno);
         }
