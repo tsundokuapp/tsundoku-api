@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
@@ -29,13 +30,8 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
-
-            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = result.Value.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/admin/volume/novel")]
@@ -46,13 +42,8 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
-
-            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = result.Value.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
+            return Ok(objetoRetorno);
         }
 
         [HttpGet("api/admin/volume/comic")]
@@ -63,13 +54,8 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var skipTratado = ValidacaoRequest.RetornaSkipTratadoAdmin(requestVolume.Skip);
-            var takeTratado = ValidacaoRequest.RetornaTakeTratadoAdmin(requestVolume.Take);
-
-            var dados = result.Value.Skip(skipTratado).Take(takeTratado).ToList();
-            var total = result.Value.Count;
-
-            return Ok(new { total = total, data = dados });
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
+            return Ok(objetoRetorno);
         }
 
 
@@ -95,14 +81,10 @@ namespace TsundokuTraducoes.Controllers
             return Ok(result.Value);
         }
 
-
         [HttpPost("api/admin/volume/novel/")]
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AdicionaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente adicionar o volume da novel novamente!");
-
             if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
                 return BadRequest("Imagem Capa volume inválida!");
 
@@ -117,8 +99,8 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AdicionaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente adicionar o volume da comic novamente!");
+            if (!ValidacaoRequest.ValidaImagemCapaVolume(volumeDTO))
+                return BadRequest("Capa do volume não informada!");
 
             if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
                 return BadRequest("Imagem Capa volume inválida!");
@@ -135,9 +117,6 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AtualizaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente atualizar o volume da novel novamente!");
-
             if (volumeDTO.ImagemVolumeFile != null)
                 if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
                     return BadRequest("Imagem Capa volume inválida!");
@@ -159,9 +138,6 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AtualizaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestVolumeAtualizacao(volumeDTO))
-                return BadRequest("Verifique os campos obrigatórios e tente atualizar o volume da comic novamente!");
-
             if (volumeDTO.ImagemVolumeFile != null)
                 if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
                     return BadRequest("Imagem Capa volume inválida!");

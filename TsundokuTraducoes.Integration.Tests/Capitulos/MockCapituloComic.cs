@@ -42,11 +42,6 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var form = new MultipartFormDataContent();
             var numero = $"{RetornaNumeroAleatorio()}";
             var loginAlteracao = "Araragui";
-            
-            if (falhar)
-            {
-                loginAlteracao =string.Empty;
-            }
 
             form.Add(new StringContent(capituloId.ToString()), "Id");
             form.Add(new StringContent(numero), "Numero");
@@ -59,16 +54,19 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("false"), "OtimizarImagem");
             form.Add(new StringContent("true"), "SalvarLocal");
 
-            var listaContentImagemCapitulo = new List<HttpContent>();
-
-            for (int i = 0; i < 5; i++)
+            if (!falhar)
             {
-                listaContentImagemCapitulo.Add(MockBase.RetornaStreamImagemMock($"pagina{i:00}.jpeg", "ListaImagensForm"));
-            }
+                var listaContentImagemCapitulo = new List<HttpContent>();
 
-            foreach (var contentImagemCapitulo in listaContentImagemCapitulo)
-            {
-                form.Add(contentImagemCapitulo);
+                for (int i = 0; i < 5; i++)
+                {
+                    listaContentImagemCapitulo.Add(MockBase.RetornaStreamImagemMock($"pagina{i:00}.jpeg", "ListaImagensForm"));
+                }
+
+                foreach (var contentImagemCapitulo in listaContentImagemCapitulo)
+                {
+                    form.Add(contentImagemCapitulo);
+                }
             }
 
             return form;

@@ -195,7 +195,7 @@ namespace TsundokuTraducoes.Data.Context
                                   "@Hatsukoi Losstime",
                                   Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
                                   "em-andamento",
-                                  "comic",
+                                  "manga",
                                   "japonesa",
                                   "");
 
@@ -266,7 +266,8 @@ namespace TsundokuTraducoes.Data.Context
                     "",
                     "",
                     Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
-                    RetornaConteudoNovelIlustracoes()
+                    RetornaConteudoNovelIlustracoes(),
+                    false
                     );
 
             return capituloNovelIlustracao;
@@ -293,7 +294,8 @@ namespace TsundokuTraducoes.Data.Context
                     "",
                     "",
                     Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
-                    "");
+                    "", 
+                    false);
 
             return capituloNovelIlustracao;
         }
@@ -314,7 +316,8 @@ namespace TsundokuTraducoes.Data.Context
                 DateTime.Now,
                 DateTime.Now,
                 Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime", "Volume01", "Capitulo01"),
-                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"));
+                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"), 
+                false);
 
             return capituloComic;
         }

@@ -22,7 +22,8 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
             DateTime.Now,
             DateTime.Now,
             Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime", "Volume01", "Capitulo01"),
-            Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"));
+            Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+            false);
 
             Assert.Equal("capitulo-1", capituloComic.Slug);
             Assert.NotEmpty(capituloComic.ListaImagensJson);
@@ -47,7 +48,8 @@ namespace TsundokuTraducoes.Entities.Tests.Capitulos
                 DateTime.Now,
                 DateTime.Now,
                 Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime", "Volume01", "Capitulo01"),
-                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"));
+                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+                false);
 
             Assert.Empty(capituloComic.ListaImagensJson);
         }

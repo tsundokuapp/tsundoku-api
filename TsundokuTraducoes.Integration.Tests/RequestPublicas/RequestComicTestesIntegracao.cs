@@ -36,14 +36,6 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
         }
 
         [Fact]
-        public async Task DeveFalharRetornarUmaListaDeComics()
-        {
-            var parametros = "pesquisar=&nacionalidade=&status=&tipo=&genero=&skip=&take=";
-            var response = await _httpClient.GetAsync($"api/obras/comics?{parametros}");
-            Assert.True(HttpStatusCode.BadRequest == response.StatusCode);
-        }
-
-        [Fact]
         public async Task DeveRetornarComicPorId()
         {
             var comic = await AdicionaObra();

@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
+using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
+using TsundokuTraducoes.Helpers.Validacao;
 
 namespace TsundokuTraducoes.Data.Repositories
 {
@@ -27,8 +29,16 @@ namespace TsundokuTraducoes.Data.Repositories
             }
             else
             {
-                var sql = RetornaSqlListaNovelsPorParametros(requestObras.Nacionalidade, requestObras.Status, requestObras.Tipo, requestObras.Genero);
-                listaNovels = await _context.Novels.FromSqlRaw(sql).ToListAsync();
+                var parametrosVerificados = ValidacaoRequest.VerificaParametrosObras(requestObras);
+                if (parametrosVerificados)
+                {
+                    var sql = RetornaSqlListaNovelsPorParametros(requestObras.Nacionalidade, requestObras.Status, requestObras.Tipo, requestObras.Genero);
+                    listaNovels = await _context.Novels.FromSqlRaw(sql).ToListAsync();
+                }
+                else
+                {
+                    listaNovels = await _context.Novels.ToListAsync();
+                }
             }
 
             return TrataListaRetornoNovel(listaNovels);
@@ -44,8 +54,16 @@ namespace TsundokuTraducoes.Data.Repositories
             }
             else
             {
-                var sql = RetornaSqlListaComicsPorParametros(requestObras.Nacionalidade, requestObras.Status, requestObras.Tipo, requestObras.Genero);
-                listaComics = await _context.Comics.FromSqlRaw(sql).ToListAsync();
+                var parametrosVerificados = ValidacaoRequest.VerificaParametrosObras(requestObras);
+                if (parametrosVerificados)
+                {
+                    var sql = RetornaSqlListaComicsPorParametros(requestObras.Nacionalidade, requestObras.Status, requestObras.Tipo, requestObras.Genero);
+                    listaComics = await _context.Comics.FromSqlRaw(sql).ToListAsync();
+                }
+                else
+                {
+                    listaComics = await _context.Comics.ToListAsync();
+                }
             }
 
             return TrataListaRetornoComic(listaComics);
@@ -108,6 +126,9 @@ namespace TsundokuTraducoes.Data.Repositories
                                    UrlCapaPrincipal = comics.ImagemCapaPrincipal,
                                    AliasObra = comics.Alias,
                                    AutorObra = comics.Autor,
+                                   TipoObra = comics.TipoObraSlug,
+                                   SlugObra = comics.Slug
+                                   
                                })
                         .Union(from capitulosNovel in _context.CapitulosNovel.AsNoTracking()
                                join volumesNovel in _context.VolumesNovel.AsNoTracking()
@@ -125,6 +146,8 @@ namespace TsundokuTraducoes.Data.Repositories
                                    UrlCapaPrincipal = novels.ImagemCapaPrincipal,
                                    AliasObra = novels.Alias,
                                    AutorObra = novels.Autor,
+                                   TipoObra = novels.TipoObraSlug,
+                                   SlugObra = novels.Slug
                                }
                         );
 
@@ -139,7 +162,9 @@ namespace TsundokuTraducoes.Data.Repositories
                         UrlCapaVolume = rc.UrlCapaVolume,
                         UrlCapaPrincipal = rc.UrlCapaPrincipal,
                         AliasObra = rc.AliasObra,
-                        AutorObra = rc.AutorObra
+                        AutorObra = rc.AutorObra,
+                        TipoObra = SlugAuxiliar.RetornaTipoObraPorSlug(rc.TipoObra),
+                        SlugObra = rc.SlugObra
                     })
                 .OrderByDescending(o => o.DataInclusao)
                 .ToListAsync();
@@ -457,6 +482,24 @@ namespace TsundokuTraducoes.Data.Repositories
                                           .OrderByDescending(o => o.DataInclusao);
 
             return listaRetornoVolume.ToList();
+        }
+
+        public async Task<CapituloComic> ObterCapituloComicPorId(Guid id)
+        {
+            var capitulo = await _context.CapitulosComic
+                                    .AsNoTracking()
+                                    .Where(w => w.Id == id).FirstOrDefaultAsync();
+
+            return capitulo;
+        }
+
+        public async Task<CapituloNovel> ObterCapituloNovelPorId(Guid id)
+        {
+            var capitulo = await _context.CapitulosNovel
+                                    .AsNoTracking()
+                                    .Where(w => w.Id == id).FirstOrDefaultAsync();
+
+            return capitulo;
         }
     }
 }

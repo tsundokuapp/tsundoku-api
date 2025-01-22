@@ -70,7 +70,7 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var retornoCapitulo = await AdicionaCapitulo(retornoVolume.Id);
 
             var formData = MockCapituloComic.RetornaFormDataMockAtualizarCapituloComic(true, retornoVolume.Id, retornoCapitulo.Id);
-            var response = await _httpClient.PutAsync("api/admin/capitulo/comic", formData);
+            var response = await _httpClient.PutAsync("api/admin/capitulo/comic", formData);            
 
             Assert.NotNull(response);
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
