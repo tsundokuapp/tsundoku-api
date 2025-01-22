@@ -29,9 +29,9 @@ namespace TsundokuTraducoes.Entities.Tests.Obras
                                   "https://tsundoku.com.br/wp-content/uploads/2022/01/HatsukoiEmbed.jpg",
                                   "@Hatsukoi Losstime",
                                   Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
-                                  "em-andamento",
-                                  "comic",
-                                  "japonesa",
+                                  "Em andamento",
+                                  "Mangá",
+                                  "Japonesa",
                                   "Uma obra muito boa");
 
             comic.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2022/01/Hatsukoi_cover.jpg", "Volume 01", "volume-1");
@@ -67,9 +67,9 @@ namespace TsundokuTraducoes.Entities.Tests.Obras
                                   "https://tsundoku.com.br/wp-content/uploads/2022/01/HatsukoiEmbed.jpg",
                                   "@Hatsukoi Losstime",
                                   Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
-                                  "em-andamento",
-                                  "comic",
-                                  "japonesa",
+                                  "Em andamento",
+                                  "Mangá",
+                                  "Japonesa",
                                   "Uma obra muito boa");
 
             comic.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2022/01/Hatsukoi_cover.jpg", "Volume 01", "volume-1");

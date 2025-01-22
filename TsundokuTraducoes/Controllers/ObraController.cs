@@ -101,6 +101,7 @@ namespace TsundokuTraducoes.Models
             return Ok(result.Value);
         }
 
+        
         [HttpPost("api/admin/obra/novel")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaNovel([FromForm] ObraDTO obraDTO)

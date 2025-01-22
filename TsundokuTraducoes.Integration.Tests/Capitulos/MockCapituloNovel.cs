@@ -124,9 +124,9 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("false"), "EhObraMaiorIdade");
             form.Add(new StringContent("fantasia,aventura,drama"), "ListaGeneros");
             form.Add(new StringContent("#81F7F3"), "CodigoCorHexaObra");
-            form.Add(new StringContent("japonesa"), "NacionalidadeSlug");
-            form.Add(new StringContent("em-andamento"), "StatusObraSlug");
-            form.Add(new StringContent("manga"), "TipoObraSlug");
+            form.Add(new StringContent("Japonesa"), "Nacionalidade");
+            form.Add(new StringContent("Em andamento"), "StatusObra");
+            form.Add(new StringContent("Light Novel"), "TipoObra");
             form.Add(new StringContent("false"), "EhRecomendacao");
             form.Add(new StringContent("false"), "OtimizarImagem");
             form.Add(new StringContent("true"), "SalvarLocal");

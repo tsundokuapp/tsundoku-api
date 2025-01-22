@@ -126,7 +126,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                    UrlCapaPrincipal = comics.ImagemCapaPrincipal,
                                    AliasObra = comics.Alias,
                                    AutorObra = comics.Autor,
-                                   TipoObra = comics.TipoObraSlug,
+                                   TipoObra = comics.TipoObra,
                                    SlugObra = comics.Slug
                                    
                                })
@@ -146,7 +146,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                    UrlCapaPrincipal = novels.ImagemCapaPrincipal,
                                    AliasObra = novels.Alias,
                                    AutorObra = novels.Autor,
-                                   TipoObra = novels.TipoObraSlug,
+                                   TipoObra = novels.TipoObra,
                                    SlugObra = novels.Slug
                                }
                         );
@@ -163,7 +163,7 @@ namespace TsundokuTraducoes.Data.Repositories
                         UrlCapaPrincipal = rc.UrlCapaPrincipal,
                         AliasObra = rc.AliasObra,
                         AutorObra = rc.AutorObra,
-                        TipoObra = SlugAuxiliar.RetornaTipoObraPorSlug(rc.TipoObra),
+                        TipoObra = rc.TipoObra,
                         SlugObra = rc.SlugObra
                     })
                 .OrderByDescending(o => o.DataInclusao)
@@ -218,17 +218,17 @@ namespace TsundokuTraducoes.Data.Repositories
 
             if (!string.IsNullOrEmpty(nacionalidade))
             {
-                listaParametroConsulta.Add($"N.NacionalidadeSlug = '{nacionalidade}' ");
+                listaParametroConsulta.Add($"N.Nacionalidade = '{nacionalidade}' ");
             }
 
             if (!string.IsNullOrEmpty(status))
             {
-                listaParametroConsulta.Add($"N.StatusObraSlug = '{status}' ");
+                listaParametroConsulta.Add($"N.StatusObra = '{status}' ");
             }
 
             if (!string.IsNullOrEmpty(tipo))
             {
-                listaParametroConsulta.Add($"N.TipoObraSlug = '{tipo}' ");
+                listaParametroConsulta.Add($"N.TipoObra = '{tipo}' ");
             }
 
             if (!string.IsNullOrEmpty(genero))
@@ -265,17 +265,17 @@ namespace TsundokuTraducoes.Data.Repositories
 
             if (!string.IsNullOrEmpty(nacionalidade))
             {
-                listaParametroConsulta.Add($"C.NacionalidadeSlug = '{nacionalidade}' ");
+                listaParametroConsulta.Add($"C.Nacionalidade = '{nacionalidade}' ");
             }
 
             if (!string.IsNullOrEmpty(status))
             {
-                listaParametroConsulta.Add($"C.StatusObraSlug = '{status}' ");
+                listaParametroConsulta.Add($"C.StatusObra = '{status}' ");
             }
 
             if (!string.IsNullOrEmpty(tipo))
             {
-                listaParametroConsulta.Add($"C.TipoObraSlug = '{tipo}' ");
+                listaParametroConsulta.Add($"C.TipoObra = '{tipo}' ");
             }
 
             if (!string.IsNullOrEmpty(genero))
