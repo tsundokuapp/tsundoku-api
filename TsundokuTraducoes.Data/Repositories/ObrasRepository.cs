@@ -3,7 +3,6 @@ using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Entities.Entities.Obra;
-using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
@@ -338,8 +337,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 : obra.ImagemCapaPrincipal,
                 
                 Titulo = obra.Titulo,
-                // TODO: Remover tipoObraSlug se TipoObra for adicionado no banco.
-                TipoObraSlug = obra.TipoObraSlug,
+                TipoObra = obra.TipoObra,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 DescritivoVolume = obra.NumeroUltimoVolume,
@@ -358,8 +356,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 
                 Titulo = obra.Titulo,
                 TituloAlternativo = obra.TituloAlternativo,
-                TipoObraSlug = obra.TipoObraSlug,
-                TipoObra = SlugAuxiliar.RetornaTipoObraPorSlug(obra.TipoObraSlug),
+                TipoObra = obra.TipoObra,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 Artista = obra.Artista,
@@ -371,10 +368,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 DescritivoVolume = obra.NumeroUltimoVolume,
                 Slug = obra.Slug,
                 Id = obra.Id,
-                NacionalidadeSlug = obra.NacionalidadeSlug,
-                Nacionalidade = SlugAuxiliar.RetornaNacionalidadePorSlug(obra.NacionalidadeSlug),
-                StatusObraSlug = obra.StatusObraSlug,
-                StatusObra = SlugAuxiliar.RetornaStatusObraPorSlug(obra.StatusObraSlug),
+                Nacionalidade = obra.Nacionalidade,
+                StatusObra = obra.StatusObra,
                 Observacao = obra.Observacao
             };
         }
@@ -388,8 +383,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 : obra.ImagemCapaPrincipal,
                 
                 Titulo = obra.Titulo,
-                // TODO: Remover tipoObraSlug se TipoObra for adicionado no banco.
-                TipoObraSlug = obra.TipoObraSlug,
+                TipoObra = obra.TipoObra,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 DescritivoVolume = obra.NumeroUltimoVolume,
