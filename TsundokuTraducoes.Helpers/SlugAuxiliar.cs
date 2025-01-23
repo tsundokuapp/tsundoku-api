@@ -1,43 +1,47 @@
 ﻿namespace TsundokuTraducoes.Helpers
 {
-    #nullable disable
+#nullable disable
     public static class SlugAuxiliar
     {
-        public static string RetornaTipoObraPorSlug(string slug)
+        public static string RetornaSlugTipoObra(string slug)
         {
             var dicionarioTipoObraSlug = new Dictionary<string, string>
             {
-                { "light-novel", "Light Novel" },
-                { "web-novel", "Web Novel" },
-                { "manga", "Mangá" },
-                { "manhua", "Manhua" },
-                { "manhwa", "Manhwa" }
+                { "Light Novel", "light-novel" },
+                { "Web Novel", "web-novel" },
+                { "Mangá", "manga" },
+                { "Manhua", "manhua" },
+                { "Manhwa", "manhwa" },
+                { "Comic", "comic" },
+                { "Novel", "novel" }
             };
            
             return dicionarioTipoObraSlug.GetValueOrDefault(slug);
         }
 
-        public static string RetornaStatusObraPorSlug(string slug)
+        public static string RetornaSlugStatusObra(string slug)
         {
             var dicionarioStatusObraSlug = new Dictionary<string, string>
             {
-                { "em-andamento", "Em andamento" },
-                { "pausada", "Pausada" },
-                { "dropada", "Dropada" },
-                { "completa", "Completa" }
+                { "Em andamento", "em-andamento" },
+                { "Concluído", "concluido" },
+                { "Cancelado", "cancelado" },
+                { "Hiato", "hiato" },
             };
 
             return dicionarioStatusObraSlug.GetValueOrDefault(slug);
         }
 
-        public static string RetornaNacionalidadePorSlug(string slug)
+        public static string RetornaSlugNacionalidade(string slug)
         {
             var dicionarioNacionalidadeSlug = new Dictionary<string, string>
             {
-                { "japonesa", "Japonesa" },
-                { "coreana", "Coreana" },
-                { "chinesa", "Chinesa" },
-                { "americana", "Americana" }
+                { "Japonesa", "japonesa" },
+                { "Coreana", "coreana" },
+                { "Chinesa", "chinesa" },
+                { "Americana", "americana" },
+                { "Brasileira", "brasileira" },
+                { "Espanhola", "espanhola" }
             };
 
             return dicionarioNacionalidadeSlug.GetValueOrDefault(slug);

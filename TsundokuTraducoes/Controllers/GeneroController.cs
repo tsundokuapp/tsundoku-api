@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
@@ -29,7 +28,7 @@ namespace TsundokuTraducoes.Api.Controllers
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetono(HttpContext, result.Value, requestGenero.Skip, requestGenero.Take);
+            var objetoRetorno = RequestHelper.CriarObjetoRetono(HttpContext, result.Value, requestGenero.Skip, requestGenero.Take);
             return Ok(objetoRetorno);
         }
 

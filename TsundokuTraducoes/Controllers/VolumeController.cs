@@ -30,7 +30,7 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
             return Ok(objetoRetorno);
         }
 
@@ -42,7 +42,7 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
             return Ok(objetoRetorno);
         }
 
@@ -54,7 +54,7 @@ namespace TsundokuTraducoes.Controllers
             if (result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriaObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolume(HttpContext, result.Value, requestVolume);
             return Ok(objetoRetorno);
         }
 
@@ -99,7 +99,7 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AdicionaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
-            if (!ValidacaoRequest.ValidaDadosRequestVolume(volumeDTO))
+            if (!ValidacaoRequest.ValidaImagemCapaVolume(volumeDTO))
                 return BadRequest("Capa do volume não informada!");
 
             if (!ValidacaoRequest.ValidaImagemRequest(volumeDTO.ImagemVolumeFile))
