@@ -19,13 +19,30 @@
 /TsundokuTraducoes.Services/obj
 /TsundokuTraducoes.Entities/bin
 /TsundokuTraducoes.Entities/obj
-/TsundokuTraducoes.Entities.Tests/bin
-/TsundokuTraducoes.Entities.Tests/obj
 /TsundokuTraducoes.Helpers/bin
 /TsundokuTraducoes.Helpers/obj
-/TsundokuTraducoes.Integration.Tests/bin
-/TsundokuTraducoes.Integration.Tests/obj
 /TsundokuTraducoes.Integration.Tests/App.config
 /mysql
 
+# Config files
 /.idea/
+*.user
+.vscode/
+
+# Output folder used by Webpack or other FE stuff
+**/node_modules/*
+**/wwwroot/*
+
+# Tests
+*.Tests/bin
+*.Tests/obj
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+
+# Exceção dentro dos ignores
+!*/obj/Debug/net8.0/*.AssemblyInfo.cs
