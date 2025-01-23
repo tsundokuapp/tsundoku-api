@@ -3,7 +3,6 @@ using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Entities.Entities.Obra;
-using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
@@ -126,7 +125,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                    UrlCapaPrincipal = comics.ImagemCapaPrincipal,
                                    AliasObra = comics.Alias,
                                    AutorObra = comics.Autor,
-                                   TipoObra = comics.TipoObraSlug,
+                                   TipoObra = comics.TipoObra,
                                    SlugObra = comics.Slug
                                    
                                })
@@ -146,7 +145,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                    UrlCapaPrincipal = novels.ImagemCapaPrincipal,
                                    AliasObra = novels.Alias,
                                    AutorObra = novels.Autor,
-                                   TipoObra = novels.TipoObraSlug,
+                                   TipoObra = novels.TipoObra,
                                    SlugObra = novels.Slug
                                }
                         );
@@ -163,7 +162,7 @@ namespace TsundokuTraducoes.Data.Repositories
                         UrlCapaPrincipal = rc.UrlCapaPrincipal,
                         AliasObra = rc.AliasObra,
                         AutorObra = rc.AutorObra,
-                        TipoObra = SlugAuxiliar.RetornaTipoObraPorSlug(rc.TipoObra),
+                        TipoObra = rc.TipoObra,
                         SlugObra = rc.SlugObra
                     })
                 .OrderByDescending(o => o.DataInclusao)
@@ -218,17 +217,17 @@ namespace TsundokuTraducoes.Data.Repositories
 
             if (!string.IsNullOrEmpty(nacionalidade))
             {
-                listaParametroConsulta.Add($"N.NacionalidadeSlug = '{nacionalidade}' ");
+                listaParametroConsulta.Add($"N.Nacionalidade = '{nacionalidade}' ");
             }
 
             if (!string.IsNullOrEmpty(status))
             {
-                listaParametroConsulta.Add($"N.StatusObraSlug = '{status}' ");
+                listaParametroConsulta.Add($"N.StatusObra = '{status}' ");
             }
 
             if (!string.IsNullOrEmpty(tipo))
             {
-                listaParametroConsulta.Add($"N.TipoObraSlug = '{tipo}' ");
+                listaParametroConsulta.Add($"N.TipoObra = '{tipo}' ");
             }
 
             if (!string.IsNullOrEmpty(genero))
@@ -265,17 +264,17 @@ namespace TsundokuTraducoes.Data.Repositories
 
             if (!string.IsNullOrEmpty(nacionalidade))
             {
-                listaParametroConsulta.Add($"C.NacionalidadeSlug = '{nacionalidade}' ");
+                listaParametroConsulta.Add($"C.Nacionalidade = '{nacionalidade}' ");
             }
 
             if (!string.IsNullOrEmpty(status))
             {
-                listaParametroConsulta.Add($"C.StatusObraSlug = '{status}' ");
+                listaParametroConsulta.Add($"C.StatusObra = '{status}' ");
             }
 
             if (!string.IsNullOrEmpty(tipo))
             {
-                listaParametroConsulta.Add($"C.TipoObraSlug = '{tipo}' ");
+                listaParametroConsulta.Add($"C.TipoObra = '{tipo}' ");
             }
 
             if (!string.IsNullOrEmpty(genero))
@@ -338,8 +337,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 : obra.ImagemCapaPrincipal,
                 
                 Titulo = obra.Titulo,
-                // TODO: Remover tipoObraSlug se TipoObra for adicionado no banco.
-                TipoObraSlug = obra.TipoObraSlug,
+                TipoObra = obra.TipoObra,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 DescritivoVolume = obra.NumeroUltimoVolume,
@@ -358,8 +356,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 
                 Titulo = obra.Titulo,
                 TituloAlternativo = obra.TituloAlternativo,
-                TipoObraSlug = obra.TipoObraSlug,
-                TipoObra = SlugAuxiliar.RetornaTipoObraPorSlug(obra.TipoObraSlug),
+                TipoObra = obra.TipoObra,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 Artista = obra.Artista,
@@ -371,10 +368,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 DescritivoVolume = obra.NumeroUltimoVolume,
                 Slug = obra.Slug,
                 Id = obra.Id,
-                NacionalidadeSlug = obra.NacionalidadeSlug,
-                Nacionalidade = SlugAuxiliar.RetornaNacionalidadePorSlug(obra.NacionalidadeSlug),
-                StatusObraSlug = obra.StatusObraSlug,
-                StatusObra = SlugAuxiliar.RetornaStatusObraPorSlug(obra.StatusObraSlug),
+                Nacionalidade = obra.Nacionalidade,
+                StatusObra = obra.StatusObra,
                 Observacao = obra.Observacao
             };
         }
@@ -388,8 +383,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 : obra.ImagemCapaPrincipal,
                 
                 Titulo = obra.Titulo,
-                // TODO: Remover tipoObraSlug se TipoObra for adicionado no banco.
-                TipoObraSlug = obra.TipoObraSlug,
+                TipoObra = obra.TipoObra,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 DescritivoVolume = obra.NumeroUltimoVolume,

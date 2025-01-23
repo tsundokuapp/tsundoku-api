@@ -30,9 +30,9 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
         public string ImagemBanner { get; set; }
         public string CargoObraDiscord { get; set; }
         public string DiretorioImagemObra { get; set; }
-        public string StatusObraSlug { get; set; }
-        public string TipoObraSlug { get; set; }
-        public string NacionalidadeSlug { get; set; }
+        public string StatusObra { get; set; }
+        public string TipoObra { get; set; }
+        public string Nacionalidade { get; set; }
         public string ImagemCapaUltimoVolume { get; set; }
         public string NumeroUltimoVolume { get; set; }
         public string SlugUltimoVolume { get; set; }
@@ -52,7 +52,7 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
         public void AdicionaNovel(Guid id, string titulo, string tituloAlternativo, string alias, string autor, string artista, string ano, string slug,
             string usuarioInclusao, string usuarioAlteracao, string imagemCapaPrincipal, string sinopse, DateTime dataInclusao, DateTime dataAlteracao,
             bool ehObraMaiorIdade, bool ehRecomendacao, string codigoCorHexaObra, string imagemBanner, string cargoObraDiscord,
-            string diretorioImagemObra, string statusObraSlug, string tipoObraSlug, string nacionalidadeSlug, string observacao)
+            string diretorioImagemObra, string statusObra, string tipoObra, string nacionalidade, string observacao)
         {
             Id = id;
             Titulo = titulo;
@@ -74,9 +74,9 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
             ImagemBanner = imagemBanner;
             CargoObraDiscord = cargoObraDiscord;
             DiretorioImagemObra = diretorioImagemObra;
-            StatusObraSlug = statusObraSlug;
-            TipoObraSlug = tipoObraSlug;
-            NacionalidadeSlug = nacionalidadeSlug;
+            StatusObra = statusObra;
+            TipoObra = tipoObra;
+            Nacionalidade = nacionalidade;
             Observacao = observacao;
 
             Volumes = new List<VolumeNovel>();
