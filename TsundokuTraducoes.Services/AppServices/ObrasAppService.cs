@@ -52,12 +52,17 @@ namespace TsundokuTraducoes.Services.AppServices
             return retornoNovel;
         }
 
-        public async Task<RetornoObras> ObterComicPorId(RequestObras requestObras)
+        public async Task<RetornoComic> ObterComicPorId(Guid id)
         {
-            var retornoObra = await _obrasService.ObterComicPorId(requestObras);
-            return retornoObra;
+            var comic = await _obrasService.ObterComicPorId(id);
+            return comic;
         }
-
+        
+        public async Task<RetornoComic> ObterComicPorSlug(string slug)
+        {
+            var comic = await _obrasService.ObterComicPorSlug(slug);
+            return comic;
+        }
 
         public async Task<List<RetornoCapitulosHome>> ObterCapitulosHome()
         {

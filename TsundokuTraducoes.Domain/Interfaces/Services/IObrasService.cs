@@ -12,8 +12,8 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
 
         Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras);
         Task<List<RetornoObras>> ObterListaComicsRecentes();
-        Task<RetornoObras> ObterComicPorId(RequestObras requestObras);
-
+        Task<RetornoComic> ObterComicPorId(Guid id);
+        Task<RetornoComic> ObterComicPorSlug(string slug);
         Task<List<RetornoCapitulosHome>> ObterCapitulosHome();
         Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas();
         List<RetornoVolumes> ObterListaVolumeCapitulos(string idObra);

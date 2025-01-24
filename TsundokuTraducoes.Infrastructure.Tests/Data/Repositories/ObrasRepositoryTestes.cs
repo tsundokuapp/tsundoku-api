@@ -42,6 +42,38 @@ public class ObrasRepositoryTestes
         return novel;
     }
 
+    private Comic GerarComic()
+    {
+        var comic = new Comic();
+        comic.AdicionaComic(
+            Guid.NewGuid(),
+            "Hatsukoi Losstime",
+            "初恋ロスタイム",
+            "Hatsukoi Losstime",
+            "Nishina Yuuki",
+            "Nanora & Zerokich",
+            "2019",
+            "hatsukoi-losstime",
+            "Bravo",
+            "Bravo",
+            "https://tsundoku.com.br/wp-content/uploads/2022/01/cover_hatsukoi_vol2.jpg",
+            "Em um mundo onde apenas duas pessoas se moviam...",
+            DateTime.Now,
+            DateTime.Now,
+            false,
+            false,
+            "#01DFD7",
+            "https://tsundoku.com.br/wp-content/uploads/2022/01/HatsukoiEmbed.jpg",
+            "@Hatsukoi Losstime",
+            Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
+            "em-andamento",
+            "manga",
+            "japonesa",
+            "");
+        
+        return comic;
+    }
+
     [Fact]
     public async Task ObterNovelPorId_DeveRetornarNovelQuandoIdValido()
     {
@@ -207,5 +239,133 @@ public class ObrasRepositoryTestes
         Assert.Equal("Bruxa Errante, a Jornada dos Testes", resultado.Titulo);
         Assert.Equal("Light Novel", resultado.TipoObra);
         Assert.Equal("Shiraishi Jougi", resultado.Autor);
+    }
+    
+    [Fact]
+    public async Task ObterComicPorId_DeveRetornarComicQuandoIdValido()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var comic = GerarComic();
+        comic.Id = id;
+
+        var options = new DbContextOptionsBuilder<ContextBase>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+        await using (var context = new ContextBase(options))
+        {
+            IObraRepository repositoryAdmin = new ObraRepository
+            (context, 
+                new GeneroDeParaRepository(context),
+                new GeneroRepository(context));
+
+            var serviceAdmin = new ObraService(repositoryAdmin);
+            await serviceAdmin.AdicionaComic(comic);
+            
+            // Act
+            var repositoryPublic = new ObrasRepository(context);
+            var resultado = await repositoryPublic.ObterComicPorId(id);
+
+            // Assert
+            Assert.NotNull(resultado);
+            Assert.Equal(id, resultado.Id);
+        }
+        
+        await using (var context = new ContextBase(options))
+        {
+            await context.Database.EnsureDeletedAsync();
+        }
+    }
+    
+    [Fact]
+    public async Task ObterComicPorId_DeveRetornarNullQuandoComicNaoExiste()
+    {
+        // Arrange
+        var idGeradoExternamente = Guid.NewGuid();
+        var comic = GerarComic();
+
+        var options = new DbContextOptionsBuilder<ContextBase>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+
+        await using (var context = new ContextBase(options))
+        {
+            IObraRepository repositoryAdmin = new ObraRepository
+            (context, 
+                new GeneroDeParaRepository(context),
+                new GeneroRepository(context));
+            
+            var serviceAdmin = new ObraService(repositoryAdmin);
+            await serviceAdmin.AdicionaComic(comic);
+            
+            // Act
+            var repositoryPublic = new ObrasRepository(context);
+            var resultado = await repositoryPublic.ObterComicPorId(idGeradoExternamente);
+
+            // Assert
+            Assert.Null(resultado);
+        }
+        
+        // Clean up
+        await using (var context = new ContextBase(options))
+        {
+            await context.Database.EnsureDeletedAsync();
+        }
+    }
+    
+    [Fact]
+    public async Task ObterComicPorSlug_DeveRetornarNullQuandoComicNaoExiste()
+    {
+        // Arrange
+        var slug = "slug-teste";
+        // slug da comic = 'hatsukoi-losstime'
+        var comic = GerarComic();
+
+        var options = new DbContextOptionsBuilder<ContextBase>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+
+        await using (var context = new ContextBase(options))
+        {
+            IObraRepository repositoryAdmin = new ObraRepository
+            (context, 
+                new GeneroDeParaRepository(context),
+                new GeneroRepository(context));
+            
+            var serviceAdmin = new ObraService(repositoryAdmin);
+            await serviceAdmin.AdicionaComic(comic);
+            
+            // Act
+            var repositoryPublic = new ObrasRepository(context);
+            var resultado = await repositoryPublic.ObterComicPorSlug(slug);
+
+            // Assert
+            Assert.Null(resultado);
+        }
+        
+        // Clean up
+        await using (var context = new ContextBase(options))
+        {
+            await context.Database.EnsureDeletedAsync();
+        }
+    }
+ 
+    [Fact]
+    public void TrataRetornoComicUnica_DeveRetornarObjetoEsperado()
+    {
+        // Arrange
+        var comic = GerarComic();
+        
+        // Act
+        var resultado = ObrasRepository.TrataRetornoComicUnica(comic);
+
+        // Assert
+        Assert.NotNull(resultado);
+        Assert.Equal("Hatsukoi Losstime", resultado.Titulo);
+        Assert.Equal("Mangá", resultado.TipoObra);
+        Assert.Equal("Nishina Yuuki", resultado.Autor);
     }
 }

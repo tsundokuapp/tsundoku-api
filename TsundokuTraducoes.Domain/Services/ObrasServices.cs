@@ -46,11 +46,15 @@ namespace TsundokuTraducoes.Domain.Services
             return await _obrasRepository.ObterNovelPorSlug(slug);
         }
         
-        public async Task<RetornoObras> ObterComicPorId(RequestObras requestObras)
+        public async Task<RetornoComic> ObterComicPorId(Guid id)
         {
-            return await _obrasRepository.ObterComicPorId(requestObras);
+            return await _obrasRepository.ObterComicPorId(id);
         }
-
+        
+        public async Task<RetornoComic> ObterComicPorSlug(string slug)
+        {
+            return await _obrasRepository.ObterComicPorSlug(slug);
+        }
         
         public async Task<List<RetornoCapitulosHome>> ObterCapitulosHome()
         {
