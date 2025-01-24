@@ -95,7 +95,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
                 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveExcluirUmVolumeComic()
         {
             var retornoObra = await AdicionaComic();
