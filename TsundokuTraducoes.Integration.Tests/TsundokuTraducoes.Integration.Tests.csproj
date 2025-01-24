@@ -35,7 +35,7 @@
     </None>
   </ItemGroup>
 
-  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild" Condition="Exists('app.config')">
     <Copy SourceFiles="app.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
   </Target>
 

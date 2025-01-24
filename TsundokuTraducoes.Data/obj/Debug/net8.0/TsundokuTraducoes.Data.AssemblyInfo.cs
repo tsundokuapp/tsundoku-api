@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TsundokuTraducoes.Data")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bf5aa4c31b3f445c8857c0fe486590b1d00f6eb1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c553fb9d252609e3b2770f85b0c52d27e7527129")]
 [assembly: System.Reflection.AssemblyProductAttribute("TsundokuTraducoes.Data")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TsundokuTraducoes.Data")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

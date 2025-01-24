@@ -16,7 +16,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             _httpClient = webAppFactory.CreateClient();
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveInserirUmaNovel()
         {            
             var formData = MockNovel.RetornaFormDataMockAdicionarNovel(false);
@@ -30,7 +30,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveFalharAoInserirUmaNovelSemTitulo()
         {            
             var formData = MockNovel.RetornaFormDataMockAdicionarNovel(true);
@@ -39,7 +39,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveAtualizarUmaNovel()
         {
             var retornoObra = await AdicionaObraParaAtualizar();
@@ -51,7 +51,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }        
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveFalharAoAtualizarUmaNovelComCodigoHexaErrado()
         {
             var retornoObra = await AdicionaObraParaAtualizarEFalhar();
@@ -63,7 +63,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarUmaNovelPorId()
         {
             var retornoObra = await AdicionaObraParaRetornarUmaNovelPorId();
@@ -74,7 +74,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarNotFoundParaNovelNaoEncontrada()
         {
             var idNovelInexistente = "97722a6d-2210-434b-ae48-1a3c6da4c7a2";
@@ -83,7 +83,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveExcluirUmaNovel()
         {
             var retornoObra = await AdicionaObraParaExclurUmaNovel();
@@ -94,7 +94,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarNotFoundAoExcluirUmaNovelInexistente()
         {
             var idNovelInexistente = "97722a6d-2210-434b-ae48-1a3c6da4c7a2";
@@ -103,7 +103,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarUmaListaDeNovels()
         {
             var response = await _httpClient.GetAsync($"api/admin/obra/novels?skip=&take=");

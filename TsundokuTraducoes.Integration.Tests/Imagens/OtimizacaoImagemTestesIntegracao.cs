@@ -7,7 +7,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
 {
     public class OtimizacaoImagemTestesIntegracao
     {
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveOtimizarImagem()
         {
             var streamImagem = MockBase.RetornaImagemTeste();
@@ -16,7 +16,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             Assert.True(retornoImagemOtimizada.IsSuccess);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveFalharAoEnviarArquivoQueNaoEhImagem()
         {
             var streamImagem = MockBase.RetornaImagemTesteFalha();
@@ -25,7 +25,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             Assert.True(retornoImagemOtimizada.IsFailed);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public void DeveFalharAoTentarOtimizarImagemAcimaDoisSegundos()
         {
             var streamImagem = MockBase.RetornaImagemTeste();

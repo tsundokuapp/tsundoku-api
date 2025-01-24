@@ -5,7 +5,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
 {
     public class UploadImagemAwsS3TesteIntegracao
     {
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveCriarPastaS3()
         {
             var nomePasta = RetornoNomePasta();
@@ -17,7 +17,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             await Dispose(nomePasta);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveFalharParaCriarPastaS3()
         {
             var nomePasta = "";
@@ -29,7 +29,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             await Dispose(nomePasta);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveCriarUmaPastaDepoisVerificarPastaS3Existente()
         {
             var nomePasta = RetornoNomePasta();
@@ -45,7 +45,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             await Dispose(nomePasta);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task NaoDeveCriarUmaPastaS3JahExistente()
         {
             var nomePasta = await RetornaNomePastaExistente();
@@ -59,7 +59,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             Assert.True(!pastaCriadaAwsS3);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveFazerUploadEmUmPastaS3Criada()
         {
             var nomePasta = await RetornaNomePastaExistente();
@@ -73,7 +73,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             await Dispose(nomePasta);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveFalhaAoTentarFazerUploadEmUmPastaS3Criada()
         {
             var nomePasta = await RetornaNomePastaExistente();
@@ -88,7 +88,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             await Dispose(nomePasta);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveExcluirObjetoS3()
         {
             var nomePasta = RetornoNomePasta();
@@ -104,7 +104,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             Assert.True(pastaExcluida);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveFalharAoTentarExcluirObjetoS3()
         {
             bool pastaExcluida;

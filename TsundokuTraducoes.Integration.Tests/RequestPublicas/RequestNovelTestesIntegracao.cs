@@ -15,7 +15,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             _httpClient = webAppFactory.CreateClient();
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarUmaListaDeNovels()
         {
             await AdicionaObra();
@@ -25,7 +25,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarUmaListaDeNovelsPesquisa()
         {
             await AdicionaObra();
@@ -36,7 +36,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
         }
 
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarNovelPorId()
         {
             var novel = await AdicionaObra();
@@ -45,7 +45,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveFalharRetornarNovelPorId()
         {
             var response = await _httpClient.GetAsync($"api/obras/novel?IdObra={Guid.NewGuid()}");

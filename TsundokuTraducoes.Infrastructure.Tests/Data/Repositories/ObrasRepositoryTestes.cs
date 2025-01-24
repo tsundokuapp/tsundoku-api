@@ -34,8 +34,8 @@ public class ObrasRepositoryTestes
             "https://tsundoku.com.br/wp-content/uploads/2021/12/testeBanner.jpg",
             "@Bruxa Errante, a Jornada de Elaina",
             Diretorios.RetornaDiretorioImagemCriado("BruxaErrante"),
-            "em-andamento",
-            "light-novel",
+            "Em Andamento",
+            "Light Novel",
             "japonesa",
             "Uma obra muito boa");
             
@@ -66,8 +66,8 @@ public class ObrasRepositoryTestes
             "https://tsundoku.com.br/wp-content/uploads/2022/01/HatsukoiEmbed.jpg",
             "@Hatsukoi Losstime",
             Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
-            "em-andamento",
-            "manga",
+            "Em Andamento",
+            "Mangá",
             "japonesa",
             "");
         
