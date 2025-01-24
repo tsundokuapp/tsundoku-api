@@ -160,9 +160,9 @@ namespace TsundokuTraducoes.Data.Context
                                   "https://tsundoku.com.br/wp-content/uploads/2021/12/testeBanner.jpg",
                                   "@Bruxa Errante, a Jornada de Elaina",
                                   Diretorios.RetornaDiretorioImagemCriado("BruxaErrante"),
-                                  "em-andamento",
-                                  "light-novel",
-                                  "japonesa",
+                                  "Em andamento",
+                                  "Light Novel",
+                                  "Japonesa",
                                   "");
 
             novel.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg", "Volume 01", "volume-1");
@@ -194,9 +194,9 @@ namespace TsundokuTraducoes.Data.Context
                                   "https://tsundoku.com.br/wp-content/uploads/2022/01/HatsukoiEmbed.jpg",
                                   "@Hatsukoi Losstime",
                                   Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
-                                  "em-andamento",
-                                  "comic",
-                                  "japonesa",
+                                  "Em andamento",
+                                  "Mangá",
+                                  "Japonesa",
                                   "");
 
             comic.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2022/01/Hatsukoi_cover.jpg", "Volume 01", "volume-1");
@@ -266,7 +266,8 @@ namespace TsundokuTraducoes.Data.Context
                     "",
                     "",
                     Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
-                    RetornaConteudoNovelIlustracoes()
+                    RetornaConteudoNovelIlustracoes(),
+                    false
                     );
 
             return capituloNovelIlustracao;
@@ -293,7 +294,8 @@ namespace TsundokuTraducoes.Data.Context
                     "",
                     "",
                     Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
-                    "");
+                    "", 
+                    false);
 
             return capituloNovelIlustracao;
         }
@@ -314,7 +316,8 @@ namespace TsundokuTraducoes.Data.Context
                 DateTime.Now,
                 DateTime.Now,
                 Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime", "Volume01", "Capitulo01"),
-                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"));
+                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"), 
+                false);
 
             return capituloComic;
         }

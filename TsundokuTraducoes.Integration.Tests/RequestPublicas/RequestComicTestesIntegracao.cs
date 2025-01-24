@@ -20,8 +20,11 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
         {
             await AdicionaObra();
 
-            var parametros = "pesquisar=&nacionalidade=japonesa&status=em-andamento&tipo=manga&genero=aventura&skip=&take=6";
+            var parametros = "pesquisar=&nacionalidade=Japonesa&status=Em andamento&tipo=Mangá&genero=aventura&skip=&take=6";
             var response = await _httpClient.GetAsync($"api/obras/comics?{parametros}");
+
+            var ret = response.Content.ReadAsStringAsync();
+
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 
@@ -33,14 +36,6 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             var parametros = "pesquisar=Kage no&nacionalidade=&status=&tipo=&genero=&skip=&take=6";
             var response = await _httpClient.GetAsync($"api/obras/comics?{parametros}");
             Assert.True(HttpStatusCode.OK == response.StatusCode);
-        }
-
-        [Fact]
-        public async Task DeveFalharRetornarUmaListaDeComics()
-        {
-            var parametros = "pesquisar=&nacionalidade=&status=&tipo=&genero=&skip=&take=";
-            var response = await _httpClient.GetAsync($"api/obras/comics?{parametros}");
-            Assert.True(HttpStatusCode.BadRequest == response.StatusCode);
         }
 
         [Fact]

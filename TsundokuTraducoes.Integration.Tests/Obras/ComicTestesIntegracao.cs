@@ -67,7 +67,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarUmaComicPorId()
         {
             var retornoObra = await AdicionaObraParaRetornarUmaComicPorId();
-            var response = await _httpClient.GetAsync($"api/admin/obra/comic/{retornoObra.Id}");
+            var response = await _httpClient.GetAsync($"api/admin/obra/comic/id/{retornoObra.Id}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
@@ -78,7 +78,7 @@ namespace TsundokuTraducoes.Integration.Tests.Obras
         public async Task DeveRetornarNotFoundParaComicNaoEncontrada()
         {
             var idNovelInexistente = "97722a6d-2210-434b-ae48-1a3c6da4c7a2";
-            var response = await _httpClient.GetAsync($"api/admin/obra/comic/{idNovelInexistente}");
+            var response = await _httpClient.GetAsync($"api/admin/obra/comic/id/{idNovelInexistente}");
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }

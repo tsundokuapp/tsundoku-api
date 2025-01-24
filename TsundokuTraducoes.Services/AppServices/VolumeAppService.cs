@@ -100,7 +100,7 @@ namespace TsundokuTraducoes.Services.AppServices
                 return Result.Fail("Não foi encontrada a obra informada");
 
             if (volumeExistente != null)
-                return Result.Fail("Volume já postado!");
+                return Result.Fail("Volume já cadastrado!");
 
             if (volumeDTO.ImagemVolumeFile != null)
             {
@@ -150,7 +150,7 @@ namespace TsundokuTraducoes.Services.AppServices
                 return Result.Fail("Não foi encontrada a obra informada");
 
             if (volumeExistente != null)
-                return Result.Fail("Volume já postado!");
+                return Result.Fail("Volume já cadastrado!");
 
             if (volumeDTO.ImagemVolumeFile != null)
             {

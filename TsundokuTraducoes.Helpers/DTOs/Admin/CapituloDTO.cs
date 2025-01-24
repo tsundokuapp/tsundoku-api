@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace TsundokuTraducoes.Helpers.DTOs.Admin
 {
     public class CapituloDTO
     {
         public Guid Id { get; set; }
+        [Required]
         public string Numero { get; set; }
         public string Parte { get; set; }
         public string Titulo { get; set; }
@@ -42,8 +44,10 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
                 return slug;
             }
         }
+        [Required]
         public string UsuarioInclusao { get; set; }
         public string UsuarioAlteracao { get; set; }
+        [Required]
         public Guid VolumeId { get; set; }
         public string Tradutor { get; set; }
         public string Revisor { get; set; }
@@ -55,5 +59,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public string DiretorioImagemCapitulo { get; set; }
         public bool OtimizarImagem { get; set; }
         public bool SalvarLocal { get; set; }
+        public bool Publicado { get; set; }
     }
 }

@@ -81,16 +81,18 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             var titulo = $"O Destino de Alguns Aventureiros - Teste - {Guid.NewGuid().ToString().Substring(0, 8)}";
             var loginAlteracao = "Araragui";
 
+            var conteudoCapitulo = RetornoConteudoCapituloNovel();
+
             if (falhar)
             {
-                loginAlteracao = string.Empty;
+                conteudoCapitulo = "";
             }
 
             form.Add(new StringContent(capituloId.ToString()), "Id");
             form.Add(new StringContent(numero), "Numero");
             form.Add(new StringContent(""), "Parte");
             form.Add(new StringContent(titulo), "Titulo");
-            form.Add(new StringContent(RetornoConteudoCapituloNovel()), "ConteudoNovel");
+            form.Add(new StringContent(conteudoCapitulo), "ConteudoNovel");
             form.Add(new StringContent("Bravo"), "UsuarioInclusao");
             form.Add(new StringContent(loginAlteracao), "UsuarioAlteracao");
             form.Add(new StringContent(volumeId.ToString()), "VolumeId");
@@ -122,9 +124,9 @@ namespace TsundokuTraducoes.Integration.Tests.Capitulos
             form.Add(new StringContent("false"), "EhObraMaiorIdade");
             form.Add(new StringContent("fantasia,aventura,drama"), "ListaGeneros");
             form.Add(new StringContent("#81F7F3"), "CodigoCorHexaObra");
-            form.Add(new StringContent("japonesa"), "NacionalidadeSlug");
-            form.Add(new StringContent("em-andamento"), "StatusObraSlug");
-            form.Add(new StringContent("manga"), "TipoObraSlug");
+            form.Add(new StringContent("Japonesa"), "Nacionalidade");
+            form.Add(new StringContent("Em andamento"), "StatusObra");
+            form.Add(new StringContent("Light Novel"), "TipoObra");
             form.Add(new StringContent("false"), "EhRecomendacao");
             form.Add(new StringContent("false"), "OtimizarImagem");
             form.Add(new StringContent("true"), "SalvarLocal");
