@@ -1,0 +1,46 @@
+name: CI .NET 8
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+  pull_request:
+    branches:
+      - dev
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-22.04
+    steps:
+      # Checkout o repositório
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Instala o .NET 8
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      # Configura cache para dependências NuGet
+      - name: Setup NuGet cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.fsproj', '**/global.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      # Restaura dependências
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Executa os testes
+      - name: Run tests
+        run: dotnet test --no-restore --verbosity normal
+
+      # Constrói o projeto -> Verificar as variáveis de ambiente
+      #- name: Build project
+      #  run: dotnet build --no-restore --configuration Release
