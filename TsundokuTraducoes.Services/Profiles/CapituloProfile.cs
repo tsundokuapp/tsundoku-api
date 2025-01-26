@@ -2,6 +2,7 @@
 using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
 namespace TsundokuTraducoes.Services.Profiles
 {
@@ -13,6 +14,7 @@ namespace TsundokuTraducoes.Services.Profiles
             CreateMap<CapituloDTO, CapituloComic>();
             CreateMap<CapituloNovel, RetornoCapitulo>();
             CreateMap<CapituloComic, RetornoCapitulo>();
+            CreateMap<CapituloNovel, RetornoCapituloNoVolume>();
         }
     }
 }
