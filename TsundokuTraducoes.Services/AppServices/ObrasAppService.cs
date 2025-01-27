@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentResults;
 using Newtonsoft.Json;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
@@ -13,11 +14,13 @@ namespace TsundokuTraducoes.Services.AppServices
     {
         private readonly IObrasService _obrasService;
         private readonly IMapper _mapper;
+        private readonly IGeneroDeParaAppService _generoDeParaAppService;
 
-        public ObrasAppService(IObrasService obrasService, IMapper mapper)
+        public ObrasAppService(IObrasService obrasService, IMapper mapper, IGeneroDeParaAppService generoDeParaAppService)
         {
             _obrasService = obrasService;
             _mapper = mapper;
+            _generoDeParaAppService = generoDeParaAppService;
         }
 
         public async Task<List<RetornoObras>> ObterListaNovels(RequestObras requestObras)
@@ -52,10 +55,14 @@ namespace TsundokuTraducoes.Services.AppServices
             return retornoNovel;
         }
         
-        public async Task<RetornoNovel> ObterNovelPorSlug(string slug)
+        public async Task<Result<RetornoAppNovel>> ObterNovelPorSlug(string slug)
         {
-            var retornoNovel = await _obrasService.ObterNovelPorSlug(slug);
-            return retornoNovel;
+            var novel = await _obrasService.ObterNovelPorSlug(slug);
+            if (novel == null)
+                return Result.Fail<RetornoAppNovel>("Novel não encontrado");
+            
+            var retornoNovel = await TrataGenerosNovel(novel);
+            return Result.Ok().ToResult(retornoNovel);
         }
 
         public async Task<RetornoComic> ObterComicPorId(Guid id)
@@ -132,6 +139,13 @@ namespace TsundokuTraducoes.Services.AppServices
             }
 
             return retornoCapitulo;
+        }
+        
+        private async Task<RetornoAppNovel> TrataGenerosNovel(RetornoNovel novel)
+        {
+            var retornoNovel = _mapper.Map<RetornoAppNovel>(novel);
+            retornoNovel.ListaGeneros = await _generoDeParaAppService.CarregaListaGenerosNovel(novel.Generos);
+            return retornoNovel;
         }
     }
 }

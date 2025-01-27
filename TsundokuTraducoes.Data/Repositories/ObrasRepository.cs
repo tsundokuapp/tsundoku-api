@@ -91,7 +91,7 @@ namespace TsundokuTraducoes.Data.Repositories
         
         public async Task<RetornoNovel> ObterNovelPorSlug(string slug)
         {
-            var novel = await _context.Novels.AsNoTracking().FirstOrDefaultAsync(w => w.Slug == slug);
+            var novel = await _context.Novels.AsNoTracking().Include(n => n.GenerosNovel).FirstOrDefaultAsync(w => w.Slug == slug);
 
             return novel is null ? null : TrataRetornoNovelUnica(novel);
         }
@@ -374,7 +374,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 Id = obra.Id,
                 Nacionalidade = obra.Nacionalidade,
                 StatusObra = obra.StatusObra,
-                Observacao = obra.Observacao
+                Observacao = obra.Observacao,
+                Generos = obra.GenerosNovel,
             };
         }
         

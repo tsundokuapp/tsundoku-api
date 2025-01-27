@@ -56,16 +56,15 @@ namespace TsundokuTraducoes.Api.Controllers
         }
         
         [HttpGet("api/obras/novel/slug/{slug}")]
-        [ProducesResponseType(typeof(RetornoNovel), statusCode: 200)]
+        [ProducesResponseType(typeof(RetornoAppNovel), statusCode: 200)]
         public async Task<IActionResult> ObterNovelPorSlug(string slug)
         {
-            var novel = await _obrasAppServices.ObterNovelPorSlug(slug);
-            if (novel == null)
-                return NotFound("Novel não encontra!");
+            var retorno = await _obrasAppServices.ObterNovelPorSlug(slug);
+            if (retorno.IsFailed)
+                return NotFound(retorno.Errors[0].Message);
 
-            return Ok(novel);
+            return Ok(retorno.Value);
         }
-
 
         [HttpGet("api/obras/comics")]
         [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]

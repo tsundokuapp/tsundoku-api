@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+using TsundokuTraducoes.Entities.Entities.DePara;
 
 namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
 {
@@ -31,5 +32,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
         public string Nacionalidade { get; set; }
         public string Observacao { get; set; }
         public string UrlCapa { get; set; }
+        public List<GeneroNovel> Generos { get; set; }
     }
 }
