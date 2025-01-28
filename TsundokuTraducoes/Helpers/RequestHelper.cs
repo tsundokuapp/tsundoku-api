@@ -79,6 +79,17 @@ namespace TsundokuTraducoes.Api.Helpers
             return new { total = total, proxima = proxima, anterior = anterior, data = dados };
         }
 
+        internal static object CriarObjetoRetonoObrasRecomendadas<T>(HttpContext httpContext, List<T> listaGenerica)
+        {
+            var itensPorPagina = 6;
+            var itensPulados = 0;
+
+            var dados = listaGenerica.Skip(itensPulados).Take(itensPorPagina).ToList();
+            var total = listaGenerica.Count;
+
+            return new { total, data = dados };
+        }
+
         private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)
         {
             string anterior = null;

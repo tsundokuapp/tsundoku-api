@@ -6,5 +6,6 @@
         public string Capa { get; set; }
         public string SlugObra { get; set; }
         public string Sinopse { get; set; }
+        public string TipoObra { get; set; }
     }
 }
