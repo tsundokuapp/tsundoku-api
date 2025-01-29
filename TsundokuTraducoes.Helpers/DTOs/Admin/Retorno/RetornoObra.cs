@@ -30,6 +30,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin.Retorno
         public List<RetornoGenero> Generos { get; set; }
         public string Observacao { get; set; }
         public string DiretorioImagemObra { get; set; }
+        public bool IntegracaoDiscord { get; set; }
 
         public RetornoObra()
         {

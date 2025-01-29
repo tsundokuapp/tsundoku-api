@@ -37,8 +37,9 @@ public class ObrasRepositoryTestes
             "Em Andamento",
             "Light Novel",
             "japonesa",
-            "Uma obra muito boa");
-            
+            "Uma obra muito boa",
+            false);
+
         return novel;
     }
 
@@ -69,8 +70,9 @@ public class ObrasRepositoryTestes
             "Em Andamento",
             "Mangá",
             "japonesa",
-            "");
-        
+            "",
+            false);
+
         return comic;
     }
 
