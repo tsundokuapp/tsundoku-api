@@ -17,7 +17,7 @@ namespace TsundokuTraducoes.Data.Repositories
 
         public List<VolumeNovel> RetornaListaVolumesNovel(Guid? novelId = null)
         {
-            var listaVolumesNovel = novelId != null ? _context.VolumesNovel.AsNoTracking().Where(w => w.NovelId == novelId.Value) : _context.VolumesNovel;
+            var listaVolumesNovel = novelId != null ? _context.VolumesNovel.AsNoTracking().Include(v => v.ListaCapitulo).ToList().Where(w => w.NovelId == novelId.Value) : _context.VolumesNovel;
             return listaVolumesNovel.ToList();
         }
 

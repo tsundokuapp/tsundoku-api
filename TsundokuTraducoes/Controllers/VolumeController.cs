@@ -38,6 +38,7 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(List<RetornoVolume>), statusCode: 200)]
         public IActionResult RetornaListaVolumesNovel([FromQuery] RequestVolume requestVolume)
         {
+            // TODO: adicionar validação para casos em que o idObra está ausente.
             var result = _volumeAppService.RetornaListaVolumesNovel(requestVolume.IdObra);
             if (result.Value.Count == 0)
                 return NoContent();

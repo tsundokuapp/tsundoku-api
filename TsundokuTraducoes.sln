@@ -40,6 +40,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsundokuTraducoes.Infrastructure.Tests", "TsundokuTraducoes.Infrastructure.Tests\TsundokuTraducoes.Infrastructure.Tests.csproj", "{EF80D51B-B7CF-4808-9718-FFE05027B923}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TsundokuTraducoes.Services.Tests", "TsundokuTraducoes.Services.Tests\TsundokuTraducoes.Services.Tests.csproj", "{431310F5-A5BF-4BE7-9F86-F9BBC2284F18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -78,6 +82,14 @@ Global
 		{83BD4DF9-8F8D-42C7-B732-72A3BCE51724}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83BD4DF9-8F8D-42C7-B732-72A3BCE51724}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83BD4DF9-8F8D-42C7-B732-72A3BCE51724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF80D51B-B7CF-4808-9718-FFE05027B923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF80D51B-B7CF-4808-9718-FFE05027B923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF80D51B-B7CF-4808-9718-FFE05027B923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF80D51B-B7CF-4808-9718-FFE05027B923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{431310F5-A5BF-4BE7-9F86-F9BBC2284F18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{431310F5-A5BF-4BE7-9F86-F9BBC2284F18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{431310F5-A5BF-4BE7-9F86-F9BBC2284F18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{431310F5-A5BF-4BE7-9F86-F9BBC2284F18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +104,7 @@ Global
 		{BB011DB1-4D4B-48DD-9FCC-050D53822B5F} = {0CF65A03-F4E1-48F1-B155-69297552D24E}
 		{A3A354CA-151A-40AC-A2BF-4902387D9818} = {D915E52C-9147-44AD-90F1-614BBE16ABFC}
 		{83BD4DF9-8F8D-42C7-B732-72A3BCE51724} = {0CF65A03-F4E1-48F1-B155-69297552D24E}
+		{EF80D51B-B7CF-4808-9718-FFE05027B923} = {0CF65A03-F4E1-48F1-B155-69297552D24E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {73D9AC66-7DAE-4733-92AB-48157C5FF921}

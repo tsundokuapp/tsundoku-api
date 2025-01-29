@@ -56,16 +56,15 @@ namespace TsundokuTraducoes.Api.Controllers
         }
         
         [HttpGet("api/obras/novel/slug/{slug}")]
-        [ProducesResponseType(typeof(RetornoNovel), statusCode: 200)]
+        [ProducesResponseType(typeof(RetornoAppNovel), statusCode: 200)]
         public async Task<IActionResult> ObterNovelPorSlug(string slug)
         {
-            var novel = await _obrasAppServices.ObterNovelPorSlug(slug);
-            if (novel == null)
-                return NotFound("Novel não encontra!");
+            var retorno = await _obrasAppServices.ObterNovelPorSlug(slug);
+            if (retorno.IsFailed)
+                return NotFound(retorno.Errors[0].Message);
 
-            return Ok(novel);
+            return Ok(retorno.Value);
         }
-
 
         [HttpGet("api/obras/comics")]
         [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
@@ -91,18 +90,28 @@ namespace TsundokuTraducoes.Api.Controllers
             return Ok(objetoRetorno);
         }
 
-        [HttpGet("api/obras/comic")]
+        [HttpGet("api/obras/comic/id/{id}")]
         [ProducesResponseType(typeof(RetornoObras), statusCode: 200)]
-        public async Task<IActionResult> ObterComicPorId([FromQuery] RequestObras requestObras)
+        public async Task<IActionResult> ObterComicPorId(Guid id)
         {
-            var capitulo = await _obrasAppServices.ObterComicPorId(requestObras);
+            var capitulo = await _obrasAppServices.ObterComicPorId(id);
             if (capitulo == null)
                 return NotFound();
 
             return Ok(capitulo);
         }
+        
+        [HttpGet("api/obras/comic/slug/{slug}")]
+        [ProducesResponseType(typeof(RetornoObras), statusCode: 200)]
+        public async Task<IActionResult> ObterComicPorId(string slug)
+        {
+            var capitulo = await _obrasAppServices.ObterComicPorSlug(slug);
+            if (capitulo == null)
+                return NotFound();
 
-
+            return Ok(capitulo);
+        }
+        
         [HttpGet("api/obras/home")]
         [ProducesResponseType(typeof(List<RetornoCapitulos>), statusCode: 200)]
         public async Task<IActionResult> ObterCapitulosHome([FromQuery] RequestObras requestObras)

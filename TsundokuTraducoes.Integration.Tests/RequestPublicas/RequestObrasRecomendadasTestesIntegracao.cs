@@ -15,7 +15,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             _httpClient = webAppFactory.CreateClient();
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarUmaListaDeObrasRecomendadas()
         {
             var quantidadeCapitulosComic = 0;

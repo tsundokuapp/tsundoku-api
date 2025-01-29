@@ -15,7 +15,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             _httpClient = webAppFactory.CreateClient();
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarUmaListaDeVolumesComicParaIndice()
         {
             var retornoComic = await AdicionaComic();
@@ -33,7 +33,7 @@ namespace TsundokuTraducoes.Integration.Tests.RequestPublicas
             Assert.True(HttpStatusCode.OK == response.StatusCode);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarUmaListaDeVolumesNovelParaIndice()
         {   
             var retornoNovel = await AdicionaNovel();

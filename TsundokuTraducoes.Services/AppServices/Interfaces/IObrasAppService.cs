@@ -1,4 +1,5 @@
-﻿using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+﻿using FluentResults;
+using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
 namespace TsundokuTraducoes.Services.AppServices.Interfaces
@@ -8,10 +9,11 @@ namespace TsundokuTraducoes.Services.AppServices.Interfaces
         Task<List<RetornoObras>> ObterListaNovels(RequestObras requestObras);
         Task<List<RetornoObras>> ObterListaNovelsRecentes();
         Task<RetornoNovel> ObterNovelPorId(Guid id);
-        Task<RetornoNovel> ObterNovelPorSlug(string slug);
+        Task<Result<RetornoAppNovel>> ObterNovelPorSlug(string slug);
         Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras);
         Task<List<RetornoObras>> ObterListaComicsRecentes();
-        Task<RetornoObras> ObterComicPorId(RequestObras requestObras);
+        Task<RetornoComic> ObterComicPorId(Guid id);
+        Task<RetornoComic> ObterComicPorSlug(string slug);
 
         Task<List<RetornoCapitulosHome>> ObterCapitulosHome();
         Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas();

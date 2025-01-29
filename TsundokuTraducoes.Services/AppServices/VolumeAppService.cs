@@ -5,6 +5,7 @@ using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Services.AppServices
@@ -49,7 +50,7 @@ namespace TsundokuTraducoes.Services.AppServices
                 }
             }
 
-            return Result.Ok( listaRetornoVolume);
+            return Result.Ok(listaRetornoVolume);
         }
 
         public Result<List<RetornoVolume>> RetornaListaVolumesComic(Guid? idObra)
@@ -298,9 +299,10 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        private RetornoVolume TrataRetornoVolumeNovel(VolumeNovel volumeNovel)
+        internal RetornoVolume TrataRetornoVolumeNovel(VolumeNovel volumeNovel)
         {
             var retornoVolume = _mapper.Map<RetornoVolume>(volumeNovel);
+            retornoVolume.ListaCapitulo = _mapper.Map<List<RetornoCapituloNoVolume>>(volumeNovel.ListaCapitulo);
             retornoVolume.DataInclusao = volumeNovel.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
             retornoVolume.DataAlteracao = volumeNovel.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
             retornoVolume.UsuarioAlteracao = !string.IsNullOrEmpty(volumeNovel.UsuarioAlteracao) ? volumeNovel.UsuarioAlteracao : null;

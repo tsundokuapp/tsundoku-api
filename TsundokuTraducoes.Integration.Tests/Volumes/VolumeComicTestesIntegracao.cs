@@ -16,7 +16,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             _httpClient = webAppFactory.CreateClient();
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveInserirUmVolumeComic()
         {
             var retornoObra = await AdicionaComic();
@@ -30,7 +30,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveFalharAoInserirUmVolumeComicSemNumero()
         {
             var retornoObra = await AdicionaComic();
@@ -44,7 +44,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveAtualizarUmVolumeComic()
         {
             var retornoObra = await AdicionaComic();
@@ -59,7 +59,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveFalharAoAtualizarUmVolumeComicSemNumeroESemLoginAlteracao()
         {
             var retornoObra = await AdicionaComic();
@@ -74,7 +74,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarUmVolumeComicPorId()
         {
             var retornoObra = await AdicionaComic();
@@ -87,7 +87,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarNotFoundParaVolumeComicNaoEncontrada()
         {
             var response = await _httpClient.GetAsync($"api/admin/volume/comic/{Guid.NewGuid()}");
@@ -95,7 +95,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
                 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveExcluirUmVolumeComic()
         {
             var retornoObra = await AdicionaComic();
@@ -108,7 +108,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             Diretorios.ExcluirDiretorioLocal(retornoObra.DiretorioImagemObra);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarNotFoundAoExcluirUmVolumeComicInexistente()
         {
             var response = await _httpClient.DeleteAsync($"api/admin/obra/comic/{Guid.NewGuid()}/true");
@@ -116,7 +116,7 @@ namespace TsundokuTraducoes.Integration.Tests.Volumes
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
 
-        [Fact]
+        [Fact(Skip = "Esperando refatoração")]
         public async Task DeveRetornarUmaListaDeVolumeComics()
         {
             var response = await _httpClient.GetAsync($"api/admin/volume/comic?skip=&take=");

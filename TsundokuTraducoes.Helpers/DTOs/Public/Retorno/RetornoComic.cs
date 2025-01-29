@@ -1,9 +1,8 @@
 using Newtonsoft.Json;
-using TsundokuTraducoes.Entities.Entities.DePara;
 
 namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
 {
-    public class RetornoNovel
+    public class RetornoComic
     {
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string UrlCapaPrincipal { get; set; }
@@ -27,11 +26,13 @@ namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
         public Boolean EhObraMaiorIdade { get; set; }
         public string DescritivoVolume { get; set; }
         public string Slug { get; set; }
+        public string TipoObraSlug { get; set; }
         public string TipoObra { get; set; }
+        public string StatusObraSlug { get; set; }
         public string StatusObra { get; set; }
+        public string NacionalidadeSlug { get; set; }
         public string Nacionalidade { get; set; }
         public string Observacao { get; set; }
         public string UrlCapa { get; set; }
-        public List<GeneroNovel> Generos { get; set; }
     }
 }

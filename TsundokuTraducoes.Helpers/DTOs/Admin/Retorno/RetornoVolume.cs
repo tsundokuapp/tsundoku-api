@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
 namespace TsundokuTraducoes.Helpers.DTOs.Admin.Retorno
 {
@@ -11,6 +12,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin.Retorno
         public string Sinopse { get; set; }
         public string ImagemVolume { get; set; }
         public string Slug { get; set; }
+        public List<RetornoCapituloNoVolume> ListaCapitulo { get; set; }
         public string UsuarioInclusao { get; set; }
         public string UsuarioAlteracao { get; set; }
         public string DataInclusao { get; set; }
