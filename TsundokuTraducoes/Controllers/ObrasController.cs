@@ -126,13 +126,13 @@ namespace TsundokuTraducoes.Api.Controllers
 
         [HttpGet("api/obras/recomendadas")]
         [ProducesResponseType(typeof(List<RetornoObrasRecomendadas>), statusCode: 200)]
-        public async Task<IActionResult> ObterObrasRecomendadas([FromQuery] RequestObras requestObras)
+        public async Task<IActionResult> ObterObrasRecomendadas()
         {
             var obrasRecomendadas = await _obrasAppServices.ObterObrasRecomendadas();
             if (obrasRecomendadas.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, obrasRecomendadas, requestObras);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoObrasRecomendadas(HttpContext, obrasRecomendadas);
             return Ok(objetoRetorno);
         }
 

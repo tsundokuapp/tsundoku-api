@@ -185,7 +185,8 @@ namespace TsundokuTraducoes.Data.Repositories
                              Titulo = comics.Alias,
                              Capa = !string.IsNullOrEmpty(comics.ImagemCapaUltimoVolume) ? comics.ImagemCapaUltimoVolume : comics.ImagemCapaPrincipal,
                              SlugObra = comics.Slug,
-                             Sinopse = comics.Sinopse
+                             comics.Sinopse,
+                             comics.TipoObra
                          })
                         .Union(from novels in _context.Novels.AsNoTracking()
                                where novels.EhRecomendacao == true
@@ -194,7 +195,8 @@ namespace TsundokuTraducoes.Data.Repositories
                                    Titulo = novels.Alias,
                                    Capa = !string.IsNullOrEmpty(novels.ImagemCapaUltimoVolume) ? novels.ImagemCapaUltimoVolume : novels.ImagemCapaPrincipal,
                                    SlugObra = novels.Slug,
-                                   Sinopse = novels.Sinopse
+                                   novels.Sinopse,
+                                   novels.TipoObra
                                }
                         );
 
@@ -204,7 +206,8 @@ namespace TsundokuTraducoes.Data.Repositories
                     Titulo = ror.Titulo,
                     Capa = ror.Capa,
                     SlugObra = ror.SlugObra,
-                    Sinopse = ror.Sinopse
+                    Sinopse = ror.Sinopse,
+                    TipoObra = ror.TipoObra
                 })
                 .ToListAsync();
 
