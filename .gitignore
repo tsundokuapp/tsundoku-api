@@ -22,6 +22,7 @@
 /TsundokuTraducoes.Helpers/bin
 /TsundokuTraducoes.Helpers/obj
 /TsundokuTraducoes.Integration.Tests/App.config
+/TsundokuTraducoes.Tests/Integration/App.config
 /mysql
 
 # Config files

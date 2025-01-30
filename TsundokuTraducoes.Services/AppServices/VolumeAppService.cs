@@ -299,7 +299,7 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        internal RetornoVolume TrataRetornoVolumeNovel(VolumeNovel volumeNovel)
+        public RetornoVolume TrataRetornoVolumeNovel(VolumeNovel volumeNovel)
         {
             var retornoVolume = _mapper.Map<RetornoVolume>(volumeNovel);
             retornoVolume.ListaCapitulo = _mapper.Map<List<RetornoCapituloNoVolume>>(volumeNovel.ListaCapitulo);
@@ -309,7 +309,7 @@ namespace TsundokuTraducoes.Services.AppServices
             return retornoVolume;
         }
 
-        private RetornoVolume TrataRetornoVolumeComic(VolumeComic volumeComic)
+        public RetornoVolume TrataRetornoVolumeComic(VolumeComic volumeComic)
         {
             var retornoVolume = _mapper.Map<RetornoVolume>(volumeComic);
             retornoVolume.DataInclusao = volumeComic.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");

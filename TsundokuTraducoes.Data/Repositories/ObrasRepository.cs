@@ -353,7 +353,7 @@ namespace TsundokuTraducoes.Data.Repositories
             };
         }
         
-        internal static RetornoNovel TrataRetornoNovelUnica(Novel obra)
+        public static RetornoNovel TrataRetornoNovelUnica(Novel obra)
         {
             return new RetornoNovel()
             {
@@ -381,8 +381,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 Generos = obra.GenerosNovel,
             };
         }
-        
-        internal static RetornoComic TrataRetornoComicUnica(Comic obra)
+
+        public static RetornoComic TrataRetornoComicUnica(Comic obra)
         {
             return new RetornoComic()
             {

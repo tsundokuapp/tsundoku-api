@@ -5,7 +5,7 @@ using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 
 namespace TsundokuTraducoes.Services.Profiles
 {
-    internal class VolumeProfile : Profile
+    public class VolumeProfile : Profile
     {
         public VolumeProfile()
         {
