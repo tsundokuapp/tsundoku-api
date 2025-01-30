@@ -32,7 +32,8 @@ namespace TsundokuTraducoes.Entities.Tests.Obras
                                   "Em andamento",
                                   "Mangá",
                                   "Japonesa",
-                                  "Uma obra muito boa");
+                                  "Uma obra muito boa",
+                                  false);
 
             comic.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2022/01/Hatsukoi_cover.jpg", "Volume 01", "volume-1");
             comic.AtualizaDadosUltimoCapitulo("Capítulo 01", "capitulo-1", DateTime.Now);
@@ -70,7 +71,8 @@ namespace TsundokuTraducoes.Entities.Tests.Obras
                                   "Em andamento",
                                   "Mangá",
                                   "Japonesa",
-                                  "Uma obra muito boa");
+                                  "Uma obra muito boa",
+                                  false);
 
             comic.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2022/01/Hatsukoi_cover.jpg", "Volume 01", "volume-1");
             comic.AtualizaDadosUltimoCapitulo("Capítulo 01", "capitulo-1", DateTime.Now);
