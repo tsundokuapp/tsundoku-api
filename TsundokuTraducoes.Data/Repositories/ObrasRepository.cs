@@ -2,6 +2,7 @@
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
+using TsundokuTraducoes.Entities.Entities.DePara;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
@@ -342,17 +343,21 @@ namespace TsundokuTraducoes.Data.Repositories
                 UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
                 ? obra.ImagemCapaUltimoVolume
                 : obra.ImagemCapaPrincipal,
-                
+
                 Titulo = obra.Titulo,
                 TipoObra = obra.TipoObra,
                 Alias = obra.Alias,
                 Autor = obra.Autor,
                 DescritivoVolume = obra.NumeroUltimoVolume,
                 Slug = obra.Slug,
-                Id = obra.Id
+                Id = obra.Id,
+                TituloAlternativo = obra.TituloAlternativo,
+                StatusObra = obra.StatusObra,
+                ListaGeneros = TrataRetornoListaGeneros(obra.GenerosNovel),
+                Publicado = obra.Publicado
             };
         }
-        
+
         internal static RetornoNovel TrataRetornoNovelUnica(Novel obra)
         {
             return new RetornoNovel()
@@ -530,6 +535,18 @@ namespace TsundokuTraducoes.Data.Repositories
                                     .Where(w => w.Id == id).FirstOrDefaultAsync();
 
             return capitulo;
+        }
+
+        public static List<string> TrataRetornoListaGeneros(List<GeneroNovel> generosNovel)
+        {
+            var listaGeneros = new List<string>();
+
+            generosNovel.ForEach((genero) =>
+            {
+                listaGeneros.Add(genero.Genero.Descricao);
+            });
+
+            return listaGeneros;
         }
     }
 }

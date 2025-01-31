@@ -48,5 +48,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         public bool OtimizarImagem {  get; set; }
         public bool SalvarLocal { get; set; }
         public bool IntegracaoDiscord { get; set; }
+        public bool Publicado {  get; set; }
     }
 }

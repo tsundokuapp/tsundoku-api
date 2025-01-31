@@ -41,6 +41,7 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
         public DateTime? DataAtualizacaoUltimoCapitulo { get; set; }
         public string Observacao { get; set; }
         public bool IntegracaoDiscord { get; set; }
+        public bool Publicado {  get; set; }
         public virtual List<VolumeNovel> Volumes { get; set; }
         public virtual List<GeneroNovel> GenerosNovel { get; set; }
 
@@ -53,7 +54,7 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
         public void AdicionaNovel(Guid id, string titulo, string tituloAlternativo, string alias, string autor, string artista, string ano, string slug,
             string usuarioInclusao, string usuarioAlteracao, string imagemCapaPrincipal, string sinopse, DateTime dataInclusao, DateTime dataAlteracao,
             bool ehObraMaiorIdade, bool ehRecomendacao, string codigoCorHexaObra, string imagemBanner, string cargoObraDiscord,
-            string diretorioImagemObra, string statusObra, string tipoObra, string nacionalidade, string observacao, bool integracaoDiscord)
+            string diretorioImagemObra, string statusObra, string tipoObra, string nacionalidade, string observacao, bool integracaoDiscord, bool publicado)
         {
             Id = id;
             Titulo = titulo;
@@ -80,6 +81,7 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
             Nacionalidade = nacionalidade;
             Observacao = observacao;
             IntegracaoDiscord = integracaoDiscord;
+            Publicado = publicado;
 
             Volumes = new List<VolumeNovel>();
             GenerosNovel = new List<GeneroNovel>();

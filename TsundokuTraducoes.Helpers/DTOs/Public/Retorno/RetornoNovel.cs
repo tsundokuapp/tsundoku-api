@@ -33,5 +33,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
         public string Observacao { get; set; }
         public string UrlCapa { get; set; }
         public List<GeneroNovel> Generos { get; set; }
+        public bool Publicado { get; set; }
     }
 }
