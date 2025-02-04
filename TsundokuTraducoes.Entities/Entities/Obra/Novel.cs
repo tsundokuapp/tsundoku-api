@@ -103,7 +103,7 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
 
         public void AdicionaListaGeneroNovels(List<GeneroNovel> generoNovels) 
         {
-            generoNovels.AddRange(generoNovels);
+            GenerosNovel.AddRange(generoNovels);
         }
     }
 }
