@@ -311,7 +311,7 @@ namespace TsundokuTraducoes.Data.Repositories
         }
         
 
-        private static List<RetornoObras> TrataListaRetornoNovel(List<Novel> listaNovels)
+        public List<RetornoObras> TrataListaRetornoNovel(List<Novel> listaNovels)
         {
             var listaRetornoObra = new List<RetornoObras>();
 
@@ -322,8 +322,8 @@ namespace TsundokuTraducoes.Data.Repositories
 
             return listaRetornoObra;
         }
-        
-        private static List<RetornoObras> TrataListaRetornoComic(List<Comic> listaNovels)
+
+        public List<RetornoObras> TrataListaRetornoComic(List<Comic> listaNovels)
         {
             var listaRetornoObra = new List<RetornoObras>();
 
