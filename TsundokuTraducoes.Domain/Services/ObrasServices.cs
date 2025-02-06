@@ -1,6 +1,7 @@
 ﻿using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
+using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
@@ -35,8 +36,17 @@ namespace TsundokuTraducoes.Domain.Services
         {
             return await _obrasRepository.ObterListaComicsRecentes();
         }
-                
-        
+
+        public async Task<List<Novel>> ObterListaNovelsRecomendadas()
+        {
+            return await _obrasRepository.ObterListaNovelsRecomendadas();
+        }
+
+        public async Task<List<Comic>> ObterListaComicsRecomendadas()
+        {
+            return await _obrasRepository.ObterListaComicsRecomendadas();
+        }
+
         public async Task<RetornoNovel> ObterNovelPorId(Guid id)
         {
             return await _obrasRepository.ObterNovelPorId(id);
@@ -62,11 +72,6 @@ namespace TsundokuTraducoes.Domain.Services
             return await _obrasRepository.ObterCapitulosHome();
         }
 
-        public async Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas()
-        {
-            return await _obrasRepository.ObterObrasRecomendadas();
-        }
-
         public List<RetornoVolumes> ObterListaVolumeCapitulos(string idObra)
         {
             return _obrasRepository.ObterListaVolumeCapitulos(idObra);
@@ -80,6 +85,6 @@ namespace TsundokuTraducoes.Domain.Services
         public async Task<CapituloNovel> ObterCapituloNovelPorId(Guid id)
         {
             return await _obrasRepository.ObterCapituloNovelPorId(id);
-        }
+        }       
     }
 }
