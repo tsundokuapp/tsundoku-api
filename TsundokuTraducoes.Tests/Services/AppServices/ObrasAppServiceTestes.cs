@@ -1,7 +1,5 @@
-﻿using Amazon.CloudFront.Model;
-using AutoMapper;
+﻿using AutoMapper;
 using Moq;
-using System.Drawing;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Services.AppServices;
