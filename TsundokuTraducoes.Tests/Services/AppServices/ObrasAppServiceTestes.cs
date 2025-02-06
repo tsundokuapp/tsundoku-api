@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using Amazon.CloudFront.Model;
+using AutoMapper;
 using Moq;
+using System.Drawing;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Services.AppServices;
@@ -78,14 +80,18 @@ namespace TsundokuTraducoes.Tests.Services.AppServices
 
             // Assert
             Assert.True(retorno.Any());
-            Assert.Equal(6, retorno.Count);
+            Assert.Equal(6, retorno.Count);            
             Assert.Equal(5, numeroDeCamposDaListaObrasRecomendas);
-            Assert.Empty(retornoEsperado.Intersect(retorno).ToList());
-            Assert.Equal(6, retorno.Where(ret => retornoEsperado.Where(retExp => retExp.Titulo == ret.Titulo).Any()).ToList().Count);
-            Assert.Equal(6, retorno.Where(ret => retornoEsperado.Where(retExp => retExp.Sinopse == ret.Sinopse).Any()).ToList().Count);
-            Assert.Equal(6, retorno.Where(ret => retornoEsperado.Where(retExp => retExp.TipoObra == ret.TipoObra).Any()).ToList().Count);
-            Assert.Equal(6, retorno.Where(ret => retornoEsperado.Where(retExp => retExp.SlugObra == ret.SlugObra).Any()).ToList().Count);
-            Assert.Equal(6, retorno.Where(ret => retornoEsperado.Where(retExp => retExp.Capa == ret.Capa).Any()).ToList().Count);
+
+            foreach (var esperado in retornoEsperado)
+            {
+                var encontrado = retorno.FirstOrDefault(ret => ret.Titulo == esperado.Titulo);
+                Assert.NotNull(encontrado);
+                Assert.Equal(esperado.Sinopse, encontrado.Sinopse);
+                Assert.Equal(esperado.TipoObra, encontrado.TipoObra);
+                Assert.Equal(esperado.SlugObra, encontrado.SlugObra);
+                Assert.Equal(esperado.Capa, encontrado.Capa);
+            }
         }
     }
 }
