@@ -80,7 +80,7 @@ namespace TsundokuTraducoes.Tests.Services.AppServices
             Assert.True(retorno.Any());
             Assert.Equal(6, retorno.Count);            
             Assert.Equal(5, numeroDeCamposDaListaObrasRecomendas);
-
+          
             foreach (var esperado in retornoEsperado)
             {
                 var encontrado = retorno.FirstOrDefault(ret => ret.Titulo == esperado.Titulo);
