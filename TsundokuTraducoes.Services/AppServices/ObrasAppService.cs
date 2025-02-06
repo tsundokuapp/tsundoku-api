@@ -3,6 +3,7 @@ using FluentResults;
 using Newtonsoft.Json;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
+using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
@@ -84,7 +85,12 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas()
         {
-            return await _obrasService.ObterObrasRecomendadas();
+            var listaNovelsRecomendadas = await _obrasService.ObterListaNovelsRecomendadas();
+            var listaComicsRecomendadas = await _obrasService.ObterListaComicsRecomendadas();
+
+            var listaObrasRecomendadasTratadas = TratamentoRetornoObrasRecomendadas(listaNovelsRecomendadas, listaComicsRecomendadas);
+
+            return listaObrasRecomendadasTratadas;
         }
 
         public List<RetornoVolumes> ObterListaVolumeCapitulos(RequestObras requestObras)
@@ -146,6 +152,43 @@ namespace TsundokuTraducoes.Services.AppServices
             var retornoNovel = _mapper.Map<RetornoAppNovel>(novel);
             retornoNovel.ListaGeneros = await _generoDeParaAppService.CarregaListaGenerosNovel(novel.Generos);
             return retornoNovel;
+        }
+
+        public List<RetornoObrasRecomendadas> TratamentoRetornoObrasRecomendadas(List<Novel> listaNovelsRecomendadas, List<Comic> listaComicsRecomendadas)
+        {
+            var query = (from comics in listaComicsRecomendadas
+                         select new
+                         {
+                             Titulo = comics.Alias,
+                             Capa = !string.IsNullOrEmpty(comics.ImagemCapaUltimoVolume) ? comics.ImagemCapaUltimoVolume : comics.ImagemCapaPrincipal,
+                             SlugObra = comics.Slug,
+                             comics.Sinopse,
+                             comics.TipoObra
+                         })
+                        .Union(from novels in listaNovelsRecomendadas
+                               select new
+                               {
+                                   Titulo = novels.Alias,
+                                   Capa = !string.IsNullOrEmpty(novels.ImagemCapaUltimoVolume) ? novels.ImagemCapaUltimoVolume : novels.ImagemCapaPrincipal,
+                                   SlugObra = novels.Slug,
+                                   novels.Sinopse,
+                                   novels.TipoObra
+                               }
+                        );
+
+            var listaRetornoObrasRecomendadas = query
+                .Select(ror => new RetornoObrasRecomendadas
+                {
+                    Titulo = ror.Titulo,
+                    Capa = ror.Capa,
+                    SlugObra = ror.SlugObra,
+                    Sinopse = ror.Sinopse,
+                    TipoObra = ror.TipoObra
+                })
+                .Take(6)
+                .ToList();
+
+            return listaRetornoObrasRecomendadas;
         }
     }
 }
