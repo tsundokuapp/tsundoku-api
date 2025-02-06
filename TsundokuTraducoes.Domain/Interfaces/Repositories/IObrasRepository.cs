@@ -1,4 +1,5 @@
 ﻿using TsundokuTraducoes.Entities.Entities.Capitulo;
+using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
@@ -8,7 +9,10 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
     {
         Task<List<RetornoObras>> ObterListaNovels(RequestObras requestObras);
         Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras);
-        
+
+        Task<List<Novel>> ObterListaNovelsRecomendadas();
+        Task<List<Comic>> ObterListaComicsRecomendadas();
+
         Task<List<RetornoObras>> ObterListaNovelsRecentes();
         Task<List<RetornoObras>> ObterListaComicsRecentes();
         
@@ -19,7 +23,6 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
         Task<RetornoComic> ObterComicPorSlug(string slug);
 
         Task<List<RetornoCapitulosHome>> ObterCapitulosHome();
-        Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas();
 
         List<RetornoVolumes> ObterListaVolumeCapitulos(string idObra);
         Task<CapituloComic> ObterCapituloComicPorId(Guid id);
