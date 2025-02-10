@@ -5,7 +5,7 @@ namespace TsundokuTraducoes.Tests.Entities.Volumes
 {
     public class VolumesTestes
     {
-        #region VOLUMES NOVELS
+        #region TESTES - VOLUMES NOVELS
 
         [Fact]
         public void CriaVolumeNovelValido()
@@ -126,7 +126,7 @@ namespace TsundokuTraducoes.Tests.Entities.Volumes
 
         #endregion
 
-        #region VOLUMES COMICS
+        #region TESTES - VOLUMES COMICS
 
         [Fact]
         public void CriaVolumeComicValido()
