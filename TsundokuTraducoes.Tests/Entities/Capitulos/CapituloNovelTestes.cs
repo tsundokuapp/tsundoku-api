@@ -1,17 +1,75 @@
 ﻿using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Helpers;
 
-namespace TsundokuTraducoes.Tests.Entities.Capitulos
+namespace TsundokuTraducoes.Entities.Tests.Capitulos
 {
-    public class CapitulosFactory
+    public class CapituloNovelTestes
     {
-        #region MOCK CAPÍTULOS NOVEL
-        
-        public CapituloNovel GerarCapituloNovel(Guid? IdVolume)
+        [Fact]
+        public void CriarCapituloNovelIlustracoesValido()
         {
-            var capituloNovel = new CapituloNovel();
-            capituloNovel.AdicionaCapitulo(
-                    Guid.NewGuid(),
+            var capituloNovelIlustracoes = new CapituloNovel();
+            capituloNovelIlustracoes.AdicionaCapitulo(
+                    Guid.Parse("08dba6b4-3619-4cc6-8857-0bbe53a6f670"),
+                    "Ilustrações",
+                    "",
+                    0,
+                    "",
+                    "",
+                    "ilustracoes",                    
+                    "Bravo",
+                    "Bravo",
+                    DateTime.Now,
+                    DateTime.Now,
+                    Diretorios.RetornaDiretorioImagemCriado("BruxaErrante", "Volume01", "Ilustracoes"),                    
+                    true,
+                    "",
+                    "",
+                    "",
+                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+                    RetornaConteudoNovelIlustracoes(),
+                    false
+                    );
+
+            Assert.Equal("Ilustrações", capituloNovelIlustracoes.Numero);
+            Assert.NotEmpty(capituloNovelIlustracoes.ListaImagensJson);
+            Assert.NotNull(capituloNovelIlustracoes);
+        }
+
+        [Fact]
+        public void DeveFalharAoCriarSemConteudoDasIlustracoes()
+        {
+            var capituloNovelIlustracoes = new CapituloNovel();
+            capituloNovelIlustracoes.AdicionaCapitulo(
+                    Guid.Parse("08dba6b4-3619-4cc6-8857-0bbe53a6f670"),
+                    "Ilustra",
+                    "",
+                    0,
+                    "",
+                    "",
+                    "ilustracoes",
+                    "Bravo",
+                    "Bravo",
+                    DateTime.Now,
+                    DateTime.Now,
+                    Diretorios.RetornaDiretorioImagemCriado("BruxaErrante", "Volume01", "Ilustracoes"),
+                    true,
+                    "",
+                    "",
+                    "",
+                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+                    "", 
+                    false);
+                        
+            Assert.Empty(capituloNovelIlustracoes.ConteudoNovel);
+        }
+
+        [Fact]
+        public void CriarCapituloNovelValido()
+        {
+            var capituloNovelIlustracoes = new CapituloNovel();
+            capituloNovelIlustracoes.AdicionaCapitulo(
+                    Guid.Parse("08dba6bb-8faf-4ce3-85d7-7cfe5b59648b"),
                     "1",
                     "",
                     1,
@@ -24,50 +82,52 @@ namespace TsundokuTraducoes.Tests.Entities.Capitulos
                     DateTime.Now,
                     Diretorios.RetornaDiretorioImagemCriado("BruxaErrante", "Volume01", "Ilustracoes"),
                     false,
-                    "NERO_SL",
-                    "Pride",
-                    "Axios",
-                    IdVolume ?? Guid.NewGuid(),
                     "",
-                    true);
+                    "",
+                    "",
+                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+                    "",
+                    false);
 
-            return capituloNovel;
+            Assert.Equal("capitulo-1-pais-dos-magos", capituloNovelIlustracoes.Slug);
+            Assert.NotEmpty(capituloNovelIlustracoes.ConteudoNovel);
+            Assert.NotNull(capituloNovelIlustracoes);
         }
 
-        public CapituloNovel GerarCapituloNovelIlustracoes(Guid? IdVolume)
+        [Fact]
+        public void DeveFalharAoCriarSemConteudoDoCapitulo()
         {
-            var capituloNovelIlustracao = new CapituloNovel();
-            capituloNovelIlustracao.AdicionaCapitulo(
-                    Guid.NewGuid(),
-                    "Ilustrações",
+            var capituloNovelIlustracoes = new CapituloNovel();
+            capituloNovelIlustracoes.AdicionaCapitulo(
+                    Guid.Parse("08dba6bb-8faf-4ce3-85d7-7cfe5b59648b"),
+                    "1",
                     "",
                     1,
+                    "País",
                     "",
-                    "",
-                    "ilustracoes",
+                    "capitulo-1-pais-dos-magos",
                     "Bravo",
                     "Bravo",
                     DateTime.Now,
                     DateTime.Now,
                     Diretorios.RetornaDiretorioImagemCriado("BruxaErrante", "Volume01", "Ilustracoes"),
-                    true,
-                    "Axios",
-                    "Axios",
-                    "Axios",
-                    IdVolume ?? Guid.NewGuid(),
-                    RetornaConteudoNovelIlustracoes(),
-                    true
-                    );
-
-            return capituloNovelIlustracao;
+                    false,
+                    "",
+                    "",
+                    "",
+                    Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+                    "", 
+                    false);
+                        
+            Assert.Empty(capituloNovelIlustracoes.ConteudoNovel);
         }
 
-        public string RetornaConteudoNovelIlustracoes()
+        private string RetornaConteudoNovelIlustracoes()
         {
             return @"[{\""Id\"": 1,\""Ordem\"": 1,\""Alt\"" = \""Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg\""},{\""Id\"": 2,\""Ordem\"": 2,\""Alt\"" = \""MJ_V1_ilust_01\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_01.jpg\""},{\""Id\"": 3,\""Ordem\"": 3,\""Alt\"" = \""MJ_V1_ilust_02\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_02.jpg\""},{\""Id\"": 4,\""Ordem\"": 4,\""Alt\"" = \""MJ_V1_ilust_03\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_03.jpg\""},{\""Id\"": 5,\""Ordem\"": 5,\""Alt\"" = \""MJ_V1_ilust_04\"",\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V1_ilust_04.jpg\""}]";
         }
 
-        public string RetornaConteudoNovel()
+        private string RetornaConteudoNovel()
         {
             return @"
             <p>Era um país tranquilo, cercado por montanhas proibidas e escondido atrás de muros altos. Ninguém do mundo exterior poderia visitar.</p>
@@ -93,39 +153,5 @@ namespace TsundokuTraducoes.Tests.Entities.Capitulos
             <p>Satisfeita com minha explicação para as placas, peguei minha vassoura e me sentei de lado. Com um impulso, levantei suavemente no ar em uma demonstração viva do desenho da placa.</p>
             ";
         }
-
-        #endregion
-
-        #region MOCK CAPÍTULOS NOVEL
-
-        public CapituloComic GerarCapituloComic(Guid? IdVolume)
-        {
-            var capituloComic = new CapituloComic();
-            capituloComic.AdicionaCapitulo(
-                Guid.NewGuid(),
-                "1",
-                1,
-                "",
-                "",
-                RetornaConteudoManga(),
-                "capitulo-1",
-                "Bravo",
-                "Bravo",
-                DateTime.Now,
-                DateTime.Now,
-                Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime", "Volume01", "Capitulo01"),
-                IdVolume ?? Guid.NewGuid(),
-                true);
-
-            return capituloComic;
-        }
-
-        public string RetornaConteudoManga()
-        {
-            return @"[{\""Id\"": 1,\""Ordem\"": 1,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/0-46.jpg\""},{\""Id\"": 2,\""Ordem\"": 2,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/0-47.jpg\""},{\""Id\"": 3,\""Ordem\"": 3,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/1-60.jpg\""},{\""Id\"": 4,\""Ordem\"": 4,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/2-60.jpg\""},{\""Id\"": 5,\""Ordem\"": 5,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/3-61.jpg\""},{\""Id\"": 6,\""Ordem\"": 6,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/4-61.jpg\""},{\""Id\"": 7,\""Ordem\"": 7,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/5-61.jpg\""},{\""Id\"": 8,\""Ordem\"": 8,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/6-61.jpg\""},{\""Id\"": 9,\""Ordem\"": 9,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/7-61.jpg\""},{\""Id\"": 10,\""Ordem\"": 10,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/8-61.jpg\""},{\""Id\"": 10,\""Ordem\"": 10,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/9-61.jpg\""},{\""Id\"": 10,\""Ordem\"": 10,\""Url\"": \""http://tsundoku.com.br/wp-content/uploads/2022/01/10-108.jpg\""}]";
-        }
-
-
-        #endregion
     }
 }
