@@ -5,6 +5,8 @@ namespace TsundokuTraducoes.Tests.Entities.Generos
 {
     public class GenerosFactory
     {
+        #region => MOCK GENEROS
+
         public Genero GerarGenero()
         {
             var genero = new Genero();
@@ -34,6 +36,10 @@ namespace TsundokuTraducoes.Tests.Entities.Generos
             return listaGeneros;
         }
 
+        #endregion
+        
+        #region => MOCK GENEROS NOVEL
+                
         public GeneroNovel GerarGeneroNovel() 
         {
             var generoNovel = new GeneroNovel();
@@ -41,11 +47,17 @@ namespace TsundokuTraducoes.Tests.Entities.Generos
             return generoNovel;
         }
 
+        #endregion
+
+        #region => MOCK GENEROS COMIC
+
         public GeneroComic GerarGeneroComic()
         {
             var generoComic = new GeneroComic();
             generoComic.AdicionaGeneroComic(Guid.NewGuid(), Guid.NewGuid());
             return generoComic;
         }
+
+        #endregion
     }
 }

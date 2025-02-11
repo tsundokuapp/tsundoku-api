@@ -6,7 +6,7 @@ namespace TsundokuTraducoes.Entities.Tests.Generos
 {
     public class GenerosTestes
     {
-        #region TESTES - GENEROS
+        #region => TESTES - GENEROS
 
         [Fact]
         public void CriaGeneroValido()
@@ -68,7 +68,7 @@ namespace TsundokuTraducoes.Entities.Tests.Generos
 
         #endregion
 
-        #region TESTES - GENEROS NOVELS
+        #region => TESTES - GENEROS NOVELS
 
         [Fact]
         public void CriarGeneroNovelValido()
@@ -102,7 +102,7 @@ namespace TsundokuTraducoes.Entities.Tests.Generos
 
         #endregion
 
-        #region TESTES - GENEROS COMICS
+        #region => TESTES - GENEROS COMICS
 
         [Fact]
         public void CriarGeneroComicValido()
