@@ -126,33 +126,29 @@ namespace TsundokuTraducoes.Data.Repositories
                 }
             }
 
-            var arrayGenero = listaGeneros[0]?.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            if (arrayGenero != null && arrayGenero.Length > 0)
+            foreach (var genero in listaGeneros)
             {
-                foreach (var genero in arrayGenero)
+                var slugGenero = TratamentoDeStrings.RetornaStringSlug(genero);
+                var generoEncontrado = _context.Generos.AsNoTracking().SingleOrDefault(s => s.Slug == genero);
+
+                if (generoEncontrado != null)
                 {
-                    var slugGenero = TratamentoDeStrings.RetornaStringSlug(genero);
-                    var generoEncontrado = _context.Generos.AsNoTracking().SingleOrDefault(s => s.Slug == genero);
-
-                    if (generoEncontrado != null)
-                    {
-                        await _generoDeParaRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = generoEncontrado.Id });
-                    }
-                    else
-                    {
-                        var novoGenero = new Genero();
-                        novoGenero.Descricao = genero;
-                        novoGenero.Slug = slugGenero;
-                        novoGenero.DataInclusao = DateTime.Now;
-                        novoGenero.DataAlteracao = novoGenero.DataInclusao;
-                        novoGenero.UsuarioInclusao = novel.UsuarioInclusao;
-
-                        await _generoRepository.AdicionaGenero(novoGenero);
-                        await _generoDeParaRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = novoGenero.Id});
-                    }
-
-                    await AlteracoesSalvas();
+                    await _generoDeParaRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = generoEncontrado.Id });
                 }
+                else
+                {
+                    var novoGenero = new Genero();
+                    novoGenero.Descricao = genero;
+                    novoGenero.Slug = slugGenero;
+                    novoGenero.DataInclusao = DateTime.Now;
+                    novoGenero.DataAlteracao = novoGenero.DataInclusao;
+                    novoGenero.UsuarioInclusao = novel.UsuarioInclusao;
+
+                    await _generoRepository.AdicionaGenero(novoGenero);
+                    await _generoDeParaRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = novoGenero.Id });
+                }
+
+                await AlteracoesSalvas();
             }
         }
 
