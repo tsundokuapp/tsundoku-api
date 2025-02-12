@@ -3,6 +3,7 @@ using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Data.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Domain.Services;
+using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
@@ -14,7 +15,7 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public ObraRepositoryTestes() 
         {
             _options = new DbContextOptionsBuilder<ContextBase>()
-                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .UseInMemoryDatabase(databaseName: "TestDatabaseRepository")
                 .Options;            
         }
 
@@ -24,10 +25,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveCadastrarUmaNovel()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var novel = obraRepositoryFactory.GerarNovel();
-            novel.Id = id;
 
             await using (var context = new ContextBase(_options))
             {
@@ -39,7 +38,7 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
                 // Act
                 await repository.AdicionaNovel(novel);
                 var retorno = await repository.AlteracoesSalvas();
-                var resultado = repository.RetornaNovelPorId(id);
+                var resultado = repository.RetornaNovelPorId(novel.Id);
 
                 // Assert
                 Assert.True(retorno);
@@ -54,10 +53,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveAtualizarUmaNovel()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var novel = obraRepositoryFactory.GerarNovel();
-            novel.Id = id;
 
             await using (var context = new ContextBase(_options))
             {
@@ -69,9 +66,9 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
                 // Act
                 await repository.AdicionaNovel(novel);
                 var retornoObraSalva = await repository.AlteracoesSalvas();
-                var resultadoObraCadastrada = repository.RetornaNovelPorId(id);
+                var resultadoObraCadastrada = repository.RetornaNovelPorId(novel.Id);
 
-                var obraDTO = new ObraDTO { Id = id, Alias = "Bruxinha" };
+                var obraDTO = new ObraDTO { Id = novel.Id, Alias = "Bruxinha" };
                 var obraAtualizada = repository.AtualizaNovel(obraDTO);
 
                 // Assert
@@ -88,10 +85,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveRetornarUmaListaDeNovels()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var novel = obraRepositoryFactory.GerarNovel();
-            novel.Id = id;
 
             await using (var context = new ContextBase(_options))
             {
@@ -103,7 +98,7 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
                 // Act
                 await repository.AdicionaNovel(novel);
                 var retornoObraSalva = await repository.AlteracoesSalvas();
-                var resultadoObraCadastrada = repository.RetornaNovelPorId(id);
+                var resultadoObraCadastrada = repository.RetornaNovelPorId(novel.Id);
                 var retorno = repository.RetornaListaNovels();
 
 
@@ -120,10 +115,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveRetornarUmaNovelPorSlugValido()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var novel = obraRepositoryFactory.GerarNovel();
-            novel.Id = id;
             var slug = "bruxa-errante-a-jornada-dos-testes";
 
             await using (var context = new ContextBase(_options))
@@ -136,7 +129,7 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
                 // Act
                 await repository.AdicionaNovel(novel);
                 var retornoObraSalva = await repository.AlteracoesSalvas();
-                var resultadoObraCadastrada = repository.RetornaNovelPorId(id);
+                var resultadoObraCadastrada = repository.RetornaNovelPorId(novel.Id);
                 var retorno = repository.RetornaNovelPorSlug(slug);
 
                 // Assert
@@ -153,10 +146,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveExcluirUmaNovel()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var novel = obraRepositoryFactory.GerarNovel();
-            novel.Id = id;
 
             await using (var context = new ContextBase(_options))
             {
@@ -187,10 +178,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveRetornarUmaNovelExistente()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var novel = obraRepositoryFactory.GerarNovel();
-            novel.Id = id;
             var titulo = "Bruxa Errante, a Jornada dos Testes";
 
             await using (var context = new ContextBase(_options))
@@ -218,10 +207,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveInserirUmaListaDeGenerosNaNovel()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var novel = obraRepositoryFactory.GerarNovel();
-            novel.Id = id;
             var listaGenero = new List<string> { "Aventura", "Fantasia", "Seinen" };
 
             await using (var context = new ContextBase(_options))
@@ -256,10 +243,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveCadastrarUmaComic()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
-            var novel = obraRepositoryFactory.GerarComic();
-            novel.Id = id;
+            var comic = obraRepositoryFactory.GerarComic();
 
             await using (var context = new ContextBase(_options))
             {
@@ -269,9 +254,9 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
                     new GeneroRepository(context));
 
                 // Act
-                await repository.AdicionaComic(novel);
+                await repository.AdicionaComic(comic);
                 var retorno = await repository.AlteracoesSalvas();
-                var resultado = repository.RetornaComicPorId(id);
+                var resultado = repository.RetornaComicPorId(comic.Id);
 
                 // Assert
                 Assert.True(retorno);
@@ -282,14 +267,12 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
             await Dispose();
         }
 
-        [Fact]
+        [Fact]        
         public async Task RepositoryObra_DeveAtualizarUmaComic()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var comic = obraRepositoryFactory.GerarComic();
-            comic.Id = id;
 
             await using (var context = new ContextBase(_options))
             {
@@ -299,19 +282,21 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
                     new GeneroRepository(context));
 
                 // Act
-                await repository.AdicionaComic(comic);
-                var retornoObraSalva = await repository.AlteracoesSalvas();
-                var resultadoObraCadastrada = repository.RetornaComicPorId(id);
+                context.Comics.Add(comic);
+                context.SaveChanges();
+                
+                var resultadoObraCadastrada = repository.RetornaComicPorId(comic.Id);
 
-                var obraDTO = new ObraDTO { Id = id, Alias = "Tristeza do Bunas" };
+                var obraDTO = new ObraDTO { Id = comic.Id, Alias = "Tristeza do Bunas" };
                 var obraAtualizada = repository.AtualizaComic(obraDTO);
+                var retornoObraSalva = await repository.AlteracoesSalvas();
 
                 // Assert
                 Assert.True(retornoObraSalva);
                 Assert.NotNull(resultadoObraCadastrada);
                 Assert.Equal(resultadoObraCadastrada.Id, obraAtualizada.Id);
                 Assert.Equal("Tristeza do Bunas", obraAtualizada.Alias);
-            }
+            }           
 
             await Dispose();
         }
@@ -320,10 +305,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveRetornarUmaListaDeComics()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var comic = obraRepositoryFactory.GerarComic();
-            comic.Id = id;
 
             await using (var context = new ContextBase(_options))
             {
@@ -335,7 +318,7 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
                 // Act
                 await repository.AdicionaComic(comic);
                 var retornoObraSalva = await repository.AlteracoesSalvas();
-                var resultadoObraCadastrada = repository.RetornaComicPorId(id);
+                var resultadoObraCadastrada = repository.RetornaComicPorId(comic.Id);
                 var retorno = repository.RetornaListaComics();
 
 
@@ -352,10 +335,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveRetornarUmaComicPorSlugValido()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var comic = obraRepositoryFactory.GerarComic();
-            comic.Id = id;
             var slug = "hatsukoi-losstime";
 
             await using (var context = new ContextBase(_options))
@@ -368,7 +349,7 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
                 // Act
                 await repository.AdicionaComic(comic);
                 var retornoObraSalva = await repository.AlteracoesSalvas();
-                var resultadoObraCadastrada = repository.RetornaComicPorId(id);
+                var resultadoObraCadastrada = repository.RetornaComicPorId(comic.Id);
                 var retorno = repository.RetornaComicPorSlug(slug);
 
                 // Assert
@@ -385,10 +366,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveExcluirUmaComic()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var comic = obraRepositoryFactory.GerarComic();
-            comic.Id = id;
 
             await using (var context = new ContextBase(_options))
             {
@@ -419,10 +398,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveRetornarUmaComicExistente()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var comic = obraRepositoryFactory.GerarComic();
-            comic.Id = id;
             var titulo = "Hatsukoi Losstime";
 
             await using (var context = new ContextBase(_options))
@@ -450,10 +427,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
         public async Task RepositoryObra_DeveInserirUmaListaDeGenerosNaComic()
         {
             // Arrange
-            var id = Guid.NewGuid();
             var obraRepositoryFactory = new ObraRepositoryFactory();
             var comic = obraRepositoryFactory.GerarComic();
-            comic.Id = id;
             var listaGenero = new List<string> { "Romance", "Vida Escolar", "Seinen" };
 
             await using (var context = new ContextBase(_options))
