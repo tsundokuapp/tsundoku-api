@@ -122,7 +122,8 @@ public class AppServicesFactory
                                   "Light Novel",
                                   "Japonesa",
                                   "Uma obra muito boa",
-                                  false);
+                                  false,
+                                  true);
 
             listaNovels.Add(novel);
         }
