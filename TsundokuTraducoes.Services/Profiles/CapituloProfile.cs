@@ -6,7 +6,7 @@ using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
 namespace TsundokuTraducoes.Services.Profiles
 {
-    internal class CapituloProfile : Profile
+    public class CapituloProfile : Profile
     {
         public CapituloProfile()
         {

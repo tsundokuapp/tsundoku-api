@@ -70,6 +70,17 @@ namespace TsundokuTraducoes.Data.Repositories
         }
         
         
+        public async Task<List<Novel>> ObterListaNovelsRecomendadas()
+        {
+            return await _context.Novels.AsNoTracking().Where(w => w.EhRecomendacao == true).ToListAsync();
+        }
+
+        public async Task<List<Comic>> ObterListaComicsRecomendadas()
+        {
+            return await _context.Comics.AsNoTracking().Where(w => w.EhRecomendacao == true).ToListAsync();
+        }
+
+        
         public async Task<List<RetornoObras>> ObterListaNovelsRecentes()
         {
             var listaNovels = await _context.Novels.AsNoTracking().OrderByDescending(o => o.DataInclusao).ToListAsync();
@@ -176,45 +187,6 @@ namespace TsundokuTraducoes.Data.Repositories
             TrataListaRetornoCapitulo(listaRetornoCapitulos);
             return listaRetornoCapitulos;
         }
-
-        public async Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas()
-        {
-            var query = (from comics in _context.Comics.AsNoTracking()
-                         where comics.EhRecomendacao == true
-                         select new
-                         {
-                             Titulo = comics.Alias,
-                             Capa = !string.IsNullOrEmpty(comics.ImagemCapaUltimoVolume) ? comics.ImagemCapaUltimoVolume : comics.ImagemCapaPrincipal,
-                             SlugObra = comics.Slug,
-                             comics.Sinopse,
-                             comics.TipoObra
-                         })
-                        .Union(from novels in _context.Novels.AsNoTracking()
-                               where novels.EhRecomendacao == true
-                               select new
-                               {
-                                   Titulo = novels.Alias,
-                                   Capa = !string.IsNullOrEmpty(novels.ImagemCapaUltimoVolume) ? novels.ImagemCapaUltimoVolume : novels.ImagemCapaPrincipal,
-                                   SlugObra = novels.Slug,
-                                   novels.Sinopse,
-                                   novels.TipoObra
-                               }
-                        );
-
-            var listaRetornoObrasRecomendadas = await query
-                .Select(ror => new RetornoObrasRecomendadas
-                {
-                    Titulo = ror.Titulo,
-                    Capa = ror.Capa,
-                    SlugObra = ror.SlugObra,
-                    Sinopse = ror.Sinopse,
-                    TipoObra = ror.TipoObra
-                })
-                .ToListAsync();
-
-            return listaRetornoObrasRecomendadas;
-        }
-
 
         private static string RetornaSqlListaNovelsPorParametros(string nacionalidade, string status, string tipo, string genero)
         {
@@ -357,8 +329,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 Publicado = obra.Publicado
             };
         }
-
-        internal static RetornoNovel TrataRetornoNovelUnica(Novel obra)
+        
+        public static RetornoNovel TrataRetornoNovelUnica(Novel obra)
         {
             return new RetornoNovel()
             {
@@ -386,8 +358,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 Generos = obra.GenerosNovel,
             };
         }
-        
-        internal static RetornoComic TrataRetornoComicUnica(Comic obra)
+
+        public static RetornoComic TrataRetornoComicUnica(Comic obra)
         {
             return new RetornoComic()
             {
