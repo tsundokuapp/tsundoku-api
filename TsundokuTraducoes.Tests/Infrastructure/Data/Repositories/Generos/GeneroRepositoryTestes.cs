@@ -167,6 +167,82 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Generos
 
         #endregion
 
+        #region => TESTES - GENEROS NOVEL
+
+        [Fact]
+        public async Task RepositoryGenero_DeveCadastrarGeneroNovel()
+        {
+            // Arrange
+            var generoRepositoryFactory = new GeneroRepositoryFactory();
+            var genero = generoRepositoryFactory.GerarGenero("Ação", "acao");
+            var novel = generoRepositoryFactory.GerarNovel();
+
+            await using (var context = new ContextBase(_options))
+            {
+                IGeneroRepository repository = new GeneroRepository(context);
+                IGeneroDeParaRepository generoDeParaRepository = new GeneroDeParaRepository(context);
+
+                // Act
+                await repository.AdicionaGenero(genero);
+                var retornoGeneroSalvo = await repository.AlteracoesSalvas();               
+
+                var generoNovel = generoRepositoryFactory.GerarGeneroNovel(novel.Id, genero.Id);
+                await generoDeParaRepository.AdicionaGeneroNovel(generoNovel);
+                var retornoGeneroNovelSalvo = context.SaveChanges();
+
+                var resultadoGenero = await repository.RetornaGeneroPorId(genero.Id);
+
+                // Assert 
+                Assert.True(retornoGeneroSalvo);
+                Assert.NotNull(resultadoGenero);
+                Assert.Equal(1, retornoGeneroNovelSalvo);
+                Assert.True(resultadoGenero.GenerosNovel.Count > 0);
+
+            }
+
+            await Dispose();
+        }
+
+        #endregion
+
+        #region => TESTES - GENEROS COMIC
+
+        [Fact]
+        public async Task RepositoryGenero_DeveCadastrarGeneroComic()
+        {
+            // Arrange
+            var generoRepositoryFactory = new GeneroRepositoryFactory();
+            var genero = generoRepositoryFactory.GerarGenero("Fantasia", "fantasia");
+            var comic = generoRepositoryFactory.GerarComic();
+
+            await using (var context = new ContextBase(_options))
+            {
+                IGeneroRepository repository = new GeneroRepository(context);
+                IGeneroDeParaRepository generoDeParaRepository = new GeneroDeParaRepository(context);
+
+                // Act
+                await repository.AdicionaGenero(genero);
+                var retornoGeneroSalvo = await repository.AlteracoesSalvas();
+
+                var generoComic = generoRepositoryFactory.GerarGeneroComic(comic.Id, genero.Id);
+                await generoDeParaRepository.AdicionaGeneroComic(generoComic);
+                var retornoGeneroComicSalvo = context.SaveChanges();
+
+                var resultadoGenero = await repository.RetornaGeneroPorId(genero.Id);
+
+                // Assert 
+                Assert.True(retornoGeneroSalvo);
+                Assert.NotNull(resultadoGenero);
+                Assert.Equal(1, retornoGeneroComicSalvo);
+                Assert.True(resultadoGenero.GenerosComic.Count > 0);
+
+            }
+
+            await Dispose();
+        }
+
+        #endregion
+
         #region => DISPOSE
 
         private async Task Dispose()
