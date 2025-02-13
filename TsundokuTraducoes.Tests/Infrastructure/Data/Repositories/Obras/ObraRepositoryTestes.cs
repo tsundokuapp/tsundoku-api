@@ -2,11 +2,9 @@
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Data.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
-using TsundokuTraducoes.Domain.Services;
-using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 
-namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
+namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obras
 {
     public class ObraRepositoryTestes
     {

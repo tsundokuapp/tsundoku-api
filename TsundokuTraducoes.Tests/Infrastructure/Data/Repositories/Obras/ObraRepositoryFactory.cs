@@ -1,7 +1,7 @@
 ﻿using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers;
 
-namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obra
+namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obras
 {
     public class ObraRepositoryFactory
     {
