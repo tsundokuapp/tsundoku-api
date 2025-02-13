@@ -2,7 +2,6 @@
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Data.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
-using TsundokuTraducoes.Helpers.DTOs.Admin;
 
 namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Volumes
 {
@@ -165,6 +164,146 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Volumes
 
         #region => TESTES - VOLUME COMIC
 
+        [Fact]
+        public async Task RepositoryVolume_DeveCadastrarVolumeComic()
+        {
+            // Arrange
+            var volumeRepositoryFactory = new VolumeRepositoryFactory();
+            var idObra = Guid.NewGuid();
+            var volumeComic = volumeRepositoryFactory.GerarVolumeComic(idObra);
+
+            await using (var context = new ContextBase(_options))
+            {
+                IVolumeRepository repository = new VolumeRepository(context);
+
+                // Act
+                repository.AdicionaVolumeComic(volumeComic);
+                var retorno = await repository.AlteracoesSalvas();
+                var resultado = repository.RetornaVolumeComicPorId(volumeComic.Id);
+
+                // Assert 
+                Assert.True(retorno);
+                Assert.NotNull(resultado);
+                Assert.Equal("1", resultado.Numero);
+            }
+
+            await Dispose();
+        }
+
+        [Fact]
+        public async Task RepositoryVolume_DeveAtualizarVolumeComic()
+        {
+            // Arrange
+            var volumeRepositoryFactory = new VolumeRepositoryFactory();
+            var idObra = Guid.NewGuid();
+            var volumeComic = volumeRepositoryFactory.GerarVolumeComic(idObra);
+
+            await using (var context = new ContextBase(_options))
+            {
+                IVolumeRepository repository = new VolumeRepository(context);
+
+                // Act
+                context.VolumesComic.Add(volumeComic);
+                context.SaveChanges();
+
+                var volumeDTO = volumeRepositoryFactory.GerarVolumeComicDTO(volumeComic.Id, idObra);
+
+                var volumeComicAtualizado = repository.AtualizaVolumeComic(volumeDTO);
+                var retorno = await repository.AlteracoesSalvas();
+
+                var resultado = repository.RetornaVolumeComicPorId(volumeComic.Id);
+
+                // Assert 
+                Assert.NotNull(resultado);
+                Assert.Equal("1", resultado.Numero);
+                Assert.True(retorno);
+                Assert.NotNull(volumeComicAtualizado);
+                Assert.Equal("Da mesma forma que todos já adoraram heróis em sua infância, um certo jovem admirava aqueles que agiam nas sombras.", volumeComicAtualizado.Sinopse);
+            }
+
+            await Dispose();
+        }
+
+        [Fact]
+        public async Task RepositoryVolume_DeveRetornarVolumeComicExistente()
+        {
+            // Arrange
+            var volumeRepositoryFactory = new VolumeRepositoryFactory();
+            var idObra = Guid.NewGuid();
+            var volumeComic = volumeRepositoryFactory.GerarVolumeComic(idObra);
+
+            await using (var context = new ContextBase(_options))
+            {
+                IVolumeRepository repository = new VolumeRepository(context);
+
+                // Act
+                context.VolumesComic.Add(volumeComic);
+                context.SaveChanges();
+
+                var volumeDTO = volumeRepositoryFactory.GerarVolumeComicDTO(volumeComic.Id, idObra);
+
+                var volumeComicExistente = repository.RetornaVolumeComicExistente(volumeDTO);
+
+                // Assert 
+                Assert.NotNull(volumeComicExistente);
+                Assert.Equal("volume-1", volumeComicExistente.Slug);
+            }
+
+            await Dispose();
+        }
+
+        [Fact]
+        public async Task RepositoryVolume_DeveRetornarUmaListaVolumeComic()
+        {
+            // Arrange
+            var volumeRepositoryFactory = new VolumeRepositoryFactory();
+            var idObra = Guid.NewGuid();
+            var volumeComic = volumeRepositoryFactory.GerarVolumeComic(idObra);
+
+            await using (var context = new ContextBase(_options))
+            {
+                IVolumeRepository repository = new VolumeRepository(context);
+
+                // Act
+                context.VolumesComic.Add(volumeComic);
+                context.SaveChanges();
+
+                var listaVolumeComic = repository.RetornaListaVolumesComic(idObra);
+
+                // Assert 
+                Assert.True(listaVolumeComic.Count > 0);
+            }
+
+            await Dispose();
+        }
+
+        [Fact]
+        public async Task RepositoryVolume_DeveExcluirVolumeComic()
+        {
+            // Arrange
+            var volumeRepositoryFactory = new VolumeRepositoryFactory();
+            var idObra = Guid.NewGuid();
+            var volumeComic = volumeRepositoryFactory.GerarVolumeComic(idObra);
+
+            await using (var context = new ContextBase(_options))
+            {
+                IVolumeRepository repository = new VolumeRepository(context);
+
+                // Act
+                context.VolumesComic.Add(volumeComic);
+                context.SaveChanges();
+
+                repository.ExcluiVolumeComic(volumeComic);
+                var retorno = await repository.AlteracoesSalvas();
+                var resultado = repository.RetornaVolumeComicPorId(volumeComic.Id);
+
+                // Assert 
+                Assert.True(retorno);
+                Assert.Null(resultado);
+            }
+
+            await Dispose();
+        }
 
         #endregion
 
