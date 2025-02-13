@@ -10,34 +10,36 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
     {
         #region => MOCK NOVEL
 
-        public Novel GerarNovel()
+        public Novel GerarNovel(string titulo, string tituloAlternativo, string alias,  string autor, string artista, 
+            string ano, string slug, string usuarioInclusao, string usuarioAlteracao, string imagemCapaPrincipal, string sinopse, 
+            string imagemBanner, string status, string tipo, string nacionalidade, string observacao)
         {
             var novel = new Novel();
             novel.AdicionaNovel(
                 Guid.NewGuid(),
-                "Bruxa Errante, a Jornada dos Testes",
-                "Majo no Tabitabi, The Journey of Elaina, The Witch's Travels, 魔女の旅々",
-                "Bruxa Errante",
-                "Shiraishi Jougi",
-                "Azure",
-                "2017",
-                "bruxa-errante-a-jornada-dos-testes",
-                "Bravo",
-                "Bravo",
-                "https://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V8_Capa.jpg",
-                "A Bruxa, Sim, sou eu.",
+                titulo,
+                tituloAlternativo,
+                alias,
+                autor,
+                artista,
+                ano,
+                slug,
+                usuarioInclusao,
+                usuarioAlteracao,
+                imagemCapaPrincipal,
+                sinopse,
                 DateTime.Now,
                 DateTime.Now,
                 false,
                 false,
                 "#81F7F3",
-                "https://tsundoku.com.br/wp-content/uploads/2021/12/testeBanner.jpg",
+                imagemBanner,
                 "@Bruxa Errante, a Jornada de Elaina",
                 Diretorios.RetornaDiretorioImagemCriado("BruxaErrante"),
-                "Em Andamento",
-                "Light Novel",
-                "japonesa",
-                "Uma obra muito boa",
+                status,
+                tipo,
+                nacionalidade,
+                observacao,
                 false);
 
             novel.GenerosNovel = new List<GeneroNovel> { 
@@ -47,34 +49,37 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
             return novel;
         }
 
-        public Novel GerarNovelComAdicaoVolume()
+        public Novel GerarNovelComAdicaoVolume(string titulo, string tituloAlternativo, string alias, string autor, string artista, 
+            string ano, string slug, string usuarioInclusao, string usuarioAlteracao, string imagemCapaPrincipal, string sinopse,
+            string imagemBanner, string status, string tipo, string nacionalidade, string observacao, string imagemUltimoVolume, 
+            string numeroUltimoVolume, string slugUltimoVolume)
         {
             var novel = new Novel();
             novel.AdicionaNovel(
                 Guid.NewGuid(),
-                "Bruxa Errante, a Jornada dos Testes",
-                "Majo no Tabitabi, The Journey of Elaina, The Witch's Travels, 魔女の旅々",
-                "Bruxa Errante",
-                "Shiraishi Jougi",
-                "Azure",
-                "2017",
-                "bruxa-errante-a-jornada-dos-testes",
-                "Bravo",
-                "Bravo",
-                "https://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V8_Capa.jpg",
-                "A Bruxa, Sim, sou eu.",
+                titulo,
+                tituloAlternativo,
+                alias,
+                autor,
+                artista,
+                ano,
+                slug,
+                usuarioInclusao,
+                usuarioAlteracao,
+                imagemCapaPrincipal,
+                sinopse,
                 DateTime.Now,
                 DateTime.Now,
                 false,
                 false,
                 "#81F7F3",
-                "https://tsundoku.com.br/wp-content/uploads/2021/12/testeBanner.jpg",
+                imagemBanner,
                 "@Bruxa Errante, a Jornada de Elaina",
                 Diretorios.RetornaDiretorioImagemCriado("BruxaErrante"),
-                "Em Andamento",
-                "Light Novel",
-                "japonesa",
-                "Uma obra muito boa",
+                status,
+                tipo,
+                nacionalidade,
+                observacao,
                 false);
 
             novel.GenerosNovel = new List<GeneroNovel> 
@@ -86,40 +91,43 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
             {
                 new VolumeNovel()
             };
-
-            novel.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg", "Volume 01", "volume-1");
+            
+            novel.AtualizaDadosUltimoVolume(imagemUltimoVolume, numeroUltimoVolume, slugUltimoVolume);
 
             return novel;
         }
 
-        public Novel GerarNovelComAdicaoCapitulo()
+        public Novel GerarNovelComAdicaoCapitulo(string titulo, string tituloAlternativo, string alias, string autor, string artista,
+            string ano, string slug, string usuarioInclusao, string usuarioAlteracao, string imagemCapaPrincipal, string sinopse,
+            string imagemBanner, string status, string tipo, string nacionalidade, string observacao, string imagemUltimoVolume,
+            string numeroUltimoVolume, string slugUltimoVolume, string numeroUltimoCapitulo, string slugUltimoCapitulo, DateTime dataAtualizacaoUltimoCapitulo)
         {
             var novel = new Novel();
             novel.AdicionaNovel(
                 Guid.NewGuid(),
-                "Bruxa Errante, a Jornada dos Testes",
-                "Majo no Tabitabi, The Journey of Elaina, The Witch's Travels, 魔女の旅々",
-                "Bruxa Errante",
-                "Shiraishi Jougi",
-                "Azure",
-                "2017",
-                "bruxa-errante-a-jornada-dos-testes",
-                "Bravo",
-                "Bravo",
-                "https://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V8_Capa.jpg",
-                "A Bruxa, Sim, sou eu.",
+                titulo,
+                tituloAlternativo,
+                alias,
+                autor,
+                artista,
+                ano,
+                slug,
+                usuarioInclusao,
+                usuarioAlteracao,
+                imagemCapaPrincipal,
+                sinopse,
                 DateTime.Now,
                 DateTime.Now,
                 false,
                 false,
                 "#81F7F3",
-                "https://tsundoku.com.br/wp-content/uploads/2021/12/testeBanner.jpg",
+                imagemBanner,
                 "@Bruxa Errante, a Jornada de Elaina",
                 Diretorios.RetornaDiretorioImagemCriado("BruxaErrante"),
-                "Em Andamento",
-                "Light Novel",
-                "japonesa",
-                "Uma obra muito boa",
+                status,
+                tipo,
+                nacionalidade,
+                observacao,
                 false);
 
             novel.GenerosNovel = new List<GeneroNovel> 
@@ -133,10 +141,10 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
                 new CapituloNovel()
             };
 
-            novel.Volumes = new List<VolumeNovel> { volumeNovel };
+            novel.Volumes = new List<VolumeNovel> { volumeNovel };          
 
-            novel.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg", "Volume 01", "volume-1");
-            novel.AtualizaDadosUltimoCapitulo("Ilustrações", "ilustracoes", DateTime.Now);
+            novel.AtualizaDadosUltimoVolume(imagemUltimoVolume, numeroUltimoVolume, slugUltimoVolume);
+            novel.AtualizaDadosUltimoCapitulo(numeroUltimoCapitulo, slugUltimoCapitulo, dataAtualizacaoUltimoCapitulo);
 
             return novel;
         }
@@ -145,66 +153,73 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
 
         #region => MOCK COMIC
 
-        public Comic GerarComic()
+        public Comic GerarComic(string titulo, string tituloAlternativo, string alias, string autor, string artista,
+            string ano, string slug, string usuarioInclusao, string usuarioAlteracao, string imagemCapaPrincipal, string sinopse,
+            string imagemBanner, string status, string tipo, string nacionalidade, string observacao)
         {
             var comic = new Comic();
-            comic.AdicionaComic(Guid.Parse("3d6a759d-8c9e-4891-9f0e-89b8d99821cb"),
-                                  "Hatsukoi Losstime",
-                                  "初恋ロスタイム",
-                                  "Hatsukoi Losstime",
-                                  "Nishina Yuuki",
-                                  "Nanora & Zerokich",
-                                  "2019",
-                                  "hatsukoi-losstime",
-                                  "Bravo",
-                                  "Bravo",
-                                  "https://tsundoku.com.br/wp-content/uploads/2022/01/cover_hatsukoi_vol2.jpg",
-                                  "Em um mundo onde apenas duas pessoas se moviam...",
-                                  DateTime.Now,
-                                  DateTime.Now,
-                                  false,
-                                  false,
-                                  "#01DFD7",
-                                  "https://tsundoku.com.br/wp-content/uploads/2022/01/HatsukoiEmbed.jpg",
-                                  "@Hatsukoi Losstime",
-                                  Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
-                                  "Em andamento",
-                                  "Mangá",
-                                  "Japonesa",
-                                  "Uma obra muito boa",
-                                  false);
+            comic.AdicionaComic(
+                Guid.NewGuid(),
+                titulo,
+                tituloAlternativo,
+                alias,
+                autor,
+                artista,
+                ano,
+                slug,
+                usuarioInclusao,
+                usuarioAlteracao,
+                imagemCapaPrincipal,
+                sinopse,
+                DateTime.Now,
+                DateTime.Now,
+                false,
+                false,
+                "#01DFD7",
+                imagemBanner,
+                "@Hatsukoi Losstime",
+                Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
+                status,
+                tipo,
+                nacionalidade,
+                observacao,
+                false);
 
             return comic;
         }
 
-        public Comic GerarComicComAdicaoVolume()
+        public Comic GerarComicComAdicaoVolume(string titulo, string tituloAlternativo, string alias, string autor, string artista,
+            string ano, string slug, string usuarioInclusao, string usuarioAlteracao, string imagemCapaPrincipal, string sinopse,
+            string imagemBanner, string status, string tipo, string nacionalidade, string observacao, string imagemUltimoVolume,
+            string numeroUltimoVolume, string slugUltimoVolume)
         {
             var comic = new Comic();
-            comic.AdicionaComic(Guid.Parse("3d6a759d-8c9e-4891-9f0e-89b8d99821cb"),
-                                  "Hatsukoi Losstime",
-                                  "初恋ロスタイム",
-                                  "Hatsukoi Losstime",
-                                  "Nishina Yuuki",
-                                  "Nanora & Zerokich",
-                                  "2019",
-                                  "hatsukoi-losstime",
-                                  "Bravo",
-                                  "Bravo",
-                                  "https://tsundoku.com.br/wp-content/uploads/2022/01/cover_hatsukoi_vol2.jpg",
-                                  "Em um mundo onde apenas duas pessoas se moviam...",
-                                  DateTime.Now,
-                                  DateTime.Now,
-                                  false,
-                                  false,
-                                  "#01DFD7",
-                                  "https://tsundoku.com.br/wp-content/uploads/2022/01/HatsukoiEmbed.jpg",
-                                  "@Hatsukoi Losstime",
-                                  Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
-                                  "Em andamento",
-                                  "Mangá",
-                                  "Japonesa",
-                                  "Uma obra muito boa",
-                                  false);
+            comic.AdicionaComic(
+                Guid.NewGuid(),
+                titulo,
+                tituloAlternativo,
+                alias,
+                autor,
+                artista,
+                ano,
+                slug,
+                usuarioInclusao,
+                usuarioAlteracao,
+                imagemCapaPrincipal,
+                sinopse,
+                DateTime.Now,
+                DateTime.Now,
+                false,
+                false,
+                "#01DFD7",
+                imagemBanner,
+                "@Hatsukoi Losstime",
+                Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
+                status,
+                tipo,
+                nacionalidade,
+                observacao,
+                false);
 
             comic.GenerosComic = new List<GeneroComic>
             {
@@ -216,38 +231,42 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
                 new VolumeComic()
             };
 
-            comic.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2022/01/Hatsukoi_cover.jpg", "Volume 01", "volume-1");
+            comic.AtualizaDadosUltimoVolume(imagemUltimoVolume, numeroUltimoVolume, slugUltimoVolume);
             return comic;
         }
 
-        public Comic GerarComicComAdicaoCapitulo()
+        public Comic GerarComicComAdicaoCapitulo(string titulo, string tituloAlternativo, string alias, string autor, string artista,
+            string ano, string slug, string usuarioInclusao, string usuarioAlteracao, string imagemCapaPrincipal, string sinopse,
+            string imagemBanner, string status, string tipo, string nacionalidade, string observacao, string imagemUltimoVolume,
+            string numeroUltimoVolume, string slugUltimoVolume, string numeroUltimoCapitulo, string slugUltimoCapitulo, DateTime dataAtualizacaoUltimoCapitulo)
         {
             var comic = new Comic();
-            comic.AdicionaComic(Guid.Parse("3d6a759d-8c9e-4891-9f0e-89b8d99821cb"),
-                                  "Hatsukoi Losstime",
-                                  "初恋ロスタイム",
-                                  "Hatsukoi Losstime",
-                                  "Nishina Yuuki",
-                                  "Nanora & Zerokich",
-                                  "2019",
-                                  "hatsukoi-losstime",
-                                  "Bravo",
-                                  "Bravo",
-                                  "https://tsundoku.com.br/wp-content/uploads/2022/01/cover_hatsukoi_vol2.jpg",
-                                  "Em um mundo onde apenas duas pessoas se moviam...",
-                                  DateTime.Now,
-                                  DateTime.Now,
-                                  false,
-                                  false,
-                                  "#01DFD7",
-                                  "https://tsundoku.com.br/wp-content/uploads/2022/01/HatsukoiEmbed.jpg",
-                                  "@Hatsukoi Losstime",
-                                  Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
-                                  "Em andamento",
-                                  "Mangá",
-                                  "Japonesa",
-                                  "Uma obra muito boa",
-                                  false);
+            comic.AdicionaComic(
+                Guid.NewGuid(),
+                titulo,
+                tituloAlternativo,
+                alias,
+                autor,
+                artista,
+                ano,
+                slug,
+                usuarioInclusao,
+                usuarioAlteracao,
+                imagemCapaPrincipal,
+                sinopse,
+                DateTime.Now,
+                DateTime.Now,
+                false,
+                false,
+                "#01DFD7",
+                imagemBanner,
+                "@Hatsukoi Losstime",
+                Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
+                status,
+                tipo,
+                nacionalidade,
+                observacao,
+                false);
 
             comic.GenerosComic = new List<GeneroComic>
             {
@@ -258,10 +277,10 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
             var capituloComic = new CapituloComic();
             capituloComic.ListaImagensJson = "[]";            
             volumeComic.ListaCapitulo = new List<CapituloComic>{ capituloComic };
-            comic.Volumes = new List<VolumeComic> { volumeComic };
+            comic.Volumes = new List<VolumeComic> { volumeComic };            
 
-            comic.AtualizaDadosUltimoVolume("https://tsundoku.com.br/wp-content/uploads/2022/01/Hatsukoi_cover.jpg", "Volume 01", "volume-1");
-            comic.AtualizaDadosUltimoCapitulo("Capítulo 01", "capitulo-1", DateTime.Now);
+            comic.AtualizaDadosUltimoVolume(imagemUltimoVolume, numeroUltimoVolume, slugUltimoVolume);
+            comic.AtualizaDadosUltimoCapitulo(numeroUltimoCapitulo, slugUltimoCapitulo, dataAtualizacaoUltimoCapitulo);
             return comic;
         }
 
