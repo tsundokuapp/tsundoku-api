@@ -3,6 +3,7 @@ using FluentResults;
 using Newtonsoft.Json;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
+using TsundokuTraducoes.Entities.Entities.DePara;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
@@ -189,6 +190,52 @@ namespace TsundokuTraducoes.Services.AppServices
                 .ToList();
 
             return listaRetornoObrasRecomendadas;
+        }
+
+        public List<RetornoObras> TrataListaRetornoNovel(List<Novel> listaNovels)
+        {
+            var listaRetornoObra = new List<RetornoObras>();
+
+            foreach (var obra in listaNovels)
+            {
+                listaRetornoObra.Add(TrataRetornoNovel(obra));
+            }
+
+            return listaRetornoObra;
+        }
+
+        public RetornoObras TrataRetornoNovel(Novel obra)
+        {
+            return new RetornoObras
+            {
+                UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
+                ? obra.ImagemCapaUltimoVolume
+                : obra.ImagemCapaPrincipal,
+
+                Titulo = obra.Titulo,
+                TipoObra = obra.TipoObra,
+                Alias = obra.Alias,
+                Autor = obra.Autor,
+                DescritivoVolume = obra.NumeroUltimoVolume,
+                Slug = obra.Slug,
+                Id = obra.Id,
+                TituloAlternativo = obra.TituloAlternativo,
+                StatusObra = obra.StatusObra,
+                ListaGeneros = TrataRetornoListaGeneros(obra.GenerosNovel),
+                Publicado = obra.Publicado
+            };
+        }
+
+        public static List<string> TrataRetornoListaGeneros(List<GeneroNovel> generosNovel)
+        {
+            var listaGeneros = new List<string>();
+
+            generosNovel.ForEach((genero) =>
+            {
+                listaGeneros.Add(genero.Genero.Descricao);
+            });
+
+            return listaGeneros;
         }
     }
 }

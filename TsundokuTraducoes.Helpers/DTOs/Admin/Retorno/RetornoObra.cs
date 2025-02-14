@@ -31,6 +31,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin.Retorno
         public string Observacao { get; set; }
         public string DiretorioImagemObra { get; set; }
         public bool IntegracaoDiscord { get; set; }
+        public bool Publicado { get; set; }
 
         public RetornoObra()
         {
