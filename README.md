@@ -100,7 +100,7 @@ docker network create tsundoku
 - Subindo banco MySql 
 Criando um container MySql com a nova rede, lembrando que esse nome vai no arquivo appconfig que está no Drive
 ```sh
-docker run --name=mysql -e MYSQL_ROOT_PASSWORD=1234 -d --network tsundoku mysql
+docker run --name=mysql -e MYSQL_ROOT_PASSWORD=1234 -p 3306:3306 -d --network tsundoku mysql
 ```
 
 - Antes de gerar o build da imagem
