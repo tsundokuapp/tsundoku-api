@@ -2,6 +2,7 @@
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
+using TsundokuTraducoes.Entities.Entities.DePara;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
@@ -282,7 +283,7 @@ namespace TsundokuTraducoes.Data.Repositories
         }
         
 
-        private static List<RetornoObras> TrataListaRetornoNovel(List<Novel> listaNovels)
+        public static List<RetornoObras> TrataListaRetornoNovel(List<Novel> listaNovels)
         {
             var listaRetornoObra = new List<RetornoObras>();
 
@@ -293,8 +294,8 @@ namespace TsundokuTraducoes.Data.Repositories
 
             return listaRetornoObra;
         }
-        
-        private static List<RetornoObras> TrataListaRetornoComic(List<Comic> listaNovels)
+
+        public static List<RetornoObras> TrataListaRetornoComic(List<Comic> listaNovels)
         {
             var listaRetornoObra = new List<RetornoObras>();
 
@@ -321,7 +322,11 @@ namespace TsundokuTraducoes.Data.Repositories
                 Autor = obra.Autor,
                 DescritivoVolume = obra.NumeroUltimoVolume,
                 Slug = obra.Slug,
-                Id = obra.Id
+                Id = obra.Id,
+                TituloAlternativo = obra.TituloAlternativo,
+                StatusObra = obra.StatusObra,
+                ListaGeneros = TrataRetornoListaGeneros(obra.GenerosNovel),
+                Publicado = obra.Publicado
             };
         }
         
@@ -502,6 +507,18 @@ namespace TsundokuTraducoes.Data.Repositories
                                     .Where(w => w.Id == id).FirstOrDefaultAsync();
 
             return capitulo;
+        }
+
+        public static List<string> TrataRetornoListaGeneros(List<GeneroNovel> generosNovel)
+        {
+            var listaGeneros = new List<string>();
+
+            generosNovel.ForEach((genero) =>
+            {
+                listaGeneros.Add(genero.Genero.Descricao);
+            });
+
+            return listaGeneros;
         }
     }
 }

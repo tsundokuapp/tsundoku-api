@@ -1,4 +1,6 @@
 using TsundokuTraducoes.Entities.Entities.Capitulo;
+using TsundokuTraducoes.Entities.Entities.DePara;
+using TsundokuTraducoes.Entities.Entities.Generos;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers;
@@ -122,11 +124,102 @@ public class AppServicesFactory
                                   "Light Novel",
                                   "Japonesa",
                                   "Uma obra muito boa",
-                                  false);
+                                  false,
+                                  true);
 
             listaNovels.Add(novel);
         }
 
         return listaNovels;
+    }
+
+    public Novel GerarNovelComVolumeComGeneros()
+    {
+        var idNovel = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8");
+        var novel = new Novel();
+        novel.AdicionaNovel(
+            idNovel,
+            "Bruxa Errante, a Jornada de Elaina",
+            "Majo no Tabitabi, The Journey of Elaina, The Witch's Travels, 魔女の旅々",
+            "Bruxa Errante",
+            "Shiraishi Jougi",
+            "Azure",
+            "2017",
+            "bruxa-errante-a-jornada-de-elaina",
+            "Bravo",
+            "Bravo",
+            "https://tsundoku.com.br/wp-content/uploads/2021/12/MJ_V8_Capa.jpg",
+            "A Bruxa, Sim, sou eu.",
+            new DateTime(2024, 1, 1, 10, 30, 0),
+            new DateTime(2024, 1, 2, 10, 30, 0),
+            false,
+            false,
+            "#81F7F3",
+            "https://tsundoku.com.br/wp-content/uploads/2021/12/testeBanner.jpg",
+            "@Bruxa Errante, a Jornada de Elaina",
+            Diretorios.RetornaDiretorioImagemCriado("BruxaErrante"),
+            "Em andamento",
+            "Light Novel",
+            "Japonesa",
+            "Observação sobre a jornada da bruxinha mais linda!",
+            false,
+            true);
+
+        var listaGeneros = GerarListaGeneros();
+        var listaGeneroNovels = GerarListaGeneroNovel(listaGeneros);
+        novel.Volumes.Add(GerarVolumeNovel(idNovel));
+        novel.AdicionaListaGeneroNovels(listaGeneroNovels);
+        novel.AtualizaDadosUltimoVolume(novel.Volumes.First().ImagemVolume, novel.Volumes.First().Numero, novel.Volumes.First().Slug);
+
+        return novel;
+    }
+
+    public List<Genero> GerarListaGeneros()
+    {
+        var listaGeneros = new List<Genero>()
+        {
+            new Genero{Id = Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0"), Descricao = "Aventura", Slug = "aventura" },
+            new Genero{Id = Guid.Parse("64329027-9111-418c-a6ff-842689916083"), Descricao =  "Seinen", Slug = "seinen" },
+            new Genero{Id = Guid.Parse("64329027-9111-418c-a6ff-842689916084"), Descricao = "Drama", Slug = "drama" },
+            new Genero{Id = Guid.Parse("64329027-9111-418c-a6ff-842689916085"), Descricao = "Fantasia", Slug = "fantasia" }
+        };
+
+        return listaGeneros;
+    }
+
+    public List<GeneroNovel> GerarListaGeneroNovel(List<Genero> listaGeneros)
+    {
+        var listaGeneroNovel = new List<GeneroNovel>()
+        {
+            new GeneroNovel
+            {
+                GeneroId = Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0"),
+                NovelId = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
+                Genero = listaGeneros.FirstOrDefault(x => x.Id == Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0")),
+            },
+
+            new GeneroNovel
+            {
+                GeneroId = Guid.Parse("64329027-9111-418c-a6ff-842689916083"),
+                NovelId = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
+                Genero = listaGeneros.FirstOrDefault(x => x.Id == Guid.Parse("64329027-9111-418c-a6ff-842689916083")),
+            },
+
+            new GeneroNovel
+            {
+                GeneroId = Guid.Parse("64329027-9111-418c-a6ff-842689916084"),
+                NovelId = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
+                Genero = listaGeneros.FirstOrDefault(x => x.Id == Guid.Parse("64329027-9111-418c-a6ff-842689916084")),
+            },
+
+            new GeneroNovel
+            {
+                GeneroId = Guid.Parse("64329027-9111-418c-a6ff-842689916085"),
+                NovelId = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
+                Genero = listaGeneros.FirstOrDefault(x => x.Id == Guid.Parse("64329027-9111-418c-a6ff-842689916085")),
+            },
+        };
+
+        return listaGeneroNovel;
     }
 }

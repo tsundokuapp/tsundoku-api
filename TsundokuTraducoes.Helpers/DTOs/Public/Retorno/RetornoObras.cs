@@ -18,5 +18,9 @@ namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
         public string Slug { get; set; }
         public string TipoObra { get; set; }
         public Guid Id { get; set; }
+        public string TituloAlternativo { get; set; }
+        public string StatusObra { get; set; }
+        public List<string> ListaGeneros { get; set; }
+        public bool Publicado { get; set; }
     }
 }
