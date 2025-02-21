@@ -73,7 +73,9 @@ namespace TsundokuTraducoes.Api.Helpers
             var request = httpContext.Request;
             var url = $"{request.Scheme}://{request.Host}{request.Path}";
 
-            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url) + RetornaQuery(requestObras);
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            proxima = proxima != null ? proxima + RetornaQuery(requestObras) : null;
+
             string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
 
             return new { total = total, proxima = proxima, anterior = anterior, data = dados };

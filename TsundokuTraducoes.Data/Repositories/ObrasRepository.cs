@@ -25,7 +25,11 @@ namespace TsundokuTraducoes.Data.Repositories
 
             if (!string.IsNullOrEmpty(requestObras.Pesquisar))
             {                
-                listaNovels = await _context.Novels.AsNoTracking().Where(w => EF.Functions.Like(w.Titulo.ToUpper(), $"%{requestObras.Pesquisar.ToUpper()}%")).ToListAsync();
+                listaNovels = await _context.Novels
+                    .AsNoTracking()
+                    .Include(n => n.GenerosNovel)
+                    .ThenInclude(x => x.Genero)
+                    .Where(w => EF.Functions.Like(w.Titulo.ToUpper(), $"%{requestObras.Pesquisar.ToUpper()}%")).ToListAsync();
             }
             else
             {
@@ -33,11 +37,19 @@ namespace TsundokuTraducoes.Data.Repositories
                 if (parametrosVerificados)
                 {
                     var sql = RetornaSqlListaNovelsPorParametros(requestObras.Nacionalidade, requestObras.Status, requestObras.Tipo, requestObras.Genero);
-                    listaNovels = await _context.Novels.FromSqlRaw(sql).ToListAsync();
+                    listaNovels = await _context.Novels
+                        .FromSqlRaw(sql)
+                        .Include(n => n.GenerosNovel)
+                        .ThenInclude(x => x.Genero)
+                        .ToListAsync();
                 }
                 else
                 {
-                    listaNovels = await _context.Novels.ToListAsync();
+                    listaNovels = await _context.Novels
+                        .AsNoTracking()
+                        .Include(n => n.GenerosNovel)
+                        .ThenInclude(x => x.Genero)
+                        .ToListAsync();
                 }
             }
 
