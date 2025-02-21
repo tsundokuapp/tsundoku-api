@@ -33,6 +33,8 @@ namespace TsundokuTraducoes.Data.Repositories
             var capitulos = RetornaListaCapitulosNovel();
             return capitulos.FirstOrDefault(w => w.Id == capituloId);
         }
+
+
         
         public CapituloComic RetornaCapituloComicPorId(Guid capituloId)
         {
