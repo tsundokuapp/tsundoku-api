@@ -28,6 +28,7 @@ namespace TsundokuTraducoes.Data.Repositories
         }
 
 
+
         public CapituloNovel RetornaCapituloNovelPorId(Guid capituloId)
         {
             var capitulos = RetornaListaCapitulosNovel();
