@@ -33,7 +33,8 @@ namespace TsundokuTraducoes.Tests.Infrastructure.Data.Repositories.Obras
                 "Light Novel",
                 "japonesa",
                 "Uma obra muito boa",
-                false);
+                false,
+                true);
 
             return novel;
         }
