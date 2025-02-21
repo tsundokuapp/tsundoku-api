@@ -40,7 +40,8 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
                 tipo,
                 nacionalidade,
                 observacao,
-                false);
+                false,
+                true);
 
             novel.GenerosNovel = new List<GeneroNovel> { 
                 new GeneroNovel { GeneroId = Guid.NewGuid(), NovelId = Guid.NewGuid() } 
@@ -80,7 +81,8 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
                 tipo,
                 nacionalidade,
                 observacao,
-                false);
+                false, 
+                true);
 
             novel.GenerosNovel = new List<GeneroNovel> 
             {
@@ -128,7 +130,8 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
                 tipo,
                 nacionalidade,
                 observacao,
-                false);
+                false, 
+                true);
 
             novel.GenerosNovel = new List<GeneroNovel> 
             {
