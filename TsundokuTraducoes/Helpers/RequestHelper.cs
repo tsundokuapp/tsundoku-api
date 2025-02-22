@@ -77,6 +77,7 @@ namespace TsundokuTraducoes.Api.Helpers
             proxima = proxima != null ? proxima + RetornaQuery(requestObras) : null;
 
             string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
+            anterior = anterior != null ? anterior + RetornaQuery(requestObras) : null;
 
             return new { total = total, proxima = proxima, anterior = anterior, data = dados };
         }
@@ -116,15 +117,38 @@ namespace TsundokuTraducoes.Api.Helpers
 
         private static string RetornaQuery(RequestObras requestObras)
         {
-            if (!string.IsNullOrEmpty(requestObras.Pesquisar))
-                return $"&Pesquisar={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Pesquisar)}";
+            var pesquisar = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Pesquisar);
+            if (!string.IsNullOrEmpty(pesquisar))
+                return $"&Pesquisar={pesquisar}";
 
-            return $"&Nacionalidade={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Nacionalidade)}" +
-                    $"&Status={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Status)}" +
-                    $"&Tipo={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Tipo)}" +
-                    $"&Genero={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Genero)}" +
-                    $"&IdCapitulo={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.IdCapitulo)}" +
-                    $"&IdObra={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.IdObra)}";
+            var nacionalidade = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Nacionalidade);
+            var status = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Status);
+            var tipo = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Tipo);
+            var genero = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Genero);
+            var idCapitulo = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.IdCapitulo);
+            var idObra = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.IdObra);
+
+            string queryStringComposta = string.Empty;
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(nacionalidade) ? "" : $"&Nacionalidade={nacionalidade}";
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(status) ? "" : $"&Status={status}";
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(tipo) ? "" : $"&Tipo={tipo}";
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(genero) ? "" : $"&Genero={genero}";
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(idCapitulo) ? "" : $"&IdCapitulo={idCapitulo}";
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(idObra) ? "" : $"&IdObra={idObra}";
+
+            return queryStringComposta;
         }
     }
 }
