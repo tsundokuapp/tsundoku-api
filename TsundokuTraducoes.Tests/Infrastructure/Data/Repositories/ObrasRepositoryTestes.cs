@@ -1,10 +1,14 @@
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Data.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
+using TsundokuTraducoes.Domain.Services;
+using TsundokuTraducoes.Entities.Entities.Generos;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers;
-using TsundokuTraducoes.Domain.Services;
+using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+using TsundokuTraducoes.Tests.Infrastructure.Data.Repositories;
 
 namespace TsundokuTraducoes.Infrastructure.Data.Repositories;
 
@@ -370,5 +374,107 @@ public class ObrasRepositoryTestes
         Assert.Equal("Hatsukoi Losstime", resultado.Titulo);
         Assert.Equal("Mangá", resultado.TipoObra);
         Assert.Equal("Nishina Yuuki", resultado.Autor);
+    }
+
+    [Fact]
+    public async Task ObterListaNovel_ComUmGenero_DeveRetornarComGeneroEsperado()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var novel = GerarNovel();
+        var obrasRepositoryMock = new ObrasRepositoryFactory();
+        novel.Id = id;
+        var genero = obrasRepositoryMock.GerarGenero("Fantasia");
+
+        var options = new DbContextOptionsBuilder<ContextBase>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+        await using (var context = new ContextBase(options))
+        {
+            IObraRepository repositoryAdmin = new ObraRepository
+                (context,
+                new GeneroDeParaRepository(context),
+                new GeneroRepository(context));
+
+            var serviceAdmin = new ObraService(repositoryAdmin);
+            await context.Generos.AddAsync(genero);
+            await context.SaveChangesAsync();
+
+            await serviceAdmin.AdicionaNovel(novel);
+            await serviceAdmin.InsereGenerosNovel(novel, ["Fantasia"], true);
+
+            // Act
+            var repositoryPublic = new ObrasRepository(context);
+            var resultado = await repositoryPublic.ObterListaNovels(new RequestObras());
+
+            // Assert
+            Assert.True(resultado.Any());
+            Assert.Equal(id, resultado[0].Id);
+            Assert.Equal("Fantasia", resultado[0].ListaGeneros[0]);
+        }
+
+        await using (var context = new ContextBase(options))
+        {
+            await context.Database.EnsureDeletedAsync();
+        }
+    }
+
+    [Fact]
+    public async Task ObterListaNovel_ComListaGenero_DeveRetornarComGenerosEsperados()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var novel = GerarNovel();
+        var obrasRepositoryMock = new ObrasRepositoryFactory();
+        novel.Id = id;
+
+        List<string> listaGeneros = ["Fantasia", "Aventure", "Seinen"];        
+        var generosMockados = new List<Genero>();
+
+        foreach (var genero in listaGeneros)
+        {
+            generosMockados.Add(obrasRepositoryMock.GerarGenero(genero));
+        }
+
+        var options = new DbContextOptionsBuilder<ContextBase>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+        await using (var context = new ContextBase(options))
+        {
+            IObraRepository repositoryAdmin = new ObraRepository
+                (context,
+                new GeneroDeParaRepository(context),
+                new GeneroRepository(context));
+
+            var serviceAdmin = new ObraService(repositoryAdmin);
+
+            foreach (var genero in generosMockados)
+            {
+                await context.Generos.AddAsync(genero);
+                await context.SaveChangesAsync();
+            }            
+
+            await serviceAdmin.AdicionaNovel(novel);
+            await serviceAdmin.InsereGenerosNovel(novel, listaGeneros, true);
+
+
+            // Act
+            var repositoryPublic = new ObrasRepository(context);
+            var resultado = await repositoryPublic.ObterListaNovels(new RequestObras());
+
+            // Assert
+            Assert.True(resultado.Any());
+            Assert.Equal(id, resultado[0].Id);
+            Assert.Contains(listaGeneros[0], resultado[0].ListaGeneros);
+            Assert.Contains(listaGeneros[1], resultado[0].ListaGeneros);
+            Assert.Contains(listaGeneros[2], resultado[0].ListaGeneros);
+        }
+
+        await using (var context = new ContextBase(options))
+        {
+            await context.Database.EnsureDeletedAsync();
+        }
     }
 }
