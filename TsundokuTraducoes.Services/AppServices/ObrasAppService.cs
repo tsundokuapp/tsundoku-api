@@ -25,10 +25,17 @@ namespace TsundokuTraducoes.Services.AppServices
             _generoDeParaAppService = generoDeParaAppService;
         }
 
-        public async Task<List<RetornoObras>> ObterListaNovels(RequestObras requestObras)
+        public async Task<List<RetornoNovel>> ObterListaNovels(RequestObras requestObras)
         {
-            var listaRetornoObra = await _obrasService.ObterListaNovels(requestObras);
-            return listaRetornoObra;
+            var listaRetornoNovel = new List<RetornoNovel>();
+            var listaNovel = await _obrasService.ObterListaNovels(requestObras);
+
+            foreach (var novel in listaNovel)
+            {
+                listaRetornoNovel.Add(TrataRetornoNovelUnica(novel));
+            }
+
+            return listaRetornoNovel;
         }
 
         public async Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras)
@@ -51,20 +58,22 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        public async Task<RetornoNovel> ObterNovelPorId(Guid id)
+        public async Task<Result<RetornoNovel>> ObterNovelPorId(Guid id)
         {
-            var retornoNovel = await _obrasService.ObterNovelPorId(id);
-            return retornoNovel;
+            var novel = await _obrasService.ObterNovelPorId(id);
+            if (novel == null)
+                return Result.Fail<RetornoNovel>("Novel não encontrada");
+
+            return Result.Ok().ToResult(TrataRetornoNovelUnica(novel));
         }
         
-        public async Task<Result<RetornoAppNovel>> ObterNovelPorSlug(string slug)
+        public async Task<Result<RetornoNovel>> ObterNovelPorSlug(string slug)
         {
             var novel = await _obrasService.ObterNovelPorSlug(slug);
             if (novel == null)
-                return Result.Fail<RetornoAppNovel>("Novel não encontrado");
-            
-            var retornoNovel = await TrataGenerosNovel(novel);
-            return Result.Ok().ToResult(retornoNovel);
+                return Result.Fail<RetornoNovel>("Novel não encontrada");
+                        
+            return Result.Ok().ToResult(TrataRetornoNovelUnica(novel));
         }
 
         public async Task<RetornoComic> ObterComicPorId(Guid id)
@@ -147,14 +156,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             return retornoCapitulo;
         }
-        
-        private async Task<RetornoAppNovel> TrataGenerosNovel(RetornoNovel novel)
-        {
-            var retornoNovel = _mapper.Map<RetornoAppNovel>(novel);
-            retornoNovel.ListaGeneros = await _generoDeParaAppService.CarregaListaGenerosNovel(novel.Generos);
-            return retornoNovel;
-        }
-
+       
         public List<RetornoObrasRecomendadas> TratamentoRetornoObrasRecomendadas(List<Novel> listaNovelsRecomendadas, List<Comic> listaComicsRecomendadas)
         {
             var query = (from comics in listaComicsRecomendadas
@@ -204,7 +206,7 @@ namespace TsundokuTraducoes.Services.AppServices
             return listaRetornoObra;
         }
 
-        public RetornoObras TrataRetornoNovel(Novel obra)
+        public static RetornoObras TrataRetornoNovel(Novel obra)
         {
             return new RetornoObras
             {
@@ -221,12 +223,45 @@ namespace TsundokuTraducoes.Services.AppServices
                 Id = obra.Id,
                 TituloAlternativo = obra.TituloAlternativo,
                 StatusObra = obra.StatusObra,
-                ListaGeneros = TrataRetornoListaGeneros(obra.GenerosNovel),
+                ListaGeneros = TrataRetornoListaGenerosNovel(obra.GenerosNovel),
                 Publicado = obra.Publicado
+            };
+        }        
+
+        public static RetornoNovel TrataRetornoNovelUnica(Novel obra)
+        {
+            return new RetornoNovel()
+            {
+                UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
+                    ? obra.ImagemCapaUltimoVolume
+                    : obra.ImagemCapaPrincipal,
+
+                UrlBanner = !string.IsNullOrEmpty(obra.ImagemBanner) ? obra.ImagemBanner : !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
+                                                                                            ? obra.ImagemCapaUltimoVolume
+                                                                                            : obra.ImagemCapaPrincipal,
+
+                Titulo = obra.Titulo,
+                TituloAlternativo = obra.TituloAlternativo,
+                TipoObra = obra.TipoObra,
+                Alias = obra.Alias,
+                Autor = obra.Autor,
+                Artista = obra.Artista,
+                Ano = obra.Ano,
+                Visualizacoes = obra.Visualizacoes.ToString(),
+                Sinopse = obra.Sinopse,
+                EhRecomdacao = obra.EhRecomendacao,
+                EhObraMaiorIdade = obra.EhObraMaiorIdade,
+                DescritivoVolume = obra.NumeroUltimoVolume,
+                Slug = obra.Slug,
+                Id = obra.Id,
+                Nacionalidade = obra.Nacionalidade,
+                StatusObra = obra.StatusObra,
+                Observacao = obra.Observacao,
+                ListaGeneros = TrataRetornoListaGenerosNovel(obra.GenerosNovel),
             };
         }
 
-        public static List<string> TrataRetornoListaGeneros(List<GeneroNovel> generosNovel)
+        public static List<string> TrataRetornoListaGenerosNovel(List<GeneroNovel> generosNovel)
         {
             var listaGeneros = new List<string>();
 

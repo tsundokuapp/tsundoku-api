@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Data.Repositories;
 using TsundokuTraducoes.Domain.Interfaces.Repositories;
@@ -411,7 +410,7 @@ public class ObrasRepositoryTestes
             // Assert
             Assert.True(resultado.Any());
             Assert.Equal(id, resultado[0].Id);
-            Assert.Equal("Fantasia", resultado[0].ListaGeneros[0]);
+            Assert.Equal("Fantasia", resultado[0].GenerosNovel[0].Genero.Descricao);
         }
 
         await using (var context = new ContextBase(options))
@@ -467,9 +466,9 @@ public class ObrasRepositoryTestes
             // Assert
             Assert.True(resultado.Any());
             Assert.Equal(id, resultado[0].Id);
-            Assert.Contains(listaGeneros[0], resultado[0].ListaGeneros);
-            Assert.Contains(listaGeneros[1], resultado[0].ListaGeneros);
-            Assert.Contains(listaGeneros[2], resultado[0].ListaGeneros);
+            Assert.Contains(listaGeneros[0], resultado[0].GenerosNovel[0].Genero.Descricao);
+            Assert.Contains(listaGeneros[1], resultado[0].GenerosNovel[1].Genero.Descricao);
+            Assert.Contains(listaGeneros[2], resultado[0].GenerosNovel[2].Genero.Descricao);
         }
 
         await using (var context = new ContextBase(options))

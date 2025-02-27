@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using TsundokuTraducoes.Entities.Entities.DePara;
 
 namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
 {
@@ -10,9 +9,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string UrlCapaVolume { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string UrlBanner { get; set; }
         
         public Guid Id { get; set; }
         public string Titulo { get; set; }
@@ -23,8 +19,8 @@ namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
         public string Ano { get; set; }
         public string Visualizacoes { get; set; }
         public string Sinopse { get; set; }
-        public Boolean EhRecomdacao { get; set; }
-        public Boolean EhObraMaiorIdade { get; set; }
+        public bool EhRecomdacao { get; set; }
+        public bool EhObraMaiorIdade { get; set; }
         public string DescritivoVolume { get; set; }
         public string Slug { get; set; }
         public string TipoObra { get; set; }
@@ -32,6 +28,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
         public string Nacionalidade { get; set; }
         public string Observacao { get; set; }
         public string UrlCapa { get; set; }
-        public List<GeneroNovel> Generos { get; set; }
+        public string UrlBanner { get; set; }
+        public List<string> ListaGeneros { get; set; }
     }
 }
