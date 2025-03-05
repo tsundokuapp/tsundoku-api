@@ -228,7 +228,7 @@ namespace TsundokuTraducoes.Services.AppServices
             };
         }        
 
-        public static RetornoNovel TrataRetornoNovelUnica(Novel obra)
+        public RetornoNovel TrataRetornoNovelUnica(Novel obra)
         {
             return new RetornoNovel()
             {

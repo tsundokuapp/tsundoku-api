@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Moq;
 using TsundokuTraducoes.Domain.Interfaces.Services;
+using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Services.AppServices;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
@@ -95,8 +96,30 @@ namespace TsundokuTraducoes.Tests.Services.AppServices
         [Fact]
         public void RetornaNovelPorId_ListaGeneros_DeveRetornarListaGeneros()
         {
+            // Arrange
+            var appServicesFactory = new AppServicesFactory();
+            var banner = "https://tsundoku.com.br/wp-content/uploads/2023/12/O-comeco-depois-dofim.jpg";
+            var novel = appServicesFactory.GerarNovelComBanner(banner);
 
-        }
-    
+            var generos = appServicesFactory.GerarListaGenerosPorParametros(["Aventura", "Fantasia"]);
+            var listaGeneroNovel = appServicesFactory.GerarListaGeneroNovels(novel, generos);
+
+
+            // Act
+            List<RetornoNovel> retorno = new List<RetornoNovel>();
+            List<Novel> novels = [novel];
+
+            foreach (var item in novels)
+            {
+                var retornoNovel = _obrasAppServiceMock.TrataRetornoNovelUnica(item);
+                retorno.Add(retornoNovel);
+            }                       
+
+            // Assert
+            Assert.True(retorno.Any());
+            Assert.Equal(banner, retorno[0].UrlBanner);
+            Assert.Contains("Aventura", retorno[0].ListaGeneros);
+            Assert.Contains("Fantasia", retorno[0].ListaGeneros);
+        }    
     }
 }
