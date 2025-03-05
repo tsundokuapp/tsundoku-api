@@ -1,9 +1,11 @@
+using AutoFixture;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Entities.Entities.DePara;
 using TsundokuTraducoes.Entities.Entities.Generos;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers;
+using TsundokuTraducoes.Tests.Utils;
 
 namespace TsundokuTraducoes.Services.AppServices;
 
@@ -219,6 +221,52 @@ public class AppServicesFactory
                 Genero = listaGeneros.FirstOrDefault(x => x.Id == Guid.Parse("64329027-9111-418c-a6ff-842689916085")),
             },
         };
+
+        return listaGeneroNovel;
+    }
+
+    public List<Genero> GerarListaGenerosPorParametros(List<string> listaGenero)
+    {
+        var listaGeneros = new List<Genero>();
+
+        foreach (var descricaoGenero in listaGenero)
+        {
+            listaGeneros
+                .Add(FixtureCustomizado
+                    .RetornaFixtureCustomizado
+                    .Build<Genero>()
+                    .With(x => x.Descricao, descricaoGenero)
+                    .Create()
+                );
+        }
+
+        return listaGeneros;
+    }
+
+    public Novel GerarNovelComBanner(string banner)
+    {
+        return FixtureCustomizado
+            .RetornaFixtureCustomizado
+            .Build<Novel>()
+            .With(x => x.ImagemBanner, banner)
+            .Create();
+    }
+
+    public List<GeneroNovel> GerarListaGeneroNovels(Novel novel, List<Genero> listaGeneros)
+    {
+        var listaGeneroNovel = new List<GeneroNovel>();
+
+        foreach (var genero in listaGeneros)
+        {
+            listaGeneroNovel
+            .Add(FixtureCustomizado
+                .RetornaFixtureCustomizado
+                .Build<GeneroNovel>()
+                .With(x => x.GeneroId, genero.Id)
+                .With(x => x.NovelId, novel.Id)
+                .Create()
+            );
+        }
 
         return listaGeneroNovel;
     }

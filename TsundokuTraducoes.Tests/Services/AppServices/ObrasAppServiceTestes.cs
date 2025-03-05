@@ -91,5 +91,12 @@ namespace TsundokuTraducoes.Tests.Services.AppServices
                 Assert.Equal(esperado.Capa, encontrado.Capa);
             }
         }
+
+        [Fact]
+        public void RetornaNovelPorId_ListaGeneros_DeveRetornarListaGeneros()
+        {
+
+        }
+    
     }
 }
