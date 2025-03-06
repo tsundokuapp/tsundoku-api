@@ -94,7 +94,7 @@ namespace TsundokuTraducoes.Tests.Services.AppServices
         }
 
         [Fact]
-        public void RetornaNovelPorId_ListaGeneros_DeveRetornarListaGeneros()
+        public void RetornaNovel_ListaGeneros_DeveRetornarListaGeneros()
         {
             // Arrange
             var appServicesFactory = new AppServicesFactory();
@@ -102,24 +102,26 @@ namespace TsundokuTraducoes.Tests.Services.AppServices
             var novel = appServicesFactory.GerarNovelComBanner(banner);
 
             var generos = appServicesFactory.GerarListaGenerosPorParametros(["Aventura", "Fantasia"]);
-            var listaGeneroNovel = appServicesFactory.GerarListaGeneroNovels(novel, generos);
-
-
+            var generoNovel = appServicesFactory.GerarNovel_Com_ListaGeneroNovels(novel, generos);
+            
             // Act
-            List<RetornoNovel> retorno = new List<RetornoNovel>();
-            List<Novel> novels = [novel];
+            List<RetornoNovel> listaRetornoNovel = new List<RetornoNovel>();
+            List<Novel> novels = [novel];            
+
 
             foreach (var item in novels)
             {
                 var retornoNovel = _obrasAppServiceMock.TrataRetornoNovelUnica(item);
-                retorno.Add(retornoNovel);
-            }                       
+                listaRetornoNovel.Add(retornoNovel);
+            }
 
             // Assert
-            Assert.True(retorno.Any());
-            Assert.Equal(banner, retorno[0].UrlBanner);
-            Assert.Contains("Aventura", retorno[0].ListaGeneros);
-            Assert.Contains("Fantasia", retorno[0].ListaGeneros);
+            Assert.True(listaRetornoNovel.Any());
+
+            Assert.Equal(banner, listaRetornoNovel[0].UrlBanner);
+            Assert.Equal("Aventura", listaRetornoNovel[0].ListaGeneros[0]);
+            Assert.Equal("Fantasia", listaRetornoNovel[0].ListaGeneros[1]);
+
         }    
     }
 }

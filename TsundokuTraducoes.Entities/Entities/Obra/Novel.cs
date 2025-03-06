@@ -100,6 +100,7 @@ namespace TsundokuTraducoes.Entities.Entities.Obra
             SlugUltimoCapitulo = slugUltimoCapitulo;
             DataAtualizacaoUltimoCapitulo = dataAtualizacaoUltimoCapitulo;
         }
+
         public void AdicionaListaGeneroNovels(List<GeneroNovel> generoNovels)
         {
             GenerosNovel.AddRange(generoNovels);

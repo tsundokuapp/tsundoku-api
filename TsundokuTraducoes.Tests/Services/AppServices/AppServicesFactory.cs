@@ -249,25 +249,25 @@ public class AppServicesFactory
             .RetornaFixtureCustomizado
             .Build<Novel>()
             .With(x => x.ImagemBanner, banner)
+            .With(x => x.GenerosNovel, new List<GeneroNovel>())
             .Create();
     }
 
-    public List<GeneroNovel> GerarListaGeneroNovels(Novel novel, List<Genero> listaGeneros)
+    public List<GeneroNovel> GerarNovel_Com_ListaGeneroNovels(Novel novel, List<Genero> listaGeneros)
     {
-        var listaGeneroNovel = new List<GeneroNovel>();
+        novel.GenerosNovel = new List<GeneroNovel>();
 
-        foreach (var genero in listaGeneros)
+        foreach (var item in listaGeneros)
         {
-            listaGeneroNovel
-            .Add(FixtureCustomizado
+            var generoNovel = FixtureCustomizado
                 .RetornaFixtureCustomizado
                 .Build<GeneroNovel>()
-                .With(x => x.GeneroId, genero.Id)
-                .With(x => x.NovelId, novel.Id)
-                .Create()
-            );
+                .With(x => x.Genero, item)
+                .Create();
+
+           novel.GenerosNovel.Add(generoNovel);
         }
 
-        return listaGeneroNovel;
+        return novel.GenerosNovel;
     }
 }
