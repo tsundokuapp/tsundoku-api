@@ -21,7 +21,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/obras/novels")]
-        [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
+        [ProducesResponseType(typeof(List<RetornoNovel>), statusCode: 200)]
         public async Task<IActionResult> ObterNovels([FromQuery] RequestObras requestObras)
         {
             var capitulos = await _obrasAppServices.ObterListaNovels(requestObras);
@@ -48,15 +48,15 @@ namespace TsundokuTraducoes.Api.Controllers
         [ProducesResponseType(typeof(RetornoNovel), statusCode: 200)]
         public async Task<IActionResult> ObterNovelPorId(Guid id)
         {
-            var novel = await _obrasAppServices.ObterNovelPorId(id);
-            if (novel == null)
-                return NotFound("Novel não encontra!");
+            var retorno = await _obrasAppServices.ObterNovelPorId(id);
+            if (retorno.IsFailed)
+                return NotFound(retorno.Errors[0].Message);
 
-            return Ok(novel);
+            return Ok(retorno.Value);
         }
         
         [HttpGet("api/obras/novel/slug/{slug}")]
-        [ProducesResponseType(typeof(RetornoAppNovel), statusCode: 200)]
+        [ProducesResponseType(typeof(RetornoNovel), statusCode: 200)]
         public async Task<IActionResult> ObterNovelPorSlug(string slug)
         {
             var retorno = await _obrasAppServices.ObterNovelPorSlug(slug);

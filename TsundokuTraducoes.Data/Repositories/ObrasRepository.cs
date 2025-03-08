@@ -19,7 +19,7 @@ namespace TsundokuTraducoes.Data.Repositories
             _context = context;
         }
 
-        public async Task<List<RetornoObras>> ObterListaNovels(RequestObras requestObras)
+        public async Task<List<Novel>> ObterListaNovels(RequestObras requestObras)
         {
             var listaNovels = new List<Novel>();
 
@@ -53,7 +53,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 }
             }
 
-            return TrataListaRetornoNovel(listaNovels);
+            return listaNovels;
         }
 
         public async Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras)
@@ -105,19 +105,25 @@ namespace TsundokuTraducoes.Data.Repositories
             return TrataListaRetornoComic(listaComics);
         }
 
-        
-        public async Task<RetornoNovel> ObterNovelPorId(Guid id)
-        {
-            var novel = await _context.Novels.AsNoTracking().FirstOrDefaultAsync(w => w.Id == id);
 
-            return novel is null ? null : TrataRetornoNovelUnica(novel);
+        public async Task<Novel> ObterNovelPorId(Guid id)
+        {
+            return await _context
+                .Novels
+                .AsNoTracking()
+                .Include(n => n.GenerosNovel)
+                .ThenInclude(x => x.Genero)
+                .FirstOrDefaultAsync(w => w.Id == id);
         }
-        
-        public async Task<RetornoNovel> ObterNovelPorSlug(string slug)
-        {
-            var novel = await _context.Novels.AsNoTracking().Include(n => n.GenerosNovel).FirstOrDefaultAsync(w => w.Slug == slug);
 
-            return novel is null ? null : TrataRetornoNovelUnica(novel);
+        public async Task<Novel> ObterNovelPorSlug(string slug)
+        {
+            return await _context
+                .Novels
+                .AsNoTracking()
+                .Include(n => n.GenerosNovel)
+                .ThenInclude(x => x.Genero)
+                .FirstOrDefaultAsync(w => w.Slug == slug);
         }
 
         public async Task<RetornoComic> ObterComicPorId(Guid id)
@@ -367,9 +373,10 @@ namespace TsundokuTraducoes.Data.Repositories
                 Nacionalidade = obra.Nacionalidade,
                 StatusObra = obra.StatusObra,
                 Observacao = obra.Observacao,
-                Generos = obra.GenerosNovel,
+                ListaGeneros = TrataRetornoListaGeneros(obra.GenerosNovel),
             };
         }
+
 
         public static RetornoComic TrataRetornoComicUnica(Comic obra)
         {
@@ -416,6 +423,7 @@ namespace TsundokuTraducoes.Data.Repositories
                 Id = obra.Id
             };
         }
+
 
         private static void TrataListaRetornoCapitulo(List<RetornoCapitulosHome> listaRetornoCapitulos)
         {

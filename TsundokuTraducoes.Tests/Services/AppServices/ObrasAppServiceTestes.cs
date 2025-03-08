@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Moq;
 using TsundokuTraducoes.Domain.Interfaces.Services;
+using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Services.AppServices;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
@@ -91,5 +92,36 @@ namespace TsundokuTraducoes.Tests.Services.AppServices
                 Assert.Equal(esperado.Capa, encontrado.Capa);
             }
         }
+
+        [Fact]
+        public void RetornaNovel_ListaGeneros_DeveRetornarListaGeneros()
+        {
+            // Arrange
+            var appServicesFactory = new AppServicesFactory();
+            var banner = "https://tsundoku.com.br/wp-content/uploads/2023/12/O-comeco-depois-dofim.jpg";
+            var novel = appServicesFactory.GerarNovelComBanner(banner);
+
+            var generos = appServicesFactory.GerarListaGenerosPorParametros(["Aventura", "Fantasia"]);
+            var generoNovel = appServicesFactory.GerarNovel_Com_ListaGeneroNovels(novel, generos);
+            
+            // Act
+            List<RetornoNovel> listaRetornoNovel = new List<RetornoNovel>();
+            List<Novel> novels = [novel];            
+
+
+            foreach (var item in novels)
+            {
+                var retornoNovel = _obrasAppServiceMock.TrataRetornoNovelUnica(item);
+                listaRetornoNovel.Add(retornoNovel);
+            }
+
+            // Assert
+            Assert.True(listaRetornoNovel.Any());
+
+            Assert.Equal(banner, listaRetornoNovel[0].UrlBanner);
+            Assert.Equal("Aventura", listaRetornoNovel[0].ListaGeneros[0]);
+            Assert.Equal("Fantasia", listaRetornoNovel[0].ListaGeneros[1]);
+
+        }    
     }
 }
