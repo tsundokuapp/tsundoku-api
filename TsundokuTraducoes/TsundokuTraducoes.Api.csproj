@@ -6,9 +6,13 @@
 
   <ItemGroup>
     <Compile Remove="ArquivosEstaticos\**" />
+    <Compile Remove="Controllers\Base\**" />
     <Content Remove="ArquivosEstaticos\**" />
+    <Content Remove="Controllers\Base\**" />
     <EmbeddedResource Remove="ArquivosEstaticos\**" />
+    <EmbeddedResource Remove="Controllers\Base\**" />
     <None Remove="ArquivosEstaticos\**" />
+    <None Remove="Controllers\Base\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +38,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\Admin\" />
+    <Folder Include="Controllers\Publico\novel\" />
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\assets\images\Teste\" />
   </ItemGroup>
