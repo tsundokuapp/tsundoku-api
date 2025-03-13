@@ -15,6 +15,7 @@ namespace TsundokuTraducoes.Services.Profiles
             CreateMap<CapituloNovel, RetornoCapitulo>();
             CreateMap<CapituloComic, RetornoCapitulo>();
             CreateMap<CapituloNovel, RetornoCapituloNoVolume>();
+            CreateMap<CapituloComic, RetornoCapituloComic>();
         }
     }
 }
