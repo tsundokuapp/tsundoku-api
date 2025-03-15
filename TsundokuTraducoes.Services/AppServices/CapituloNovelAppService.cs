@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentResults;
 using Newtonsoft.Json;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
@@ -9,19 +10,36 @@ using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Services.AppServices
 {
-    public class CapituloNovelAppService(ICapituloNovelService service, IMapper mapper) : ICapituloNovelAppService, IBaseService<ICapituloNovelAppService, IMapper>
+    public class CapituloNovelAppService(ICapituloNovelService service, IObraService obraservice, IMapper mapper) : ICapituloNovelAppService, IBaseService<ICapituloNovelAppService, IObraService, IMapper>
     {
-        public async Task<List<RetornoCapituloNovel>> ObterCapitulosNovelPorIdObra(Guid idObra)
+        public async Task<Result<List<RetornoCapituloNovel>>> ObterCapitulosNovelPorIdObraEIdCapitulo(Guid idObra, Guid idCapitulo)
         {
             var listaRetornoCapituloNovel = new List<RetornoCapituloNovel>();
             var listaCapituloNovel = await service.ObterCapitulosNovelPorIdObra(idObra);
+
+            var obra = obraservice.RetornaNovelPorId(idObra);
+            if (obra == null)
+                return Result.Fail("Obra não encontrada!");
 
             foreach (var capituloNovel in listaCapituloNovel)
             {
                 listaRetornoCapituloNovel.Add(TrataRetornoCapituloNovel(capituloNovel));
             }
 
-            return listaRetornoCapituloNovel;
+            var resultExisteCapitulo = ValidaExisteCapituloNaLista(listaRetornoCapituloNovel, idCapitulo);
+            if (resultExisteCapitulo.IsFailed)
+                return Result.Fail(resultExisteCapitulo.Errors[0].Message);
+
+            return Result.Ok(listaRetornoCapituloNovel);
+        }
+
+        public Result ValidaExisteCapituloNaLista(List<RetornoCapituloNovel> capitulos, Guid idCapitulo)
+        {
+
+            if (capitulos.FirstOrDefault(x => x.Id == idCapitulo) is null)
+                return Result.Fail("Capítulo não encontrado!");
+
+            return Result.Ok();
         }
 
         public RetornoCapituloNovel TrataRetornoCapituloNovel(CapituloNovel capituloNovel)
