@@ -17,8 +17,10 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
     {
         private readonly IMapper _mapper;
         private readonly Mock<ICapituloComicService> _capituloComicService;
+        private readonly Mock<ICapituloNovelService> _capituloNovelService;
         
         private readonly CapituloComicAppService _capituloComicAppService;
+        private readonly CapituloNovelAppService _capituloNovelAppService;
 
         public CapituloAppServiceTestes()
         {
@@ -32,11 +34,17 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
 
             _mapper = config.CreateMapper();
             _capituloComicService = new Mock<ICapituloComicService>();
+            _capituloNovelService = new Mock<ICapituloNovelService>();
 
             _capituloComicAppService = new CapituloComicAppService(
                _capituloComicService.Object,
                _mapper
-            );         
+            );
+
+            _capituloNovelAppService = new CapituloNovelAppService(
+               _capituloNovelService.Object,
+               _mapper
+            );
         }
 
         #region => TESTES CAPITULO COMIC APP SERVICE
@@ -80,6 +88,51 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.True(objetoRetorno.Data.Id == listaIdsCapitulos[1]);
             Assert.Contains($"{comic.Id}/{listaIdsCapitulos[2]}", objetoRetorno.Proxima);
             Assert.Contains($"{comic.Id}/{listaIdsCapitulos[0]}", objetoRetorno.Anterior);
+        }
+
+        #endregion
+
+        #region => TESTES CAPITULO NOVEL APP SERVICE
+
+        [Fact]
+        public void CapituloNovelAppService_DeveRetornarObjetoComCapituloPorIdCapituloIdObra()
+        {
+            // Arrange
+            var idNovel = Guid.Parse("00000000-1111-2222-3333-444444444444");
+
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+            ];
+
+            var capituloAppServiceFactory = new CapituloAppServiceFactory();
+            Novel novel = capituloAppServiceFactory.GerarNovel(idNovel);
+            VolumeNovel volumeNovel = capituloAppServiceFactory.GerarVolumeNovel(idNovel);
+            List<CapituloNovel> listaCapituloNovel = capituloAppServiceFactory.GerarListaCapituloNovel(listaIdsCapitulos);
+
+            var scheme = "https";
+            var host = "localhost";
+            var path = $"/mock/{novel.Id}/{listaIdsCapitulos[1]}";
+            var url = $"{scheme}://{host}/{path}";
+            var httpContext = new HttpContextMock().SetupUrl(url);
+
+            // Assert
+            var retornoListaRetornoCapituloNovel = new List<RetornoCapituloNovel>();
+
+            listaCapituloNovel
+                .ForEach(capituloNovel => retornoListaRetornoCapituloNovel
+                    .Add(_capituloNovelAppService
+                        .TrataRetornoCapituloNovel(capituloNovel))
+                );
+
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoCapitulosNovel(httpContext, retornoListaRetornoCapituloNovel, listaIdsCapitulos[1]);
+
+            Assert.True(objetoRetorno.Data.Id == listaIdsCapitulos[1]);
+            Assert.Contains($"{novel.Id}/{listaIdsCapitulos[2]}", objetoRetorno.Proxima);
+            Assert.Contains($"{novel.Id}/{listaIdsCapitulos[0]}", objetoRetorno.Anterior);
         }
 
         #endregion
