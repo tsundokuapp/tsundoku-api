@@ -19,6 +19,7 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
     {
         private readonly IMapper _mapper;
         private readonly Mock<ICapituloComicService> _capituloComicServiceMock;
+        private readonly Mock<ICapituloNovelService> _capituloNovelService;
         private readonly Mock<IObraService> _ObraServiceMock;
         
         private readonly CapituloComicAppService _capituloComicAppService;
@@ -263,7 +264,7 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
                 Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
             ];
 
-            var capituloAppServiceFactory = new CapituloAppServiceFactory();
+            var capituloAppServiceFactory = new CapituloAppServiceFactoryTestes();
             Novel novel = capituloAppServiceFactory.GerarNovel(idNovel);
             VolumeNovel volumeNovel = capituloAppServiceFactory.GerarVolumeNovel(idNovel);
             List<CapituloNovel> listaCapituloNovel = capituloAppServiceFactory.GerarListaCapituloNovel(listaIdsCapitulos);
