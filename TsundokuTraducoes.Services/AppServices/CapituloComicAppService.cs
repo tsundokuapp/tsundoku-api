@@ -24,7 +24,7 @@ namespace TsundokuTraducoes.Services.AppServices
             return listaRetornoCapituloComic;
         }
 
-        private RetornoCapituloComic TrataRetornoCapituloComic(CapituloComic CapituloComic)
+        public RetornoCapituloComic TrataRetornoCapituloComic(CapituloComic CapituloComic)
         {
             var retornoCapitulo = mapper.Map<RetornoCapituloComic>(CapituloComic);
             retornoCapitulo.DataInclusao = CapituloComic.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");

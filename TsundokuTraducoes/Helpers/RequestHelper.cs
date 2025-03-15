@@ -7,6 +7,7 @@ using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno.Response;
 using TsundokuTraducoes.Helpers.Validacao;
 
 namespace TsundokuTraducoes.Api.Helpers
@@ -95,12 +96,12 @@ namespace TsundokuTraducoes.Api.Helpers
             return new { total, data = dados };
         }
 
-        public static object CriarObjetoRetonoCapitulosComics(HttpContext httpContext, List<RetornoCapituloComic> listaRetornoCapituloComic, Guid idCapitulo)
+        public static ObjetoRetornoCapituloComicResponse CriarObjetoRetonoCapitulosComics(HttpContext httpContext, List<RetornoCapituloComic> listaRetornoCapituloComic, Guid idCapitulo)
         {
-            var dados = listaRetornoCapituloComic.FirstOrDefault(x => x.Id == idCapitulo);
+            var retornoCapituloComic = listaRetornoCapituloComic.FirstOrDefault(x => x.Id == idCapitulo);
 
             var indiceCapitulo = listaRetornoCapituloComic
-                .IndexOf(dados);
+                .IndexOf(retornoCapituloComic);
 
             var request = httpContext.Request;
             string anterior = null;
@@ -119,7 +120,7 @@ namespace TsundokuTraducoes.Api.Helpers
                 proxima = $"{request.Scheme}://{request.Host}{urlSemIdAtual}/{idProximo}";
             }
 
-            return new { proxima , anterior, data = dados };
+            return new ObjetoRetornoCapituloComicResponse { Anterior = anterior , Proxima = proxima, Data = retornoCapituloComic };
         }
 
         private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)
