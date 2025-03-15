@@ -8,7 +8,7 @@ using TsundokuTraducoes.Tests.Utils;
 
 namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
 {
-    public class CapituloAppServiceFactory
+    public class CapituloAppServiceFactoryTestes
     {
         #region => TESTES CAPITULO COMIC APP SERVICE
 
@@ -30,7 +30,7 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
                     .Add(FixtureCustomizado.RetornaFixtureCustomizado
                         .Build<CapituloComic>()
                         .With(x => x.Id, id)
-                        .With(x => x.ListaImagensJson, RetornaConteudoManga())
+                        .With(x => x.ListaImagensJson, RetornaConteudoComic())
                         .Create()
                     )
                 );
@@ -38,7 +38,7 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             return listaCapituloComic;
         }
 
-        public static string RetornaConteudoManga()
+        public static string RetornaConteudoComic()
         {
             var lista = new List<EnderecoImagemDTO>
             {

@@ -4,6 +4,6 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
 {
     public interface ICapituloComicRepository
     {
-        Task<List<CapituloComic>> ObterCapitulosPorComicPorIdObra(Guid idObra);
+        Task<List<CapituloComic>> ObterCapitulosComicPorIdObra(Guid idObra);
     }
 }

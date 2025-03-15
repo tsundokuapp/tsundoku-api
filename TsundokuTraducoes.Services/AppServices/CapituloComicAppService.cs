@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentResults;
 using Newtonsoft.Json;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
@@ -9,19 +10,37 @@ using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Services.AppServices
 {   
-    public class CapituloComicAppService(ICapituloComicService service, IMapper mapper) : ICapituloComicAppService, IBaseService<ICapituloComicAppService, IMapper>
+    public class CapituloComicAppService(ICapituloComicService service, IObraService obraservice, IMapper mapper) : ICapituloComicAppService, IBaseService<ICapituloComicAppService, IObraService, IMapper>
     {
-        public async Task<List<RetornoCapituloComic>> ObterCapitulosPorComicPorIdObra(Guid idObra)
+        public async Task<Result<List<RetornoCapituloComic>>> ObterCapitulosComicPorIdObraEIdCapitulo(Guid idObra, Guid idCapitulo)
         {
             var listaRetornoCapituloComic = new List<RetornoCapituloComic>();
-            var listaCapituloComic = await service.ObterCapitulosPorComicPorIdObra(idObra);
+            
+            var obra = obraservice.RetornaComicPorId(idObra);
+            if (obra == null)
+                return Result.Fail("Obra não encontrada!");
+
+            var listaCapituloComic = await service.ObterCapitulosComicPorIdObra(idObra);
 
             foreach (var capituloComic in listaCapituloComic)
             {
-                listaRetornoCapituloComic.Add(TrataRetornoCapituloComic(capituloComic));
+                listaRetornoCapituloComic.Add(TrataRetornoCapituloComic(capituloComic));            
             }
 
-            return listaRetornoCapituloComic;
+            var resultExisteCapitulo = ValidaExisteCapituloNaLista(listaRetornoCapituloComic, idCapitulo);
+            if (resultExisteCapitulo.IsFailed)
+                return Result.Fail(resultExisteCapitulo.Errors[0].Message);
+
+            return Result.Ok(listaRetornoCapituloComic);
+        }
+
+        public Result ValidaExisteCapituloNaLista(List<RetornoCapituloComic> capitulos, Guid idCapitulo)
+        {
+
+            if (capitulos.FirstOrDefault(x => x.Id == idCapitulo) is null)
+                return Result.Fail("Capítulo não encontrado!");
+
+            return Result.Ok();
         }
 
         public RetornoCapituloComic TrataRetornoCapituloComic(CapituloComic CapituloComic)
@@ -38,5 +57,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             return retornoCapitulo;
         }
+
+        
     }
 }

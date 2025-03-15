@@ -10,12 +10,14 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.manga
     [ApiController]
     public class CapitulosComicsController(ICapituloComicAppService service) : Controller, IBaseService<ICapituloComicAppService>
     {
-        [HttpGet("api/publico/comics/{idObra}/{idCapitulo}")]
-        public async Task<IActionResult> ObterCapituloPorComicPorId(Guid idObra, Guid idCapitulo)
+        [HttpGet("api/comics/{idObra}/{idCapitulo}")]
+        public async Task<IActionResult> ObterCapitulosComicPorIdObraEIdCapitulo(Guid idObra, Guid idCapitulo)
         {
-            var capitulos = await service.ObterCapitulosPorComicPorIdObra(idObra);
-                        
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoCapitulosComics(HttpContext, capitulos, idCapitulo);
+            var result = await service.ObterCapitulosComicPorIdObraEIdCapitulo(idObra, idCapitulo);
+            if (result.IsFailed)
+                return NotFound(result.Errors[0].Message);
+
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoCapitulosComics(HttpContext, result.Value, idCapitulo);
             return Ok(objetoRetorno);
         }
     }

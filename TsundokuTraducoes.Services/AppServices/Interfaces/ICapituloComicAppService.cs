@@ -1,9 +1,11 @@
-﻿using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
+﻿using FluentResults;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
 namespace TsundokuTraducoes.Services.AppServices.Interfaces
 {
     public interface ICapituloComicAppService
     {
-        Task<List<RetornoCapituloComic>> ObterCapitulosPorComicPorIdObra(Guid idObra);
+        Task<Result<List<RetornoCapituloComic>>> ObterCapitulosComicPorIdObraEIdCapitulo(Guid idObra, Guid idCapitulo);
+        Result ValidaExisteCapituloNaLista(List<RetornoCapituloComic> capitulos, Guid idCapitulo);
     }
 }
