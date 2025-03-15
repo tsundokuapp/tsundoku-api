@@ -7,7 +7,7 @@ namespace TsundokuTraducoes.Data.Repositories
 {
     public class CapituloComicRepository(ContextBase context) : ICapituloComicRepository
     {
-        public async Task<List<CapituloComic>> ObterCapitulosPorComicPorIdObra(Guid idObra)
+        public async Task<List<CapituloComic>> ObterCapitulosComicPorIdObra(Guid idObra)
         {
 
             var query = from capitulosComic in context.CapitulosComic.AsNoTracking()
@@ -18,7 +18,7 @@ namespace TsundokuTraducoes.Data.Repositories
                        where comics.Id == idObra
                      orderby capitulosComic.OrdemCapitulo
                       select capitulosComic;
-
+            
             return await query.ToListAsync();
         }
     }

@@ -7,9 +7,9 @@ namespace TsundokuTraducoes.Domain.Services
 {
     public class CapituloComicService(ICapituloComicRepository repository) : ICapituloComicService, IBaseService<ICapituloComicRepository>
     {
-        public async Task<List<CapituloComic>> ObterCapitulosPorComicPorIdObra(Guid idObra)
+        public async Task<List<CapituloComic>> ObterCapitulosComicPorIdObra(Guid idObra)
         {
-            return await repository.ObterCapitulosPorComicPorIdObra(idObra);
+            return await repository.ObterCapitulosComicPorIdObra(idObra);
         }
     }
 }
