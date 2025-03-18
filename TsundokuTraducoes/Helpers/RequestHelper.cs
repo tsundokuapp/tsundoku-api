@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno.Response;
 using TsundokuTraducoes.Helpers.Validacao;
 
 namespace TsundokuTraducoes.Api.Helpers
@@ -91,6 +94,33 @@ namespace TsundokuTraducoes.Api.Helpers
             var total = listaGenerica.Count;
 
             return new { total, data = dados };
+        }
+
+        public static ObjetoRetornoCapituloComicResponse CriarObjetoRetonoCapitulosComics(HttpContext httpContext, List<RetornoCapituloComic> listaRetornoCapituloComic, Guid idCapitulo)
+        {
+            var retornoCapituloComic = listaRetornoCapituloComic.FirstOrDefault(x => x.Id == idCapitulo);
+
+            var indiceCapitulo = listaRetornoCapituloComic
+                .IndexOf(retornoCapituloComic);
+
+            var request = httpContext.Request;
+            string anterior = null;
+            if (indiceCapitulo > 0)
+            {
+                var idAnterior = listaRetornoCapituloComic[indiceCapitulo - 1].Id;
+                var urlSemIdAtual = request.Path.Value.Substring(0, request.Path.Value.LastIndexOf("/"));
+                anterior = $"{request.Scheme}://{request.Host}{urlSemIdAtual}/{idAnterior}";
+            }
+
+            string proxima = null;
+            if (indiceCapitulo + 1 < listaRetornoCapituloComic.Count)
+            {
+                var idProximo = listaRetornoCapituloComic[indiceCapitulo + 1].Id;
+                var urlSemIdAtual = request.Path.Value.Substring(0, request.Path.Value.LastIndexOf("/"));
+                proxima = $"{request.Scheme}://{request.Host}{urlSemIdAtual}/{idProximo}";
+            }
+
+            return new ObjetoRetornoCapituloComicResponse { Anterior = anterior , Proxima = proxima, Data = retornoCapituloComic };
         }
 
         private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)
