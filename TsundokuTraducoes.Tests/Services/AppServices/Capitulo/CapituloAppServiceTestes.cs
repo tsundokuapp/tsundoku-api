@@ -4,10 +4,6 @@ using HttpContextMoq.Extensions;
 using Moq;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Domain.Interfaces.Services;
-using System.Threading.Tasks;
-using TsundokuTraducoes.Api.Helpers;
-using TsundokuTraducoes.Domain.Interfaces.Services;
-using TsundokuTraducoes.Domain.Services;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Entities.Entities.Volume;
@@ -25,8 +21,6 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
         private readonly Mock<IObraService> _ObraServiceMock;        
         private readonly CapituloComicAppService _capituloComicAppService;
         private readonly CapituloNovelAppService _capituloNovelAppService;
-        private readonly Mock<IObraService> _ObraServiceMock;        
-        private readonly CapituloComicAppService _capituloComicAppService;
 
         public CapituloAppServiceTestes()
         {
