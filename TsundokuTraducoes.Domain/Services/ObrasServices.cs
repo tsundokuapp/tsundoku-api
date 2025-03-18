@@ -16,57 +16,58 @@ namespace TsundokuTraducoes.Domain.Services
             _obrasRepository = obrasRepository;
         }
         
-        public async Task<List<RetornoObras>> ObterListaNovels(RequestObras requestObras)
+        public async Task<List<Novel>> ObterListaNovels(RequestObras requestObras)
         {
             return await _obrasRepository.ObterListaNovels(requestObras);
         }
-        
-        public async Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras)
-        {
-            return await _obrasRepository.ObterListaComics(requestObras);
-        }
-        
         
         public async Task<List<RetornoObras>> ObterListaNovelsRecentes()
         {
             return await _obrasRepository.ObterListaNovelsRecentes();
         }
         
-        public async Task<List<RetornoObras>> ObterListaComicsRecentes()
+        public async Task<Novel> ObterNovelPorId(Guid id)
         {
-            return await _obrasRepository.ObterListaComicsRecentes();
+            return await _obrasRepository.ObterNovelPorId(id);
         }
 
+        public async Task<Novel> ObterNovelPorSlug(string slug)
+        {
+            return await _obrasRepository.ObterNovelPorSlug(slug);
+        }
+        
         public async Task<List<Novel>> ObterListaNovelsRecomendadas()
         {
             return await _obrasRepository.ObterListaNovelsRecomendadas();
         }
-
-        public async Task<List<Comic>> ObterListaComicsRecomendadas()
-        {
-            return await _obrasRepository.ObterListaComicsRecomendadas();
-        }
-
-        public async Task<RetornoNovel> ObterNovelPorId(Guid id)
-        {
-            return await _obrasRepository.ObterNovelPorId(id);
-        }
         
-        public async Task<RetornoNovel> ObterNovelPorSlug(string slug)
+        
+        public async Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras)
         {
-            return await _obrasRepository.ObterNovelPorSlug(slug);
+            return await _obrasRepository.ObterListaComics(requestObras);
+        }        
+        
+        public async Task<List<RetornoObras>> ObterListaComicsRecentes()
+        {
+            return await _obrasRepository.ObterListaComicsRecentes();
         }
         
         public async Task<RetornoComic> ObterComicPorId(Guid id)
         {
             return await _obrasRepository.ObterComicPorId(id);
         }
-        
+
         public async Task<RetornoComic> ObterComicPorSlug(string slug)
         {
             return await _obrasRepository.ObterComicPorSlug(slug);
         }
-        
+
+        public async Task<List<Comic>> ObterListaComicsRecomendadas()
+        {
+            return await _obrasRepository.ObterListaComicsRecomendadas();
+        }
+                
+                
         public async Task<List<RetornoCapitulosHome>> ObterCapitulosHome()
         {
             return await _obrasRepository.ObterCapitulosHome();

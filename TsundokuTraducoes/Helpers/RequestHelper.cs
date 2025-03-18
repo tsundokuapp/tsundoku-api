@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno.Response;
 using TsundokuTraducoes.Helpers.Validacao;
 
 namespace TsundokuTraducoes.Api.Helpers
@@ -73,8 +76,11 @@ namespace TsundokuTraducoes.Api.Helpers
             var request = httpContext.Request;
             var url = $"{request.Scheme}://{request.Host}{request.Path}";
 
-            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url) + RetornaQuery(requestObras);
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            proxima = proxima != null ? proxima + RetornaQuery(requestObras) : null;
+
             string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
+            anterior = anterior != null ? anterior + RetornaQuery(requestObras) : null;
 
             return new { total = total, proxima = proxima, anterior = anterior, data = dados };
         }
@@ -88,6 +94,33 @@ namespace TsundokuTraducoes.Api.Helpers
             var total = listaGenerica.Count;
 
             return new { total, data = dados };
+        }
+
+        public static ObjetoRetornoCapituloComicResponse CriarObjetoRetonoCapitulosComics(HttpContext httpContext, List<RetornoCapituloComic> listaRetornoCapituloComic, Guid idCapitulo)
+        {
+            var retornoCapituloComic = listaRetornoCapituloComic.FirstOrDefault(x => x.Id == idCapitulo);
+
+            var indiceCapitulo = listaRetornoCapituloComic
+                .IndexOf(retornoCapituloComic);
+
+            var request = httpContext.Request;
+            string anterior = null;
+            if (indiceCapitulo > 0)
+            {
+                var idAnterior = listaRetornoCapituloComic[indiceCapitulo - 1].Id;
+                var urlSemIdAtual = request.Path.Value.Substring(0, request.Path.Value.LastIndexOf("/"));
+                anterior = $"{request.Scheme}://{request.Host}{urlSemIdAtual}/{idAnterior}";
+            }
+
+            string proxima = null;
+            if (indiceCapitulo + 1 < listaRetornoCapituloComic.Count)
+            {
+                var idProximo = listaRetornoCapituloComic[indiceCapitulo + 1].Id;
+                var urlSemIdAtual = request.Path.Value.Substring(0, request.Path.Value.LastIndexOf("/"));
+                proxima = $"{request.Scheme}://{request.Host}{urlSemIdAtual}/{idProximo}";
+            }
+
+            return new ObjetoRetornoCapituloComicResponse { Anterior = anterior , Proxima = proxima, Data = retornoCapituloComic };
         }
 
         private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)
@@ -114,15 +147,38 @@ namespace TsundokuTraducoes.Api.Helpers
 
         private static string RetornaQuery(RequestObras requestObras)
         {
-            if (!string.IsNullOrEmpty(requestObras.Pesquisar))
-                return $"&Pesquisar={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Pesquisar)}";
+            var pesquisar = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Pesquisar);
+            if (!string.IsNullOrEmpty(pesquisar))
+                return $"&Pesquisar={pesquisar}";
 
-            return $"&Nacionalidade={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Nacionalidade)}" +
-                    $"&Status={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Status)}" +
-                    $"&Tipo={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Tipo)}" +
-                    $"&Genero={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Genero)}" +
-                    $"&IdCapitulo={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.IdCapitulo)}" +
-                    $"&IdObra={TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.IdObra)}";
+            var nacionalidade = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Nacionalidade);
+            var status = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Status);
+            var tipo = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Tipo);
+            var genero = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.Genero);
+            var idCapitulo = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.IdCapitulo);
+            var idObra = TratamentoDeStrings.RetornaStringTratadaSemNull(requestObras.IdObra);
+
+            string queryStringComposta = string.Empty;
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(nacionalidade) ? "" : $"&Nacionalidade={nacionalidade}";
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(status) ? "" : $"&Status={status}";
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(tipo) ? "" : $"&Tipo={tipo}";
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(genero) ? "" : $"&Genero={genero}";
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(idCapitulo) ? "" : $"&IdCapitulo={idCapitulo}";
+
+            queryStringComposta +=
+                string.IsNullOrEmpty(idObra) ? "" : $"&IdObra={idObra}";
+
+            return queryStringComposta;
         }
     }
 }
