@@ -21,5 +21,19 @@ namespace TsundokuTraducoes.Data.Repositories
             
             return await query.ToListAsync();
         }
+
+        public async Task<List<CapituloComic>> ObterCapitulosComicPorSlugObra(string slugObra)
+        {
+            var query = from capitulosComic in context.CapitulosComic.AsNoTracking()
+                        join volumesComic in context.VolumesComic.AsNoTracking()
+                          on capitulosComic.VolumeId equals volumesComic.Id
+                        join comics in context.Comics.AsNoTracking()
+                          on volumesComic.ComicId equals comics.Id
+                        where comics.Slug == slugObra
+                        orderby capitulosComic.OrdemCapitulo
+                        select capitulosComic;
+
+            return await query.ToListAsync();
+        }
     }
 }

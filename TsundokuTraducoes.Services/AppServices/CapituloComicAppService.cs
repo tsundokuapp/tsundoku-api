@@ -34,6 +34,28 @@ namespace TsundokuTraducoes.Services.AppServices
             return Result.Ok(listaRetornoCapituloComic);
         }
 
+        public async Task<Result<List<RetornoCapituloComic>>> ObterCapitulosComicPorSlugObraEIdCapitulo(string slugObra, Guid idCapitulo)
+        {
+            var listaRetornoCapituloComic = new List<RetornoCapituloComic>();
+
+            var obra = obraservice.RetornaComicPorSlug(slugObra);
+            if (obra == null)
+                return Result.Fail("Obra não encontrada!");
+
+            var listaCapituloComic = await service.ObterCapitulosComicPorSlugObra(slugObra);
+
+            foreach (var capituloComic in listaCapituloComic)
+            {
+                listaRetornoCapituloComic.Add(TrataRetornoCapituloComic(capituloComic));
+            }
+
+            var resultExisteCapitulo = ValidaExisteCapituloNaLista(listaRetornoCapituloComic, idCapitulo);
+            if (resultExisteCapitulo.IsFailed)
+                return Result.Fail(resultExisteCapitulo.Errors[0].Message);
+
+            return Result.Ok(listaRetornoCapituloComic);
+        }
+
         public Result ValidaExisteCapituloNaLista(List<RetornoCapituloComic> capitulos, Guid idCapitulo)
         {
 
@@ -57,7 +79,5 @@ namespace TsundokuTraducoes.Services.AppServices
 
             return retornoCapitulo;
         }
-
-        
     }
 }
