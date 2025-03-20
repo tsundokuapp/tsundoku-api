@@ -11,5 +11,10 @@ namespace TsundokuTraducoes.Domain.Services
         {
             return await repository.ObterCapitulosComicPorIdObra(idObra);
         }
+
+        public async Task<List<CapituloComic>> ObterCapitulosComicPorSlugObra(string slugObra)
+        {
+            return await repository.ObterCapitulosComicPorSlugObra(slugObra);
+        }
     }
 }
