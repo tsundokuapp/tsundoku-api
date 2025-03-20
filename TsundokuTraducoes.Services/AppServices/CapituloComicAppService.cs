@@ -53,7 +53,7 @@ namespace TsundokuTraducoes.Services.AppServices
             if (resultExisteCapitulo.IsFailed)
                 return Result.Fail(resultExisteCapitulo.Errors[0].Message);
 
-            return Result.Ok();
+            return Result.Ok(listaRetornoCapituloComic);
         }
 
         public Result ValidaExisteCapituloNaLista(List<RetornoCapituloComic> capitulos, Guid idCapitulo)

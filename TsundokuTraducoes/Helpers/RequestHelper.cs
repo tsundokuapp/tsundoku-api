@@ -123,6 +123,33 @@ namespace TsundokuTraducoes.Api.Helpers
             return new ObjetoRetornoCapituloComicResponse { Anterior = anterior , Proxima = proxima, Data = retornoCapituloComic };
         }
 
+        public static ObjetoRetornoCapituloComicResponse CriarObjetoRetonoCapitulosPorSlugComics(HttpContext httpContext, List<RetornoCapituloComic> listaRetornoCapituloComic, Guid idCapitulo)
+        {
+            var retornoCapituloComic = listaRetornoCapituloComic.FirstOrDefault(x => x.Id == idCapitulo);
+
+            var indiceCapitulo = listaRetornoCapituloComic
+                .IndexOf(retornoCapituloComic);
+
+            var request = httpContext.Request;
+            string anterior = null;
+            if (indiceCapitulo > 0)
+            {
+                var idAnterior = listaRetornoCapituloComic[indiceCapitulo - 1].Id;
+                var urlSemSlugAtual = request.Path.Value.Substring(0, request.Path.Value.LastIndexOf("/"));
+                anterior = $"{request.Scheme}://{request.Host}{urlSemSlugAtual}/{idAnterior}";
+            }
+
+            string proxima = null;
+            if (indiceCapitulo + 1 < listaRetornoCapituloComic.Count)
+            {
+                var idProximo = listaRetornoCapituloComic[indiceCapitulo + 1].Id;
+                var urlSemSlugAtual = request.Path.Value.Substring(0, request.Path.Value.LastIndexOf("/"));
+                proxima = $"{request.Scheme}://{request.Host}{urlSemSlugAtual}/{idProximo}";
+            }
+
+            return new ObjetoRetornoCapituloComicResponse { Anterior = anterior, Proxima = proxima, Data = retornoCapituloComic };
+        }
+
         public static ObjetoRetornoCapituloNovelResponse CriarObjetoRetonoCapitulosNovel(HttpContext httpContext, List<RetornoCapituloNovel> listaRetornoCapituloNovel, Guid idCapitulo)
         {
             var retornoCapituloNovel = listaRetornoCapituloNovel.FirstOrDefault(x => x.Id == idCapitulo);
