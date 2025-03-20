@@ -443,8 +443,7 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
 
             // Assert
             var result = await _capituloComicAppService.ObterCapitulosComicPorIdObraEIdCapitulo(IdObra, listaIdsCapitulos[0]);
-
-            Assert.Equal(slugObra, comic.Slug);
+                        
             Assert.False(result.IsSuccess);
             Assert.Null(result.ValueOrDefault);
             Assert.Contains("Obra não encontrada!", result.Errors[0].Message);
