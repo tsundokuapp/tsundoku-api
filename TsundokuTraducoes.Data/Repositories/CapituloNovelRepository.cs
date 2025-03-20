@@ -20,5 +20,19 @@ namespace TsundokuTraducoes.Data.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task<List<CapituloNovel>> ObterCapitulosNovelPorIdSlug(string slugObra)
+        {
+            var query = from capitulosNovel in context.CapitulosNovel.AsNoTracking()
+                        join volumesNovel in context.VolumesNovel.AsNoTracking()
+                          on capitulosNovel.VolumeId equals volumesNovel.Id
+                        join novels in context.Novels.AsNoTracking()
+                          on volumesNovel.NovelId equals novels.Id
+                        where novels.Slug == slugObra
+                        orderby capitulosNovel.OrdemCapitulo
+                        select capitulosNovel;
+
+            return await query.ToListAsync();
+        }
     }
 }
