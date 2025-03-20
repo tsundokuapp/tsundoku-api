@@ -76,6 +76,11 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             return FixtureCustomizado.RetornaFixtureCustomizado.Build<Novel>().With(x => x.Id, idNovel).Create();
         }
 
+        public Novel GerarNovel(Guid idNovel, string slugObra)
+        {
+            return FixtureCustomizado.RetornaFixtureCustomizado.Build<Novel>().With(x => x.Id, idNovel).With(x => x.Slug, slugObra).Create();
+        }
+
         public VolumeNovel GerarVolumeNovel(Guid idNovel)
         {
             return FixtureCustomizado.RetornaFixtureCustomizado.Build<VolumeNovel>().With(x => x.NovelId, idNovel).Create();
@@ -119,7 +124,7 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             };
 
             return JsonConvert.SerializeObject(lista);
-        }        
+        }
 
         #endregion
     }

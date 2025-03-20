@@ -177,6 +177,33 @@ namespace TsundokuTraducoes.Api.Helpers
             return new ObjetoRetornoCapituloNovelResponse { Anterior = anterior, Proxima = proxima, Data = retornoCapituloNovel };
         }
 
+        public static ObjetoRetornoCapituloNovelResponse CriarObjetoRetonoCapitulosPorSlugNovels(HttpContext httpContext, List<RetornoCapituloNovel> listaRetornoCapituloNovel, Guid idCapitulo)
+        {
+            var retornoCapituloNovel = listaRetornoCapituloNovel.FirstOrDefault(x => x.Id == idCapitulo);
+
+            var indiceCapitulo = listaRetornoCapituloNovel
+                .IndexOf(retornoCapituloNovel);
+
+            var request = httpContext.Request;
+            string anterior = null;
+            if (indiceCapitulo > 0)
+            {
+                var idAnterior = listaRetornoCapituloNovel[indiceCapitulo - 1].Id;
+                var urlSemSlugAtual = request.Path.Value.Substring(0, request.Path.Value.LastIndexOf("/"));
+                anterior = $"{request.Scheme}://{request.Host}{urlSemSlugAtual}/{idAnterior}";
+            }
+
+            string proxima = null;
+            if (indiceCapitulo + 1 < listaRetornoCapituloNovel.Count)
+            {
+                var idProximo = listaRetornoCapituloNovel[indiceCapitulo + 1].Id;
+                var urlSemSlugAtual = request.Path.Value.Substring(0, request.Path.Value.LastIndexOf("/"));
+                proxima = $"{request.Scheme}://{request.Host}{urlSemSlugAtual}/{idProximo}";
+            }
+
+            return new ObjetoRetornoCapituloNovelResponse { Anterior = anterior, Proxima = proxima, Data = retornoCapituloNovel };
+        }
+
         private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)
         {
             string anterior = null;
