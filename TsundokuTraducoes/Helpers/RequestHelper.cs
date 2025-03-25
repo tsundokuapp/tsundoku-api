@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using MySqlX.XDevAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -204,12 +205,60 @@ namespace TsundokuTraducoes.Api.Helpers
             return new ObjetoRetornoCapituloNovelResponse { Anterior = anterior, Proxima = proxima, Data = retornoCapituloNovel };
         }
 
+        public static ObjetoRetornoVolumeComicResponse CriarObjetoRetonoVolumesComics(HttpContext httpContext, List<RetornoVolumeComic> listaRetornoVolumeComic, int? skip, int? take)
+        {
+            if (!skip.HasValue && !take.HasValue)
+            {
+                return new ObjetoRetornoVolumeComicResponse { Anterior = null, Proxima = null, Data = listaRetornoVolumeComic, Total = listaRetornoVolumeComic.Count };
+            }
+
+            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
+            var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
+
+            var dados = listaRetornoVolumeComic.Skip(itensPulados).Take(itensPorPagina).ToList();
+            var total = listaRetornoVolumeComic.Count;
+
+            var request = httpContext.Request;
+            var url = $"{request.Scheme}://{request.Host}{request.Path}";
+
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
+
+            return new ObjetoRetornoVolumeComicResponse { Anterior = anterior, Proxima = proxima, Data = dados, Total = total };
+        }
+
+        public static ObjetoRetornoVolumeComicResponse CriarObjetoRetonoVolumesPorSlugComics(HttpContext httpContext, List<RetornoVolumeComic> listaRetornoVolumeComic, int? skip, int? take)
+        {
+            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
+            var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
+
+            var dados = listaRetornoVolumeComic.Skip(itensPorPagina).Take(itensPulados).ToList();
+
+            var request = httpContext.Request;
+            var url = $"{request.Scheme}://{request.Host}{request.Path}";
+
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
+
+            return new ObjetoRetornoVolumeComicResponse { Anterior = anterior, Proxima = proxima, Data = dados };
+        }
+
         private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)
         {
             string anterior = null;
             if (itensPulados > 0)
             {
-                anterior = $"{url}?Skip={itensPulados - itensPorPagina}&Take={itensPorPagina}";
+                int skip = 0;
+                if (itensPulados < itensPorPagina)
+                {
+                    skip = --itensPulados;
+                }
+                else
+                {
+                    skip = itensPulados - itensPorPagina;
+                }
+
+                anterior = $"{url}?Skip={skip}&Take={itensPorPagina}";
             }
 
             return anterior;
@@ -260,6 +309,6 @@ namespace TsundokuTraducoes.Api.Helpers
                 string.IsNullOrEmpty(idObra) ? "" : $"&IdObra={idObra}";
 
             return queryStringComposta;
-        }
+        }       
     }
 }
