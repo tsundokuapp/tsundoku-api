@@ -16,8 +16,13 @@ namespace TsundokuTraducoes.Services.AppServices
             if (obra == null)
                 return Result.Fail("Obra não encontrada!");
 
-            var listaRetornoVolumeComic = new List<RetornoVolumeComic>();
             var listaVolumeComic = await service.ObterVolumesComicPorIdObra(idObra);
+
+            var resultExisteListaVolume = ValidaExisteListaVolume(listaVolumeComic);
+            if (resultExisteListaVolume.IsFailed)
+                return Result.Fail(resultExisteListaVolume.Errors[0].Message);
+
+            var listaRetornoVolumeComic = new List<RetornoVolumeComic>();
 
             foreach (var volumeComic in listaVolumeComic)
             {
@@ -33,9 +38,14 @@ namespace TsundokuTraducoes.Services.AppServices
             if (obra == null)
                 return Result.Fail("Obra não encontrada!");
 
-            var listaRetornoVolumeComic = new List<RetornoVolumeComic>();
             var listaVolumeComic = await service.ObterVolumesComicPorSlugObra(slugObra);
 
+            var resultExisteListaVolume = ValidaExisteListaVolume(listaVolumeComic);
+            if (resultExisteListaVolume.IsFailed)
+                return Result.Fail(resultExisteListaVolume.Errors[0].Message);
+
+            var listaRetornoVolumeComic = new List<RetornoVolumeComic>();
+            
             foreach (var volumeComic in listaVolumeComic)
             {
                 listaRetornoVolumeComic.Add(TrataRetornoVolumeComic(volumeComic));
@@ -44,7 +54,7 @@ namespace TsundokuTraducoes.Services.AppServices
             return Result.Ok(listaRetornoVolumeComic);
         }
 
-        public static RetornoVolumeComic TrataRetornoVolumeComic(VolumeComic volumeComic)
+        public RetornoVolumeComic TrataRetornoVolumeComic(VolumeComic volumeComic)
         {
             return new RetornoVolumeComic
             {
@@ -55,6 +65,14 @@ namespace TsundokuTraducoes.Services.AppServices
                 SlugVolume = volumeComic.Slug,
                 UrlCapaVolume = volumeComic.ImagemVolume
             };
+        }
+
+        public Result ValidaExisteListaVolume(List<VolumeComic> listaVolumeComic)
+        {
+            if (listaVolumeComic.Count == 0)
+                return Result.Fail("Lista de volumes não encontrado para essa obra!");
+
+            return Result.Ok();
         }
     }
 }
