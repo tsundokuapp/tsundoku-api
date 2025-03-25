@@ -28,7 +28,7 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.comic
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesPorSlugComics(HttpContext, result.Value, skip, take);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesComics(HttpContext, result.Value, skip, take);
             return Ok(objetoRetorno);
         }
     }

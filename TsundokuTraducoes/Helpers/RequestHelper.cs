@@ -226,22 +226,6 @@ namespace TsundokuTraducoes.Api.Helpers
             return new ObjetoRetornoVolumeComicResponse { Anterior = anterior, Proxima = proxima, Data = dados, Total = total };
         }
 
-        public static ObjetoRetornoVolumeComicResponse CriarObjetoRetonoVolumesPorSlugComics(HttpContext httpContext, List<RetornoVolumeComic> listaRetornoVolumeComic, int? skip, int? take)
-        {
-            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
-            var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
-
-            var dados = listaRetornoVolumeComic.Skip(itensPorPagina).Take(itensPulados).ToList();
-
-            var request = httpContext.Request;
-            var url = $"{request.Scheme}://{request.Host}{request.Path}";
-
-            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
-            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
-
-            return new ObjetoRetornoVolumeComicResponse { Anterior = anterior, Proxima = proxima, Data = dados };
-        }
-
         private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)
         {
             string anterior = null;
