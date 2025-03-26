@@ -22,6 +22,8 @@ namespace TsundokuTraducoes.Entities.Entities.Volume
         public Guid ComicId { get; set; }
         public virtual Comic Comic { get; set; }
         public List<CapituloComic> ListaCapitulo { get; set; }
+        public int OrdemVolume { get; set; }
+        public bool Publicado { get; set; }
 
         public VolumeComic()
         {
