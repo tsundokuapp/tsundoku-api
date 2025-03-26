@@ -32,6 +32,7 @@ namespace TsundokuTraducoes.Api.Extensions
             services.AddScoped<ICapituloComicRepository, CapituloComicRepository>();
             services.AddScoped<ICapituloNovelRepository, CapituloNovelRepository>();  
             services.AddScoped<IVolumeComicRepository,VolumeComicRepository>();
+            services.AddScoped<IVolumeNovelRepository, VolumeNovelRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
@@ -60,6 +61,8 @@ namespace TsundokuTraducoes.Api.Extensions
 
             services.AddScoped<IVolumeComicAppService, VolumeComicAppService>();
             services.AddScoped<IVolumeComicService, VolumeComicService>();
+            services.AddScoped<IVolumeNovelAppService, VolumeNovelAppService>();
+            services.AddScoped<IVolumeNovelService, VolumeNovelService>();
         }
     }
 }
