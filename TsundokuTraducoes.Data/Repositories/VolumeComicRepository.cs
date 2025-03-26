@@ -9,26 +9,26 @@ namespace TsundokuTraducoes.Data.Repositories
     {
         public async Task<List<VolumeComic>> ObterVolumesComicPorIdObra(Guid idObra)
         {
-            var query = from volumesComic in context.VolumesComic.AsNoTracking()                          
-                        join comics in context.Comics.AsNoTracking()
-                          on volumesComic.ComicId equals comics.Id
-                        where comics.Id == idObra
-                        orderby volumesComic.Numero
-                        select volumesComic;
+            var listaVolumes = await context.VolumesComic
+                .AsNoTracking()
+                .Include(x => x.ListaCapitulo)
+                .Where(x => x.ComicId == idObra)
+                .OrderBy(x => x.OrdemVolume)
+                .ToListAsync();
 
-            return await query.ToListAsync();
+            return listaVolumes;
         }
 
         public async Task<List<VolumeComic>> ObterVolumesComicPorSlugObra(string slugObra)
         {
-            var query = from volumesComic in context.VolumesComic.AsNoTracking()
-                        join comics in context.Comics.AsNoTracking()
-                          on volumesComic.ComicId equals comics.Id
-                        where comics.Slug == slugObra
-                        orderby volumesComic.Numero
-                        select volumesComic;
+            var listaVolumes = await context.VolumesComic
+                .AsNoTracking()
+                .Include(x => x.ListaCapitulo)
+                .Where(x => x.Comic.Slug == slugObra)
+                .OrderBy(x => x.OrdemVolume)
+                .ToListAsync();
 
-            return await query.ToListAsync();
+            return listaVolumes;
         }
     }
 }

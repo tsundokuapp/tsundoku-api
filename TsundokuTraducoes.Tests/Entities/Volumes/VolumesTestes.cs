@@ -72,7 +72,7 @@ namespace TsundokuTraducoes.Tests.Entities.Volumes
             Assert.NotEqual(new DateTime(), volumeNovel.DataAlteracao);
             Assert.False(string.IsNullOrEmpty(volumeNovel.DiretorioImagemVolume));
             Assert.False(volumeNovel.ListaCapitulo.Any());
-            Assert.Equal(14, numeroDeCamposDoVolumeNovel);
+            Assert.Equal(16, numeroDeCamposDoVolumeNovel);
         }
 
         [Fact]
@@ -96,7 +96,7 @@ namespace TsundokuTraducoes.Tests.Entities.Volumes
             Assert.NotEqual(new DateTime(), volumeNovel.DataAlteracao);
             Assert.False(string.IsNullOrEmpty(volumeNovel.DiretorioImagemVolume));
             Assert.False(volumeNovel.ListaCapitulo.Any());
-            Assert.Equal(14, numeroDeCamposDoVolumeNovel);
+            Assert.Equal(16, numeroDeCamposDoVolumeNovel);
 
         }
 
@@ -121,7 +121,7 @@ namespace TsundokuTraducoes.Tests.Entities.Volumes
             Assert.NotEqual(new DateTime(), volumeNovel.DataAlteracao);
             Assert.False(string.IsNullOrEmpty(volumeNovel.DiretorioImagemVolume));
             Assert.True(volumeNovel.ListaCapitulo.Any());
-            Assert.Equal(14, numeroDeCamposDoVolumeNovel);
+            Assert.Equal(16, numeroDeCamposDoVolumeNovel);
         }
 
         #endregion
@@ -193,7 +193,7 @@ namespace TsundokuTraducoes.Tests.Entities.Volumes
             Assert.NotEqual(new DateTime(), volumeComic.DataAlteracao);
             Assert.False(string.IsNullOrEmpty(volumeComic.DiretorioImagemVolume));
             Assert.False(volumeComic.ListaCapitulo.Any());
-            Assert.Equal(14, numeroDeCamposDoVolumeComic);
+            Assert.Equal(16, numeroDeCamposDoVolumeComic);
         }
 
         [Fact]
@@ -217,7 +217,7 @@ namespace TsundokuTraducoes.Tests.Entities.Volumes
             Assert.NotEqual(new DateTime(), volumeComic.DataAlteracao);
             Assert.False(string.IsNullOrEmpty(volumeComic.DiretorioImagemVolume));
             Assert.False(volumeComic.ListaCapitulo.Any());
-            Assert.Equal(14, numeroDeCamposDoVolumeComic);
+            Assert.Equal(16, numeroDeCamposDoVolumeComic);
 
         }
 
@@ -242,7 +242,7 @@ namespace TsundokuTraducoes.Tests.Entities.Volumes
             Assert.NotEqual(new DateTime(), volumeComic.DataAlteracao);
             Assert.False(string.IsNullOrEmpty(volumeComic.DiretorioImagemVolume));
             Assert.True(volumeComic.ListaCapitulo.Any());
-            Assert.Equal(14, numeroDeCamposDoVolumeComic);
+            Assert.Equal(16, numeroDeCamposDoVolumeComic);
         }
 
         #endregion

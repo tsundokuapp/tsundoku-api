@@ -1,4 +1,5 @@
-﻿using HttpContextMoq;
+﻿using AutoMapper;
+using HttpContextMoq;
 using HttpContextMoq.Extensions;
 using Moq;
 using TsundokuTraducoes.Api.Helpers;
@@ -7,23 +8,35 @@ using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Services.AppServices;
+using TsundokuTraducoes.Services.Profiles;
 
 namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
 {
     public class VolumeAppServiceTestes
     {
+        private readonly IMapper _mapper;
         private readonly Mock<IVolumeComicService> _volumeComicServiceMock;
         private readonly Mock<IObraService> _ObraServiceMock;
         private readonly VolumeComicAppService _volumeComicAppServiceMock;
 
         public VolumeAppServiceTestes()
         {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new VolumeProfile());
+                cfg.AddProfile(new CapituloProfile());
+                cfg.AddProfile(new ObraProfile());
+                cfg.AddProfile(new GeneroProfile());
+            });
+
+            _mapper = config.CreateMapper();
             _volumeComicServiceMock = new Mock<IVolumeComicService>();
             _ObraServiceMock = new Mock<IObraService>();
 
             _volumeComicAppServiceMock = new VolumeComicAppService(
                _volumeComicServiceMock.Object,
-               _ObraServiceMock.Object
+               _ObraServiceMock.Object,
+               _mapper
             );
         }
 
@@ -46,9 +59,17 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
                 Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
             ];
 
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+            ];
+
             var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
             Comic comic = volumeAppServiceFactory.GerarComic(IdObra);
-            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes);
+            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
             var scheme = "https";
             var host = "localhost";
@@ -91,9 +112,17 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
                 Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
             ];
 
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+            ];
+
             var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
             Comic comic = volumeAppServiceFactory.GerarComic(IdObra);
-            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes);
+            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
             var scheme = "https";
             var host = "localhost";
@@ -136,9 +165,17 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
                 Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
             ];
 
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+            ];
+
             var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
             Comic comic = volumeAppServiceFactory.GerarComic(IdObra);
-            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes);
+            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
             var scheme = "https";
             var host = "localhost";
@@ -171,10 +208,11 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
             var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
 
             List<Guid> listaIdsVolumes = [];
+            List<Guid> listaIdsCapitulos = [];
 
             var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
             Comic comic = volumeAppServiceFactory.GerarComic(IdObra);
-            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes);
+            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
             var scheme = "https";
             var host = "localhost";
@@ -215,9 +253,17 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
                 Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
             ];
 
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+            ];
+
             var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
             Comic comic = null;
-            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes);
+            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
             // Mock
             _ObraServiceMock.Setup(x => x.RetornaComicPorId(IdObra)).Returns(comic);
@@ -249,9 +295,17 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
                 Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
             ];
 
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+            ];
+
             var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
             Comic comic = volumeAppServiceFactory.GerarComic(IdObra, slugObra);
-            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes);
+            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
             var scheme = "https";
             var host = "localhost";
@@ -295,9 +349,17 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
                 Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
             ];
 
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+            ];
+
             var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
             Comic comic = volumeAppServiceFactory.GerarComic(IdObra, slugObra);
-            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes);
+            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
             var scheme = "https";
             var host = "localhost";
@@ -342,9 +404,17 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
                 Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
             ];
 
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+            ];
+
             var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
             Comic comic = volumeAppServiceFactory.GerarComic(IdObra, slugObra);
-            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes);
+            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
             var scheme = "https";
             var host = "localhost";
@@ -379,10 +449,11 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
             var slugObra = "slug-comic-teste";
 
             List<Guid> listaIdsVolumes = [];
+            List<Guid> listaIdsCapitulos = [];
 
             var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
             Comic comic = volumeAppServiceFactory.GerarComic(IdObra, slugObra);
-            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes);
+            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
             var scheme = "https";
             var host = "localhost";
@@ -424,9 +495,17 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
                 Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
             ];
 
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+            ];
+
             var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
             Comic comic = null;
-            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes);
+            List<VolumeComic> listaVolumesComic = volumeAppServiceFactory.GerarListaVolumeComic(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
             // Mock
             _ObraServiceMock.Setup(x => x.RetornaComicPorSlug(slugObra)).Returns(comic);

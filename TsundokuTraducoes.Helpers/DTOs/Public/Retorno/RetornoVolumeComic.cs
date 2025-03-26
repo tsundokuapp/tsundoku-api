@@ -8,5 +8,9 @@
         public string UrlCapaVolume { get; set; }
         public string SlugVolume { get; set; }
         public string Sinopse { get; set; }
+        public int OrdemVolume { get; set; }
+        public bool Publicado { get; set; }
+        public string Titulo { get; set; }
+        public List<RetornoCapituloComic> ListaRetornoCapitulosComic { get; set; }
     }
 }
