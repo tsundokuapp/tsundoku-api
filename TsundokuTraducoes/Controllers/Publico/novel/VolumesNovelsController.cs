@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
@@ -12,7 +13,7 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.novel
     public class VolumesNovelsController(IVolumeNovelAppService service) : Controller, IBaseService<IVolumeNovelAppService>
     {
         [HttpGet("api/novels/volumes/{idObra}")]
-        [ProducesResponseType(typeof(RetornoVolumeNovel), statusCode: 200)]
+        [ProducesResponseType(typeof(List<RetornoVolumeNovel>), statusCode: 200)]
         public async Task<IActionResult> ObterVolumesNovelPorIdObra(Guid idObra, [FromQuery] int? skip, int? take)
         {
             var result = await service.ObterVolumesNovelPorIdObra(idObra);
@@ -24,7 +25,7 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.novel
         }
 
         [HttpGet("api/novels/volumes/slug/{slugObra}")]
-        [ProducesResponseType(typeof(RetornoVolumeNovel), statusCode: 200)]
+        [ProducesResponseType(typeof(List<RetornoVolumeNovel>), statusCode: 200)]
         public async Task<IActionResult> ObterVolumesNovelPorSlugObra(string slugObra, [FromQuery] int? skip, int? take)
         {
             var result = await service.ObterVolumesNovelPorSlugObra(slugObra);
