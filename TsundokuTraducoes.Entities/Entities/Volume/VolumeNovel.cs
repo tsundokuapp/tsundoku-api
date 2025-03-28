@@ -22,7 +22,9 @@ namespace TsundokuTraducoes.Entities.Entities.Volume
         public Guid NovelId { get; set; }
         public virtual Novel Novel { get; set; }
         public List<CapituloNovel> ListaCapitulo { get; set; }
-                
+        public int OrdemVolume { get; set; }
+        public bool Publicado { get; set; }
+
         public VolumeNovel()
         {            
             ListaCapitulo = new List<CapituloNovel>();
