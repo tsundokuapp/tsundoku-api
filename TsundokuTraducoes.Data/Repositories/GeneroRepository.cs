@@ -23,6 +23,13 @@ namespace TsundokuTraducoes.Data.Repositories
                 .ToListAsync();
         }
 
+        public async Task<List<Genero>> RetornaListaGenerosCadastrados()
+        {
+            return await _context.Generos
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
         public async Task<Genero> RetornaGeneroPorId(Guid id)
         {
             return await _context.Generos.AsNoTracking()

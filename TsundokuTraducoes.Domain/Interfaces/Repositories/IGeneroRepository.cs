@@ -6,6 +6,7 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
     public interface IGeneroRepository
     {
         Task<List<Genero>> RetornaListaGeneros();
+        Task<List<Genero>> RetornaListaGenerosCadastrados();
         Task<Genero> RetornaGeneroPorId(Guid id);
         Task AdicionaGenero(Genero genero);
         Genero AtualizaGenero(GeneroDTO generoDTO);

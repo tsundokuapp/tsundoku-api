@@ -2,6 +2,7 @@
 using TsundokuTraducoes.Entities.Entities.Generos;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 
 namespace TsundokuTraducoes.Services.Profiles
 {
@@ -12,6 +13,7 @@ namespace TsundokuTraducoes.Services.Profiles
             CreateMap<Genero, GeneroDTO>();
             CreateMap<GeneroDTO, Genero>();
             CreateMap<Genero, RetornoGenero>();
+            CreateMap<Genero, RetornoGeneroCadastrado>();
         }
     }
 }

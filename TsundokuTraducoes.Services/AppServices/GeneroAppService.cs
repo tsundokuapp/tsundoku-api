@@ -5,6 +5,7 @@ using TsundokuTraducoes.Entities.Entities.Generos;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
 namespace TsundokuTraducoes.Services.AppServices
@@ -29,6 +30,19 @@ namespace TsundokuTraducoes.Services.AppServices
             {
                 var retornoGenero = TrataRetornoGenero(genero);
                 listaRetornoGenero.Add(retornoGenero);
+            }
+
+            return Result.Ok(listaRetornoGenero);
+        }
+
+        public async Task<Result<List<RetornoGeneroCadastrado>>> RetornaListaGenerosCadastrados()
+        {
+            var listaRetornoGenero = new List<RetornoGeneroCadastrado>();
+            var listaGenero = await _generoService.RetornaListaGenerosCadastrados();
+
+            foreach (var genero in listaGenero)
+            {
+                listaRetornoGenero.Add(_mapper.Map<RetornoGeneroCadastrado>(genero));
             }
 
             return Result.Ok(listaRetornoGenero);

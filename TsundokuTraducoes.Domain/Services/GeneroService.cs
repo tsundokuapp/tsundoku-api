@@ -19,6 +19,11 @@ namespace TsundokuTraducoes.Domain.Services
             return await _generoRepository.RetornaListaGeneros();
         }
 
+        public async Task<List<Genero>> RetornaListaGenerosCadastrados()
+        {
+            return await _generoRepository.RetornaListaGenerosCadastrados();
+        }
+
         public async Task<Genero> RetornaGeneroPorId(Guid id)
         {
             return await _generoRepository.RetornaGeneroPorId(id);
