@@ -12,7 +12,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin.Retorno
         public string Sinopse { get; set; }
         public string ImagemVolume { get; set; }
         public string Slug { get; set; }
-        public List<RetornoCapituloNoVolume> ListaCapitulo { get; set; }
         public string UsuarioInclusao { get; set; }
         public string UsuarioAlteracao { get; set; }
         public string DataInclusao { get; set; }
@@ -20,5 +19,8 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin.Retorno
         public Guid? NovelId { get; set; }
         public Guid? ComicId { get; set; }
         public string DescritivoTituloNumeroVolume => TratamentoDeStrings.RetornaDescritivoVolume(Numero);
+        public int OrdemVolume { get; set; }
+        public bool Publicado { get; set; }
+        public List<RetornoCapituloNoVolume> ListaCapitulo { get; set; }
     }
  }
