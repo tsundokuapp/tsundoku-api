@@ -248,6 +248,28 @@ namespace TsundokuTraducoes.Api.Helpers
             return new ObjetoRetornoVolumeNovelResponse { Anterior = anterior, Proxima = proxima, Data = dados, Total = total };
         }
 
+        public static ObjetoRetornoGenerosCadastradosResponse CriarObjetoRetornoGenerosCadastrados(HttpContext httpContext, List<RetornoGeneroCadastrado> listaRetornoGenerosCadastrados, int? skip, int? take)
+        {
+            if (!skip.HasValue && !take.HasValue)
+            {
+                return new ObjetoRetornoGenerosCadastradosResponse { Anterior = null, Proxima = null, Data = listaRetornoGenerosCadastrados, Total = listaRetornoGenerosCadastrados.Count };
+            }
+
+            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
+            var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
+
+            var dados = listaRetornoGenerosCadastrados.Skip(itensPulados).Take(itensPorPagina).ToList();
+            var total = listaRetornoGenerosCadastrados.Count;
+
+            var request = httpContext.Request;
+            var url = $"{request.Scheme}://{request.Host}{request.Path}";
+
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
+
+            return new ObjetoRetornoGenerosCadastradosResponse { Anterior = anterior, Proxima = proxima, Data = dados, Total = total };
+        }
+
         private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)
         {
             string anterior = null;
