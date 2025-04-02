@@ -16,13 +16,11 @@ namespace TsundokuTraducoes.Services.AppServices
     {
         private readonly IObrasService _obrasService;
         private readonly IMapper _mapper;
-        private readonly IGeneroDeParaAppService _generoDeParaAppService;
 
         public ObrasAppService(IObrasService obrasService, IMapper mapper, IGeneroDeParaAppService generoDeParaAppService)
         {
             _obrasService = obrasService;
             _mapper = mapper;
-            _generoDeParaAppService = generoDeParaAppService;
         }
 
         public async Task<List<RetornoNovel>> ObterListaNovels(RequestObras requestObras)
@@ -38,10 +36,17 @@ namespace TsundokuTraducoes.Services.AppServices
             return listaRetornoNovel;
         }
 
-        public async Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras)
+        public async Task<List<RetornoComic>> ObterListaComics(RequestObras requestObras)
         {
-            var listaRetornoObra = await _obrasService.ObterListaComics(requestObras);
-            return listaRetornoObra;
+            var listaRetornoComic = new List<RetornoComic>();
+            var listaComic = await _obrasService.ObterListaComics(requestObras);
+
+            foreach (var comic in listaComic)
+            {
+                listaRetornoComic.Add(TrataRetornoComicUnica(comic));
+            }
+
+            return listaRetornoComic;
         }
 
 
@@ -61,7 +66,7 @@ namespace TsundokuTraducoes.Services.AppServices
         public async Task<Result<RetornoNovel>> ObterNovelPorId(Guid id)
         {
             var novel = await _obrasService.ObterNovelPorId(id);
-            if (novel == null)
+            if (novel is null)
                 return Result.Fail<RetornoNovel>("Novel não encontrada");
 
             return Result.Ok().ToResult(TrataRetornoNovelUnica(novel));
@@ -70,22 +75,28 @@ namespace TsundokuTraducoes.Services.AppServices
         public async Task<Result<RetornoNovel>> ObterNovelPorSlug(string slug)
         {
             var novel = await _obrasService.ObterNovelPorSlug(slug);
-            if (novel == null)
+            if (novel is null)
                 return Result.Fail<RetornoNovel>("Novel não encontrada");
                         
             return Result.Ok().ToResult(TrataRetornoNovelUnica(novel));
         }
 
-        public async Task<RetornoComic> ObterComicPorId(Guid id)
+        public async Task<Result<RetornoComic>> ObterComicPorId(Guid id)
         {
             var comic = await _obrasService.ObterComicPorId(id);
-            return comic;
+            if (comic is null)
+                return Result.Fail<RetornoComic>("Comic não encontrada");
+
+            return Result.Ok().ToResult(TrataRetornoComicUnica(comic)); 
         }
         
-        public async Task<RetornoComic> ObterComicPorSlug(string slug)
+        public async Task<Result<RetornoComic>> ObterComicPorSlug(string slug)
         {
             var comic = await _obrasService.ObterComicPorSlug(slug);
-            return comic;
+            if (comic is null)
+                return Result.Fail<RetornoComic>("Comic não encontrada");
+
+            return Result.Ok().ToResult(TrataRetornoComicUnica(comic));
         }
 
         public async Task<List<RetornoCapitulosHome>> ObterCapitulosHome()
@@ -261,11 +272,56 @@ namespace TsundokuTraducoes.Services.AppServices
             };
         }
 
+        public RetornoComic TrataRetornoComicUnica(Comic obra)
+        {
+            return new RetornoComic()
+            {
+                UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
+                    ? obra.ImagemCapaUltimoVolume
+                    : obra.ImagemCapaPrincipal,
+
+                UrlBanner = !string.IsNullOrEmpty(obra.ImagemBanner) ? obra.ImagemBanner : !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
+                                                                                            ? obra.ImagemCapaUltimoVolume
+                                                                                            : obra.ImagemCapaPrincipal,
+
+                Titulo = obra.Titulo,
+                TituloAlternativo = obra.TituloAlternativo,
+                TipoObra = obra.TipoObra,
+                Alias = obra.Alias,
+                Autor = obra.Autor,
+                Artista = obra.Artista,
+                Ano = obra.Ano,
+                Visualizacoes = obra.Visualizacoes.ToString(),
+                Sinopse = obra.Sinopse,
+                EhRecomdacao = obra.EhRecomendacao,
+                EhObraMaiorIdade = obra.EhObraMaiorIdade,
+                DescritivoVolume = obra.NumeroUltimoVolume,
+                Slug = obra.Slug,
+                Id = obra.Id,
+                Nacionalidade = obra.Nacionalidade,
+                StatusObra = obra.StatusObra,
+                Observacao = obra.Observacao,
+                ListaGeneros = TrataRetornoListaGenerosNovel(obra.GenerosComic)
+            };
+        }
+
         public static List<string> TrataRetornoListaGenerosNovel(List<GeneroNovel> generosNovel)
         {
             var listaGeneros = new List<string>();
 
             generosNovel.ForEach((genero) =>
+            {
+                listaGeneros.Add(genero.Genero.Descricao);
+            });
+
+            return listaGeneros;
+        }
+
+        public static List<string> TrataRetornoListaGenerosNovel(List<GeneroComic> generosComic)
+        {
+            var listaGeneros = new List<string>();
+
+            generosComic.ForEach((genero) =>
             {
                 listaGeneros.Add(genero.Genero.Descricao);
             });

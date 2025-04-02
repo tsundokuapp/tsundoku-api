@@ -91,25 +91,25 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/obras/comic/id/{id}")]
-        [ProducesResponseType(typeof(RetornoObras), statusCode: 200)]
+        [ProducesResponseType(typeof(RetornoComic), statusCode: 200)]
         public async Task<IActionResult> ObterComicPorId(Guid id)
         {
-            var capitulo = await _obrasAppServices.ObterComicPorId(id);
-            if (capitulo == null)
-                return NotFound();
+            var retorno = await _obrasAppServices.ObterComicPorId(id);
+            if (retorno.IsFailed)
+                return NotFound(retorno.Errors[0].Message);
 
-            return Ok(capitulo);
+            return Ok(retorno.Value);
         }
         
         [HttpGet("api/obras/comic/slug/{slug}")]
-        [ProducesResponseType(typeof(RetornoObras), statusCode: 200)]
+        [ProducesResponseType(typeof(RetornoComic), statusCode: 200)]
         public async Task<IActionResult> ObterComicPorId(string slug)
         {
-            var capitulo = await _obrasAppServices.ObterComicPorSlug(slug);
-            if (capitulo == null)
-                return NotFound();
+            var retorno = await _obrasAppServices.ObterComicPorSlug(slug);
+            if (retorno.IsFailed)
+                return NotFound(retorno.Errors[0].Message);
 
-            return Ok(capitulo);
+            return Ok(retorno.Value);
         }
         
         [HttpGet("api/obras/home")]
