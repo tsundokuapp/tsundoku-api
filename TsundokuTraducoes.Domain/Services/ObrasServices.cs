@@ -42,7 +42,7 @@ namespace TsundokuTraducoes.Domain.Services
         }
         
         
-        public async Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras)
+        public async Task<List<Comic>> ObterListaComics(RequestObras requestObras)
         {
             return await _obrasRepository.ObterListaComics(requestObras);
         }        
@@ -52,12 +52,12 @@ namespace TsundokuTraducoes.Domain.Services
             return await _obrasRepository.ObterListaComicsRecentes();
         }
         
-        public async Task<RetornoComic> ObterComicPorId(Guid id)
+        public async Task<Comic> ObterComicPorId(Guid id)
         {
             return await _obrasRepository.ObterComicPorId(id);
         }
 
-        public async Task<RetornoComic> ObterComicPorSlug(string slug)
+        public async Task<Comic> ObterComicPorSlug(string slug)
         {
             return await _obrasRepository.ObterComicPorSlug(slug);
         }

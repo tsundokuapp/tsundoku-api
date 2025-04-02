@@ -13,10 +13,10 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
         Task<Novel> ObterNovelPorSlug(string slug);
         Task<List<Novel>> ObterListaNovelsRecomendadas();
 
-        Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras);
+        Task<List<Comic>> ObterListaComics(RequestObras requestObras);
         Task<List<RetornoObras>> ObterListaComicsRecentes();
-        Task<RetornoComic> ObterComicPorId(Guid id);
-        Task<RetornoComic> ObterComicPorSlug(string slug);        
+        Task<Comic> ObterComicPorId(Guid id);
+        Task<Comic> ObterComicPorSlug(string slug);        
         Task<List<Comic>> ObterListaComicsRecomendadas();
 
         Task<List<RetornoCapitulosHome>> ObterCapitulosHome();        

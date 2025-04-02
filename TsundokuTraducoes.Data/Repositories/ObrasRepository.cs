@@ -56,7 +56,7 @@ namespace TsundokuTraducoes.Data.Repositories
             return listaNovels;
         }
 
-        public async Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras)
+        public async Task<List<Comic>> ObterListaComics(RequestObras requestObras)
         {
             var listaComics = new List<Comic>();
 
@@ -70,15 +70,22 @@ namespace TsundokuTraducoes.Data.Repositories
                 if (parametrosVerificados)
                 {
                     var sql = RetornaSqlListaComicsPorParametros(requestObras.Nacionalidade, requestObras.Status, requestObras.Tipo, requestObras.Genero);
-                    listaComics = await _context.Comics.FromSqlRaw(sql).ToListAsync();
+                    listaComics = await _context.Comics
+                        .FromSqlRaw(sql)
+                        .Include(x => x.GenerosComic)
+                        .ThenInclude(x => x.Genero)
+                        .ToListAsync();
                 }
                 else
                 {
-                    listaComics = await _context.Comics.ToListAsync();
+                    listaComics = await _context.Comics
+                        .Include(x => x.GenerosComic)
+                        .ThenInclude(x => x.Genero)
+                        .ToListAsync();
                 }
             }
 
-            return TrataListaRetornoComic(listaComics);
+            return listaComics;
         }
         
         
@@ -126,18 +133,24 @@ namespace TsundokuTraducoes.Data.Repositories
                 .FirstOrDefaultAsync(w => w.Slug == slug);
         }
 
-        public async Task<RetornoComic> ObterComicPorId(Guid id)
+        public async Task<Comic> ObterComicPorId(Guid id)
         {
-            var comic = await _context.Comics.AsNoTracking().FirstOrDefaultAsync(w => w.Id == id);
-
-            return comic is null ? null : TrataRetornoComicUnica(comic);
+            return await _context
+                .Comics
+                .AsNoTracking()
+                .Include(x => x.GenerosComic)
+                .ThenInclude(x => x.Genero)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
         
-        public async Task<RetornoComic> ObterComicPorSlug(string slug)
+        public async Task<Comic> ObterComicPorSlug(string slug)
         {
-            var comic = await _context.Comics.AsNoTracking().FirstOrDefaultAsync(w => w.Slug == slug);
-
-            return comic is null ? null : TrataRetornoComicUnica(comic);
+            return await _context
+                .Comics
+                .AsNoTracking()
+                .Include(x => x.GenerosComic)
+                .ThenInclude(x => x.Genero)
+                .FirstOrDefaultAsync(x => x.Slug == slug);
         }
         
         

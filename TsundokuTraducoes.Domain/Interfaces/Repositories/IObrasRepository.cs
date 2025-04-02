@@ -8,7 +8,7 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
     public interface IObrasRepository
     {
         Task<List<Novel>> ObterListaNovels(RequestObras requestObras);
-        Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras);
+        Task<List<Comic>> ObterListaComics(RequestObras requestObras);
 
         Task<List<Novel>> ObterListaNovelsRecomendadas();
         Task<List<Comic>> ObterListaComicsRecomendadas();
@@ -19,8 +19,8 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
         Task<Novel> ObterNovelPorId(Guid id);
         Task<Novel> ObterNovelPorSlug(string slug);
 
-        Task<RetornoComic> ObterComicPorId(Guid id);
-        Task<RetornoComic> ObterComicPorSlug(string slug);
+        Task<Comic> ObterComicPorId(Guid id);
+        Task<Comic> ObterComicPorSlug(string slug);
 
         Task<List<RetornoCapitulosHome>> ObterCapitulosHome();
 

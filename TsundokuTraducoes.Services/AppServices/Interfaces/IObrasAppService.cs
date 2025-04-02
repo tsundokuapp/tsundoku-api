@@ -11,10 +11,10 @@ namespace TsundokuTraducoes.Services.AppServices.Interfaces
         Task<Result<RetornoNovel>> ObterNovelPorId(Guid id);
         Task<Result<RetornoNovel>> ObterNovelPorSlug(string slug);
 
-        Task<List<RetornoObras>> ObterListaComics(RequestObras requestObras);
+        Task<List<RetornoComic>> ObterListaComics(RequestObras requestObras);
         Task<List<RetornoObras>> ObterListaComicsRecentes();
-        Task<RetornoComic> ObterComicPorId(Guid id);
-        Task<RetornoComic> ObterComicPorSlug(string slug);
+        Task<Result<RetornoComic>> ObterComicPorId(Guid id);
+        Task<Result<RetornoComic>> ObterComicPorSlug(string slug);
 
         Task<List<RetornoCapitulosHome>> ObterCapitulosHome();
         Task<List<RetornoObrasRecomendadas>> ObterObrasRecomendadas();
