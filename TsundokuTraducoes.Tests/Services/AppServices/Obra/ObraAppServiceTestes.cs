@@ -91,5 +91,58 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Obra
             Assert.Equal(retornoEsperado.UrlCapaVolume, retorno.First().UrlCapaVolume);
             Assert.Equal(14, numeroDeCamposDaListaObra);
         }
+
+        [Fact]
+        public void TrataRetornoListaComic_ListaGeneroComic_DeveRetornarObjetoMapeadoCorretamente()
+        {
+            // Arrange
+            var appServicesFactory = new AppServicesFactory();
+            var comic = appServicesFactory.GerarNovelComVolumeComGeneros();
+
+            var retornoEsperado = new RetornoObras()
+            {
+                Titulo = "Bruxa Errante, a Jornada de Elaina",
+                UrlCapa = "https://tsundoku.com.br/wp-content/uploads/2021/01/Tsundoku-Traducoes-Majo-no-Tabitabi-Capa-Volume-01.jpg",
+                Alias = "Bruxa Errante",
+                Autor = "Shiraishi Jougi",
+                DescritivoVolume = "1",
+                Slug = "bruxa-errante-a-jornada-de-elaina",
+                TipoObra = "Light Novel",
+                Id = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
+                TituloAlternativo = "Majo no Tabitabi, The Journey of Elaina, The Witch's Travels, 魔女の旅々",
+                StatusObra = "Em andamento",
+                ListaGeneros = ["Aventura", "Seinen", "Drama", "Fantasia"],
+                Publicado = true,
+                UrlCapaPrincipal = null,
+                UrlCapaVolume = null
+            };
+
+            // Act
+            var listaNoval = new List<Novel>
+            {
+                comic
+            };
+
+            var retorno = _obrasAppService.TrataListaRetornoNovel(listaNoval);
+            var numeroDeCamposDaListaObra = retorno.First().GetType().GetProperties().Length;
+
+            // Assert
+            Assert.NotNull(retorno);
+            Assert.Equal(retornoEsperado.Titulo, retorno.First().Titulo);
+            Assert.Equal(retornoEsperado.UrlCapa, retorno.First().UrlCapa);
+            Assert.Equal(retornoEsperado.Alias, retorno.First().Alias);
+            Assert.Equal(retornoEsperado.Autor, retorno.First().Autor);
+            Assert.Equal(retornoEsperado.DescritivoVolume, retorno.First().DescritivoVolume);
+            Assert.Equal(retornoEsperado.Slug, retorno.First().Slug);
+            Assert.Equal(retornoEsperado.TipoObra, retorno.First().TipoObra);
+            Assert.Equal(retornoEsperado.Id, retorno.First().Id);
+            Assert.Equal(retornoEsperado.TituloAlternativo, retorno.First().TituloAlternativo);
+            Assert.Equal(retornoEsperado.StatusObra, retorno.First().StatusObra);
+            Assert.Equal(retornoEsperado.Publicado, retorno.First().Publicado);
+            Assert.Equal(retornoEsperado.ListaGeneros, retorno.First().ListaGeneros);
+            Assert.Equal(retornoEsperado.UrlCapaPrincipal, retorno.First().UrlCapaPrincipal);
+            Assert.Equal(retornoEsperado.UrlCapaVolume, retorno.First().UrlCapaVolume);
+            Assert.Equal(14, numeroDeCamposDaListaObra);
+        }
     }
 }

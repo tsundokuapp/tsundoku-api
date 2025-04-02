@@ -56,6 +56,26 @@ public class AppServicesFactory
         return volume;
     }
 
+    public VolumeComic GerarVolumeComic(Guid? idVolume)
+    {
+        var volume = new VolumeComic();
+        volume.AdicionaVolume(
+            Guid.Parse("08dba651-c8ee-460a-8b4a-56573c446d2a"),
+            "1",
+            "https://tsundoku.com.br/wp-content/uploads/2022/01/cover_hatsukoi_vol2.jpg",
+            "volume-1",
+            "",
+            "",
+            "Bravo",
+            "Bravo",
+            DateTime.Now,
+            DateTime.Now,
+            Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime", "Volume01"),
+            Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"));
+
+        return volume;
+    }
+
     public List<Comic> GerarListaComicsRecomendadas(int quantidadeComicsNaLista)
     {
         var listaComics = new List<Comic>();
@@ -176,6 +196,46 @@ public class AppServicesFactory
         return novel;
     }
 
+    public Comic GerarComicComVolumeComGeneros()
+    {
+        var idComic = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8");
+        var comic = new Comic();
+        comic.AdicionaComic(
+            idComic,
+            "Hatsukoi Losstime",
+            "初恋ロスタイム",
+            "Hatsukoi Losstime",
+            "Nishina Yuuki",
+            "Nanora & Zerokich",
+            "2017",
+            "hatsukoi-losstime",
+            "Bravo",
+            "Bravo",
+            "https://tsundoku.com.br/wp-content/uploads/2022/01/cover_hatsukoi_vol2.jpg",
+            "A Bruxa, Sim, sou eu.",
+            new DateTime(2024, 1, 1, 10, 30, 0),
+            new DateTime(2024, 1, 2, 10, 30, 0),
+            false,
+            false,
+            "#81F7F3",
+            "https://tsundoku.com.br/wp-content/uploads/2022/01/cover_hatsukoi_vol2.jpg",
+            "@Hatsukoi Losstime",
+            Diretorios.RetornaDiretorioImagemCriado("HatsukoiLosstime"),
+            "Em andamento",
+            "Mangá",
+            "Japonesa",
+            "Observação sobre um romance lindinho!",
+            false);
+
+        var listaGeneros = GerarListaGeneros();
+        var listaGeneroComics = GerarListaGeneroComic(listaGeneros);
+        comic.Volumes.Add(GerarVolumeComic(idComic));
+        comic.AdicionaListaGeneroComics(listaGeneroComics);
+        comic.AtualizaDadosUltimoVolume(comic.Volumes.First().ImagemVolume, comic.Volumes.First().Numero, comic.Volumes.First().Slug);
+
+        return comic;
+    }
+
     public List<Genero> GerarListaGeneros()
     {
         var listaGeneros = new List<Genero>()
@@ -225,6 +285,42 @@ public class AppServicesFactory
         return listaGeneroNovel;
     }
 
+    public List<GeneroComic> GerarListaGeneroComic(List<Genero> listaGeneros)
+    {
+        var listaGeneroNovel = new List<GeneroComic>()
+        {
+            new GeneroComic
+            {
+                GeneroId = Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0"),
+                ComicId = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
+                Genero = listaGeneros.FirstOrDefault(x => x.Id == Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0")),
+            },
+
+            new GeneroComic
+            {
+                GeneroId = Guid.Parse("64329027-9111-418c-a6ff-842689916083"),
+                ComicId = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
+                Genero = listaGeneros.FirstOrDefault(x => x.Id == Guid.Parse("64329027-9111-418c-a6ff-842689916083")),
+            },
+
+            new GeneroComic
+            {
+                GeneroId = Guid.Parse("64329027-9111-418c-a6ff-842689916084"),
+                ComicId = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
+                Genero = listaGeneros.FirstOrDefault(x => x.Id == Guid.Parse("64329027-9111-418c-a6ff-842689916084")),
+            },
+
+            new GeneroComic
+            {
+                GeneroId = Guid.Parse("64329027-9111-418c-a6ff-842689916085"),
+                ComicId = Guid.Parse("97722a6d-2210-434b-ae48-1a3c6da4c7a8"),
+                Genero = listaGeneros.FirstOrDefault(x => x.Id == Guid.Parse("64329027-9111-418c-a6ff-842689916085")),
+            },
+        };
+
+        return listaGeneroNovel;
+    }
+
     public List<Genero> GerarListaGenerosPorParametros(List<string> listaGenero)
     {
         var listaGeneros = new List<Genero>();
@@ -253,6 +349,16 @@ public class AppServicesFactory
             .Create();
     }
 
+    public Comic GerarComicComBanner(string banner)
+    {
+        return FixtureCustomizado
+            .RetornaFixtureCustomizado
+            .Build<Comic>()
+            .With(x => x.ImagemBanner, banner)
+            .With(x => x.GenerosComic, new List<GeneroComic>())
+            .Create();
+    }
+
     public List<GeneroNovel> GerarNovel_Com_ListaGeneroNovels(Novel novel, List<Genero> listaGeneros)
     {
         novel.GenerosNovel = new List<GeneroNovel>();
@@ -269,5 +375,23 @@ public class AppServicesFactory
         }
 
         return novel.GenerosNovel;
+    }
+
+    public List<GeneroComic> GerarComic_Com_ListaGeneroComics(Comic comic, List<Genero> listaGeneros)
+    {
+        comic.GenerosComic = new List<GeneroComic>();
+
+        foreach (var item in listaGeneros)
+        {
+            var generoNovel = FixtureCustomizado
+                .RetornaFixtureCustomizado
+                .Build<GeneroComic>()
+                .With(x => x.Genero, item)
+                .Create();
+
+            comic.GenerosComic.Add(generoNovel);
+        }
+
+        return comic.GenerosComic;
     }
 }

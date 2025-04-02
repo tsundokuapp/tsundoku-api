@@ -122,6 +122,36 @@ namespace TsundokuTraducoes.Tests.Services.AppServices
             Assert.Equal("Aventura", listaRetornoNovel[0].ListaGeneros[0]);
             Assert.Equal("Fantasia", listaRetornoNovel[0].ListaGeneros[1]);
 
-        }    
+        }
+
+        [Fact]
+        public void RetornaComic_ListaGeneros_DeveRetornarListaGeneros()
+        {
+            // Arrange
+            var appServicesFactory = new AppServicesFactory();
+            var banner = "https://tsundoku.com.br/wp-content/uploads/2022/01/hatsukoBanner.jpg";
+            var comic = appServicesFactory.GerarComicComBanner(banner);
+
+            var generos = appServicesFactory.GerarListaGenerosPorParametros(["Aventura", "Fantasia"]);
+            var generoComic = appServicesFactory.GerarComic_Com_ListaGeneroComics(comic, generos);
+
+            // Act
+            List<RetornoComic> listaRetornoComic = new List<RetornoComic>();
+            List<Comic> novels = [comic];
+
+
+            foreach (var item in novels)
+            {
+                var retornoComic = _obrasAppServiceMock.TrataRetornoComicUnica(item);
+                listaRetornoComic.Add(retornoComic);
+            }
+
+            // Assert
+            Assert.True(listaRetornoComic.Any());
+
+            Assert.Equal(banner, listaRetornoComic[0].UrlBanner);
+            Assert.Equal("Aventura", listaRetornoComic[0].ListaGeneros[0]);
+            Assert.Equal("Fantasia", listaRetornoComic[0].ListaGeneros[1]);
+        }
     }
 }
