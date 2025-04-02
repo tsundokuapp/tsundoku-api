@@ -301,7 +301,7 @@ namespace TsundokuTraducoes.Services.AppServices
                 Nacionalidade = obra.Nacionalidade,
                 StatusObra = obra.StatusObra,
                 Observacao = obra.Observacao,
-                ListaGeneros = TrataRetornoListaGenerosNovel(obra.GenerosComic)
+                ListaGeneros = TrataRetornoListaGenerosComic(obra.GenerosComic)
             };
         }
 
@@ -317,7 +317,7 @@ namespace TsundokuTraducoes.Services.AppServices
             return listaGeneros;
         }
 
-        public static List<string> TrataRetornoListaGenerosNovel(List<GeneroComic> generosComic)
+        public static List<string> TrataRetornoListaGenerosComic(List<GeneroComic> generosComic)
         {
             var listaGeneros = new List<string>();
 
