@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Public.Retorno.Response;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -33,14 +34,14 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/obras/novels/recentes")]
-        [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
-        public async Task<IActionResult> ObterNovelsRecentes([FromQuery] RequestObras requestObras)
+        [ProducesResponseType(typeof(ObjetoRetornoNovelsRecentes), statusCode: 200)]
+        public async Task<IActionResult> ObterNovelsRecentes([FromQuery] int? skip, int? take)
         {
-            var capitulos = await _obrasAppServices.ObterListaNovelsRecentes();
-            if (capitulos.Count == 0)
+            var novels = await _obrasAppServices.ObterListaNovelsRecentes();
+            if (novels.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, capitulos, requestObras);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoNovelsRecentes(HttpContext, novels, skip, take);
             return Ok(objetoRetorno);
         }
 
@@ -79,14 +80,14 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/obras/comics/recentes")]
-        [ProducesResponseType(typeof(List<RetornoObras>), statusCode: 200)]
-        public async Task<IActionResult> ObterComicsRecentes([FromQuery] RequestObras requestObras)
+        [ProducesResponseType(typeof(ObjetoRetornoComicsRecentes), statusCode: 200)]
+        public async Task<IActionResult> ObterComicsRecentes([FromQuery] int? skip, int? take)
         {
-            var capitulos = await _obrasAppServices.ObterListaComicsRecentes();
-            if (capitulos.Count == 0)
+            var comics = await _obrasAppServices.ObterListaComicsRecentes();
+            if (comics.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, capitulos, requestObras);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoComicsRecentes(HttpContext, comics, skip, take);
             return Ok(objetoRetorno);
         }
 
