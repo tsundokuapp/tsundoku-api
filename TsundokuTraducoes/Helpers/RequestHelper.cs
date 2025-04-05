@@ -272,6 +272,11 @@ namespace TsundokuTraducoes.Api.Helpers
 
         public static ObjetoRetornoNovelsRecentes CriarObjetoRetonoNovelsRecentes(HttpContext httpContext, List<RetornoNovelsRecentes> listaNovelsRecentes, int? skip, int? take)
         {
+            if (!skip.HasValue && !take.HasValue)
+            {
+                return new ObjetoRetornoNovelsRecentes { Anterior = null, Proxima = null, Data = listaNovelsRecentes, Total = listaNovelsRecentes.Count };
+            }
+
             var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
             var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
 
@@ -289,6 +294,11 @@ namespace TsundokuTraducoes.Api.Helpers
 
         public static ObjetoRetornoComicsRecentes CriarObjetoRetonoComicsRecentes(HttpContext httpContext, List<RetornoComicsRecentes> listaComicsRecentes, int? skip, int? take)
         {
+            if (!skip.HasValue && !take.HasValue)
+            {
+                return new ObjetoRetornoComicsRecentes { Anterior = null, Proxima = null, Data = listaComicsRecentes, Total = listaComicsRecentes.Count };
+            }
+
             var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
             var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
 
