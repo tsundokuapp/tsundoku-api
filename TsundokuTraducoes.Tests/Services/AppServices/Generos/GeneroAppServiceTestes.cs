@@ -215,5 +215,51 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Generos
             Assert.Contains($"generos?Skip=0&Take=6", objetoRetorno.Anterior);
             Assert.Null(objetoRetorno.Proxima);
         }
+
+        [Fact]
+        public async Task DeveRetornarListaGeneros_ComTodosDados()
+        {
+            // Arrange
+            var dicionarioGeneros = new Dictionary<string, string>()
+            {
+                { "Ação","acao" },
+                { "Aventura","aventura" },
+                { "Fantasia","fantasia" },
+                { "Comédia","comedia" },
+                { "Drama","drama" },
+                { "Harém","harem" },
+                { "Horror","horror" },
+                { "Adulto","adulto" }
+            };
+
+            var generoAppServiceFactory = new GeneroAppServiceFactoryTestes();
+            var listaGeneros = generoAppServiceFactory.GerarListaGenerosComTodosDados(dicionarioGeneros);
+
+            var scheme = "https";
+            var host = "localhost";
+            var path = $"/mock/generos?skip=1";
+            var url = $"{scheme}://{host}/{path}";
+            var httpContext = new HttpContextMock().SetupUrl(url);
+
+            _generoServiceMock
+                .Setup(x => x.RetornaListaGeneros())
+                .ReturnsAsync(listaGeneros);
+
+            var listaGenerosCadastrados = await _generoAppService.RetornaListaGeneros();
+            var objetoRetorno = RequestHelper.CriarObjetoRetornoGeneros(httpContext, listaGenerosCadastrados.ValueOrDefault, null, null);
+
+            var numeroDeCamposRetornoGenero = objetoRetorno.Data.First().GetType().GetProperties().Length;
+
+            // Assert
+            Assert.Equal(8, objetoRetorno.Total);
+            Assert.Contains($"generos?Skip=6&Take=6", objetoRetorno.Proxima);
+            Assert.Equal(7, numeroDeCamposRetornoGenero);
+            Assert.Equal("Ação", objetoRetorno.Data.First().Descricao);
+            Assert.Equal("acao", objetoRetorno.Data.First().Slug);
+            Assert.Equal("UsuarioTeste", objetoRetorno.Data.First().UsuarioAlteracao);
+            Assert.Equal("UsuarioTeste", objetoRetorno.Data.First().UsuarioInclusao);
+            Assert.NotEqual(new DateTime().ToString("dd/MM/yyyy HH:mm:ss"), objetoRetorno.Data.First().DataInclusao);
+            Assert.NotEqual(new DateTime().ToString("dd/MM/yyyy HH:mm:ss"), objetoRetorno.Data.First().DataAlteracao);
+        }
     }
 }
