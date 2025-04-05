@@ -394,4 +394,54 @@ public class AppServicesFactory
 
         return comic.GenerosComic;
     }
+
+    public List<Novel> GerarListaNovelsRecentes(Dictionary<string, DateTime> dicionarioObrasRecentes)
+    {
+        var listaNovels = new List<Novel>();
+
+        var capitulo = FixtureCustomizado.RetornaFixtureCustomizado.Build<CapituloNovel>().Create();
+        var volume = FixtureCustomizado.RetornaFixtureCustomizado.Build<VolumeNovel>().With(x => x.ListaCapitulo, [capitulo]).Create();
+
+        foreach (var obra in dicionarioObrasRecentes)
+        {
+            listaNovels
+                .Add(FixtureCustomizado
+                    .RetornaFixtureCustomizado
+                    .Build<Novel>()
+                    .With(x => x.Titulo, obra.Key)
+                    .With(x => x.DataAtualizacaoUltimoCapitulo, obra.Value)
+                    .With(x => x.Volumes, [volume])
+                    .Create()
+                );
+        }
+        
+        return listaNovels.Where(x => x.Volumes.Where(x => x.ListaCapitulo.Count != 0).Any())
+                .OrderByDescending(o => o.DataAtualizacaoUltimoCapitulo)
+                .ToList();
+    }
+
+    public List<Comic> GerarListaComicsRecentes(Dictionary<string, DateTime> dicionarioObrasRecentes)
+    {
+        var listaComics = new List<Comic>();
+
+        var capitulo = FixtureCustomizado.RetornaFixtureCustomizado.Build<CapituloComic>().Create();
+        var volume = FixtureCustomizado.RetornaFixtureCustomizado.Build<VolumeComic>().With(x => x.ListaCapitulo, [capitulo]).Create();
+
+        foreach (var obra in dicionarioObrasRecentes)
+        {
+            listaComics
+                .Add(FixtureCustomizado
+                    .RetornaFixtureCustomizado
+                    .Build<Comic>()
+                    .With(x => x.Titulo, obra.Key)
+                    .With(x => x.DataAtualizacaoUltimoCapitulo, obra.Value)
+                    .With(x => x.Volumes, [volume])
+                    .Create()
+                );
+        }
+
+        return listaComics.Where(x => x.Volumes.Where(x => x.ListaCapitulo.Count != 0).Any())
+                .OrderByDescending(o => o.DataAtualizacaoUltimoCapitulo)
+                .ToList();
+    }
 }

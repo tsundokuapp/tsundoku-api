@@ -70,7 +70,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             foreach (var comic in listaComicRecentes)
             {
-                listaRetornoObrasRecentes.Add(TrataRetornoComicRecente(comic));
+                listaRetornoObrasRecentes.Add(TrataRetornoComicRecentes(comic));
             }
 
             return listaRetornoObrasRecentes;
@@ -343,7 +343,7 @@ namespace TsundokuTraducoes.Services.AppServices
             return listaGeneros;
         }
 
-        public static RetornoNovelsRecentes TrataRetornoNovelRecentes(Novel obra)
+        public RetornoNovelsRecentes TrataRetornoNovelRecentes(Novel obra)
         {
             return new RetornoNovelsRecentes
             {
@@ -364,7 +364,7 @@ namespace TsundokuTraducoes.Services.AppServices
             };
         }
 
-        public static RetornoComicsRecentes TrataRetornoComicRecente(Comic obra)
+        public RetornoComicsRecentes TrataRetornoComicRecentes(Comic obra)
         {
             return new RetornoComicsRecentes
             {
