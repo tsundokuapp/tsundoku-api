@@ -104,16 +104,16 @@ namespace TsundokuTraducoes.Data.Context
             var listaGeneros = new List<Genero>()
                {
 
-                    new Genero{Id = Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0"), Descricao = "Aventura", Slug = "aventura" },
-                    new Genero{Id = Guid.Parse("64329027-9111-418c-a6ff-842689916083"), Descricao =  "Seinen", Slug = "seinen" },
-                    new Genero{Id = Guid.NewGuid(), Descricao = "Ação", Slug = "acao" },
-                    new Genero{Id = Guid.NewGuid(), Descricao = "Comédia", Slug = "comedia" },
-                    new Genero{Id = Guid.NewGuid(), Descricao = "Drama", Slug = "drama" },
-                    new Genero{Id = Guid.NewGuid(), Descricao = "Slice of Life", Slug = "slice-of-life" },
-                    new Genero{Id = Guid.NewGuid(), Descricao = "Isekai", Slug = "isekai" },
-                    new Genero{Id = Guid.NewGuid(), Descricao = "Harém", Slug = "harem" },
-                    new Genero{Id = Guid.NewGuid(), Descricao = "Horror", Slug = "horror" },
-                    new Genero{Id = Guid.NewGuid(), Descricao = "Fantasia", Slug = "fantasia" },
+                    new Genero{Id = Guid.Parse("707d2ef9-7fb7-451b-b3fc-be668664a7b0"), Descricao = "Aventura", Slug = "aventura", UsuarioInclusao = "Admin", UsuarioAlteracao = "Admin", DataInclusao = DateTime.Now, DataAlteracao = DateTime.Now },
+                    new Genero{Id = Guid.Parse("64329027-9111-418c-a6ff-842689916083"), Descricao =  "Seinen", Slug = "seinen", UsuarioInclusao = "Admin", UsuarioAlteracao = "Admin", DataInclusao = DateTime.Now, DataAlteracao = DateTime.Now },
+                    new Genero{Id = Guid.NewGuid(), Descricao = "Ação", Slug = "acao", UsuarioInclusao = "Admin", UsuarioAlteracao = "Admin", DataInclusao = DateTime.Now, DataAlteracao = DateTime.Now },
+                    new Genero{Id = Guid.NewGuid(), Descricao = "Comédia", Slug = "comedia", UsuarioInclusao = "Admin", UsuarioAlteracao = "Admin", DataInclusao = DateTime.Now, DataAlteracao = DateTime.Now},
+                    new Genero{Id = Guid.NewGuid(), Descricao = "Drama", Slug = "drama", UsuarioInclusao = "Admin", UsuarioAlteracao = "Admin", DataInclusao = DateTime.Now, DataAlteracao = DateTime.Now},
+                    new Genero{Id = Guid.NewGuid(), Descricao = "Slice of Life", Slug = "slice-of-life", UsuarioInclusao = "Admin", UsuarioAlteracao = "Admin", DataInclusao = DateTime.Now, DataAlteracao = DateTime.Now},
+                    new Genero{Id = Guid.NewGuid(), Descricao = "Isekai", Slug = "isekai", UsuarioInclusao = "Admin", UsuarioAlteracao = "Admin", DataInclusao = DateTime.Now, DataAlteracao = DateTime.Now},
+                    new Genero{Id = Guid.NewGuid(), Descricao = "Harém", Slug = "harem", UsuarioInclusao = "Admin", UsuarioAlteracao = "Admin", DataInclusao = DateTime.Now, DataAlteracao = DateTime.Now},
+                    new Genero{Id = Guid.NewGuid(), Descricao = "Horror", Slug = "horror", UsuarioInclusao = "Admin", UsuarioAlteracao = "Admin", DataInclusao = DateTime.Now, DataAlteracao = DateTime.Now},
+                    new Genero{Id = Guid.NewGuid(), Descricao = "Fantasia", Slug = "fantasia", UsuarioInclusao = "Admin", UsuarioAlteracao = "Admin", DataInclusao = DateTime.Now, DataAlteracao = DateTime.Now},
                };
 
             return listaGeneros;

@@ -6,6 +6,7 @@ using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno.Response;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -21,14 +22,14 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/admin/genero")]
-        [ProducesResponseType(typeof(List<RetornoGenero>), statusCode: 200)]
+        [ProducesResponseType(typeof(ObjetoRetornoGenerosResponse), statusCode: 200)]
         public async Task<IActionResult> RetornaListaGeneros([FromQuery] RequestGenero requestGenero)
         {
             var result = await _generoAppService.RetornaListaGeneros();
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetono(HttpContext, result.Value, requestGenero.Skip, requestGenero.Take);
+            var objetoRetorno = RequestHelper.CriarObjetoRetornoGeneros(HttpContext, result.Value, requestGenero.Skip, requestGenero.Take);
             return Ok(objetoRetorno);
         }
 

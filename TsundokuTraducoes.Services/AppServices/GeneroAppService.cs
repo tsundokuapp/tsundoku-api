@@ -67,6 +67,7 @@ namespace TsundokuTraducoes.Services.AppServices
             var genero = _mapper.Map<Genero>(generoDTO);
             genero.DataInclusao = DateTime.Now;
             genero.DataAlteracao = genero.DataInclusao;
+            genero.UsuarioAlteracao = genero.UsuarioInclusao;
 
             var generoCriado = await _generoService.AdicionaGenero(genero);
             if (!generoCriado)

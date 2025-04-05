@@ -5,6 +5,7 @@ using System.Linq;
 using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Request;
 using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
+using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno.Response;
 using TsundokuTraducoes.Helpers.DTOs.Public.Request;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno.Response;
@@ -268,6 +269,23 @@ namespace TsundokuTraducoes.Api.Helpers
             string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
 
             return new ObjetoRetornoGenerosCadastradosResponse { Anterior = anterior, Proxima = proxima, Data = dados, Total = total };
+        }
+
+        public static ObjetoRetornoGenerosResponse CriarObjetoRetornoGeneros(HttpContext httpContext, List<RetornoGenero> listaRetornoGeneros, int? skip, int? take)
+        {
+            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
+            var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
+
+            var dados = listaRetornoGeneros.Skip(itensPulados).Take(itensPorPagina).ToList();
+            var total = listaRetornoGeneros.Count;
+
+            var request = httpContext.Request;
+            var url = $"{request.Scheme}://{request.Host}{request.Path}";
+
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
+
+            return new ObjetoRetornoGenerosResponse  { Total = total, Proxima = proxima, Anterior = anterior, Data = dados };
         }
 
         private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)

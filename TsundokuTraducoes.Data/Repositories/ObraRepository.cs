@@ -143,6 +143,7 @@ namespace TsundokuTraducoes.Data.Repositories
                     novoGenero.DataInclusao = DateTime.Now;
                     novoGenero.DataAlteracao = novoGenero.DataInclusao;
                     novoGenero.UsuarioInclusao = novel.UsuarioInclusao;
+                    novoGenero.UsuarioAlteracao = novel.UsuarioAlteracao;
 
                     await _generoRepository.AdicionaGenero(novoGenero);
                     await _generoDeParaRepository.AdicionaGeneroNovel(new GeneroNovel { NovelId = novel.Id, GeneroId = novoGenero.Id });
@@ -183,6 +184,7 @@ namespace TsundokuTraducoes.Data.Repositories
                     novoGenero.DataInclusao = DateTime.Now;
                     novoGenero.DataAlteracao = novoGenero.DataInclusao;
                     novoGenero.UsuarioInclusao = comic.UsuarioInclusao;
+                    novoGenero.UsuarioAlteracao = comic.UsuarioAlteracao;
 
                     await _generoRepository.AdicionaGenero(novoGenero);
                     await _generoDeParaRepository.AdicionaGeneroComic(new GeneroComic { ComicId = comic.Id, GeneroId = novoGenero.Id });
