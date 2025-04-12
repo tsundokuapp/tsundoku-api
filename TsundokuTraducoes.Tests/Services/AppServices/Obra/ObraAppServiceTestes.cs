@@ -9,16 +9,15 @@ using TsundokuTraducoes.Services.Profiles;
 
 namespace TsundokuTraducoes.Tests.Services.AppServices.Obra
 {
-    public class ObrasAppServiceTestes
+    public class ObraAppServiceTestes
     {
         private readonly IMapper _mapper;
         private readonly Mock<IObrasService> _obrasServiceMock;
-        private readonly Mock<IImagemAppService> _imagemAppServiceMock;
         private readonly Mock<IGeneroDeParaAppService> _generoDeParaAppServiceMock;
 
         private readonly ObrasAppService _obrasAppService;
 
-        public ObrasAppServiceTestes()
+        public ObraAppServiceTestes()
         {
             var config = new MapperConfiguration(cfg =>
             {

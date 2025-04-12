@@ -8,13 +8,13 @@ namespace TsundokuTraducoes.Domain.Interfaces.Services
     public interface IObrasService
     {
         Task<List<Novel>> ObterListaNovels(RequestObras requestObras);
-        Task<List<RetornoObras>> ObterListaNovelsRecentes();        
+        Task<List<Novel>> ObterListaNovelsRecentes();        
         Task<Novel> ObterNovelPorId(Guid id);
         Task<Novel> ObterNovelPorSlug(string slug);
         Task<List<Novel>> ObterListaNovelsRecomendadas();
 
         Task<List<Comic>> ObterListaComics(RequestObras requestObras);
-        Task<List<RetornoObras>> ObterListaComicsRecentes();
+        Task<List<Comic>> ObterListaComicsRecentes();
         Task<Comic> ObterComicPorId(Guid id);
         Task<Comic> ObterComicPorSlug(string slug);        
         Task<List<Comic>> ObterListaComicsRecomendadas();

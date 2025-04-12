@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using HttpContextMoq;
+using HttpContextMoq.Extensions;
 using Moq;
+using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno;
@@ -152,6 +155,92 @@ namespace TsundokuTraducoes.Tests.Services.AppServices
             Assert.Equal(banner, listaRetornoComic[0].UrlBanner);
             Assert.Equal("Aventura", listaRetornoComic[0].ListaGeneros[0]);
             Assert.Equal("Fantasia", listaRetornoComic[0].ListaGeneros[1]);
+        }
+
+        [Fact]
+        public void RetornaNovelsRecentes_DeveRetornarListaNovelsRecentes()
+        {
+            // Arrange
+            var dicionarioObrasRecentes = new Dictionary<string, DateTime>
+            {
+                { "Obra_1", new DateTime(2025, 04, 05, 00, 00, 01) },
+                { "Obra_4", new DateTime(2025, 04, 05, 00, 00, 03) },
+                { "Obra_5", new DateTime(2025, 04, 05, 00, 00, 07) },
+                { "Obra_2", new DateTime(2025, 04, 05, 00, 00, 10) },
+                { "Obra_3", new DateTime(2025, 04, 05, 00, 00, 15) },
+                { "Obra_6", new DateTime(2025, 04, 05, 00, 00, 30) }
+            };
+
+            var appServicesFactory = new AppServicesFactory();
+            var listaNovelsRecentes = appServicesFactory.GerarListaNovelsRecentes(dicionarioObrasRecentes);
+
+            var scheme = "https";
+            var host = "localhost";
+            var path = $"/api/obras/novels/recentes";
+            var url = $"{scheme}://{host}/{path}";
+            var httpContext = new HttpContextMock().SetupUrl(url);
+
+            // Mock
+            var retornoNovelsRecentes = new List<RetornoNovelsRecentes>();
+
+            listaNovelsRecentes
+                .ForEach(novel => retornoNovelsRecentes.Add(
+                        _obrasAppServiceMock.TrataRetornoNovelRecentes(novel)
+                    )
+                );
+
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoNovelsRecentes(httpContext, retornoNovelsRecentes, null, null);
+
+            var numeroDeCamposDaListaObrasRecomendas = objetoRetorno.Data.First().GetType().GetProperties().Length;
+
+            // Assert
+            Assert.Equal(13, numeroDeCamposDaListaObrasRecomendas);
+            Assert.Equal("Obra_6", objetoRetorno.Data[0].Titulo);
+            Assert.Equal("Obra_2", objetoRetorno.Data[2].Titulo);
+            Assert.Equal("Obra_4", objetoRetorno.Data[4].Titulo);
+        }
+
+        [Fact]
+        public void RetornaComicsRecentes_DeveRetornarListaComicsRecentes()
+        {
+            // Arrange
+            var dicionarioObrasRecentes = new Dictionary<string, DateTime>
+            {
+                { "Obra_1", new DateTime(2025, 04, 05, 00, 00, 01) },
+                { "Obra_4", new DateTime(2025, 04, 05, 00, 00, 03) },
+                { "Obra_5", new DateTime(2025, 04, 05, 00, 00, 07) },
+                { "Obra_2", new DateTime(2025, 04, 05, 00, 00, 10) },
+                { "Obra_3", new DateTime(2025, 04, 05, 00, 00, 15) },
+                { "Obra_6", new DateTime(2025, 04, 05, 00, 00, 30) }
+            };
+
+            var appServicesFactory = new AppServicesFactory();
+            var listaComicsRecentes = appServicesFactory.GerarListaComicsRecentes(dicionarioObrasRecentes);
+
+            var scheme = "https";
+            var host = "localhost";
+            var path = $"/api/obras/comics/recentes";
+            var url = $"{scheme}://{host}/{path}";
+            var httpContext = new HttpContextMock().SetupUrl(url);
+
+            // Mock
+            var retornoComicsRecentes = new List<RetornoComicsRecentes>();
+
+            listaComicsRecentes
+                .ForEach(comic => retornoComicsRecentes.Add(
+                        _obrasAppServiceMock.TrataRetornoComicRecentes(comic)
+                    )
+                );
+
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoComicsRecentes(httpContext, retornoComicsRecentes, null, null);
+
+            var numeroDeCamposDaListaObrasRecomendas = objetoRetorno.Data.First().GetType().GetProperties().Length;
+
+            // Assert
+            Assert.Equal(13, numeroDeCamposDaListaObrasRecomendas);
+            Assert.Equal("Obra_6", objetoRetorno.Data[0].Titulo);
+            Assert.Equal("Obra_2", objetoRetorno.Data[2].Titulo);
+            Assert.Equal("Obra_4", objetoRetorno.Data[4].Titulo);
         }
     }
 }

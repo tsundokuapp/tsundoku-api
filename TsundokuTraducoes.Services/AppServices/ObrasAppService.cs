@@ -50,16 +50,30 @@ namespace TsundokuTraducoes.Services.AppServices
         }
 
 
-        public async Task<List<RetornoObras>> ObterListaNovelsRecentes()
+        public async Task<List<RetornoNovelsRecentes>> ObterListaNovelsRecentes()
         {
-            var listaRetornoObra = await _obrasService.ObterListaNovelsRecentes();
-            return listaRetornoObra;
+            var listaRetornoObrasRecentes = new List<RetornoNovelsRecentes>();
+            var listaNovelsRecentes = await _obrasService.ObterListaNovelsRecentes();
+
+            foreach (var novel in listaNovelsRecentes)
+            {
+                listaRetornoObrasRecentes.Add(TrataRetornoNovelRecentes(novel));
+            }
+
+            return listaRetornoObrasRecentes;
         }
 
-        public async Task<List<RetornoObras>> ObterListaComicsRecentes()
+        public async Task<List<RetornoComicsRecentes>> ObterListaComicsRecentes()
         {
-            var listaRetornoObra = await _obrasService.ObterListaComicsRecentes();
-            return listaRetornoObra;
+            var listaRetornoObrasRecentes = new List<RetornoComicsRecentes>();
+            var listaComicRecentes = await _obrasService.ObterListaComicsRecentes();
+
+            foreach (var comic in listaComicRecentes)
+            {
+                listaRetornoObrasRecentes.Add(TrataRetornoComicRecentes(comic));
+            }
+
+            return listaRetornoObrasRecentes;
         }
 
 
@@ -237,7 +251,7 @@ namespace TsundokuTraducoes.Services.AppServices
                 ListaGeneros = TrataRetornoListaGenerosNovel(obra.GenerosNovel),
                 Publicado = obra.Publicado
             };
-        }        
+        }
 
         public RetornoNovel TrataRetornoNovelUnica(Novel obra)
         {
@@ -327,6 +341,45 @@ namespace TsundokuTraducoes.Services.AppServices
             });
 
             return listaGeneros;
+        }
+
+        public RetornoNovelsRecentes TrataRetornoNovelRecentes(Novel obra)
+        {
+            return new RetornoNovelsRecentes
+            {
+                UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
+                ? obra.ImagemCapaUltimoVolume
+                : obra.ImagemCapaPrincipal,
+
+                Titulo = obra.Titulo,
+                TipoObra = obra.TipoObra,
+                Alias = obra.Alias,
+                Autor = obra.Autor,
+                DescritivoVolume = obra.NumeroUltimoVolume,
+                Slug = obra.Slug,
+                Id = obra.Id,
+                TituloAlternativo = obra.TituloAlternativo,
+                StatusObra = obra.StatusObra,
+                Publicado = obra.Publicado
+            };
+        }
+
+        public RetornoComicsRecentes TrataRetornoComicRecentes(Comic obra)
+        {
+            return new RetornoComicsRecentes
+            {
+                UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
+                ? obra.ImagemCapaUltimoVolume
+                : obra.ImagemCapaPrincipal,
+
+                Titulo = obra.Titulo,
+                TipoObra = obra.TipoObra,
+                Alias = obra.Alias,
+                Autor = obra.Autor,
+                DescritivoVolume = obra.NumeroUltimoVolume,
+                Slug = obra.Slug,
+                Id = obra.Id
+            };
         }
     }
 }

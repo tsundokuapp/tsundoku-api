@@ -270,6 +270,50 @@ namespace TsundokuTraducoes.Api.Helpers
             return new ObjetoRetornoGenerosCadastradosResponse { Anterior = anterior, Proxima = proxima, Data = dados, Total = total };
         }
 
+        public static ObjetoRetornoNovelsRecentes CriarObjetoRetonoNovelsRecentes(HttpContext httpContext, List<RetornoNovelsRecentes> listaNovelsRecentes, int? skip, int? take)
+        {
+            if (!skip.HasValue && !take.HasValue)
+            {
+                return new ObjetoRetornoNovelsRecentes { Anterior = null, Proxima = null, Data = listaNovelsRecentes, Total = listaNovelsRecentes.Count };
+            }
+
+            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
+            var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
+
+            var dados = listaNovelsRecentes.Skip(itensPulados).Take(itensPorPagina).ToList();
+            var total = listaNovelsRecentes.Count;
+
+            var request = httpContext.Request;
+            var url = $"{request.Scheme}://{request.Host}{request.Path}";
+
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
+
+            return new ObjetoRetornoNovelsRecentes { Total = total, Proxima = proxima, Anterior = anterior, Data = dados };
+        }
+
+        public static ObjetoRetornoComicsRecentes CriarObjetoRetonoComicsRecentes(HttpContext httpContext, List<RetornoComicsRecentes> listaComicsRecentes, int? skip, int? take)
+        {
+            if (!skip.HasValue && !take.HasValue)
+            {
+                return new ObjetoRetornoComicsRecentes { Anterior = null, Proxima = null, Data = listaComicsRecentes, Total = listaComicsRecentes.Count };
+            }
+
+            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
+            var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
+
+            var dados = listaComicsRecentes.Skip(itensPulados).Take(itensPorPagina).ToList();
+            var total = listaComicsRecentes.Count;
+
+            var request = httpContext.Request;
+            var url = $"{request.Scheme}://{request.Host}{request.Path}";
+
+            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
+            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
+
+            return new ObjetoRetornoComicsRecentes { Total = total, Proxima = proxima, Anterior = anterior, Data = dados };
+        }
+
         private static string RetornaLinkPaginacaoAnterior(int itensPorPagina, int itensPulados, string url)
         {
             string anterior = null;

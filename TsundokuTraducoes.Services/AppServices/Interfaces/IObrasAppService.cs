@@ -7,12 +7,12 @@ namespace TsundokuTraducoes.Services.AppServices.Interfaces
     public interface IObrasAppService
     {
         Task<List<RetornoNovel>> ObterListaNovels(RequestObras requestObras);
-        Task<List<RetornoObras>> ObterListaNovelsRecentes();
+        Task<List<RetornoNovelsRecentes>> ObterListaNovelsRecentes();
         Task<Result<RetornoNovel>> ObterNovelPorId(Guid id);
         Task<Result<RetornoNovel>> ObterNovelPorSlug(string slug);
 
         Task<List<RetornoComic>> ObterListaComics(RequestObras requestObras);
-        Task<List<RetornoObras>> ObterListaComicsRecentes();
+        Task<List<RetornoComicsRecentes>> ObterListaComicsRecentes();
         Task<Result<RetornoComic>> ObterComicPorId(Guid id);
         Task<Result<RetornoComic>> ObterComicPorSlug(string slug);
 

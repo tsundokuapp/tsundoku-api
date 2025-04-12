@@ -21,7 +21,7 @@ namespace TsundokuTraducoes.Domain.Services
             return await _obrasRepository.ObterListaNovels(requestObras);
         }
         
-        public async Task<List<RetornoObras>> ObterListaNovelsRecentes()
+        public async Task<List<Novel>> ObterListaNovelsRecentes()
         {
             return await _obrasRepository.ObterListaNovelsRecentes();
         }
@@ -47,7 +47,7 @@ namespace TsundokuTraducoes.Domain.Services
             return await _obrasRepository.ObterListaComics(requestObras);
         }        
         
-        public async Task<List<RetornoObras>> ObterListaComicsRecentes()
+        public async Task<List<Comic>> ObterListaComicsRecentes()
         {
             return await _obrasRepository.ObterListaComicsRecentes();
         }
