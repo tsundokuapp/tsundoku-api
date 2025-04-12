@@ -11,7 +11,7 @@ namespace TsundokuTraducoes.Data.Repositories
         {
             var listaVolumes = await context.VolumesNovel
                 .AsNoTracking()
-                .Include(x => x.ListaCapitulo)
+                .Include(x => x.ListaCapitulo.OrderBy(x => x.OrdemCapitulo))
                 .Where(x => x.NovelId == idObra)
                 .OrderBy(x => x.OrdemVolume)
                 .ToListAsync();
@@ -23,7 +23,7 @@ namespace TsundokuTraducoes.Data.Repositories
         {
             var listaVolumes = await context.VolumesNovel
                 .AsNoTracking()
-                .Include(x => x.ListaCapitulo)
+                .Include(x => x.ListaCapitulo.OrderBy(x => x.OrdemCapitulo))
                 .Where(x => x.Novel.Slug == slugObra)
                 .OrderBy(x => x.OrdemVolume)
                 .ToListAsync();
