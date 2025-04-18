@@ -15,7 +15,7 @@ namespace TsundokuTraducoes.Data.Repositories
                         join novels in context.Novels.AsNoTracking()
                           on volumesNovel.NovelId equals novels.Id
                         where novels.Id == idObra
-                        orderby capitulosNovel.OrdemCapitulo
+                        orderby volumesNovel.OrdemVolume, capitulosNovel.OrdemCapitulo
                         select capitulosNovel;
 
             return await query.ToListAsync();
@@ -29,7 +29,7 @@ namespace TsundokuTraducoes.Data.Repositories
                         join novels in context.Novels.AsNoTracking()
                           on volumesNovel.NovelId equals novels.Id
                         where novels.Slug == slugObra
-                        orderby capitulosNovel.OrdemCapitulo
+                        orderby volumesNovel.OrdemVolume, capitulosNovel.OrdemCapitulo
                         select capitulosNovel;
 
             return await query.ToListAsync();

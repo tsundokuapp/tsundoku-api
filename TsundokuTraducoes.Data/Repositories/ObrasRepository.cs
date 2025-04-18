@@ -100,16 +100,24 @@ namespace TsundokuTraducoes.Data.Repositories
         }
 
         
-        public async Task<List<RetornoObras>> ObterListaNovelsRecentes()
+        public async Task<List<Novel>> ObterListaNovelsRecentes()
         {
-            var listaNovels = await _context.Novels.AsNoTracking().OrderByDescending(o => o.DataInclusao).ToListAsync();
-            return TrataListaRetornoNovel(listaNovels);
+            return await _context
+                .Novels
+                .AsNoTracking()
+                .Where(x => x.Volumes.Where(x => x.ListaCapitulo.Count != 0).Any())
+                .OrderByDescending(o => o.DataAtualizacaoUltimoCapitulo)
+                .ToListAsync();
         }
         
-        public async Task<List<RetornoObras>> ObterListaComicsRecentes()
-        {
-            var listaComics = await _context.Comics.AsNoTracking().OrderByDescending(o => o.DataInclusao).ToListAsync();
-            return TrataListaRetornoComic(listaComics);
+        public async Task<List<Comic>> ObterListaComicsRecentes()
+        {   
+            return await _context
+                .Comics
+                .AsNoTracking()
+                .Where(x => x.Volumes.Where(x => x.ListaCapitulo.Count != 0).Any())
+                .OrderByDescending(o => o.DataAtualizacaoUltimoCapitulo)
+                .ToListAsync();
         }
 
 
@@ -313,54 +321,6 @@ namespace TsundokuTraducoes.Data.Repositories
                         {condicaoConsulta} ";
         }
         
-
-        public static List<RetornoObras> TrataListaRetornoNovel(List<Novel> listaNovels)
-        {
-            var listaRetornoObra = new List<RetornoObras>();
-
-            foreach (var obra in listaNovels)
-            {
-                listaRetornoObra.Add(TrataRetornoNovel(obra));
-            }
-
-            return listaRetornoObra;
-        }
-
-        public static List<RetornoObras> TrataListaRetornoComic(List<Comic> listaNovels)
-        {
-            var listaRetornoObra = new List<RetornoObras>();
-
-            foreach (var obra in listaNovels)
-            {
-                listaRetornoObra.Add(TrataRetornoComic(obra));
-            }
-
-            return listaRetornoObra;
-        }
-        
-        
-        private static RetornoObras TrataRetornoNovel(Novel obra)
-        {
-            return new RetornoObras
-            {
-                UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
-                ? obra.ImagemCapaUltimoVolume
-                : obra.ImagemCapaPrincipal,
-                
-                Titulo = obra.Titulo,
-                TipoObra = obra.TipoObra,
-                Alias = obra.Alias,
-                Autor = obra.Autor,
-                DescritivoVolume = obra.NumeroUltimoVolume,
-                Slug = obra.Slug,
-                Id = obra.Id,
-                TituloAlternativo = obra.TituloAlternativo,
-                StatusObra = obra.StatusObra,
-                ListaGeneros = TrataRetornoListaGeneros(obra.GenerosNovel),
-                Publicado = obra.Publicado
-            };
-        }
-        
         public static RetornoNovel TrataRetornoNovelUnica(Novel obra)
         {
             return new RetornoNovel()
@@ -390,7 +350,6 @@ namespace TsundokuTraducoes.Data.Repositories
             };
         }
 
-
         public static RetornoComic TrataRetornoComicUnica(Comic obra)
         {
             return new RetornoComic()
@@ -418,25 +377,6 @@ namespace TsundokuTraducoes.Data.Repositories
                 Observacao = obra.Observacao,
             };
         }
-
-        private static RetornoObras TrataRetornoComic(Comic obra)
-        {
-            return new RetornoObras
-            {
-                UrlCapa = !string.IsNullOrEmpty(obra.ImagemCapaUltimoVolume)
-                ? obra.ImagemCapaUltimoVolume
-                : obra.ImagemCapaPrincipal,
-                
-                Titulo = obra.Titulo,
-                TipoObra = obra.TipoObra,
-                Alias = obra.Alias,
-                Autor = obra.Autor,
-                DescritivoVolume = obra.NumeroUltimoVolume,
-                Slug = obra.Slug,
-                Id = obra.Id
-            };
-        }
-
 
         private static void TrataListaRetornoCapitulo(List<RetornoCapitulosHome> listaRetornoCapitulos)
         {

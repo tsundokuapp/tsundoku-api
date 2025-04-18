@@ -9,16 +9,15 @@ namespace TsundokuTraducoes.Data.Repositories
     {
         public async Task<List<CapituloComic>> ObterCapitulosComicPorIdObra(Guid idObra)
         {
-
             var query = from capitulosComic in context.CapitulosComic.AsNoTracking()
                         join volumesComic in context.VolumesComic.AsNoTracking()
                           on capitulosComic.VolumeId equals volumesComic.Id
                         join comics in context.Comics.AsNoTracking()
                           on volumesComic.ComicId equals comics.Id
-                       where comics.Id == idObra
-                     orderby capitulosComic.OrdemCapitulo
-                      select capitulosComic;
-            
+                        where comics.Id == idObra
+                        orderby volumesComic.OrdemVolume, capitulosComic.OrdemCapitulo
+                        select capitulosComic;
+
             return await query.ToListAsync();
         }
 
@@ -30,7 +29,7 @@ namespace TsundokuTraducoes.Data.Repositories
                         join comics in context.Comics.AsNoTracking()
                           on volumesComic.ComicId equals comics.Id
                         where comics.Slug == slugObra
-                        orderby capitulosComic.OrdemCapitulo
+                        orderby volumesComic.OrdemVolume, capitulosComic.OrdemCapitulo
                         select capitulosComic;
 
             return await query.ToListAsync();

@@ -13,8 +13,8 @@ namespace TsundokuTraducoes.Domain.Interfaces.Repositories
         Task<List<Novel>> ObterListaNovelsRecomendadas();
         Task<List<Comic>> ObterListaComicsRecomendadas();
 
-        Task<List<RetornoObras>> ObterListaNovelsRecentes();
-        Task<List<RetornoObras>> ObterListaComicsRecentes();
+        Task<List<Novel>> ObterListaNovelsRecentes();
+        Task<List<Comic>> ObterListaComicsRecentes();
         
         Task<Novel> ObterNovelPorId(Guid id);
         Task<Novel> ObterNovelPorSlug(string slug);
