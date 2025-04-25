@@ -20,6 +20,7 @@ namespace TsundokuTraducoes.Data.Repositories
             return await _context.Generos.AsNoTracking()
                 .Include(o => o.GenerosComic)
                 .Include(o => o.GenerosNovel)
+                .OrderBy(o => o.Descricao)
                 .ToListAsync();
         }
 
