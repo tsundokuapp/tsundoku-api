@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentResults;
 using HttpContextMoq;
 using HttpContextMoq.Extensions;
 using Moq;
@@ -53,7 +52,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
 
         #region => TESTES CAPITULO COMIC APP SERVICE
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapitulo_ComLinksParaProximoEAnterior_NaBuscaPorIdCapituloEIdbra))]
+        [Trait("Services", "AppService - CapituloComics")]
         public void DeveRetornarCapitulo_ComLinksParaProximoEAnterior_NaBuscaPorIdCapituloEIdbra()
         {
             // Arrange
@@ -94,7 +94,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Contains($"{comic.Id}/{listaIdsCapitulos[0]}", objetoRetorno.Anterior);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapitulo_ComLinksParaProximoEAnteriorNull_NaBuscaPorIdCapituloEIdbra))]
+        [Trait("Services", "AppService - CapituloComics")]
         public void DeveRetornarCapitulo_ComLinksParaProximoEAnteriorNull_NaBuscaPorIdCapituloEIdbra()
         {
             // Arrange
@@ -135,7 +136,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Null(objetoRetorno.Anterior);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapitulo_ComLinksParaAnteriorEProximoNull_NaBuscaPorIdCapituloEIdbra))]
+        [Trait("Services", "AppService - CapituloComics")]
         public void DeveRetornarCapitulo_ComLinksParaAnteriorEProximoNull_NaBuscaPorIdCapituloEIdbra()
         {
             // Arrange
@@ -176,7 +178,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Null(objetoRetorno.Proxima);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarFalse_QuandoCapituloNaoEncontrado_NaBuscaPorIdCapituloEIdbra))]
+        [Trait("Services", "AppService - CapituloComics")]
         public void DeveRetornarFalse_QuandoCapituloNaoEncontrado_NaBuscaPorIdCapituloEIdbra()
         {
             // Arrange
@@ -216,7 +219,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Contains("Capítulo não encontrado!", result.Errors[0].Message);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarNull_QuandoObraNaoEncontrada_NaBuscaPorIdCapituloEIdbra))]
+        [Trait("Services", "AppService - CapituloComics")]
         public async Task DeveRetornarNull_QuandoObraNaoEncontrada_NaBuscaPorIdCapituloEIdbra()
         {
             // Arrange
@@ -247,7 +251,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
         }
 
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapitulo_ComLinksParaProximoEAnterior_NaBuscaPorIdCapituloESlugObra))]
+        [Trait("Services", "AppService - CapituloComics")]
         public void DeveRetornarCapitulo_ComLinksParaProximoEAnterior_NaBuscaPorIdCapituloESlugObra()
         {
             // Arrange
@@ -290,7 +295,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Contains($"{comic.Slug}/{listaIdsCapitulos[0]}", objetoRetorno.Anterior);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapitulo_ComLinksParaProximoEAnteriorNull_NaBuscaPorIdCapituloESlugObra))]
+        [Trait("Services", "AppService - CapituloComics")]
         public void DeveRetornarCapitulo_ComLinksParaProximoEAnteriorNull_NaBuscaPorIdCapituloESlugObra()
         {
             // Arrange
@@ -333,7 +339,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Null(objetoRetorno.Anterior);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapitulo_ComLinksParaAnteriorEProximoNull_NaBuscaPorIdCapituloESlugObra))]
+        [Trait("Services", "AppService - CapituloComics")]
         public void DeveRetornarCapitulo_ComLinksParaAnteriorEProximoNull_NaBuscaPorIdCapituloESlugObra()
         {
             // Arrange
@@ -376,7 +383,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Null(objetoRetorno.Proxima);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarFalse_QuandoCapituloNaoEncontrado_NaBuscaPorIdCapituloESlugObra))]
+        [Trait("Services", "AppService - CapituloComics")]
         public void DeveRetornarFalse_QuandoCapituloNaoEncontrado_NaBuscaPorIdCapituloESlugObra()
         {
             // Arrange
@@ -418,7 +426,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Contains("Capítulo não encontrado!", result.Errors[0].Message);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarNull_QuandoObraNaoEncontrada_NaBuscaPorIdCapituloESlugObra))]
+        [Trait("Services", "AppService - CapituloComics")]
         public async Task DeveRetornarNull_QuandoObraNaoEncontrada_NaBuscaPorIdCapituloESlugObra()
         {
             // Arrange
@@ -449,11 +458,183 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Contains("Obra não encontrada!", result.Errors[0].Message);
         }
 
+
+        [Fact(DisplayName = nameof(DeveRetornarListaCapitulos_ComLinksParaProximoEAnterior_NaBuscaPorSlugObra))]
+        [Trait("Services", "AppService - CapituloComics")]
+        public void DeveRetornarListaCapitulos_ComLinksParaProximoEAnterior_NaBuscaPorSlugObra()
+        {
+            // Arrange
+            var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
+            var slugObra = "slug-comic-teste";
+
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023"),
+                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023"),
+                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
+            ];
+
+            var capituloAppServiceFactory = new CapituloAppServiceFactoryTestes();
+            Comic comic = capituloAppServiceFactory.GerarComic(IdObra, slugObra);
+            VolumeComic volumeComic = capituloAppServiceFactory.GerarVolumeComic(IdObra);
+            List<CapituloComic> listaCapituloComic = capituloAppServiceFactory.GerarListaCapituloComic(listaIdsCapitulos);
+
+            var scheme = "https";
+            var host = "localhost";
+            var path = $"/mock/{comic.Slug}?skip=1";
+            var url = $"{scheme}://{host}/{path}";
+            var httpContext = new HttpContextMock().SetupUrl(url);
+
+            // Assert
+            var retornoListaRetornoCapituloComic = new List<RetornoCapituloComic>();
+
+            listaCapituloComic
+                .ForEach(capituloComic => retornoListaRetornoCapituloComic
+                    .Add(_capituloComicAppService
+                        .TrataRetornoCapituloComic(capituloComic))
+                );
+
+            var objetoRetorno = RequestHelper.CriarObjetoRetornoCapitulosPorSlugObra(httpContext, retornoListaRetornoCapituloComic, 1, null);
+
+            Assert.Equal(15, objetoRetorno.Data.Count);
+            Assert.Equal(16, objetoRetorno.Total);
+            Assert.Contains($"{comic.Slug}?Skip=16&Take=15", objetoRetorno.Proxima);
+            Assert.Contains($"{comic.Slug}?Skip=0&Take=15", objetoRetorno.Anterior);
+        }
+
+        [Fact(DisplayName = nameof(DeveRetornarListaCapitulos_ComLinksParaProximoEAnterior_NaBuscaPorSlugObra))]
+        [Trait("Services", "AppService - CapituloComics")]
+        public void DeveRetornarListaCapitulos_ComLinksParaProximoEAnteriorNull_NaBuscaPorSlugObra()
+        {
+            // Arrange
+            var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
+            var slugObra = "slug-comic-teste";
+
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023"),
+                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023"),
+                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
+            ];
+
+            var capituloAppServiceFactory = new CapituloAppServiceFactoryTestes();
+            Comic comic = capituloAppServiceFactory.GerarComic(IdObra, slugObra);
+            VolumeComic volumeComic = capituloAppServiceFactory.GerarVolumeComic(IdObra);
+            List<CapituloComic> listaCapituloComic = capituloAppServiceFactory.GerarListaCapituloComic(listaIdsCapitulos);
+
+            var scheme = "https";
+            var host = "localhost";
+            var path = $"/mock/{comic.Slug}?skip=0&take=15";
+            var url = $"{scheme}://{host}/{path}";
+            var httpContext = new HttpContextMock().SetupUrl(url);
+
+            // Assert
+            var retornoListaRetornoCapituloComic = new List<RetornoCapituloComic>();
+
+            listaCapituloComic
+                .ForEach(capituloComic => retornoListaRetornoCapituloComic
+                    .Add(_capituloComicAppService
+                        .TrataRetornoCapituloComic(capituloComic))
+                );
+
+            var objetoRetorno = RequestHelper.CriarObjetoRetornoCapitulosPorSlugObra(httpContext, retornoListaRetornoCapituloComic, 0, 15);
+
+            Assert.Equal(slugObra, comic.Slug);
+            Assert.Equal(15, objetoRetorno.Data.Count);
+            Assert.Equal(16, objetoRetorno.Total);
+            Assert.Contains($"{comic.Slug}?Skip=15&Take=15", objetoRetorno.Proxima);
+            Assert.Null(objetoRetorno.Anterior);
+        }
+
+        [Fact(DisplayName = nameof(DeveRetornarListaCapitulos_ComLinksParaProximoEAnterior_NaBuscaPorSlugObra))]
+        [Trait("Services", "AppService - CapituloComics")]
+        public void DeveRetornarListaCapitulos_ComLinksParaAnteriorEProximoNull_NaBuscaPorSlugObra()
+        {
+            // Arrange
+            var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
+            var slugObra = "slug-comic-teste";
+
+            List<Guid> listaIdsCapitulos =
+            [
+                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023"),
+                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023"),
+                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
+            ];
+
+            var capituloAppServiceFactory = new CapituloAppServiceFactoryTestes();
+            Comic comic = capituloAppServiceFactory.GerarComic(IdObra, slugObra);
+            VolumeComic volumeComic = capituloAppServiceFactory.GerarVolumeComic(IdObra);
+            List<CapituloComic> listaCapituloComic = capituloAppServiceFactory.GerarListaCapituloComic(listaIdsCapitulos);
+
+            var scheme = "https";
+            var host = "localhost";
+            var path = $"/mock/{comic.Slug}?skip=15&take=15";
+            var url = $"{scheme}://{host}/{path}";
+            var httpContext = new HttpContextMock().SetupUrl(url);
+
+            // Assert
+            var retornoListaRetornoCapituloComic = new List<RetornoCapituloComic>();
+
+            listaCapituloComic
+                .ForEach(capituloComic => retornoListaRetornoCapituloComic
+                    .Add(_capituloComicAppService
+                        .TrataRetornoCapituloComic(capituloComic))
+                );
+
+            var objetoRetorno = RequestHelper.CriarObjetoRetornoCapitulosPorSlugObra(httpContext, retornoListaRetornoCapituloComic, 15, 15);
+
+            Assert.Equal(slugObra, comic.Slug);
+            Assert.Single(objetoRetorno.Data);
+            Assert.Equal(16, objetoRetorno.Total);
+            Assert.Contains($"{comic.Slug}?Skip=0&Take=15", objetoRetorno.Anterior);
+            Assert.Null(objetoRetorno.Proxima);
+        }
+
         #endregion
 
         #region => TESTES CAPITULO NOVEL APP SERVICE
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapituloNovel_ComLinksParaProximoEAnterior_NaBuscaPorIdCapituloEIdbra))]
+        [Trait("Services", "AppService - CapituloNovels")]
         public void DeveRetornarCapituloNovel_ComLinksParaProximoEAnterior_NaBuscaPorIdCapituloEIdbra()
         {
             // Arrange
@@ -494,7 +675,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Contains($"{novel.Id}/{listaIdsCapitulos[0]}", objetoRetorno.Anterior);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapituloNovel_ComLinksParaProximoEAnteriorNull_NaBuscaPorIdCapituloEIdbra))]
+        [Trait("Services", "AppService - CapituloNovels")]
         public void DeveRetornarCapituloNovel_ComLinksParaProximoEAnteriorNull_NaBuscaPorIdCapituloEIdbra()
         {
             // Arrange
@@ -535,7 +717,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Null(objetoRetorno.Anterior);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapituloNovel_ComLinksParaAnteriorEProximoNull_NaBuscaPorIdCapituloEIdbra))]
+        [Trait("Services", "AppService - CapituloNovels")]
         public void DeveRetornarCapituloNovel_ComLinksParaAnteriorEProximoNull_NaBuscaPorIdCapituloEIdbra()
         {
             // Arrange
@@ -576,7 +759,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Null(objetoRetorno.Proxima);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarFalseCapituloNovel_QuandoCapituloNaoEncontrado_NaBuscaPorIdCapituloEIdbra))]
+        [Trait("Services", "AppService - CapituloNovels")]
         public void DeveRetornarFalseCapituloNovel_QuandoCapituloNaoEncontrado_NaBuscaPorIdCapituloEIdbra()
         {
             // Arrange
@@ -616,7 +800,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Contains("Capítulo não encontrado!", result.Errors[0].Message);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarNullCapituloNovel_QuandoObraNaoEncontrada_NaBuscaPorIdCapituloEIdbra))]
+        [Trait("Services", "AppService - CapituloNovels")]
         public async Task DeveRetornarNullCapituloNovel_QuandoObraNaoEncontrada_NaBuscaPorIdCapituloEIdbra()
         {
             // Arrange
@@ -646,7 +831,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Contains("Obra não encontrada!", result.Errors[0].Message);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapituloNovel_ComLinksParaProximoEAnterior_NaBuscaPorIdCapituloESlugObra))]
+        [Trait("Services", "AppService - CapituloNovels")]
         public void DeveRetornarCapituloNovel_ComLinksParaProximoEAnterior_NaBuscaPorIdCapituloESlugObra()
         {
             // Arrange
@@ -688,7 +874,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Contains($"{novel.Slug}/{listaIdsCapitulos[0]}", objetoRetorno.Anterior);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapituloNovel_ComLinksParaProximoEAnteriorNull_NaBuscaPorIdCapituloESlugObra))]
+        [Trait("Services", "AppService - CapituloNovels")]
         public void DeveRetornarCapituloNovel_ComLinksParaProximoEAnteriorNull_NaBuscaPorIdCapituloESlugObra()
         {
             // Arrange
@@ -730,7 +917,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Null(objetoRetorno.Anterior);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarCapituloNovel_ComLinksParaAnteriorEProximoNull_NaBuscaPorIdCapituloESlugObra))]
+        [Trait("Services", "AppService - CapituloNovels")]
         public void DeveRetornarCapituloNovel_ComLinksParaAnteriorEProximoNull_NaBuscaPorIdCapituloESlugObra()
         {
             // Arrange
@@ -772,7 +960,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Null(objetoRetorno.Proxima);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarFalseCapituloNovel_QuandoCapituloNaoEncontrado_NaBuscaPorIdCapituloESlugObra))]
+        [Trait("Services", "AppService - CapituloNovels")]
         public void DeveRetornarFalseCapituloNovel_QuandoCapituloNaoEncontrado_NaBuscaPorIdCapituloESlugObra()
         {
             // Arrange
@@ -813,7 +1002,8 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Capitulo
             Assert.Contains("Capítulo não encontrado!", result.Errors[0].Message);
         }
 
-        [Fact]
+        [Fact(DisplayName = nameof(DeveRetornarNullCapituloNovel_QuandoObraNaoEncontrada_NaBuscaPorIdCapituloESlugObra))]
+        [Trait("Services", "AppService - CapituloNovels")]
         public async Task DeveRetornarNullCapituloNovel_QuandoObraNaoEncontrada_NaBuscaPorIdCapituloESlugObra()
         {
             // Arrange

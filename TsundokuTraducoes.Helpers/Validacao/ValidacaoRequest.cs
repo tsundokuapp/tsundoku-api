@@ -74,6 +74,12 @@ namespace TsundokuTraducoes.Helpers.Validacao
             return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
         }
 
+        public static int RetornaTakeCapitulosTratado(int? obrasPorPagina)
+        {
+            var valorObrasPorPagina = 15;
+            return obrasPorPagina == null ? valorObrasPorPagina : obrasPorPagina.GetValueOrDefault();
+        }
+
         public static int RetornaSkipTratado(int? pagina, int obrasPorPagina)
         {
             return pagina == null ? 0 : (pagina.GetValueOrDefault() < 0 ? 0 : pagina.GetValueOrDefault());

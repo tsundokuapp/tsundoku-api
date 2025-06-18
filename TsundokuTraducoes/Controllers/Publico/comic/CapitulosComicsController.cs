@@ -31,5 +31,19 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.manga
             var objetoRetorno = RequestHelper.CriarObjetoRetonoCapitulosPorSlugComics(HttpContext, result.Value, idCapitulo);
             return Ok(objetoRetorno);
         }
+
+        [HttpGet("api/comics/slug/{slugObra}")]
+        public async Task<IActionResult> ObterListaCapitulosComicPorSlugObra(string slugObra, [FromQuery] int? skip, int? take)
+        {
+            var result = await service.ObterListaCapitulosComicPorSlugObra(slugObra);
+            if (result.IsFailed)
+                return NotFound(result.Errors[0].Message);
+
+            if (result.Value == null || result.Value.Count == 0)
+                return NoContent();
+
+            var objetoRetorno = RequestHelper.CriarObjetoRetornoCapitulosPorSlugObra(HttpContext, result.Value, skip, take);
+            return Ok(objetoRetorno);
+        }
     }
 }
