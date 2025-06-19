@@ -1,10 +1,12 @@
 ﻿using FluentResults;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers;
 using TsundokuTraducoes.Helpers.Configuration;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
+using TsundokuTraducoes.Helpers.DTOs.Utils;
 using TsundokuTraducoes.Helpers.Imagens;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
@@ -12,9 +14,15 @@ namespace TsundokuTraducoes.Services.AppServices
 {
     public class ImagemAppService : IImagemAppService
     {
+        private readonly IAwsS3Service _servicoAmazon;
+
+        public ImagemAppService(IAwsS3Service servicoAmazon)
+        {
+            _servicoAmazon = servicoAmazon;
+        }
+
         public async Task<Result> ProcessaUploadCapaObra(ObraDTO obraDTO, bool alterarImagem)
         {
-            var servicoAmazon = new ServicosImagemAmazonS3();
             var result = new Result<byte[]>();
             var resultImagem = new Result<ImagemDTO>();
             var imagemCapaPrincipal = obraDTO.ImagemCapaPrincipalFile;
@@ -40,8 +48,15 @@ namespace TsundokuTraducoes.Services.AppServices
             }
             else
             {
-                nomeDiretorioImagensObra = nomeDiretorioImagensObra + "/";
-                resultImagem = await RealizaUploadImagemS3(alterarImagem, servicoAmazon, nomeDiretorioImagensObra, nomeArquivoImagem, arrayByteImagem);
+                var parametroAwsServiceDto = new ParametroAwsServiceDto
+                {
+                    AlterarImagem = alterarImagem,
+                    ArrayByteImagem = arrayByteImagem,
+                    NomeArquivoImagem = nomeArquivoImagem,
+                    NomeDiretorioImagens = nomeDiretorioImagensObra + "/"
+                };
+
+                resultImagem = await _servicoAmazon.RealizaUploadImagemS3(parametroAwsServiceDto);
                 if (!resultImagem.IsSuccess)
                     return Result.Fail(resultImagem.Errors[0].Message);
             }
@@ -54,7 +69,6 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<Result> ProcessaUploadBannerObra(ObraDTO obraDTO, bool alterarImagem)
         {
-            var servicoAmazon = new ServicosImagemAmazonS3();
             var result = new Result<byte[]>();
             var imagemBanner = obraDTO.ImagemBannerFile;
             var resultImagem = new Result<ImagemDTO>();
@@ -82,7 +96,16 @@ namespace TsundokuTraducoes.Services.AppServices
             }
             else
             {
-                resultImagem = await RealizaUploadImagemS3(alterarImagem, servicoAmazon, obraDTO.DiretorioImagemObra, nomeArquivoImagem, arrayByteImagem);
+
+                var parametroAwsServiceDto = new ParametroAwsServiceDto
+                {
+                    AlterarImagem = alterarImagem,
+                    ArrayByteImagem = arrayByteImagem,
+                    NomeArquivoImagem = nomeArquivoImagem,
+                    NomeDiretorioImagens = obraDTO.DiretorioImagemObra
+                };
+
+                resultImagem = await _servicoAmazon.RealizaUploadImagemS3(parametroAwsServiceDto);
                 if (!resultImagem.IsSuccess)
                     return Result.Fail(resultImagem.Errors[0].Message);
             }
@@ -94,9 +117,9 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<Result> ProcessaUploadCapaVolume(VolumeDTO volumeDTO, string numeroVolume, string diretorioImagemObra, bool alterarImagem)
         {
+            //var servicoAmazon = new ServicosImagemAmazonS3();
             var result = new Result<byte[]>();
             var imagemCapaVolume = volumeDTO.ImagemVolumeFile;
-            var servicoAmazon = new ServicosImagemAmazonS3();
             var resultImagem = new Result<ImagemDTO>();
 
             if (!UtilidadeImagem.ValidaImagemPorContentType(imagemCapaVolume.ContentType))
@@ -144,7 +167,16 @@ namespace TsundokuTraducoes.Services.AppServices
             else
             {
                 diretorioImagemVolume = diretorioImagemObra + TratamentoDeStrings.RetornaStringDiretorio(tituloVolumeTratado.Replace("-", " ")) + "/";
-                resultImagem = await RealizaUploadImagemS3(alterarImagem, servicoAmazon, diretorioImagemVolume, nomeImagemVolume, arrayByteImagem);
+
+                var parametroAwsServiceDto = new ParametroAwsServiceDto
+                {
+                    AlterarImagem = alterarImagem,
+                    ArrayByteImagem = arrayByteImagem,
+                    NomeArquivoImagem = nomeImagemVolume,
+                    NomeDiretorioImagens = diretorioImagemVolume
+                };
+
+                resultImagem = await _servicoAmazon.RealizaUploadImagemS3(parametroAwsServiceDto);
                 if (!resultImagem.IsSuccess)
                     return Result.Fail(resultImagem.Errors[0].Message);
             }
@@ -159,7 +191,6 @@ namespace TsundokuTraducoes.Services.AppServices
         {
             var result = new Result<byte[]>();
             var nomeDiretorioCapitulo = capituloDTO.Slug;
-            var servicoAmazon = new ServicosImagemAmazonS3();
             var resultImagem = new Result<ImagemDTO>();
 
             // TODO - Adicionar esse tratamento posteriormente. A ordem ordem é igual ao ID, ao menos que alguém informe.
@@ -208,7 +239,15 @@ namespace TsundokuTraducoes.Services.AppServices
                 }
                 else
                 {
-                    resultImagem = await RealizaUploadImagemS3(alterarImagem, servicoAmazon, diretorioCapitulo, nomeArquivo, arrayByteImagem);
+                    var parametroAwsServiceDto = new ParametroAwsServiceDto
+                    {
+                        AlterarImagem = alterarImagem,
+                        ArrayByteImagem = arrayByteImagem,
+                        NomeArquivoImagem = nomeArquivo,
+                        NomeDiretorioImagens = diretorioCapitulo
+                    };
+
+                    resultImagem = await _servicoAmazon.RealizaUploadImagemS3(parametroAwsServiceDto);
                     if (!resultImagem.IsSuccess)
                         return Result.Fail(resultImagem.Errors[0].Message);
                 }
@@ -226,9 +265,9 @@ namespace TsundokuTraducoes.Services.AppServices
 
         public async Task<Result> ProcessaUploadListaImagensCapituloManga(CapituloDTO capituloDTO, VolumeComic volume, bool alterarImagem, int? ordemPaginaImagem = null)
         {
+            //var servicoAmazon = new ServicosImagemAmazonS3();
             var result = new Result<byte[]>();
             var nomeDiretorioCapitulo = capituloDTO.Slug;
-            var servicoAmazon = new ServicosImagemAmazonS3();
             var resultImagem = new Result<ImagemDTO>();
 
             // TODO - Adicionar esse tratamento posteriormente. A ordem ordem é igual ao ID, ao menos que alguém informe.
@@ -275,7 +314,15 @@ namespace TsundokuTraducoes.Services.AppServices
                 }
                 else
                 {
-                    resultImagem = await RealizaUploadImagemS3(alterarImagem, servicoAmazon, diretorioCapitulo, nomeArquivo, arrayByteImagem);
+                    var parametroAwsServiceDto = new ParametroAwsServiceDto
+                    {
+                        AlterarImagem = alterarImagem,
+                        ArrayByteImagem = arrayByteImagem,
+                        NomeArquivoImagem = nomeArquivo,
+                        NomeDiretorioImagens = diretorioCapitulo
+                    };
+
+                    resultImagem = await _servicoAmazon.RealizaUploadImagemS3(parametroAwsServiceDto);
                     if (!resultImagem.IsSuccess)
                         return Result.Fail(resultImagem.Errors[0].Message);
                 }
@@ -301,8 +348,7 @@ namespace TsundokuTraducoes.Services.AppServices
             }
             else
             {
-                var servicoAmazon = new ServicosImagemAmazonS3();
-                diretorioExcluido = await servicoAmazon.ExcluiObjetoBucket(diretorioImagens);
+                diretorioExcluido = await _servicoAmazon.ExcluiObjetoBucket(diretorioImagens);
             }
 
             return diretorioExcluido;
@@ -349,38 +395,6 @@ namespace TsundokuTraducoes.Services.AppServices
 
             imagemDTO.Diretorio = diretorioImagemObra;
             imagemDTO.Url = caminhoArquivoImagem;
-
-            return Result.Ok(imagemDTO);
-        }
-
-        private static async Task<Result<ImagemDTO>> RealizaUploadImagemS3(bool alterarImagem, ServicosImagemAmazonS3 servicoAmazon, string nomeDiretorioImagens, string nomeArquivoImagem, byte[] arrayByteImagem)
-        {
-            var imagemDTO = new ImagemDTO();
-            var pastaCriada = false;
-            var existePasta = await servicoAmazon.VerificaObjetoExistenteAwsS3(nomeDiretorioImagens);
-
-            if (!existePasta)
-            {
-                pastaCriada = await servicoAmazon.CriarPastaS3(nomeDiretorioImagens);
-            }
-            else
-            {
-                pastaCriada = true;
-            }
-
-            if (!pastaCriada)
-                return Result.Fail("Problema ao criar pasta/folder na Amazon S3");
-
-            var stream = new MemoryStream(arrayByteImagem);
-            var caminhoCompletoImagem = $"{nomeDiretorioImagens}{nomeArquivoImagem}";
-
-            var imagemUpada = await servicoAmazon.UploadImagem(stream, caminhoCompletoImagem, alterarImagem);
-
-            if (!imagemUpada)
-                return Result.Fail("Problema ao realizar upload de imagem na Amazon S3");
-
-            imagemDTO.Diretorio = nomeDiretorioImagens;
-            imagemDTO.Url = $"{servicoAmazon._distributionDomainName}{caminhoCompletoImagem}";
 
             return Result.Ok(imagemDTO);
         }
