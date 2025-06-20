@@ -17,7 +17,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Public.Retorno
         public string Autor { get; set; }
         public string Artista { get; set; }
         public string Ano { get; set; }
-        public string Visualizacoes { get; set; }
+        public int? Visualizacoes { get; set; }
         public string Sinopse { get; set; }
         public bool EhRecomdacao { get; set; }
         public bool EhObraMaiorIdade { get; set; }

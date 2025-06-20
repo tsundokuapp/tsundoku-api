@@ -48,7 +48,8 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
             Assert.False(string.IsNullOrEmpty(novel.Ano));
             Assert.Equal(ano, novel.Ano);            
             Assert.False(string.IsNullOrEmpty(novel.Slug));
-            Assert.Equal(slug, novel.Slug);            
+            Assert.Equal(slug, novel.Slug);
+            Assert.Null(novel.Visualizacoes);
             Assert.False(string.IsNullOrEmpty(novel.UsuarioInclusao));
             Assert.Equal(usuarioInclusao, novel.UsuarioInclusao);            
             Assert.False(string.IsNullOrEmpty(novel.UsuarioAlteracao));
@@ -129,6 +130,7 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
             Assert.Equal(ano, novel.Ano);
             Assert.False(string.IsNullOrEmpty(novel.Slug));
             Assert.Equal(slug, novel.Slug);
+            Assert.Null(novel.Visualizacoes);
             Assert.False(string.IsNullOrEmpty(novel.UsuarioInclusao));
             Assert.Equal(usuarioInclusao, novel.UsuarioInclusao);
             Assert.False(string.IsNullOrEmpty(novel.UsuarioAlteracao));
@@ -216,6 +218,7 @@ namespace TsundokuTraducoes.Tests.Entities.Obras
             Assert.Equal(ano, novel.Ano);
             Assert.False(string.IsNullOrEmpty(novel.Slug));
             Assert.Equal(slug, novel.Slug);
+            Assert.Null(novel.Visualizacoes);
             Assert.False(string.IsNullOrEmpty(novel.UsuarioInclusao));
             Assert.Equal(usuarioInclusao, novel.UsuarioInclusao);
             Assert.False(string.IsNullOrEmpty(novel.UsuarioAlteracao));
