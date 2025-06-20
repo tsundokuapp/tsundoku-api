@@ -224,7 +224,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 .ToListAsync();
 
             TrataListaRetornoCapitulo(listaRetornoCapitulos);
-            return listaRetornoCapitulos;
+            var retornoListaCapitulosHome = listaRetornoCapitulos.Take(20);
+            return [.. retornoListaCapitulosHome];
         }
 
         private static string RetornaSqlListaNovelsPorParametros(string nacionalidade, string status, string tipo, string genero)
