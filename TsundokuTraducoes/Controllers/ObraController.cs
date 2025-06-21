@@ -155,7 +155,7 @@ namespace TsundokuTraducoes.Models
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AtualizarNovel([FromForm] ObraDTO obraDTO)
         {
-            if (obraDTO.ImagemBannerFile != null)
+            if (obraDTO.ImagemCapaPrincipalFile != null)
                 if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
                     return BadRequest("Imagem Capa principal inválida!");
 
@@ -183,8 +183,9 @@ namespace TsundokuTraducoes.Models
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AtualizarComic([FromForm] ObraDTO obraDTO)
         {
-            if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
-                return BadRequest("Imagem Capa principal inválida!");
+            if (obraDTO.ImagemCapaPrincipalFile != null)
+                if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemCapaPrincipalFile))
+                    return BadRequest("Imagem Capa principal inválida!");
 
             if (obraDTO.ImagemBannerFile != null)
                 if (!ValidacaoRequest.ValidaImagemRequest(obraDTO.ImagemBannerFile))

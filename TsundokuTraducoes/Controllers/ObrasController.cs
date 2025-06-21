@@ -114,15 +114,14 @@ namespace TsundokuTraducoes.Api.Controllers
         }
         
         [HttpGet("api/obras/home")]
-        [ProducesResponseType(typeof(List<RetornoCapitulos>), statusCode: 200)]
-        public async Task<IActionResult> ObterCapitulosHome([FromQuery] RequestObras requestObras)
+        [ProducesResponseType(typeof(ObjetoCapitulosHome), statusCode: 200)]
+        public async Task<IActionResult> ObterCapitulosHome()
         {
             var capitulos = await _obrasAppServices.ObterCapitulosHome();
             if (capitulos.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoObras(HttpContext, capitulos, requestObras, true);
-            return Ok(objetoRetorno);
+            return Ok(new ObjetoCapitulosHome { Data = capitulos, Total = capitulos.Count});
         }
 
         [HttpGet("api/obras/recomendadas")]
