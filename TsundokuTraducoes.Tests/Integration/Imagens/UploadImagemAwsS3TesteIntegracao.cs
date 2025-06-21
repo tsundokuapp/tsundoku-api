@@ -1,16 +1,22 @@
-﻿using TsundokuTraducoes.Helpers.Imagens;
+﻿using TsundokuTraducoes.Domain.Services;
 using TsundokuTraducoes.Integration.Tests.Recursos;
 
 namespace TsundokuTraducoes.Integration.Tests.Imagens
 {
     public class UploadImagemAwsS3TesteIntegracao
     {
+        private readonly AwsS3Service _servicoAmazon; 
+
+        public UploadImagemAwsS3TesteIntegracao()
+        {
+            _servicoAmazon = new AwsS3Service();
+        }
+
         [Fact(Skip = "Esperando refatoração")]
         public async Task DeveCriarPastaS3()
         {
             var nomePasta = RetornoNomePasta();
-            var servicoAmazon = new ServicosImagemAmazonS3();
-            var pastaCriadaAwsS3 = await servicoAmazon.CriarPastaS3(nomePasta);
+            var pastaCriadaAwsS3 = await _servicoAmazon.CriarPastaS3(nomePasta);
 
             Assert.True(pastaCriadaAwsS3);
 
@@ -21,8 +27,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
         public async Task DeveFalharParaCriarPastaS3()
         {
             var nomePasta = "";
-            var servicoAmazon = new ServicosImagemAmazonS3();
-            var pastaCriadaAwsS3 = await servicoAmazon.CriarPastaS3(nomePasta);
+            var pastaCriadaAwsS3 = await _servicoAmazon.CriarPastaS3(nomePasta);
 
             Assert.True(!pastaCriadaAwsS3);
 
@@ -33,12 +38,11 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
         public async Task DeveCriarUmaPastaDepoisVerificarPastaS3Existente()
         {
             var nomePasta = RetornoNomePasta();
-            var servicoAmazon = new ServicosImagemAmazonS3();
-            var pastaExistente = await servicoAmazon.VerificaObjetoExistenteAwsS3(nomePasta);
+            var pastaExistente = await _servicoAmazon.VerificaObjetoExistenteAwsS3(nomePasta);
             var pastaCriadaAwsS3 = false;
 
             if (!pastaExistente)
-                pastaCriadaAwsS3 = await servicoAmazon.CriarPastaS3(nomePasta);
+                pastaCriadaAwsS3 = await _servicoAmazon.CriarPastaS3(nomePasta);
 
             Assert.True(pastaCriadaAwsS3);
 
@@ -49,12 +53,11 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
         public async Task NaoDeveCriarUmaPastaS3JahExistente()
         {
             var nomePasta = await RetornaNomePastaExistente();
-            var servicoAmazon = new ServicosImagemAmazonS3();
-            var pastaExistente = await servicoAmazon.VerificaObjetoExistenteAwsS3(nomePasta);
+            var pastaExistente = await _servicoAmazon.VerificaObjetoExistenteAwsS3(nomePasta);
             var pastaCriadaAwsS3 = false;
 
             if (!pastaExistente)
-                pastaCriadaAwsS3 = await servicoAmazon.CriarPastaS3(nomePasta);
+                pastaCriadaAwsS3 = await _servicoAmazon.CriarPastaS3(nomePasta);
 
             Assert.True(!pastaCriadaAwsS3);
         }
@@ -65,8 +68,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             var nomePasta = await RetornaNomePastaExistente();
             var caminhoCompletoImagem = $"{nomePasta}imagem_teste_s3{Guid.NewGuid().ToString()[..5]}.png";
             var streamImagem = MockBase.RetornaImagemTeste();
-            var servicoAmazon = new ServicosImagemAmazonS3();
-            var uploadImagemRealizada = await servicoAmazon.UploadImagem(streamImagem, caminhoCompletoImagem, false);
+            var uploadImagemRealizada = await _servicoAmazon.UploadImagem(streamImagem, caminhoCompletoImagem, false);
 
             Assert.True(uploadImagemRealizada);
 
@@ -80,8 +82,7 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             var caminhoCompletoImagem = "";
             var streamImagem = new MemoryStream();
             streamImagem = null;
-            var servicoAmazon = new ServicosImagemAmazonS3();
-            var uploadImagemRealizada = await servicoAmazon.UploadImagem(streamImagem, caminhoCompletoImagem, false);
+            var uploadImagemRealizada = await _servicoAmazon.UploadImagem(streamImagem, caminhoCompletoImagem, false);
 
             Assert.True(!uploadImagemRealizada);
 
@@ -92,14 +93,13 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
         public async Task DeveExcluirObjetoS3()
         {
             var nomePasta = RetornoNomePasta();
-            var servicoAmazon = new ServicosImagemAmazonS3();
-            var pastaCriadaAwsS3 = await servicoAmazon.CriarPastaS3(nomePasta);
+            var pastaCriadaAwsS3 = await _servicoAmazon.CriarPastaS3(nomePasta);
 
             var caminhoCompletoImagem = $"{nomePasta}imagem_teste_s3{Guid.NewGuid().ToString()[..5]}.png";
             var streamImagem = MockBase.RetornaImagemTeste();
-            var uploadImagemRealizada = await servicoAmazon.UploadImagem(streamImagem, caminhoCompletoImagem, false);
+            var uploadImagemRealizada = await _servicoAmazon.UploadImagem(streamImagem, caminhoCompletoImagem, false);
 
-            var pastaExcluida = await servicoAmazon.ExcluiObjetoBucket(nomePasta);
+            var pastaExcluida = await _servicoAmazon.ExcluiObjetoBucket(nomePasta);
 
             Assert.True(pastaExcluida);
         }
@@ -109,9 +109,8 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
         {
             bool pastaExcluida;
             var nomePasta = RetornoNomePasta();
-            var servicoAmazon = new ServicosImagemAmazonS3();
 
-            pastaExcluida = await servicoAmazon.ExcluiObjetoBucket(nomePasta);
+            pastaExcluida = await _servicoAmazon.ExcluiObjetoBucket(nomePasta);
 
             Assert.True(!pastaExcluida);
         }
@@ -121,23 +120,21 @@ namespace TsundokuTraducoes.Integration.Tests.Imagens
             return $"pasta-teste-{Guid.NewGuid().ToString()[..4]}/";
         }
 
-        public static async Task<string> RetornaNomePastaExistente()
+        public async Task<string> RetornaNomePastaExistente()
         {
             var nomePasta = RetornoNomePasta();
-            var servicoAmazon = new ServicosImagemAmazonS3();
-            var pastaExistente = await servicoAmazon.VerificaObjetoExistenteAwsS3(nomePasta);
+            var pastaExistente = await _servicoAmazon.VerificaObjetoExistenteAwsS3(nomePasta);
             var pastaCriadaAwsS3 = false;
 
             if (!pastaExistente)
-                pastaCriadaAwsS3 = await servicoAmazon.CriarPastaS3(nomePasta);
+                pastaCriadaAwsS3 = await _servicoAmazon.CriarPastaS3(nomePasta);
 
             return nomePasta;
         }
     
-        public static async Task Dispose(string nomePasta)
+        public async Task Dispose(string nomePasta)
         {
-            var servicoAmazon = new ServicosImagemAmazonS3();
-            await servicoAmazon.ExcluiObjetoBucket(nomePasta);
+            await _servicoAmazon.ExcluiObjetoBucket(nomePasta);
         }
     }
 }

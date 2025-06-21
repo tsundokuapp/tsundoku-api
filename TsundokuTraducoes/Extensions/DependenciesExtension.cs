@@ -63,6 +63,7 @@ namespace TsundokuTraducoes.Api.Extensions
             services.AddScoped<IVolumeComicService, VolumeComicService>();
             services.AddScoped<IVolumeNovelAppService, VolumeNovelAppService>();
             services.AddScoped<IVolumeNovelService, VolumeNovelService>();
+            services.AddScoped<IAwsS3Service, AwsS3Service>();
         }
     }
 }
