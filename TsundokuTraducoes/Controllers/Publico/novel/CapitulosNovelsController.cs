@@ -10,7 +10,7 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.novel
     [ApiController]
     public class CapitulosNovelsController(ICapituloNovelAppService service) : Controller, IBaseService<ICapituloNovelAppService>
     {
-        [HttpGet("api/novels/{idObra}/{idCapitulo}")]
+        [HttpGet("api/capitulos/novels/{idObra}/{idCapitulo}")]
         public async Task<IActionResult> ObterCapituloNovelPorId(Guid idObra, Guid idCapitulo)
         {
             var result = await service.ObterCapitulosNovelPorIdObraEIdCapitulo(idObra, idCapitulo);
@@ -21,7 +21,7 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.novel
             return Ok(objetoRetorno);
         }
 
-        [HttpGet("api/novels/slug/{slugObra}/{idCapitulo}")]
+        [HttpGet("api/capitulos/novels/slug/{slugObra}/{idCapitulo}")]
         public async Task<IActionResult> ObterCapitulosNovelPorSlugObraEIdCapitulo(string slugObra, Guid idCapitulo)
         {
             var result = await service.ObterCapitulosNovelPorSlugObraEIdCapitulo(slugObra, idCapitulo);
