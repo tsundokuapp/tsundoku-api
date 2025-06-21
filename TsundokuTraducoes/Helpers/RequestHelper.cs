@@ -150,6 +150,46 @@ namespace TsundokuTraducoes.Api.Helpers
 
             return new ObjetoRetornoCapituloComicResponse { Anterior = anterior, Proxima = proxima, Data = retornoCapituloComic };
         }
+        
+        public static ObjetoRetornoCapituloComicResponse CriarObjetoPorSlug(
+            HttpContext httpContext,
+            List<RetornoCapituloComic> listaRetornoCapituloComic,
+            string slugCapitulo)
+        {
+            var capituloAtual = listaRetornoCapituloComic.FirstOrDefault(x => x.Slug == slugCapitulo);
+
+            if (capituloAtual == null)
+            {
+                throw new ArgumentException("Capítulo não encontrado na lista.", nameof(slugCapitulo));
+            }
+
+            int indice = listaRetornoCapituloComic.IndexOf(capituloAtual);
+
+            var request = httpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}";
+            var caminhoBase = request.Path.Value[..request.Path.Value.LastIndexOf("/")];
+
+            string anterior = null;
+            if (indice > 0)
+            {
+                var idAnterior = listaRetornoCapituloComic[indice - 1].Id;
+                anterior = $"{baseUrl}{caminhoBase}/{idAnterior}";
+            }
+
+            string proxima = null;
+            if (indice + 1 < listaRetornoCapituloComic.Count)
+            {
+                var idProximo = listaRetornoCapituloComic[indice + 1].Id;
+                proxima = $"{baseUrl}{caminhoBase}/{idProximo}";
+            }
+
+            return new ObjetoRetornoCapituloComicResponse
+            {
+                Anterior = anterior,
+                Proxima = proxima,
+                Data = capituloAtual
+            };
+        }
 
         public static ObjetoRetornoCapituloNovelResponse CriarObjetoRetonoCapitulosNovel(HttpContext httpContext, List<RetornoCapituloNovel> listaRetornoCapituloNovel, Guid idCapitulo)
         {
