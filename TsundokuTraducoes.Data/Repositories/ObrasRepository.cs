@@ -494,5 +494,45 @@ namespace TsundokuTraducoes.Data.Repositories
 
             return listaGeneros;
         }
+
+        public async Task<List<RetornoObrasPesquisa>> ObterObrasPesquisa(string obra)
+        {
+            var query = (from comics in _context.Comics.AsNoTracking()
+                         where EF.Functions.Like(comics.Titulo.ToUpper(), $"%{obra.ToUpper()}%")
+                         || EF.Functions.Like(comics.TituloAlternativo.ToUpper(), $"%{obra.ToUpper()}%")
+                         select new
+                         {
+                             comics.Id,
+                             comics.Slug,
+                             comics.Titulo,
+                             comics.Alias,
+                             Capa = comics.ImagemCapaUltimoVolume
+                         })
+                        .Union(from novels in _context.Novels.AsNoTracking()
+                               where EF.Functions.Like(novels.Titulo.ToUpper(), $"%{obra.ToUpper()}%")
+                               || EF.Functions.Like(novels.TituloAlternativo.ToUpper(), $"%{obra.ToUpper()}%")
+                               select new
+                               {
+                                   novels.Id,
+                                   novels.Slug,
+                                   novels.Titulo,
+                                   novels.Alias,
+                                   Capa = novels.ImagemCapaUltimoVolume
+                               }
+                        );
+
+            var listaRetornoObrasPesquisa = await query
+                .Select(rc => new RetornoObrasPesquisa
+                {
+                    Id = rc.Id,
+                    Slug = rc.Slug,
+                    Titulo = rc.Titulo,
+                    Alias = rc.Alias,
+                    Capa = rc.Capa
+                })
+                .ToListAsync();
+
+            return listaRetornoObrasPesquisa;
+        }
     }
 }
