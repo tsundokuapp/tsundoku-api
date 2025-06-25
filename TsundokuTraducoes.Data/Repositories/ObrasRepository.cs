@@ -506,7 +506,9 @@ namespace TsundokuTraducoes.Data.Repositories
                              comics.Slug,
                              comics.Titulo,
                              comics.Alias,
-                             Capa = comics.ImagemCapaUltimoVolume
+                             Capa = comics.ImagemCapaUltimoVolume,
+                             Tipo = comics.TipoObra,
+                             Sinopse = comics.Sinopse
                          })
                         .Union(from novels in _context.Novels.AsNoTracking()
                                where EF.Functions.Like(novels.Titulo.ToUpper(), $"%{obra.ToUpper()}%")
@@ -517,7 +519,9 @@ namespace TsundokuTraducoes.Data.Repositories
                                    novels.Slug,
                                    novels.Titulo,
                                    novels.Alias,
-                                   Capa = novels.ImagemCapaUltimoVolume
+                                   Capa = novels.ImagemCapaUltimoVolume,
+                                   Tipo = novels.TipoObra,
+                                   novels.Sinopse
                                }
                         );
 
@@ -528,7 +532,9 @@ namespace TsundokuTraducoes.Data.Repositories
                     Slug = rc.Slug,
                     Titulo = rc.Titulo,
                     Alias = rc.Alias,
-                    Capa = rc.Capa
+                    Capa = rc.Capa,
+                    Tipo = rc.Tipo,
+                    Sinopse = rc.Sinopse
                 })
                 .ToListAsync();
 

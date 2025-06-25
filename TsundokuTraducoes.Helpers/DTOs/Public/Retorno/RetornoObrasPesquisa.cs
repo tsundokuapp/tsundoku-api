@@ -7,4 +7,6 @@ public class RetornoObrasPesquisa
     public string Titulo { get; set; }
     public string Alias { get; set; }
     public string Capa { get; set; }
+    public string Tipo { get; set; }
+    public string Sinopse { get; set; }
 }
