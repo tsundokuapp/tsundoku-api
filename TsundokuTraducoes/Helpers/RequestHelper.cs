@@ -172,15 +172,15 @@ namespace TsundokuTraducoes.Api.Helpers
             string anterior = null;
             if (indice > 0)
             {
-                var idAnterior = listaRetornoCapituloComic[indice - 1].Id;
-                anterior = $"{baseUrl}{caminhoBase}/{idAnterior}";
+                var slugAnterior = listaRetornoCapituloComic[indice - 1].Slug;
+                anterior = $"{baseUrl}{caminhoBase}/{slugAnterior}";
             }
 
             string proxima = null;
             if (indice + 1 < listaRetornoCapituloComic.Count)
             {
-                var idProximo = listaRetornoCapituloComic[indice + 1].Id;
-                proxima = $"{baseUrl}{caminhoBase}/{idProximo}";
+                var slugProximo = listaRetornoCapituloComic[indice + 1].Slug;
+                proxima = $"{baseUrl}{caminhoBase}/{slugProximo}";
             }
 
             return new ObjetoRetornoCapituloComicResponse
@@ -243,6 +243,46 @@ namespace TsundokuTraducoes.Api.Helpers
             }
 
             return new ObjetoRetornoCapituloNovelResponse { Anterior = anterior, Proxima = proxima, Data = retornoCapituloNovel };
+        }
+        
+        public static ObjetoRetornoCapituloNovelResponse CriarObjetoNovelSlugECapituloSlug(
+            HttpContext httpContext,
+            List<RetornoCapituloNovel> listaRetornoCapituloNovel,
+            string slugCapitulo)
+        {
+            var capituloAtual = listaRetornoCapituloNovel.FirstOrDefault(x => x.Slug == slugCapitulo);
+
+            if (capituloAtual == null)
+            {
+                throw new ArgumentException("Capítulo não encontrado na lista.", nameof(slugCapitulo));
+            }
+
+            int indice = listaRetornoCapituloNovel.IndexOf(capituloAtual);
+
+            var request = httpContext.Request;
+            var baseUrl = $"{request.Scheme}://{request.Host}";
+            var caminhoBase = request.Path.Value[..request.Path.Value.LastIndexOf("/")];
+
+            string anterior = null;
+            if (indice > 0)
+            {
+                var slugAnterior = listaRetornoCapituloNovel[indice - 1].Slug;
+                anterior = $"{baseUrl}{caminhoBase}/{slugAnterior}";
+            }
+
+            string proxima = null;
+            if (indice + 1 < listaRetornoCapituloNovel.Count)
+            {
+                var slugProximo = listaRetornoCapituloNovel[indice + 1].Slug;
+                proxima = $"{baseUrl}{caminhoBase}/{slugProximo}";
+            }
+
+            return new ObjetoRetornoCapituloNovelResponse
+            {
+                Anterior = anterior,
+                Proxima = proxima,
+                Data = capituloAtual
+            };
         }
 
         public static ObjetoRetornoVolumeComicResponse CriarObjetoRetonoVolumesComics(HttpContext httpContext, List<RetornoVolumeComic> listaRetornoVolumeComic, int? skip, int? take)

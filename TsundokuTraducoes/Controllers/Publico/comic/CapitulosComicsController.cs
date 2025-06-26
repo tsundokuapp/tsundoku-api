@@ -39,7 +39,7 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.manga
             var result = await service.ObterCapitulosComicPorSlugObraESlugCapitulo(slugObra, slugCapitulo);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
-            
+            // renomear esse método do helper para "criarObjetoRetornoComicSlugECapituloSlug"
             var objetoRetorno = RequestHelper.CriarObjetoPorSlug(HttpContext, result.Value, slugCapitulo);
             return Ok(objetoRetorno);
         }
