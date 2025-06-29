@@ -171,6 +171,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                    on volumesComic.ComicId equals comics.Id
                                select new
                                {
+                                   IdObra = comics.Id,
                                    NumeroCapitulo = capitulosComic.Numero,
                                    ParteCapitulo = capitulosComic.Parte,
                                    SlugCapitulo = capitulosComic.Slug,
@@ -191,6 +192,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                    on volumesNovel.NovelId equals novels.Id
                                select new
                                {
+                                   IdObra = novels.Id,
                                    NumeroCapitulo = capitulosNovel.Numero,
                                    ParteCapitulo = capitulosNovel.Parte,
                                    SlugCapitulo = capitulosNovel.Slug,
@@ -208,6 +210,7 @@ namespace TsundokuTraducoes.Data.Repositories
             var listaRetornoCapitulos = await query
                 .Select(rc => new RetornoCapitulosHome
                     {
+                        IdObra = rc.IdObra,
                         NumeroCapitulo = rc.NumeroCapitulo,
                         ParteCapitulo = rc.ParteCapitulo,
                         SlugCapitulo = rc.SlugCapitulo,
@@ -223,8 +226,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 .OrderByDescending(o => o.DataInclusao)
                 .ToListAsync();
 
-            TrataListaRetornoCapitulo(listaRetornoCapitulos);
-            var retornoListaCapitulosHome = listaRetornoCapitulos.Take(20);
+            var listaTratada = TrataListaRetornoCapitulo(listaRetornoCapitulos);
+            var retornoListaCapitulosHome = listaTratada.Take(20);
             return [.. retornoListaCapitulosHome];
         }
 
@@ -379,9 +382,14 @@ namespace TsundokuTraducoes.Data.Repositories
             };
         }
 
-        private static void TrataListaRetornoCapitulo(List<RetornoCapitulosHome> listaRetornoCapitulos)
+        private static List<RetornoCapitulosHome> TrataListaRetornoCapitulo(List<RetornoCapitulosHome> listaRetornoCapitulos)
         {
-            foreach (var retornoCapitulo in listaRetornoCapitulos)
+            var listaTratada = listaRetornoCapitulos
+                .GroupBy(g => new { g.IdObra })
+                .Select(s => s.OrderByDescending(o => o.DataInclusao).First())
+                .ToList();
+            
+            foreach (var retornoCapitulo in listaTratada)
             {
                 retornoCapitulo.UrlCapa = !string.IsNullOrEmpty(retornoCapitulo.UrlCapaVolume)
                     ? retornoCapitulo.UrlCapaVolume
@@ -393,6 +401,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 retornoCapitulo.UrlCapaVolume = null;
                 retornoCapitulo.UrlCapaPrincipal = null;
             }
+
+            return listaTratada;
         }
 
         public List<RetornoVolumes> ObterListaVolumeCapitulos(string idObra)
