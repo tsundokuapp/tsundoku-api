@@ -506,9 +506,9 @@ namespace TsundokuTraducoes.Data.Repositories
                              comics.Slug,
                              comics.Titulo,
                              comics.Alias,
-                             Capa = comics.ImagemCapaUltimoVolume,
+                             Capa = comics.ImagemCapaUltimoVolume ?? comics.ImagemCapaPrincipal,
                              Tipo = comics.TipoObra,
-                             Sinopse = comics.Sinopse
+                             comics.Sinopse
                          })
                         .Union(from novels in _context.Novels.AsNoTracking()
                                where EF.Functions.Like(novels.Titulo.ToUpper(), $"%{obra.ToUpper()}%")
@@ -519,7 +519,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                    novels.Slug,
                                    novels.Titulo,
                                    novels.Alias,
-                                   Capa = novels.ImagemCapaUltimoVolume,
+                                   Capa = novels.ImagemCapaUltimoVolume ?? novels.ImagemCapaPrincipal,
                                    Tipo = novels.TipoObra,
                                    novels.Sinopse
                                }
