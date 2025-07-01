@@ -1,0 +1,47 @@
+﻿################################################################################
+# Este arquivo .gitignore foi criado automaticamente pelo Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/VSWorkspaceState.json
+/.vs/TsundokuTraducoes/FileContentIndex/read.lock
+/.vs/TsundokuTraducoes/FileContentIndex/e62b5dba-6083-4e84-af21-890bdc4a503b.vsidx
+/.vs/tsundoku-api/v17/.suo
+/TsundokuTraducoes/bin/
+/TsundokuTraducoes/obj/
+/.vs/
+/TsundokuTraducoes/appsettings.json
+/TsundokuTraducoes/database
+/TsundokuTraducoes.Data/bin
+/TsundokuTraducoes.Data/obj
+/TsundokuTraducoes.Domain/bin
+/TsundokuTraducoes.Domain/obj
+/TsundokuTraducoes.Services/bin
+/TsundokuTraducoes.Services/obj
+/TsundokuTraducoes.Entities/bin
+/TsundokuTraducoes.Entities/obj
+/TsundokuTraducoes.Helpers/bin
+/TsundokuTraducoes.Helpers/obj
+/TsundokuTraducoes.Integration.Tests/App.config
+/TsundokuTraducoes.Tests/Integration/App.config
+/mysql
+
+# Config files
+/.idea/
+*.user
+.vscode/
+
+# Output folder used by Webpack or other FE stuff
+**/node_modules/*
+**/wwwroot/*
+
+# Tests
+*.Tests/bin
+*.Tests/obj
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+/TsundokuTraducoes.Auth.Api/appsettings.json

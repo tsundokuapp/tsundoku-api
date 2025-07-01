@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>    
+    <PackageReference Include="FluentResults" Version="3.16.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\TsundokuTraducoes.Entities\TsundokuTraducoes.Entities.csproj" />
+    <ProjectReference Include="..\TsundokuTraducoes.Helpers\TsundokuTraducoes.Helpers.csproj" />
+  </ItemGroup>
+
+</Project>
