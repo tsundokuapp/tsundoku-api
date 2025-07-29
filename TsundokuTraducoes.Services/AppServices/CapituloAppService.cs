@@ -211,27 +211,35 @@ namespace TsundokuTraducoes.Services.AppServices
             if (capituloEncontrado == null)
                 return Result.Fail("Capítulo não encontrado!");
 
-            var volume = _volumeService.RetornaVolumeNovelPorId(capituloDTO.VolumeId);
+            var volume = _volumeService.RetornaVolumeNovelPorId(capituloEncontrado.VolumeId);
 
-            if (capituloDTO.EhIlustracoesNovel)
+            if (volume == null)
+                return Result.Fail("Capitulo não pertence a nenhum volume!");
+
+            var deveAtualizarIlustracoes = (capituloEncontrado.EhIlustracoesNovel &&
+                                            capituloDTO.ListaImagensForm != null &&
+                                            capituloDTO.ListaImagensForm.Count > 0); 
+
+            if (deveAtualizarIlustracoes)
             {
-                if (capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0)
+                // TODO: remover essa lógica
+                if (capituloDTO.SalvarLocal)
                 {
-                    if (capituloDTO.SalvarLocal)
-                    {
-                        var diretorioExcluido = await _imagemAppService.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo, capituloDTO.SalvarLocal);
-                        if (!diretorioExcluido)
-                            return Result.Fail("Erro ao excluir diretório local!");
-                    }
-
-                    var result = await _imagemAppService.ProcessaUploadListaImagensCapituloNovel(capituloDTO, volume, true);
-                    if (result.IsFailed)
-                        return Result.Fail(result.Errors[0].Message);
-
-                    capituloEncontrado.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
-                    capituloEncontrado.ListaImagensJson = capituloDTO.ListaImagensJson;
+                    var diretorioExcluido = await _imagemAppService.ExcluiDiretorioImagens(capituloEncontrado.DiretorioImagemCapitulo, capituloDTO.SalvarLocal);
+                    if (!diretorioExcluido)
+                        return Result.Fail("Erro ao excluir diretório local!");
                 }
+
+                var result = await _imagemAppService.ProcessaUploadListaImagensCapituloNovel(capituloDTO, volume, true);
+                if (result.IsFailed)
+                    return Result.Fail(result.Errors[0].Message);
+
+                capituloEncontrado.DiretorioImagemCapitulo = capituloDTO.DiretorioImagemCapitulo;
+                capituloEncontrado.ListaImagensJson = capituloDTO.ListaImagensJson;
             }
+            
+            capituloDTO.VolumeId = capituloEncontrado.VolumeId;
+            capituloDTO.Publicado = capituloEncontrado.Publicado;
 
             capituloEncontrado = _capituloService.AtualizaCapituloNovel(capituloDTO);
 

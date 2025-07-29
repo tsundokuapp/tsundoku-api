@@ -17,6 +17,16 @@ namespace TsundokuTraducoes.Helpers.Validacao
         {
             return volumeDTO.ImagemVolumeFile != null;
         }
+        
+        public static bool ValidaNumeroCapituloNovel(CapituloDTO capituloDTO)
+        {
+            return string.IsNullOrEmpty(capituloDTO.Numero);
+        }
+
+        public static bool ValidaVolumeCapituloNovel(CapituloDTO capituloDTO)
+        {
+            return capituloDTO.VolumeId != Guid.Empty;
+        }
 
         public static bool ValidaConteudoTextoCapituloNovel(CapituloDTO capituloDTO)
         {
@@ -28,6 +38,16 @@ namespace TsundokuTraducoes.Helpers.Validacao
             return capituloDTO.EhIlustracoesNovel == true
                    ? capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0 
                    : true;
+        }
+        
+        public static bool ValidaNumeroCapituloComic(CapituloDTO capituloDTO)
+        {
+            return string.IsNullOrEmpty(capituloDTO.Numero);
+        }
+        
+        public static bool ValidaVolumeCapituloComic(CapituloDTO capituloDTO)
+        {
+            return capituloDTO.VolumeId != Guid.Empty;
         }
 
         public static bool ValidaDadosRequestCapituloComic(CapituloDTO capituloDTO)
