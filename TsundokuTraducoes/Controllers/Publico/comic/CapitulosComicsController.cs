@@ -9,8 +9,8 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.manga
 {
     [ApiController]
     public class CapitulosComicsController(ICapituloComicAppService service) : Controller, IBaseService<ICapituloComicAppService>
-    {
-        [HttpGet("api/comics/{idObra}/{idCapitulo}")]
+    {        
+        [HttpGet("api/comics/capitulos/id/{idObra}/{idCapitulo}")]
         public async Task<IActionResult> ObterCapitulosComicPorIdObraEIdCapitulo(Guid idObra, Guid idCapitulo)
         {
             var result = await service.ObterCapitulosComicPorIdObraEIdCapitulo(idObra, idCapitulo);
@@ -20,8 +20,8 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.manga
             var objetoRetorno = RequestHelper.CriarObjetoRetonoCapitulosComics(HttpContext, result.Value, idCapitulo);
             return Ok(objetoRetorno);
         }
-
-        [HttpGet("api/comics/slug/{slugObra}/{idCapitulo}")]
+                
+        [HttpGet("api/comics/capitulos/slug/{slugObra}/idcapitulo/{idCapitulo}")]
         public async Task<IActionResult> ObterCapitulosComicPorSlugObraEIdCapitulo(string slugObra, Guid idCapitulo)
         {
             var result = await service.ObterCapitulosComicPorSlugObraEIdCapitulo(slugObra, idCapitulo);
@@ -31,8 +31,20 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.manga
             var objetoRetorno = RequestHelper.CriarObjetoRetonoCapitulosPorSlugComics(HttpContext, result.Value, idCapitulo);
             return Ok(objetoRetorno);
         }
+                
+        [HttpGet("api/comics/capitulos/{slugObra}/{slugCapitulo}")]
+        public async Task<IActionResult> ObterCapitulosComicPorSlugObraESlugCapitulo(string slugObra, string slugCapitulo)
+        {
+            var result = await service.ObterCapitulosComicPorSlugObraESlugCapitulo(slugObra, slugCapitulo);
+            if (result.IsFailed)
+                return NotFound(result.Errors[0].Message);
+            // renomear esse método do helper para "criarObjetoRetornoComicSlugECapituloSlug"
+            var objetoRetorno = RequestHelper.CriarObjetoPorSlug(HttpContext, result.Value, slugCapitulo);
+            return Ok(objetoRetorno);
+        }
 
-        [HttpGet("api/comics/slug/{slugObra}")]
+
+        [HttpGet("api/comics/capitulos/slug/{slugObra}")]
         public async Task<IActionResult> ObterListaCapitulosComicPorSlugObra(string slugObra, [FromQuery] int? skip, int? take)
         {
             var result = await service.ObterListaCapitulosComicPorSlugObra(slugObra);

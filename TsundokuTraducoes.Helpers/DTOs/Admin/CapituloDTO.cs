@@ -6,7 +6,6 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
     public class CapituloDTO
     {
         public Guid Id { get; set; }
-        [Required]
         public string Numero { get; set; }
         public string Parte { get; set; }
         public string Titulo { get; set; }
@@ -16,38 +15,38 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin
         {
             get
             {
-                var parteAuxiliar = string.Empty;
-                var tituloAuxiliar = string.Empty;
-
-                if (!string.IsNullOrEmpty(Parte))
-                {
-                    parteAuxiliar = $"- Parte {Parte.ToLower().Replace("parte", "")}";
-                }
-
                 if (!string.IsNullOrEmpty(Titulo))
                 {
-                    tituloAuxiliar = $" {Titulo}";
+                    
+                    var parteAuxiliar = string.Empty;
+
+                    if (!string.IsNullOrEmpty(Parte))
+                    {
+                        parteAuxiliar = $"- Parte {Parte.ToLower().Replace("parte", "")}";
+                    }
+
+                    string capituloAuxiliar;
+                    double numero;
+                    if (!double.TryParse(Numero, out numero))
+                    {
+                        capituloAuxiliar = $"Capitulo {Numero:00}";
+                    }
+                    else
+                    {
+                        capituloAuxiliar = Numero;
+                    }
+
+                    var slug = TratamentoDeStrings.RetornaStringSlug(
+                        $"{capituloAuxiliar}{parteAuxiliar}{Titulo}");
+                    return slug;
                 }
 
-                string capituloAuxiliar;
-                double numero;
-                if (double.TryParse(Numero, out numero))
-                {
-                    capituloAuxiliar = $"Capitulo {Numero:00}";
-                }
-                else
-                {
-                    capituloAuxiliar = Numero;
-                }
-
-                var slug = TratamentoDeStrings.RetornaStringSlug($"{capituloAuxiliar}{parteAuxiliar}{tituloAuxiliar}");
-                return slug;
+                return null;
             }
         }
-        [Required]
         public string UsuarioInclusao { get; set; }
-        public string UsuarioAlteracao { get; set; }
         [Required]
+        public string UsuarioAlteracao { get; set; }
         public Guid VolumeId { get; set; }
         public string Tradutor { get; set; }
         public string Revisor { get; set; }

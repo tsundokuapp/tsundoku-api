@@ -86,6 +86,12 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
+            if (!ValidacaoRequest.ValidaNumeroCapituloNovel(capituloDTO))
+                return BadRequest("O número da Novel não foi informado!");
+            
+            if (!ValidacaoRequest.ValidaVolumeCapituloNovel(capituloDTO))
+                return BadRequest("O ID do volume da novel não foi informado!");
+            
             if (!ValidacaoRequest.ValidaConteudoTextoCapituloNovel(capituloDTO))
                 return BadRequest("Não contém conteúdo para o capítulo da novel!");
 
@@ -108,6 +114,12 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
+            if (!ValidacaoRequest.ValidaNumeroCapituloComic(capituloDTO))
+                return BadRequest("O número da comic não foi informado!");
+            
+            if (!ValidacaoRequest.ValidaVolumeCapituloComic(capituloDTO))
+                return BadRequest("O ID do volume da comic não foi informado!");
+            
             if (!ValidacaoRequest.ValidaDadosRequestCapituloComic(capituloDTO))
                 return BadRequest("Não contém imagens para o capítulo da comic!");
 
@@ -126,17 +138,6 @@ namespace TsundokuTraducoes.Controllers
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
-            if (!ValidacaoRequest.ValidaConteudoTextoCapituloNovel(capituloDTO))
-                return BadRequest("Não contém conteúdo para o capítulo da novel!");
-
-            if (!ValidacaoRequest.ValidaConteudoImagemCapituloNovel(capituloDTO))
-                return BadRequest("Não contém imagens para o capítulo da novel!");
-
-            var listaImagemEnviada = capituloDTO.ListaImagensForm != null && capituloDTO.ListaImagensForm.Count > 0;
-            if (listaImagemEnviada)
-                if (!ValidacaoRequest.ValidaListaImagemRequest(capituloDTO.ListaImagensForm))
-                    return BadRequest("Alguma imagem da lista de imagens é invalida!");
-
             var result = await _capituloService.AtualizaCapituloNovel(capituloDTO);
             if (result.IsFailed)
             {

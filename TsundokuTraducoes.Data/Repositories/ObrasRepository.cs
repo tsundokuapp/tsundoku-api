@@ -171,6 +171,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                    on volumesComic.ComicId equals comics.Id
                                select new
                                {
+                                   IdObra = comics.Id,
                                    NumeroCapitulo = capitulosComic.Numero,
                                    ParteCapitulo = capitulosComic.Parte,
                                    SlugCapitulo = capitulosComic.Slug,
@@ -191,6 +192,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                    on volumesNovel.NovelId equals novels.Id
                                select new
                                {
+                                   IdObra = novels.Id,
                                    NumeroCapitulo = capitulosNovel.Numero,
                                    ParteCapitulo = capitulosNovel.Parte,
                                    SlugCapitulo = capitulosNovel.Slug,
@@ -208,6 +210,7 @@ namespace TsundokuTraducoes.Data.Repositories
             var listaRetornoCapitulos = await query
                 .Select(rc => new RetornoCapitulosHome
                     {
+                        IdObra = rc.IdObra,
                         NumeroCapitulo = rc.NumeroCapitulo,
                         ParteCapitulo = rc.ParteCapitulo,
                         SlugCapitulo = rc.SlugCapitulo,
@@ -223,8 +226,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 .OrderByDescending(o => o.DataInclusao)
                 .ToListAsync();
 
-            TrataListaRetornoCapitulo(listaRetornoCapitulos);
-            var retornoListaCapitulosHome = listaRetornoCapitulos.Take(20);
+            var listaTratada = TrataListaRetornoCapitulo(listaRetornoCapitulos);
+            var retornoListaCapitulosHome = listaTratada.Take(20);
             return [.. retornoListaCapitulosHome];
         }
 
@@ -379,9 +382,14 @@ namespace TsundokuTraducoes.Data.Repositories
             };
         }
 
-        private static void TrataListaRetornoCapitulo(List<RetornoCapitulosHome> listaRetornoCapitulos)
+        private static List<RetornoCapitulosHome> TrataListaRetornoCapitulo(List<RetornoCapitulosHome> listaRetornoCapitulos)
         {
-            foreach (var retornoCapitulo in listaRetornoCapitulos)
+            var listaTratada = listaRetornoCapitulos
+                .GroupBy(g => new { g.IdObra })
+                .Select(s => s.OrderByDescending(o => o.DataInclusao).First())
+                .ToList();
+            
+            foreach (var retornoCapitulo in listaTratada)
             {
                 retornoCapitulo.UrlCapa = !string.IsNullOrEmpty(retornoCapitulo.UrlCapaVolume)
                     ? retornoCapitulo.UrlCapaVolume
@@ -393,6 +401,8 @@ namespace TsundokuTraducoes.Data.Repositories
                 retornoCapitulo.UrlCapaVolume = null;
                 retornoCapitulo.UrlCapaPrincipal = null;
             }
+
+            return listaTratada;
         }
 
         public List<RetornoVolumes> ObterListaVolumeCapitulos(string idObra)
@@ -404,6 +414,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                                  IdObra = volumesComic.ComicId,
                                                  NumeroVolume = volumesComic.Numero,
                                                  SlugVolume = volumesComic.Slug,
+                                                 TituloVolume = volumesComic.Titulo,
                                                  UrlCapaVolume = volumesComic.ImagemVolume,
                                                  DataInclusao = volumesComic.DataInclusao,
                                                  Sinopse = volumesComic.Sinopse,
@@ -434,6 +445,7 @@ namespace TsundokuTraducoes.Data.Repositories
                                                  Id = volumesNovel.Id,
                                                  IdObra = volumesNovel.NovelId,
                                                  NumeroVolume = volumesNovel.Numero,
+                                                 TituloVolume = volumesNovel.Titulo,
                                                  SlugVolume = volumesNovel.Slug,
                                                  UrlCapaVolume = volumesNovel.ImagemVolume,
                                                  DataInclusao = volumesNovel.DataInclusao,
@@ -493,6 +505,52 @@ namespace TsundokuTraducoes.Data.Repositories
             });
 
             return listaGeneros;
+        }
+
+        public async Task<List<RetornoObrasPesquisa>> ObterObrasPesquisa(string obra)
+        {
+            var query = (from comics in _context.Comics.AsNoTracking()
+                         where EF.Functions.Like(comics.Titulo.ToUpper(), $"%{obra.ToUpper()}%")
+                         || EF.Functions.Like(comics.TituloAlternativo.ToUpper(), $"%{obra.ToUpper()}%")
+                         select new
+                         {
+                             comics.Id,
+                             comics.Slug,
+                             comics.Titulo,
+                             comics.Alias,
+                             Capa = comics.ImagemCapaUltimoVolume ?? comics.ImagemCapaPrincipal,
+                             Tipo = comics.TipoObra,
+                             comics.Sinopse
+                         })
+                        .Union(from novels in _context.Novels.AsNoTracking()
+                               where EF.Functions.Like(novels.Titulo.ToUpper(), $"%{obra.ToUpper()}%")
+                               || EF.Functions.Like(novels.TituloAlternativo.ToUpper(), $"%{obra.ToUpper()}%")
+                               select new
+                               {
+                                   novels.Id,
+                                   novels.Slug,
+                                   novels.Titulo,
+                                   novels.Alias,
+                                   Capa = novels.ImagemCapaUltimoVolume ?? novels.ImagemCapaPrincipal,
+                                   Tipo = novels.TipoObra,
+                                   novels.Sinopse
+                               }
+                        );
+
+            var listaRetornoObrasPesquisa = await query
+                .Select(rc => new RetornoObrasPesquisa
+                {
+                    Id = rc.Id,
+                    Slug = rc.Slug,
+                    Titulo = rc.Titulo,
+                    Alias = rc.Alias,
+                    Capa = rc.Capa,
+                    Tipo = rc.Tipo,
+                    Sinopse = rc.Sinopse
+                })
+                .ToListAsync();
+
+            return listaRetornoObrasPesquisa;
         }
     }
 }

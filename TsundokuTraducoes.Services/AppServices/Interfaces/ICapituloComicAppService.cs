@@ -7,6 +7,7 @@ namespace TsundokuTraducoes.Services.AppServices.Interfaces
     {
         Task<Result<List<RetornoCapituloComic>>> ObterCapitulosComicPorIdObraEIdCapitulo(Guid idObra, Guid idCapitulo);
         Task<Result<List<RetornoCapituloComic>>> ObterCapitulosComicPorSlugObraEIdCapitulo(string slugObra, Guid idCapitulo);
+        Task<Result<List<RetornoCapituloComic>>> ObterCapitulosComicPorSlugObraESlugCapitulo(string slugObra, string slugCapitulo);
         Task<Result<List<RetornoCapituloComic>>> ObterListaCapitulosComicPorSlugObra(string slugObra);
         Result ValidaExisteCapituloNaLista(List<RetornoCapituloComic> capitulos, Guid idCapitulo);
     }

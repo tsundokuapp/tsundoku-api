@@ -381,5 +381,10 @@ namespace TsundokuTraducoes.Services.AppServices
                 Id = obra.Id
             };
         }
+
+        public async Task<List<RetornoObrasPesquisa>> ObterObrasPesquisa(string obra)
+        {
+            return await _obrasService.ObterObrasPesquisa(obra);
+        }
     }
 }

@@ -7,6 +7,7 @@
         public string NumeroVolume { get; set; }
         public string UrlCapaVolume { get; set; }
         public string SlugVolume { get; set; }
+        public string TituloVolume { get; set; }
         public DateTime DataInclusao { get; set; }
         public string Sinopse { get; set; }
         public IEnumerable<RetornoCapitulos> ListaCapitulos { get; set; }
