@@ -172,5 +172,16 @@ namespace TsundokuTraducoes.Api.Controllers
 
             return Ok(capituloNovel);
         }
+
+        [HttpGet("api/obras/pesquisa")]
+        [ProducesResponseType(typeof(ObjetoRetornoObrasPesquisa), statusCode: 200)]
+        public async Task<IActionResult> ObterObrasPesquisa([FromQuery] string obra)
+        {
+            var retorno = await _obrasAppServices.ObterObrasPesquisa(obra);
+            if (retorno.Count == 0)
+                return NoContent();
+
+            return Ok(new ObjetoRetornoObrasPesquisa { Data = retorno, Total = retorno.Count });
+        }
     }
 }

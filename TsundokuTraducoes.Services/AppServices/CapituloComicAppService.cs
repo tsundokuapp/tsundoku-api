@@ -55,6 +55,28 @@ namespace TsundokuTraducoes.Services.AppServices
 
             return Result.Ok(listaRetornoCapituloComic);
         }
+        
+        public async Task<Result<List<RetornoCapituloComic>>> ObterCapitulosComicPorSlugObraESlugCapitulo(string slugObra, string slugCapitulo)
+        {
+            var listaRetornoCapituloComic = new List<RetornoCapituloComic>();
+
+            var obra = obraservice.RetornaComicPorSlug(slugObra);
+            if (obra == null)
+                return Result.Fail("Obra não encontrada!");
+
+            var listaCapituloComic = await service.ObterCapitulosComicPorSlugObra(slugObra);
+
+            foreach (var capituloComic in listaCapituloComic)
+            {
+                listaRetornoCapituloComic.Add(TrataRetornoCapituloComic(capituloComic));
+            }
+
+            var resultExisteCapitulo = ValidaExisteCapituloNaLista(listaRetornoCapituloComic, slugCapitulo);
+            if (resultExisteCapitulo.IsFailed)
+                return Result.Fail(resultExisteCapitulo.Errors[0].Message);
+
+            return Result.Ok(listaRetornoCapituloComic);
+        }
 
         public async Task<Result<List<RetornoCapituloComic>>> ObterListaCapitulosComicPorSlugObra(string slugObra)
         {
@@ -78,6 +100,15 @@ namespace TsundokuTraducoes.Services.AppServices
         {
 
             if (capitulos.FirstOrDefault(x => x.Id == idCapitulo) is null)
+                return Result.Fail("Capítulo não encontrado!");
+
+            return Result.Ok();
+        }
+        
+        public Result ValidaExisteCapituloNaLista(List<RetornoCapituloComic> capitulos, string slugCapitulo)
+        {
+
+            if (capitulos.FirstOrDefault(x => x.Slug == slugCapitulo) is null)
                 return Result.Fail("Capítulo não encontrado!");
 
             return Result.Ok();
