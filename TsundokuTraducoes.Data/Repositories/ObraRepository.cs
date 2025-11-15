@@ -129,7 +129,7 @@ namespace TsundokuTraducoes.Data.Repositories
             foreach (var genero in listaGeneros)
             {
                 var slugGenero = TratamentoDeStrings.RetornaStringSlug(genero);
-                var generoEncontrado = _context.Generos.AsNoTracking().SingleOrDefault(s => s.Slug == genero);
+                var generoEncontrado = _context.Generos.AsNoTracking().SingleOrDefault(s => s.Slug == slugGenero);
 
                 if (generoEncontrado != null)
                 {
