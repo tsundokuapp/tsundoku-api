@@ -6,6 +6,7 @@ namespace TsundokuTraducoes.Helpers.Configuration
     {
         private static AcessoExternoTinify _acessoExternoTinify;
         private static AcessoExternoAws _accesoExternoAws;
+        private static JwtConfiguration _jwtConfiguration;
 
         public static void SetaAcessoExterno(AcessoExternoTinify acessoExternoTinify, AcessoExternoAws acessoExternoAws)
         {
@@ -60,6 +61,14 @@ namespace TsundokuTraducoes.Helpers.Configuration
 
             return distributionDomainName;
         }
+
+        public static string RetornaJwtSecretToken()
+        {
+            var secretToken = ConfigurationManager.AppSettings["SecretToken"];
+            secretToken ??= _jwtConfiguration.SecretToken;
+
+            return secretToken;
+        }
     }
 
     public class AcessoExternoTinify
@@ -74,5 +83,10 @@ namespace TsundokuTraducoes.Helpers.Configuration
         public string BucketName { get; set; }
         public string DistributionId { get; set; }
         public string DistributionDomainName { get; set; }
+    }
+
+    public class JwtConfiguration
+    {
+        public string SecretToken { get; set; }
     }
 }
