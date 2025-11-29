@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
@@ -12,6 +14,9 @@ using TsundokuTraducoes.Services.AppServices.Interfaces;
 namespace TsundokuTraducoes.Models
 {
     [ApiController]
+    [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Unauthorized)] // Documenta o 401
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Forbidden)]   // Documenta o 403
     public class ObraController : ControllerBase
     {        
         private readonly IObraAppService _obraAppService;
@@ -20,7 +25,8 @@ namespace TsundokuTraducoes.Models
             _obraAppService = obraAppService;
         }
 
-        [HttpGet("api/admin/obra/")]
+        [HttpGet("api/admin/obra/")]        
+        [Authorize(Roles = "admin, staff")]
         [ProducesResponseType(typeof(List<RetornoObra>), statusCode: 200)]
         public async Task<IActionResult> RetornaListaObras([FromQuery] RequestObra requestObra)
         {
@@ -33,6 +39,7 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpGet("api/admin/obra/novels")]
+        [Authorize(Roles = "admin, staff")]
         [ProducesResponseType(typeof(List<RetornoObra>), statusCode: 200)]
         public async Task<IActionResult> RetornaListaNovels([FromQuery] RequestObra requestObra)
         {
@@ -45,6 +52,7 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpGet("api/admin/obra/comics")]
+        [Authorize(Roles = "admin, staff")]
         [ProducesResponseType(typeof(List<RetornoObra>), statusCode: 200)]
         public async Task<IActionResult> RetornaListaComics([FromQuery] RequestObra requestObra)
         {
@@ -58,6 +66,7 @@ namespace TsundokuTraducoes.Models
 
 
         [HttpGet("api/admin/obra/novel/id/{id}")]
+        [Authorize(Roles = "admin, staff")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> RetornaNovelPorId(Guid id)
         {
@@ -69,6 +78,7 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpGet("api/admin/obra/comic/id/{id}")]
+        [Authorize(Roles = "admin, staff")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> RetornaComicPorId(Guid id)
         {
@@ -80,6 +90,7 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpGet("api/admin/obra/novel/slug/{slug}")]
+        [Authorize(Roles = "admin, staff")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> RetornaNovelPorSlug(string slug)
         {
@@ -91,6 +102,7 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpGet("api/admin/obra/comic/slug/{slug}")]
+        [Authorize(Roles = "admin, staff")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> RetornaComicPorSlug(string slug)
         {
@@ -103,6 +115,7 @@ namespace TsundokuTraducoes.Models
 
         
         [HttpPost("api/admin/obra/novel")]
+        [Authorize(Roles = "admin, moderador")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaNovel([FromForm] ObraDTO obraDTO)
         {
@@ -127,6 +140,7 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpPost("api/admin/obra/comic")]
+        [Authorize(Roles = "admin, moderador")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaComic([FromForm] ObraDTO obraDTO)
         {
@@ -152,6 +166,7 @@ namespace TsundokuTraducoes.Models
 
 
         [HttpPut("api/admin/obra/novel")]
+        [Authorize(Roles = "admin, moderador")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AtualizarNovel([FromForm] ObraDTO obraDTO)
         {
@@ -180,6 +195,7 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpPut("api/admin/obra/comic")]
+        [Authorize(Roles = "admin, moderador")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AtualizarComic([FromForm] ObraDTO obraDTO)
         {
@@ -209,6 +225,7 @@ namespace TsundokuTraducoes.Models
 
 
         [HttpDelete("api/admin/obra/novel/{id}/{arquivoLocal}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ExcluirNovel(Guid id, bool arquivoLocal)
         {
             var result = await _obraAppService.ExcluiNovel(id, arquivoLocal);
@@ -225,6 +242,7 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpDelete("api/admin/obra/comic/{id}/{arquivoLocal}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ExcluirComic(Guid id, bool arquivoLocal)
         {
             var result = await _obraAppService.ExcluiComic(id, arquivoLocal);
