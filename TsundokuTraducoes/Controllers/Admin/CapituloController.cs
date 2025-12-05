@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
@@ -10,7 +10,7 @@ using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
-namespace TsundokuTraducoes.Controllers
+namespace TsundokuTraducoes.Api.Controllers.Admin
 {
     [ApiController]
     public class CapituloController : ControllerBase
@@ -23,6 +23,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/capitulo/")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(List<RetornoCapitulo>), statusCode: 200)]
         public IActionResult RetornaListaCapitulos([FromQuery] RequestCapitulo requestCapitulo)
         {
@@ -35,6 +36,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/capitulo/novel")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(List<RetornoCapitulo>), statusCode: 200)]
         public IActionResult RetornaListaCapitulosNovel([FromQuery] RequestCapitulo requestCapitulo)
         {
@@ -47,6 +49,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/capitulo/comic")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(List<RetornoCapitulo>), statusCode: 200)]
         public IActionResult RetornaListaCapitulosComic([FromQuery] RequestCapitulo requestCapitulo)
         {
@@ -60,6 +63,7 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpGet("api/admin/capitulo/novel/{id}")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public IActionResult RetornaCapituloNovelPorId(Guid id)
         {
@@ -71,6 +75,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/capitulo/comic/{id}")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public IActionResult RetornaCapituloComicPorId(Guid id)
         {
@@ -83,6 +88,7 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpPost("api/admin/capitulo/novel/")]
+        [Authorize(Roles = "admin, moderador")]
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AdicionaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
@@ -111,6 +117,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpPost("api/admin/capitulo/comic/")]
+        [Authorize(Roles = "admin, moderador")]
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AdicionaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
@@ -135,6 +142,7 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpPut("api/admin/capitulo/novel/")]
+        [Authorize(Roles = "admin, moderador")]
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AtualizaCapituloNovel([FromForm] CapituloDTO capituloDTO)
         {
@@ -152,6 +160,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpPut("api/admin/capitulo/comic/")]
+        [Authorize(Roles = "admin, moderador")]
         [ProducesResponseType(typeof(RetornoCapitulo), statusCode: 200)]
         public async Task<IActionResult> AtualizaCapituloComic([FromForm] CapituloDTO capituloDTO)
         {
@@ -176,6 +185,7 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpDelete("api/admin/capitulo/novel/{id}/{arquivoLocal}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ExcluiCapituloNovel(Guid id, bool arquivoLocal)
         {
             var result = await _capituloService.ExcluiCapituloNovel(id, arquivoLocal);
@@ -192,6 +202,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpDelete("api/admin/capitulo/comic/{id}/{arquivoLocal}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ExcluiCapituloComic(Guid id, bool arquivoLocal)
         {
             var result = await _capituloService.ExcluiCapituloComic(id, arquivoLocal);

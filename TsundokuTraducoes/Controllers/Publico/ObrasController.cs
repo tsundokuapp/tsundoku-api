@@ -9,7 +9,7 @@ using TsundokuTraducoes.Helpers.DTOs.Public.Retorno.Response;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
-namespace TsundokuTraducoes.Api.Controllers
+namespace TsundokuTraducoes.Api.Controllers.Publico
 {
     [ApiController]
     public class ObrasController : Controller

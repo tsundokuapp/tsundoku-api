@@ -5,7 +5,7 @@ using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.Services.Interfaces;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
-namespace TsundokuTraducoes.Api.Controllers.Publico.manga
+namespace TsundokuTraducoes.Api.Controllers.Publico.comic
 {
     [ApiController]
     public class CapitulosComicsController(ICapituloComicAppService service) : Controller, IBaseService<ICapituloComicAppService>

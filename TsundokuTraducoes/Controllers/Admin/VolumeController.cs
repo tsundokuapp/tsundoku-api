@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
@@ -10,9 +11,11 @@ using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
-namespace TsundokuTraducoes.Controllers
+namespace TsundokuTraducoes.Api.Controllers.Admin
 {
     [ApiController]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Forbidden)]
     public class VolumeController : ControllerBase
     {
         private readonly IVolumeAppService _volumeAppService;
@@ -23,6 +26,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/volume/")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(List<RetornoVolume>), statusCode: 200)]
         public IActionResult RetornaListaVolume([FromQuery] RequestVolume requestVolume)
         {
@@ -35,6 +39,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/volume/novel")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(List<RetornoVolume>), statusCode: 200)]
         public IActionResult RetornaListaVolumesNovel([FromQuery] RequestVolume requestVolume)
         {
@@ -48,6 +53,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/volume/comic")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(List<RetornoVolume>), statusCode: 200)]
         public IActionResult RetornaListaVolumesComic([FromQuery] RequestVolume requestVolume)
         {
@@ -61,6 +67,7 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpGet("api/admin/volume/novel/{id}")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public IActionResult RetornaVolumeNovelPorId(Guid id)
         {
@@ -72,6 +79,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpGet("api/admin/volume/comic/{id}")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public IActionResult RetornaVolumeComicPorId(Guid id)
         {
@@ -83,6 +91,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpPost("api/admin/volume/novel/")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AdicionaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
@@ -97,6 +106,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpPost("api/admin/volume/comic/")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AdicionaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
@@ -115,6 +125,7 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpPut("api/admin/volume/novel/")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AtualizaVolumeNovel([FromForm] VolumeDTO volumeDTO)
         {
@@ -136,6 +147,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpPut("api/admin/volume/comic/")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(typeof(RetornoVolume), statusCode: 200)]
         public async Task<IActionResult> AtualizaVolumeComic([FromForm] VolumeDTO volumeDTO)
         {
@@ -158,6 +170,7 @@ namespace TsundokuTraducoes.Controllers
 
 
         [HttpDelete("api/admin/volume/novel/{id}/{arquivoLocal}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ExcluiVolumeNovel(Guid id, bool arquivoLocal)
         {
             var result = await _volumeAppService.ExcluiVolumeNovel(id, arquivoLocal);
@@ -174,6 +187,7 @@ namespace TsundokuTraducoes.Controllers
         }
 
         [HttpDelete("api/admin/volume/comic/{id}/{arquivoLocal}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ExcluiVolumeComic(Guid id, bool arquivoLocal)
         {
             var result = await _volumeAppService.ExcluiVolumeComic(id, arquivoLocal);

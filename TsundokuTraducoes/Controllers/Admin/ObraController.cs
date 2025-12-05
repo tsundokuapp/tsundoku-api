@@ -11,12 +11,11 @@ using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
-namespace TsundokuTraducoes.Models
+namespace TsundokuTraducoes.Api.Controllers.Admin
 {
     [ApiController]
-    [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Unauthorized)] // Documenta o 401
-    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Forbidden)]   // Documenta o 403
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Forbidden)]
     public class ObraController : ControllerBase
     {        
         private readonly IObraAppService _obraAppService;
@@ -115,7 +114,7 @@ namespace TsundokuTraducoes.Models
 
         
         [HttpPost("api/admin/obra/novel")]
-        [Authorize(Roles = "admin, moderador")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaNovel([FromForm] ObraDTO obraDTO)
         {
@@ -140,7 +139,7 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpPost("api/admin/obra/comic")]
-        [Authorize(Roles = "admin, moderador")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AdicionaComic([FromForm] ObraDTO obraDTO)
         {
@@ -166,7 +165,7 @@ namespace TsundokuTraducoes.Models
 
 
         [HttpPut("api/admin/obra/novel")]
-        [Authorize(Roles = "admin, moderador")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AtualizarNovel([FromForm] ObraDTO obraDTO)
         {
@@ -195,7 +194,7 @@ namespace TsundokuTraducoes.Models
         }
 
         [HttpPut("api/admin/obra/comic")]
-        [Authorize(Roles = "admin, moderador")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(typeof(RetornoObra), statusCode: 200)]
         public async Task<IActionResult> AtualizarComic([FromForm] ObraDTO obraDTO)
         {
