@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Admin;
@@ -9,9 +11,11 @@ using TsundokuTraducoes.Helpers.DTOs.Admin.Retorno.Response;
 using TsundokuTraducoes.Helpers.Validacao;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
 
-namespace TsundokuTraducoes.Api.Controllers
+namespace TsundokuTraducoes.Api.Controllers.Admin
 {
     [ApiController]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResponse), (int)HttpStatusCode.Forbidden)]
     public class GeneroController : ControllerBase
     {
         private readonly IGeneroAppService _generoAppService;
@@ -21,6 +25,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/admin/genero")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(ObjetoRetornoGenerosResponse), statusCode: 200)]
         public async Task<IActionResult> RetornaListaGeneros([FromQuery] RequestGenero requestGenero)
         {
@@ -33,6 +38,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpGet("api/admin/genero/{id}")]
+        [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(RetornoGenero), statusCode: 200)]
         public async Task<IActionResult> RetornaGeneroPorId(Guid id)
         {
@@ -44,6 +50,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpPost("api/admin/genero")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(typeof(RetornoGenero), statusCode: 200)]
         public async Task<IActionResult> AdicionaGenero([FromForm] GeneroDTO generoDTO)
         {
@@ -58,6 +65,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpPut("api/admin/genero")]
+        [Authorize(Roles = "admin")]
         [ProducesResponseType(typeof(RetornoGenero), statusCode: 200)]
         public async Task<IActionResult> AtualizarGenero([FromForm] GeneroDTO generoDTO)
         {
@@ -78,6 +86,7 @@ namespace TsundokuTraducoes.Api.Controllers
         }
 
         [HttpDelete("api/admin/genero/{id}")]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ExcluirGenero(Guid id)
         {
             var result = await _generoAppService.ExcluiGenero(id);
