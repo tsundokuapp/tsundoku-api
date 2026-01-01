@@ -25,6 +25,11 @@ var _acessoExternoAws = new AcessoExternoAws();
 var _jwtConfiguration = new JwtConfiguration();
 
 var builder = WebApplication.CreateBuilder(args);
+
+var allowedOrigins = builder.Configuration
+    .GetSection("Cors:AllowedOrigins")
+    .Get<string[]>();
+
 _connectionStringConfig.ConnectionString = builder.Configuration.GetConnectionString("Default");
 SourceConnection.SetaConnectionStringConfig(_connectionStringConfig);
 
@@ -65,9 +70,14 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("tsundokuApp", builder =>
+    options.AddPolicy("tsundokuApp", policy =>
     {
-        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        policy
+            // .SetIsOriginAllowed(origin => true) // usar esse pra força aceitar todos os dominios
+            .WithOrigins(allowedOrigins ?? Array.Empty<string>())
+            .AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
 
