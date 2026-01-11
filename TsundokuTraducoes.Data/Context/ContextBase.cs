@@ -4,6 +4,7 @@ using TsundokuTraducoes.Data.Configuration;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
 using TsundokuTraducoes.Entities.Entities.DePara;
 using TsundokuTraducoes.Entities.Entities.Generos;
+using TsundokuTraducoes.Entities.Entities.Integracao;
 using TsundokuTraducoes.Entities.Entities.Obra;
 using TsundokuTraducoes.Entities.Entities.Volume;
 using TsundokuTraducoes.Helpers;
@@ -22,7 +23,7 @@ namespace TsundokuTraducoes.Data.Context
         public DbSet<Genero> Generos { get; set; }
         public DbSet<GeneroNovel> GenerosNovel { get; set; }
         public DbSet<GeneroComic> GenerosComic { get; set; }
-
+        public DbSet<Usuario> Usuarios { get; set; }
         public ContextBase(DbContextOptions<ContextBase> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
