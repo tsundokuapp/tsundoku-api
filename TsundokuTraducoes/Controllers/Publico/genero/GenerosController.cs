@@ -12,13 +12,13 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.genero
     {
         [HttpGet("api/generos")]
         [ProducesResponseType(typeof(ObjetoRetornoGenerosCadastradosResponse), statusCode: 200)]
-        public async Task<IActionResult> RetornaListaGeneros([FromQuery] int? skip, int? take)
+        public async Task<IActionResult> RetornaListaGeneros()
         {
             var result = await service.RetornaListaGenerosCadastrados();
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(HttpContext, result.Value, skip, take);
+            var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(result.Value);
             return Ok(objetoRetorno);
         }
     }

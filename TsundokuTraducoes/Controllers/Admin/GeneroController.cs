@@ -27,13 +27,13 @@ namespace TsundokuTraducoes.Api.Controllers.Admin
         [HttpGet("api/admin/genero")]
         [Authorize(Roles = "admin, staff, moderador")]
         [ProducesResponseType(typeof(ObjetoRetornoGenerosResponse), statusCode: 200)]
-        public async Task<IActionResult> RetornaListaGeneros([FromQuery] RequestGenero requestGenero)
+        public async Task<IActionResult> RetornaListaGeneros()
         {
             var result = await _generoAppService.RetornaListaGeneros();
             if (result.Value == null || result.Value.Count == 0)
                 return NoContent();
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetornoGeneros(HttpContext, result.Value, requestGenero.Skip, requestGenero.Take);
+            var objetoRetorno = RequestHelper.CriarObjetoRetornoGeneros(result.Value);
             return Ok(objetoRetorno);
         }
 
