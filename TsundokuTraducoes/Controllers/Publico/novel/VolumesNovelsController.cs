@@ -14,25 +14,25 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.novel
     {
         [HttpGet("api/novels/volumes/{idObra}")]
         [ProducesResponseType(typeof(List<RetornoVolumeNovel>), statusCode: 200)]
-        public async Task<IActionResult> ObterVolumesNovelPorIdObra(Guid idObra, [FromQuery] int? skip, int? take)
+        public async Task<IActionResult> ObterVolumesNovelPorIdObra(Guid idObra)
         {
             var result = await service.ObterVolumesNovelPorIdObra(idObra);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(HttpContext, result.Value, skip, take);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(result.Value);
             return Ok(objetoRetorno);
         }
 
         [HttpGet("api/novels/volumes/slug/{slugObra}")]
         [ProducesResponseType(typeof(List<RetornoVolumeNovel>), statusCode: 200)]
-        public async Task<IActionResult> ObterVolumesNovelPorSlugObra(string slugObra, [FromQuery] int? skip, int? take)
+        public async Task<IActionResult> ObterVolumesNovelPorSlugObra(string slugObra)
         {
             var result = await service.ObterVolumesNovelPorSlugObra(slugObra);
             if (result.IsFailed)
                 return NotFound(result.Errors[0].Message);
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(HttpContext, result.Value, skip, take);
+            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(result.Value);
             return Ok(objetoRetorno);
         }
     }

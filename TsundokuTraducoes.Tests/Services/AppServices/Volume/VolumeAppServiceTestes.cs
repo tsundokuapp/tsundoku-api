@@ -531,164 +531,164 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
 
         #region => TESTES VOLUME NOVEL APP SERVICE
 
-        [Fact]
-        public void DeveRetornarVolumeNovel_ComLinksParaProximoEAnterior_NaBuscaPorIdObra()
-        {
-            // Arrange
-            var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
+        //[Fact]
+        //public void DeveRetornarVolumeNovel_ComLinksParaProximoEAnterior_NaBuscaPorIdObra()
+        //{
+        //    // Arrange
+        //    var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
 
-            List<Guid> listaIdsVolumes =
-            [
-                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
-                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
-                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
-                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
-                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
-                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
-                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
-            ];
+        //    List<Guid> listaIdsVolumes =
+        //    [
+        //        Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+        //        Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+        //        Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+        //        Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+        //        Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+        //        Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+        //        Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
+        //    ];
 
-            List<Guid> listaIdsCapitulos =
-            [
-                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
-                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
-                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
-                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
-            ];
+        //    List<Guid> listaIdsCapitulos =
+        //    [
+        //        Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+        //        Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+        //        Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+        //        Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+        //    ];
 
-            var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
-            Novel novel = volumeAppServiceFactory.GerarNovel(IdObra);
-            List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
+        //    var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
+        //    Novel novel = volumeAppServiceFactory.GerarNovel(IdObra);
+        //    List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
-            var scheme = "https";
-            var host = "localhost";
-            var path = $"/mock/{novel.Id}?skip=1";
-            var url = $"{scheme}://{host}/{path}";
-            var httpContext = new HttpContextMock().SetupUrl(url);
+        //    var scheme = "https";
+        //    var host = "localhost";
+        //    var path = $"/mock/{novel.Id}?skip=1";
+        //    var url = $"{scheme}://{host}/{path}";
+        //    var httpContext = new HttpContextMock().SetupUrl(url);
 
-            // Assert
-            var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
+        //    // Assert
+        //    var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
 
-            listaVolumesNovel
-                .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
-                    .Add(_volumeNovelAppServiceMock
-                        .TrataRetornoVolumeNovel(volumeNovel)
-                    )
-                );
+        //    listaVolumesNovel
+        //        .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
+        //            .Add(_volumeNovelAppServiceMock
+        //                .TrataRetornoVolumeNovel(volumeNovel)
+        //            )
+        //        );
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 1, null);
+        //    var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 1, null);
 
-            Assert.Equal(6, objetoRetorno.Data.Count);
-            Assert.Equal(7, objetoRetorno.Total);
-            Assert.Contains($"{novel.Id}?Skip=7&Take=6", objetoRetorno.Proxima);
-            Assert.Contains($"{novel.Id}?Skip=0&Take=6", objetoRetorno.Anterior);
-        }
+        //    Assert.Equal(6, objetoRetorno.Data.Count);
+        //    Assert.Equal(7, objetoRetorno.Total);
+        //    Assert.Contains($"{novel.Id}?Skip=7&Take=6", objetoRetorno.Proxima);
+        //    Assert.Contains($"{novel.Id}?Skip=0&Take=6", objetoRetorno.Anterior);
+        //}
 
-        [Fact]
-        public void DeveRetornarVolumeNovel_ComLinksParaProximoEAnteriorNull_NaBuscaPorIdObra()
-        {
-            // Arrange
-            var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
+        //[Fact]
+        //public void DeveRetornarVolumeNovel_ComLinksParaProximoEAnteriorNull_NaBuscaPorIdObra()
+        //{
+        //    // Arrange
+        //    var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
 
-            List<Guid> listaIdsVolumes =
-            [
-                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
-                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
-                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
-                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
-                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
-                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
-                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
-            ];
+        //    List<Guid> listaIdsVolumes =
+        //    [
+        //        Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+        //        Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+        //        Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+        //        Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+        //        Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+        //        Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+        //        Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
+        //    ];
 
-            List<Guid> listaIdsCapitulos =
-            [
-                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
-                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
-                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
-                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
-            ];
+        //    List<Guid> listaIdsCapitulos =
+        //    [
+        //        Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+        //        Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+        //        Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+        //        Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+        //    ];
 
-            var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
-            Novel novel = volumeAppServiceFactory.GerarNovel(IdObra);
-            List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
+        //    var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
+        //    Novel novel = volumeAppServiceFactory.GerarNovel(IdObra);
+        //    List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
-            var scheme = "https";
-            var host = "localhost";
-            var path = $"/mock/{novel.Id}?skip=0&take=6";
-            var url = $"{scheme}://{host}/{path}";
-            var httpContext = new HttpContextMock().SetupUrl(url);
+        //    var scheme = "https";
+        //    var host = "localhost";
+        //    var path = $"/mock/{novel.Id}?skip=0&take=6";
+        //    var url = $"{scheme}://{host}/{path}";
+        //    var httpContext = new HttpContextMock().SetupUrl(url);
 
-            // Assert
-            var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
+        //    // Assert
+        //    var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
 
-            listaVolumesNovel
-                .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
-                    .Add(_volumeNovelAppServiceMock
-                        .TrataRetornoVolumeNovel(volumeNovel)
-                    )
-                );
+        //    listaVolumesNovel
+        //        .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
+        //            .Add(_volumeNovelAppServiceMock
+        //                .TrataRetornoVolumeNovel(volumeNovel)
+        //            )
+        //        );
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 0, 6);
+        //    var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 0, 6);
 
-            Assert.Equal(6, objetoRetorno.Data.Count);
-            Assert.Equal(7, objetoRetorno.Total);
-            Assert.Contains($"{novel.Id}?Skip=6&Take=6", objetoRetorno.Proxima);
-            Assert.Null(objetoRetorno.Anterior);
-        }
+        //    Assert.Equal(6, objetoRetorno.Data.Count);
+        //    Assert.Equal(7, objetoRetorno.Total);
+        //    Assert.Contains($"{novel.Id}?Skip=6&Take=6", objetoRetorno.Proxima);
+        //    Assert.Null(objetoRetorno.Anterior);
+        //}
 
-        [Fact]
-        public void DeveRetornarVolumeNovel_ComLinksParaAnteriorEProximoNull_NaBuscaPorIdObra()
-        {
-            // Arrange
-            var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
+        //[Fact]
+        //public void DeveRetornarVolumeNovel_ComLinksParaAnteriorEProximoNull_NaBuscaPorIdObra()
+        //{
+        //    // Arrange
+        //    var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
 
-            List<Guid> listaIdsVolumes =
-            [
-                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
-                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
-                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
-                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
-                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
-                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
-                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
-            ];
+        //    List<Guid> listaIdsVolumes =
+        //    [
+        //        Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+        //        Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+        //        Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+        //        Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+        //        Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+        //        Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+        //        Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
+        //    ];
 
-            List<Guid> listaIdsCapitulos =
-            [
-                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
-                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
-                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
-                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
-            ];
+        //    List<Guid> listaIdsCapitulos =
+        //    [
+        //        Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+        //        Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+        //        Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+        //        Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+        //    ];
 
-            var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
-            Novel novel = volumeAppServiceFactory.GerarNovel(IdObra);
-            List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
+        //    var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
+        //    Novel novel = volumeAppServiceFactory.GerarNovel(IdObra);
+        //    List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
-            var scheme = "https";
-            var host = "localhost";
-            var path = $"/mock/{novel.Id}?skip=6&take=6";
-            var url = $"{scheme}://{host}/{path}";
-            var httpContext = new HttpContextMock().SetupUrl(url);
+        //    var scheme = "https";
+        //    var host = "localhost";
+        //    var path = $"/mock/{novel.Id}?skip=6&take=6";
+        //    var url = $"{scheme}://{host}/{path}";
+        //    var httpContext = new HttpContextMock().SetupUrl(url);
 
-            // Assert
-            var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
+        //    // Assert
+        //    var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
 
-            listaVolumesNovel
-                .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
-                    .Add(_volumeNovelAppServiceMock
-                        .TrataRetornoVolumeNovel(volumeNovel)
-                    )
-                );
+        //    listaVolumesNovel
+        //        .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
+        //            .Add(_volumeNovelAppServiceMock
+        //                .TrataRetornoVolumeNovel(volumeNovel)
+        //            )
+        //        );
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 6, 6);
+        //    var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 6, 6);
 
-            Assert.Single(objetoRetorno.Data);
-            Assert.Equal(7, objetoRetorno.Total);
-            Assert.Null(objetoRetorno.Proxima);
-            Assert.Contains($"{novel.Id}?Skip=0&Take=6", objetoRetorno.Anterior);
-        }
+        //    Assert.Single(objetoRetorno.Data);
+        //    Assert.Equal(7, objetoRetorno.Total);
+        //    Assert.Null(objetoRetorno.Proxima);
+        //    Assert.Contains($"{novel.Id}?Skip=0&Take=6", objetoRetorno.Anterior);
+        //}
 
         [Fact]
         public void DeveRetornarFalse_QuandoVolumeNovelNaoEncontrado_NaBuscaPorIdObra()
@@ -766,169 +766,169 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Volume
         }
 
 
-        [Fact]
-        public void DeveRetornarVolumeNovel_ComLinksParaProximoEAnterior_NaBuscaPorSlugObra()
-        {
-            // Arrange
-            var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
-            var slugObra = "slug-novel-teste";
+        //[Fact]
+        //public void DeveRetornarVolumeNovel_ComLinksParaProximoEAnterior_NaBuscaPorSlugObra()
+        //{
+        //    // Arrange
+        //    var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
+        //    var slugObra = "slug-novel-teste";
 
-            List<Guid> listaIdsVolumes =
-            [
-                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
-                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
-                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
-                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
-                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
-                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
-                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
-            ];
+        //    List<Guid> listaIdsVolumes =
+        //    [
+        //        Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+        //        Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+        //        Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+        //        Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+        //        Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+        //        Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+        //        Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
+        //    ];
 
-            List<Guid> listaIdsCapitulos =
-            [
-                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
-                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
-                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
-                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
-            ];
+        //    List<Guid> listaIdsCapitulos =
+        //    [
+        //        Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+        //        Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+        //        Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+        //        Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+        //    ];
 
-            var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
-            Novel novel = volumeAppServiceFactory.GerarNovel(IdObra, slugObra);
-            List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
+        //    var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
+        //    Novel novel = volumeAppServiceFactory.GerarNovel(IdObra, slugObra);
+        //    List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
-            var scheme = "https";
-            var host = "localhost";
-            var path = $"/mock/{novel.Slug}?skip=1";
-            var url = $"{scheme}://{host}/{path}";
-            var httpContext = new HttpContextMock().SetupUrl(url);
+        //    var scheme = "https";
+        //    var host = "localhost";
+        //    var path = $"/mock/{novel.Slug}?skip=1";
+        //    var url = $"{scheme}://{host}/{path}";
+        //    var httpContext = new HttpContextMock().SetupUrl(url);
 
-            // Assert
-            var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
+        //    // Assert
+        //    var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
 
-            listaVolumesNovel
-                .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
-                    .Add(_volumeNovelAppServiceMock
-                        .TrataRetornoVolumeNovel(volumeNovel)
-                    )
-                );
+        //    listaVolumesNovel
+        //        .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
+        //            .Add(_volumeNovelAppServiceMock
+        //                .TrataRetornoVolumeNovel(volumeNovel)
+        //            )
+        //        );
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 1, null);
+        //    var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 1, null);
 
-            Assert.Equal(6, objetoRetorno.Data.Count);
-            Assert.Equal(7, objetoRetorno.Total);
-            Assert.Contains($"{novel.Slug}?Skip=7&Take=6", objetoRetorno.Proxima);
-            Assert.Contains($"{novel.Slug}?Skip=0&Take=6", objetoRetorno.Anterior);
-        }
+        //    Assert.Equal(6, objetoRetorno.Data.Count);
+        //    Assert.Equal(7, objetoRetorno.Total);
+        //    Assert.Contains($"{novel.Slug}?Skip=7&Take=6", objetoRetorno.Proxima);
+        //    Assert.Contains($"{novel.Slug}?Skip=0&Take=6", objetoRetorno.Anterior);
+        //}
 
-        [Fact]
-        public void DeveRetornarVolumeNovel_ComLinksParaProximoEAnteriorNull_NaBuscaPorSlugObra()
-        {
-            // Arrange
-            var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
-            var slugObra = "slug-novel-teste";
+        //[Fact]
+        //public void DeveRetornarVolumeNovel_ComLinksParaProximoEAnteriorNull_NaBuscaPorSlugObra()
+        //{
+        //    // Arrange
+        //    var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
+        //    var slugObra = "slug-novel-teste";
 
-            List<Guid> listaIdsVolumes =
-            [
-                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
-                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
-                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
-                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
-                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
-                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
-                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
-            ];
+        //    List<Guid> listaIdsVolumes =
+        //    [
+        //        Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+        //        Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+        //        Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+        //        Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+        //        Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+        //        Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+        //        Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
+        //    ];
 
-            List<Guid> listaIdsCapitulos =
-            [
-                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
-                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
-                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
-                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
-            ];
+        //    List<Guid> listaIdsCapitulos =
+        //    [
+        //        Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+        //        Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+        //        Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+        //        Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+        //    ];
 
-            var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
-            Novel novel = volumeAppServiceFactory.GerarNovel(IdObra, slugObra);
-            List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
+        //    var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
+        //    Novel novel = volumeAppServiceFactory.GerarNovel(IdObra, slugObra);
+        //    List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
-            var scheme = "https";
-            var host = "localhost";
-            var path = $"/mock/{novel.Slug}?skip=0&take=6";
-            var url = $"{scheme}://{host}/{path}";
-            var httpContext = new HttpContextMock().SetupUrl(url);
+        //    var scheme = "https";
+        //    var host = "localhost";
+        //    var path = $"/mock/{novel.Slug}?skip=0&take=6";
+        //    var url = $"{scheme}://{host}/{path}";
+        //    var httpContext = new HttpContextMock().SetupUrl(url);
 
-            // Assert
-            var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
+        //    // Assert
+        //    var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
 
-            listaVolumesNovel
-                .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
-                    .Add(_volumeNovelAppServiceMock
-                        .TrataRetornoVolumeNovel(volumeNovel)
-                    )
-                );
+        //    listaVolumesNovel
+        //        .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
+        //            .Add(_volumeNovelAppServiceMock
+        //                .TrataRetornoVolumeNovel(volumeNovel)
+        //            )
+        //        );
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 0, 6);
+        //    var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 0, 6);
 
-            Assert.Equal(slugObra, novel.Slug);
-            Assert.Equal(6, objetoRetorno.Data.Count);
-            Assert.Equal(7, objetoRetorno.Total);
-            Assert.Contains($"{novel.Slug}?Skip=6&Take=6", objetoRetorno.Proxima);
-            Assert.Null(objetoRetorno.Anterior);
-        }
+        //    Assert.Equal(slugObra, novel.Slug);
+        //    Assert.Equal(6, objetoRetorno.Data.Count);
+        //    Assert.Equal(7, objetoRetorno.Total);
+        //    Assert.Contains($"{novel.Slug}?Skip=6&Take=6", objetoRetorno.Proxima);
+        //    Assert.Null(objetoRetorno.Anterior);
+        //}
 
-        [Fact]
-        public void DeveRetornarVolumeNovel_ComLinksParaAnteriorEProximoNull_NaBuscaPorSlugObra()
-        {
-            // Arrange
-            var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
-            var slugObra = "slug-novel-teste";
+        //[Fact]
+        //public void DeveRetornarVolumeNovel_ComLinksParaAnteriorEProximoNull_NaBuscaPorSlugObra()
+        //{
+        //    // Arrange
+        //    var IdObra = Guid.Parse("00000000-1111-2222-3333-444444444444");
+        //    var slugObra = "slug-novel-teste";
 
-            List<Guid> listaIdsVolumes =
-            [
-                Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
-                Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
-                Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
-                Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
-                Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
-                Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
-                Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
-            ];
+        //    List<Guid> listaIdsVolumes =
+        //    [
+        //        Guid.Parse("08dba651-ec33-4964-8f67-eecd4cbaea50"),
+        //        Guid.Parse("08dd6104-d05d-49a9-8a66-62ca7b07acdc"),
+        //        Guid.Parse("08dd6b39-c3d8-48a9-86fe-a2146c233c9f"),
+        //        Guid.Parse("08dd6b39-cbd2-44a1-8847-30d8228716e5"),
+        //        Guid.Parse("08dd6b3c-35f9-4f1d-829c-ca86d5f95cf2"),
+        //        Guid.Parse("08dd6b3c-3c21-4e49-84ec-d3981a2e7f8c"),
+        //        Guid.Parse("08dd6b3c-428f-485f-899f-dbad73d19023")
+        //    ];
 
-            List<Guid> listaIdsCapitulos =
-            [
-                Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
-                Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
-                Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
-                Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
-            ];
+        //    List<Guid> listaIdsCapitulos =
+        //    [
+        //        Guid.Parse("0000000a-111b-222c-333d-44444444444e"),
+        //        Guid.Parse("000000aa-11bb-22cc-33dd-4444444444ee"),
+        //        Guid.Parse("00000aaa-1bbb-2ccc-3ddd-444444444eee"),
+        //        Guid.Parse("0000aaaa-bbbb-cccc-dddd-44444444eeee")
+        //    ];
 
-            var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
-            Novel novel = volumeAppServiceFactory.GerarNovel(IdObra, slugObra);
-            List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
+        //    var volumeAppServiceFactory = new VolumeAppServiceFactoryTestes();
+        //    Novel novel = volumeAppServiceFactory.GerarNovel(IdObra, slugObra);
+        //    List<VolumeNovel> listaVolumesNovel = volumeAppServiceFactory.GerarListaVolumeNovel(IdObra, listaIdsVolumes, listaIdsCapitulos);
 
-            var scheme = "https";
-            var host = "localhost";
-            var path = $"/mock/{novel.Slug}?skip=6&take=6";
-            var url = $"{scheme}://{host}/{path}";
-            var httpContext = new HttpContextMock().SetupUrl(url);
+        //    var scheme = "https";
+        //    var host = "localhost";
+        //    var path = $"/mock/{novel.Slug}?skip=6&take=6";
+        //    var url = $"{scheme}://{host}/{path}";
+        //    var httpContext = new HttpContextMock().SetupUrl(url);
 
-            // Assert
-            var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
+        //    // Assert
+        //    var retornoListaRetornoVolumeNovel = new List<RetornoVolumeNovel>();
 
-            listaVolumesNovel
-                .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
-                    .Add(_volumeNovelAppServiceMock
-                        .TrataRetornoVolumeNovel(volumeNovel)
-                    )
-                );
+        //    listaVolumesNovel
+        //        .ForEach(volumeNovel => retornoListaRetornoVolumeNovel
+        //            .Add(_volumeNovelAppServiceMock
+        //                .TrataRetornoVolumeNovel(volumeNovel)
+        //            )
+        //        );
 
-            var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 6, 6);
+        //    var objetoRetorno = RequestHelper.CriarObjetoRetonoVolumesNovels(httpContext, retornoListaRetornoVolumeNovel, 6, 6);
 
-            Assert.Equal(slugObra, novel.Slug);
-            Assert.Single(objetoRetorno.Data);
-            Assert.Equal(7, objetoRetorno.Total);
-            Assert.Contains($"{novel.Slug}?Skip=0&Take=6", objetoRetorno.Anterior);
-            Assert.Null(objetoRetorno.Proxima);
-        }
+        //    Assert.Equal(slugObra, novel.Slug);
+        //    Assert.Single(objetoRetorno.Data);
+        //    Assert.Equal(7, objetoRetorno.Total);
+        //    Assert.Contains($"{novel.Slug}?Skip=0&Take=6", objetoRetorno.Anterior);
+        //    Assert.Null(objetoRetorno.Proxima);
+        //}
 
         [Fact]
         public void DeveRetornarFalse_QuandoVolumeNovelNaoEncontrado_NaBuscaPorIdVolumeESlugObra()

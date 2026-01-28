@@ -307,26 +307,9 @@ namespace TsundokuTraducoes.Api.Helpers
             return new ObjetoRetornoVolumeComicResponse { Anterior = anterior, Proxima = proxima, Data = dados, Total = total };
         }
 
-        public static ObjetoRetornoVolumeNovelResponse CriarObjetoRetonoVolumesNovels(HttpContext httpContext, List<RetornoVolumeNovel> listaRetornoVolumeNovel, int? skip, int? take)
+        public static ObjetoRetornoVolumeNovelResponse CriarObjetoRetonoVolumesNovels(List<RetornoVolumeNovel> listaRetornoVolumeNovel)
         {
-            if (!skip.HasValue && !take.HasValue)
-            {
-                return new ObjetoRetornoVolumeNovelResponse { Anterior = null, Proxima = null, Data = listaRetornoVolumeNovel, Total = listaRetornoVolumeNovel.Count };
-            }
-
-            var itensPorPagina = ValidacaoRequest.RetornaTakeTratado(take);
-            var itensPulados = ValidacaoRequest.RetornaSkipTratado(skip, itensPorPagina);
-
-            var dados = listaRetornoVolumeNovel.Skip(itensPulados).Take(itensPorPagina).ToList();
-            var total = listaRetornoVolumeNovel.Count;
-
-            var request = httpContext.Request;
-            var url = $"{request.Scheme}://{request.Host}{request.Path}";
-
-            string proxima = RetornaLinkPaginacaoProxima(itensPorPagina, itensPulados, dados, url);
-            string anterior = RetornaLinkPaginacaoAnterior(itensPorPagina, itensPulados, url);
-
-            return new ObjetoRetornoVolumeNovelResponse { Anterior = anterior, Proxima = proxima, Data = dados, Total = total };
+            return new ObjetoRetornoVolumeNovelResponse { Anterior = null, Proxima = null, Data = listaRetornoVolumeNovel, Total = listaRetornoVolumeNovel.Count };
         }
 
         public static ObjetoRetornoGenerosCadastradosResponse CriarObjetoRetornoGenerosCadastrados(HttpContext httpContext, List<RetornoGeneroCadastrado> listaRetornoGenerosCadastrados, int? skip, int? take)
