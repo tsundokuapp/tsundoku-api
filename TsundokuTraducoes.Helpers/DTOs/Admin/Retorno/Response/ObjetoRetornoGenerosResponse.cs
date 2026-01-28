@@ -4,7 +4,7 @@
     {
         public string Proxima { get; set; }
         public string Anterior { get; set; }
-        public List<RetornoGenero> Data { get; set; }
         public int Total { get; set; }
+        public List<RetornoGenero> Data { get; set; }
     }
 }

@@ -36,157 +36,157 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Generos
             );
         }
 
-        [Fact]
-        public async Task DeveRetornarListaGeneros_ComLinksParaProximoEAnterior()
-        {
-            // Arrange
-            var dicionarioGeneros = new Dictionary<string, string>()
-            {
-                { "Ação","acao" },
-                { "Aventura","aventura" },
-                { "Fantasia","fantasia" },
-                { "Comédia","comedia" },
-                { "Drama","drama" },
-                { "Harém","harem" },
-                { "Horror","horror" }
-            };
+        //[Fact]
+        //public async Task DeveRetornarListaGeneros_ComLinksParaProximoEAnterior()
+        //{
+        //    // Arrange
+        //    var dicionarioGeneros = new Dictionary<string, string>()
+        //    {
+        //        { "Ação","acao" },
+        //        { "Aventura","aventura" },
+        //        { "Fantasia","fantasia" },
+        //        { "Comédia","comedia" },
+        //        { "Drama","drama" },
+        //        { "Harém","harem" },
+        //        { "Horror","horror" }
+        //    };
 
-            var generoAppServiceFactory = new GeneroAppServiceFactoryTestes();
-            var listaGeneros = generoAppServiceFactory.GerarListaGeneros(dicionarioGeneros);
+        //    var generoAppServiceFactory = new GeneroAppServiceFactoryTestes();
+        //    var listaGeneros = generoAppServiceFactory.GerarListaGeneros(dicionarioGeneros);
 
-            var scheme = "https";
-            var host = "localhost";
-            var path = $"/mock/generos?skip=1";
-            var url = $"{scheme}://{host}/{path}";
-            var httpContext = new HttpContextMock().SetupUrl(url);
+        //    var scheme = "https";
+        //    var host = "localhost";
+        //    var path = $"/mock/generos?skip=1";
+        //    var url = $"{scheme}://{host}/{path}";
+        //    var httpContext = new HttpContextMock().SetupUrl(url);
 
-            _generoServiceMock
-                .Setup(x => x.RetornaListaGenerosCadastrados())
-                .ReturnsAsync(listaGeneros);
+        //    _generoServiceMock
+        //        .Setup(x => x.RetornaListaGenerosCadastrados())
+        //        .ReturnsAsync(listaGeneros);
 
-            var listaGenerosCadastrados = await _generoAppService.RetornaListaGenerosCadastrados();
-            var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(httpContext, listaGenerosCadastrados.ValueOrDefault, 1, null);
+        //    var listaGenerosCadastrados = await _generoAppService.RetornaListaGenerosCadastrados();
+        //    var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(httpContext, listaGenerosCadastrados.ValueOrDefault, 1, null);
 
-            // Assert
-            Assert.Equal(6, objetoRetorno.Data.Count);
-            Assert.Contains($"generos?Skip=7&Take=6", objetoRetorno.Proxima);
-            Assert.Contains($"generos?Skip=0&Take=6", objetoRetorno.Anterior);
-        }
+        //    // Assert
+        //    Assert.Equal(6, objetoRetorno.Data.Count);
+        //    Assert.Contains($"generos?Skip=7&Take=6", objetoRetorno.Proxima);
+        //    Assert.Contains($"generos?Skip=0&Take=6", objetoRetorno.Anterior);
+        //}
 
-        [Fact]
-        public async Task DeveRetornarListaGeneros_ComLinksParaProximoEAnteriorNull()
-        {
-            // Arrange
-            var dicionarioGeneros = new Dictionary<string, string>()
-            {
-                { "Ação","acao" },
-                { "Aventura","aventura" },
-                { "Fantasia","fantasia" },
-                { "Comédia","comedia" },
-                { "Drama","drama" },
-                { "Harém","harem" },
-                { "Horror","horror" }
-            };
+        //[Fact]
+        //public async Task DeveRetornarListaGeneros_ComLinksParaProximoEAnteriorNull()
+        //{
+        //    // Arrange
+        //    var dicionarioGeneros = new Dictionary<string, string>()
+        //    {
+        //        { "Ação","acao" },
+        //        { "Aventura","aventura" },
+        //        { "Fantasia","fantasia" },
+        //        { "Comédia","comedia" },
+        //        { "Drama","drama" },
+        //        { "Harém","harem" },
+        //        { "Horror","horror" }
+        //    };
 
-            var generoAppServiceFactory = new GeneroAppServiceFactoryTestes();
-            var listaGeneros = generoAppServiceFactory.GerarListaGeneros(dicionarioGeneros);
+        //    var generoAppServiceFactory = new GeneroAppServiceFactoryTestes();
+        //    var listaGeneros = generoAppServiceFactory.GerarListaGeneros(dicionarioGeneros);
 
-            var scheme = "https";
-            var host = "localhost";
-            var path = $"/mock/generos?skip=0&take=6";
-            var url = $"{scheme}://{host}/{path}";
-            var httpContext = new HttpContextMock().SetupUrl(url);
+        //    var scheme = "https";
+        //    var host = "localhost";
+        //    var path = $"/mock/generos?skip=0&take=6";
+        //    var url = $"{scheme}://{host}/{path}";
+        //    var httpContext = new HttpContextMock().SetupUrl(url);
 
-            _generoServiceMock
-                .Setup(x => x.RetornaListaGenerosCadastrados())
-                .ReturnsAsync(listaGeneros);
+        //    _generoServiceMock
+        //        .Setup(x => x.RetornaListaGenerosCadastrados())
+        //        .ReturnsAsync(listaGeneros);
 
-            var listaGenerosCadastrados = await _generoAppService.RetornaListaGenerosCadastrados();
-            var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(httpContext, listaGenerosCadastrados.ValueOrDefault, 0, 6);
+        //    var listaGenerosCadastrados = await _generoAppService.RetornaListaGenerosCadastrados();
+        //    var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(httpContext, listaGenerosCadastrados.ValueOrDefault, 0, 6);
 
-            // Assert
-            Assert.Equal(6, objetoRetorno.Data.Count);
-            Assert.Contains($"generos?Skip=6&Take=6", objetoRetorno.Proxima);
-            Assert.Null(objetoRetorno.Anterior);
-        }
+        //    // Assert
+        //    Assert.Equal(6, objetoRetorno.Data.Count);
+        //    Assert.Contains($"generos?Skip=6&Take=6", objetoRetorno.Proxima);
+        //    Assert.Null(objetoRetorno.Anterior);
+        //}
 
-        [Fact]
-        public async Task DeveRetornarListaGeneros_ComLinksParaAnteriorEProximoNull()
-        {
-            // Arrange
-            var dicionarioGeneros = new Dictionary<string, string>()
-            {
-                { "Ação","acao" },
-                { "Aventura","aventura" },
-                { "Fantasia","fantasia" },
-                { "Comédia","comedia" },
-                { "Drama","drama" },
-                { "Harém","harem" },
-                { "Horror","horror" }
-            };
+        //[Fact]
+        //public async Task DeveRetornarListaGeneros_ComLinksParaAnteriorEProximoNull()
+        //{
+        //    // Arrange
+        //    var dicionarioGeneros = new Dictionary<string, string>()
+        //    {
+        //        { "Ação","acao" },
+        //        { "Aventura","aventura" },
+        //        { "Fantasia","fantasia" },
+        //        { "Comédia","comedia" },
+        //        { "Drama","drama" },
+        //        { "Harém","harem" },
+        //        { "Horror","horror" }
+        //    };
 
-            var generoAppServiceFactory = new GeneroAppServiceFactoryTestes();
-            var listaGeneros = generoAppServiceFactory.GerarListaGeneros(dicionarioGeneros);
+        //    var generoAppServiceFactory = new GeneroAppServiceFactoryTestes();
+        //    var listaGeneros = generoAppServiceFactory.GerarListaGeneros(dicionarioGeneros);
 
-            var scheme = "https";
-            var host = "localhost";
-            var path = $"/mock/generos?skip=6&take=6";
-            var url = $"{scheme}://{host}/{path}";
-            var httpContext = new HttpContextMock().SetupUrl(url);
+        //    var scheme = "https";
+        //    var host = "localhost";
+        //    var path = $"/mock/generos?skip=6&take=6";
+        //    var url = $"{scheme}://{host}/{path}";
+        //    var httpContext = new HttpContextMock().SetupUrl(url);
 
-            var retornoListaRetornoGeneroCadastrado = new List<RetornoGeneroCadastrado>();
+        //    var retornoListaRetornoGeneroCadastrado = new List<RetornoGeneroCadastrado>();
 
-            _generoServiceMock
-                .Setup(x => x.RetornaListaGenerosCadastrados())
-                .ReturnsAsync(listaGeneros);
+        //    _generoServiceMock
+        //        .Setup(x => x.RetornaListaGenerosCadastrados())
+        //        .ReturnsAsync(listaGeneros);
 
-            var listaGenerosCadastrados = await _generoAppService.RetornaListaGenerosCadastrados();
-            var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(httpContext, listaGenerosCadastrados.ValueOrDefault, 6, 6);
+        //    var listaGenerosCadastrados = await _generoAppService.RetornaListaGenerosCadastrados();
+        //    var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(httpContext, listaGenerosCadastrados.ValueOrDefault, 6, 6);
 
-            // Assert
-            Assert.Single(objetoRetorno.Data);
-            Assert.Contains($"generos?Skip=0&Take=6", objetoRetorno.Anterior);
-            Assert.Null(objetoRetorno.Proxima);
-        }
+        //    // Assert
+        //    Assert.Single(objetoRetorno.Data);
+        //    Assert.Contains($"generos?Skip=0&Take=6", objetoRetorno.Anterior);
+        //    Assert.Null(objetoRetorno.Proxima);
+        //}
 
-        [Fact]
-        public async Task DeveRetornarListaGeneros_ComLinksParaAnteriorNullEProximoNull()
-        {
-            // Arrange
-            var dicionarioGeneros = new Dictionary<string, string>()
-            {
-                { "Ação","acao" },
-                { "Aventura","aventura" },
-                { "Fantasia","fantasia" },
-                { "Comédia","comedia" },
-                { "Drama","drama" },
-                { "Harém","harem" },
-                { "Horror","horror" }
-            };
+        //[Fact]
+        //public async Task DeveRetornarListaGeneros_ComLinksParaAnteriorNullEProximoNull()
+        //{
+        //    // Arrange
+        //    var dicionarioGeneros = new Dictionary<string, string>()
+        //    {
+        //        { "Ação","acao" },
+        //        { "Aventura","aventura" },
+        //        { "Fantasia","fantasia" },
+        //        { "Comédia","comedia" },
+        //        { "Drama","drama" },
+        //        { "Harém","harem" },
+        //        { "Horror","horror" }
+        //    };
 
-            var generoAppServiceFactory = new GeneroAppServiceFactoryTestes();
-            var listaGeneros = generoAppServiceFactory.GerarListaGeneros(dicionarioGeneros);
+        //    var generoAppServiceFactory = new GeneroAppServiceFactoryTestes();
+        //    var listaGeneros = generoAppServiceFactory.GerarListaGeneros(dicionarioGeneros);
 
-            var scheme = "https";
-            var host = "localhost";
-            var path = $"/mock/generos";
-            var url = $"{scheme}://{host}/{path}";
-            var httpContext = new HttpContextMock().SetupUrl(url);
+        //    var scheme = "https";
+        //    var host = "localhost";
+        //    var path = $"/mock/generos";
+        //    var url = $"{scheme}://{host}/{path}";
+        //    var httpContext = new HttpContextMock().SetupUrl(url);
 
-            var retornoListaRetornoGeneroCadastrado = new List<RetornoGeneroCadastrado>();
+        //    var retornoListaRetornoGeneroCadastrado = new List<RetornoGeneroCadastrado>();
 
-            _generoServiceMock
-                .Setup(x => x.RetornaListaGenerosCadastrados())
-                .ReturnsAsync(listaGeneros);
+        //    _generoServiceMock
+        //        .Setup(x => x.RetornaListaGenerosCadastrados())
+        //        .ReturnsAsync(listaGeneros);
 
-            var listaGenerosCadastrados = await _generoAppService.RetornaListaGenerosCadastrados();
-            var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(httpContext, listaGenerosCadastrados.ValueOrDefault, null, null);
+        //    var listaGenerosCadastrados = await _generoAppService.RetornaListaGenerosCadastrados();
+        //    var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(httpContext, listaGenerosCadastrados.ValueOrDefault, null, null);
 
-            // Assert
-            Assert.Equal(7, objetoRetorno.Data.Count);
-            Assert.Null(objetoRetorno.Anterior);
-            Assert.Null(objetoRetorno.Proxima);
-        }
+        //    // Assert
+        //    Assert.Equal(7, objetoRetorno.Data.Count);
+        //    Assert.Null(objetoRetorno.Anterior);
+        //    Assert.Null(objetoRetorno.Proxima);
+        //}
 
         [Fact]
         public async Task DeveRetornarZeroNoObjetoRetorno_QuandoGenerosNaoEncontrados_NaBuscaDeGeneros()
@@ -208,12 +208,10 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Generos
                 .ReturnsAsync(listaGeneros);
 
             var listaGenerosCadastrados = await _generoAppService.RetornaListaGenerosCadastrados();
-            var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(httpContext, listaGenerosCadastrados.ValueOrDefault, 6, 6);
+            var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(listaGenerosCadastrados.ValueOrDefault);
 
             // Assert
             Assert.Empty(objetoRetorno.Data);
-            Assert.Contains($"generos?Skip=0&Take=6", objetoRetorno.Anterior);
-            Assert.Null(objetoRetorno.Proxima);
         }
 
         [Fact]
@@ -246,13 +244,12 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Generos
                 .ReturnsAsync(listaGeneros);
 
             var listaGenerosCadastrados = await _generoAppService.RetornaListaGeneros();
-            var objetoRetorno = RequestHelper.CriarObjetoRetornoGeneros(httpContext, listaGenerosCadastrados.ValueOrDefault, null, null);
+            var objetoRetorno = RequestHelper.CriarObjetoRetornoGeneros(listaGenerosCadastrados.ValueOrDefault);
 
             var numeroDeCamposRetornoGenero = objetoRetorno.Data.First().GetType().GetProperties().Length;
 
             // Assert
             Assert.Equal(8, objetoRetorno.Total);
-            Assert.Contains($"generos?Skip=6&Take=6", objetoRetorno.Proxima);
             Assert.Equal(7, numeroDeCamposRetornoGenero);
             Assert.Equal("Ação", objetoRetorno.Data.First().Descricao);
             Assert.Equal("acao", objetoRetorno.Data.First().Slug);
