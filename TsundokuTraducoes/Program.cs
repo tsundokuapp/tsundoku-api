@@ -183,3 +183,5 @@ static void LoadConfiguration(WebApplication app)
     app.Configuration.GetSection("ConnectionStrings").Bind(connectionStrings);
     TsundokuTraducoes.Api.Configuration.ConnectionString = connectionStrings;
 }
+
+public partial class Program { }
