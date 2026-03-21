@@ -155,9 +155,9 @@ namespace TsundokuTraducoes.Services.AppServices
         private RetornoCapituloComic TrataRetornoCapituloComic(CapituloComic CapituloComic)
         {
             var retornoCapitulo = _mapper.Map<RetornoCapituloComic>(CapituloComic);
-            retornoCapitulo.DataInclusao = CapituloComic.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
-            retornoCapitulo.DataAlteracao = CapituloComic.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
-            retornoCapitulo.UsuarioAlteracao = !string.IsNullOrEmpty(CapituloComic.UsuarioAlteracao) ? CapituloComic.UsuarioAlteracao : null;
+            //retornoCapitulo.DataInclusao = CapituloComic.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
+            //retornoCapitulo.DataAlteracao = CapituloComic.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
+            //retornoCapitulo.UsuarioAlteracao = !string.IsNullOrEmpty(CapituloComic.UsuarioAlteracao) ? CapituloComic.UsuarioAlteracao : null;
 
             if (!string.IsNullOrEmpty(CapituloComic.ListaImagensJson))
             {
