@@ -89,9 +89,9 @@ namespace TsundokuTraducoes.Services.AppServices
             foreach (var capituloComic in listaCapituloComic.OrderBy(x => x.OrdemCapitulo))
             {
                 var retornoCapitulo = mapper.Map<RetornoCapituloComic>(capituloComic);
-                retornoCapitulo.DataInclusao = capituloComic.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
-                retornoCapitulo.DataAlteracao = capituloComic.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
-                retornoCapitulo.UsuarioAlteracao = !string.IsNullOrEmpty(capituloComic.UsuarioAlteracao) ? capituloComic.UsuarioAlteracao : null;
+                //retornoCapitulo.DataInclusao = capituloComic.DataInclusao.ToString("dd/MM/yyyy HH:mm:ss");
+                //retornoCapitulo.DataAlteracao = capituloComic.DataAlteracao.ToString("dd/MM/yyyy HH:mm:ss");
+                //retornoCapitulo.UsuarioAlteracao = !string.IsNullOrEmpty(capituloComic.UsuarioAlteracao) ? capituloComic.UsuarioAlteracao : null;
 
                 if (!string.IsNullOrEmpty(capituloComic.ListaImagensJson))
                 {
