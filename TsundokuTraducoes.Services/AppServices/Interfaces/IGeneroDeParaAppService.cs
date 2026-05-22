@@ -5,7 +5,7 @@ namespace TsundokuTraducoes.Services.AppServices.Interfaces
 {
     public interface IGeneroDeParaAppService
     {
-        Task<List<RetornoGenero>> CarregaListaGenerosNovel(List<GeneroNovel> generosNovels);
-        Task<List<RetornoGenero>> CarregaListaGenerosComic(List<GeneroComic> generosComics);        
+        Task<List<RetornoGeneroObra>> CarregaListaGenerosNovel(List<GeneroNovel> generosNovels);
+        Task<List<RetornoGeneroObra>> CarregaListaGenerosComic(List<GeneroComic> generosComics);        
     }
 }

@@ -14,36 +14,34 @@ namespace TsundokuTraducoes.Services.AppServices
             _generoDeParaService = generoDeParaService;
         }
 
-        public async Task<List<RetornoGenero>> CarregaListaGenerosNovel(List<GeneroNovel> generoNovels)
+        public async Task<List<RetornoGeneroObra>> CarregaListaGenerosNovel(List<GeneroNovel> generoNovels)
         {
             var listaGeneroNovel = await _generoDeParaService.CarregaListaGenerosNovel(generoNovels);
-            var listaRetornoGenero = new List<RetornoGenero>();
+            var listaRetornoGenero = new List<RetornoGeneroObra>();
 
             foreach (var genero in listaGeneroNovel)
             {
-                listaRetornoGenero.Add(new RetornoGenero
-                {
-                    Id = genero.Id,
-                    Descricao = genero.Descricao,
-                    Slug = genero.Slug
+                listaRetornoGenero.Add(new RetornoGeneroObra
+                {                    
+                    Label = genero.Descricao,
+                    Value = genero.Slug
                 });
             }
 
             return listaRetornoGenero;
         }
 
-        public async Task<List<RetornoGenero>> CarregaListaGenerosComic(List<GeneroComic> generoComics)
+        public async Task<List<RetornoGeneroObra>> CarregaListaGenerosComic(List<GeneroComic> generoComics)
         {
             var listaGeneroComic = await _generoDeParaService.CarregaListaGenerosComic(generoComics);
-            var listaRetornoGenero = new List<RetornoGenero>();
+            var listaRetornoGenero = new List<RetornoGeneroObra>();
 
             foreach (var genero in listaGeneroComic)
             {
-                listaRetornoGenero.Add(new RetornoGenero
+                listaRetornoGenero.Add(new RetornoGeneroObra
                 {
-                    Id = genero.Id,
-                    Descricao = genero.Descricao,
-                    Slug = genero.Slug
+                    Label = genero.Descricao,
+                    Value = genero.Slug
                 });
             }
 
