@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
-using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Helpers.DTOs.Public.Retorno.Response;
 using TsundokuTraducoes.Helpers.Services.Interfaces;
 using TsundokuTraducoes.Services.AppServices.Interfaces;
@@ -16,10 +14,9 @@ namespace TsundokuTraducoes.Api.Controllers.Publico.genero
         {
             var result = await service.RetornaListaGenerosCadastrados();
             if (result.Value == null || result.Value.Count == 0)
-                return NoContent();
-
-            var objetoRetorno = RequestHelper.CriarObjetoRetornoGenerosCadastrados(result.Value);
-            return Ok(objetoRetorno);
+               return NoContent();
+            
+            return Ok(result.Value);
         }
     }
 }

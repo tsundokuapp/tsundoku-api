@@ -11,6 +11,9 @@
         public string DataAlteracao { get; set; }
     }
 
-    public class RetornoGeneroNovel : RetornoGenero { };
-    public class RetornoGeneroComic : RetornoGenero { };
+    public class RetornoGeneroObra 
+    {  
+        public string Label { get; set; }
+        public string Value { get; set; }
+    };
 }

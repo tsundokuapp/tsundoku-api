@@ -27,7 +27,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin.Retorno
         public string StatusObra { get; set; }
         public string TipoObra { get; set; }
         public string Nacionalidade { get; set; }
-        public List<RetornoGenero> Generos { get; set; }
+        public List<RetornoGeneroObra> Generos { get; set; }
         public string Observacao { get; set; }
         public string DiretorioImagemObra { get; set; }
         public bool IntegracaoDiscord { get; set; }
@@ -35,7 +35,7 @@ namespace TsundokuTraducoes.Helpers.DTOs.Admin.Retorno
 
         public RetornoObra()
         {
-            Generos = new List<RetornoGenero>();
+            Generos = [];
         }
     }
 }

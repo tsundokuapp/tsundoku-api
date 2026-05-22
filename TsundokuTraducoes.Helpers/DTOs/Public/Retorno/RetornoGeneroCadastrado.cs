@@ -2,8 +2,7 @@
 {
     public class RetornoGeneroCadastrado
     {
-        public Guid Id { get; set; }
-        public string Descricao { get; set; }
-        public string Slug { get; set; }
+        public string Label { get; set; }
+        public string Value { get; set; }
     }
 }

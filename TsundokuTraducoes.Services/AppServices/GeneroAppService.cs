@@ -41,7 +41,7 @@ namespace TsundokuTraducoes.Services.AppServices
 
             foreach (var genero in listaGenero)
             {
-                listaRetornoGenero.Add(_mapper.Map<RetornoGeneroCadastrado>(genero));
+                listaRetornoGenero.Add(new RetornoGeneroCadastrado { Label = genero.Descricao, Value = genero.Slug} );
             }
 
             return Result.Ok(listaRetornoGenero);
