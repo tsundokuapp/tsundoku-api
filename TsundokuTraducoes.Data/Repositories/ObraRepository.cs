@@ -24,12 +24,20 @@ namespace TsundokuTraducoes.Data.Repositories
 
         public List<Novel> RetornaListaNovels()
         {
-            return _context.Novels.AsNoTracking().Include(n => n.GenerosNovel).ToList();
+            return _context.Novels
+                .AsNoTracking()
+                .Include(n => n.GenerosNovel)
+                .ThenInclude(gn => gn.Genero)
+                .ToList();
         }
         
         public List<Comic> RetornaListaComics()
         {
-            return _context.Comics.AsNoTracking().Include(n => n.GenerosComic).ToList();
+            return _context.Comics
+                .AsNoTracking()
+                .Include(n => n.GenerosComic)
+                .ThenInclude(gc => gc.Genero)
+                .ToList();
         }
 
 

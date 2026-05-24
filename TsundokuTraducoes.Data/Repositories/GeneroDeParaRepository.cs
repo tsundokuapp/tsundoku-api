@@ -18,11 +18,50 @@ namespace TsundokuTraducoes.Data.Repositories
         public async Task<List<Genero>> CarregaListaGenerosNovel(List<GeneroNovel> generoNovels)
         {
             var listaGeneros = new List<Genero>();
+            if (generoNovels == null || generoNovels.Count == 0)
+            {
+                return listaGeneros;
+            }
+
+            var idsSemGenero = generoNovels
+                .Where(g => g.Genero == null)
+                .Select(g => g.GeneroId)
+                .Distinct()
+                .ToList();
+
+            var generosPorId = new Dictionary<Guid, Genero>();
+            foreach (var generoNovel in generoNovels)
+            {
+                if (generoNovel.Genero != null)
+                {
+                    generosPorId[generoNovel.GeneroId] = generoNovel.Genero;
+                }
+            }
+
+            if (idsSemGenero.Count > 0)
+            {
+                var generos = await _contextBase.Generos
+                    .AsNoTracking()
+                    .Where(g => idsSemGenero.Contains(g.Id))
+                    .ToListAsync();
+
+                foreach (var genero in generos)
+                {
+                    generosPorId[genero.Id] = genero;
+                }
+            }
 
             foreach (var generoNovel in generoNovels)
             {
-                var generoEncontrado = await _contextBase.Generos.SingleAsync(s => s.Id == generoNovel.GeneroId);
-                listaGeneros.Add(new Genero{ Id = generoEncontrado.Id, Descricao = generoEncontrado.Descricao, Slug = generoEncontrado.Slug});
+                if (generosPorId.TryGetValue(generoNovel.GeneroId, out var generoEncontrado))
+                {
+                    listaGeneros.Add(new Genero
+                    {
+                        Id = generoEncontrado.Id,
+                        Descricao = generoEncontrado.Descricao,
+                        Slug = generoEncontrado.Slug
+                    });
+                }
             }
 
             return listaGeneros;
@@ -31,11 +70,50 @@ namespace TsundokuTraducoes.Data.Repositories
         public async Task<List<Genero>> CarregaListaGenerosComic(List<GeneroComic> generoComics)
         {
             var listaGeneros = new List<Genero>();
+            if (generoComics == null || generoComics.Count == 0)
+            {
+                return listaGeneros;
+            }
+
+            var idsSemGenero = generoComics
+                .Where(g => g.Genero == null)
+                .Select(g => g.GeneroId)
+                .Distinct()
+                .ToList();
+
+            var generosPorId = new Dictionary<Guid, Genero>();
+            foreach (var generoComic in generoComics)
+            {
+                if (generoComic.Genero != null)
+                {
+                    generosPorId[generoComic.GeneroId] = generoComic.Genero;
+                }
+            }
+
+            if (idsSemGenero.Count > 0)
+            {
+                var generos = await _contextBase.Generos
+                    .AsNoTracking()
+                    .Where(g => idsSemGenero.Contains(g.Id))
+                    .ToListAsync();
+
+                foreach (var genero in generos)
+                {
+                    generosPorId[genero.Id] = genero;
+                }
+            }
 
             foreach (var generoComic in generoComics)
             {
-                var generoEncontrado = await _contextBase.Generos.SingleAsync(s => s.Id == generoComic.GeneroId);
-                listaGeneros.Add(new Genero{ Id = generoEncontrado.Id, Descricao = generoEncontrado.Descricao, Slug = generoEncontrado.Slug });
+                if (generosPorId.TryGetValue(generoComic.GeneroId, out var generoEncontrado))
+                {
+                    listaGeneros.Add(new Genero
+                    {
+                        Id = generoEncontrado.Id,
+                        Descricao = generoEncontrado.Descricao,
+                        Slug = generoEncontrado.Slug
+                    });
+                }
             }
 
             return listaGeneros;
