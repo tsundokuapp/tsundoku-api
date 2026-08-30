@@ -8,6 +8,9 @@ using TsundokuTraducoes.Data.Configuration;
 using TsundokuTraducoes.Data.Context;
 using TsundokuTraducoes.Helpers.Configuration;
 
+// Carregar variáveis de ambiente do arquivo .env
+DotNetEnv.Env.Load();
+
 var _connectionStringConfig = new ConnectionStringConfig();
 var _acessoExternoTinify = new AcessoExternoTinify();
 var _acessoExternoAws = new AcessoExternoAws();
@@ -124,7 +127,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(
                 Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddAutoMapper(cfg => cfg.AddMaps(AppDomain.CurrentDomain.GetAssemblies()));
 builder.Services.Configure<IISServerOptions>(options =>
 {
     options.MaxRequestBodySize = int.MaxValue;
@@ -138,16 +141,23 @@ builder.Services.Configure<KestrelServerOptions>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-if (builder.Environment.IsProduction())
+builder.WebHost.ConfigureKestrel(options =>
 {
-    builder.WebHost.ConfigureKestrel(options =>
+    if (builder.Environment.IsProduction() &&
+        !string.IsNullOrWhiteSpace(CertificatePath) &&
+        !string.IsNullOrWhiteSpace(CertificatePassword) &&
+        File.Exists(CertificatePath))
     {
         options.ListenAnyIP(8080, listenOptions =>
         {
             listenOptions.UseHttps(CertificatePath, CertificatePassword);
         });
-    });
-}
+    }
+    else
+    {
+        options.ListenAnyIP(8080);
+    }
+});
 
 var app = builder.Build();
 LoadConfiguration(app);
