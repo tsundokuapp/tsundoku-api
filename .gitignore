@@ -46,3 +46,13 @@ x64/
 [Oo]bj/
 /TsundokuTraducoes.Auth.Api/appsettings.json
 /TsundokuTraducoes/appsettings.Development.json
+
+# Environment files (nunca commitar)
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+.env.development
+.env.test
+

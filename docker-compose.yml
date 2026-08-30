@@ -1,0 +1,71 @@
+services:
+  # Banco de dados MySQL
+  mysql:
+    image: mysql:8.0
+    container_name: tsundoku_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-DbTsundoku}
+      MYSQL_USER: ${MYSQL_USER:-tsun}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-1234}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - tsundoku_network
+
+  # Aplicação ASP.NET Core
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tsundoku_api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Production}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS:-http://+:8080}
+      # Banco de Dados
+      ConnectionStrings__Default: ${ConnectionStrings__Default:-Server=mysql;Port=3306;Database=DbTsundoku;Uid=tsun;Pwd=1234;}
+      # JWT
+      JwtConfiguration__SecretToken: ${JwtConfiguration__SecretToken}
+      # CORS
+      Cors__AllowedOrigins__0: ${Cors__AllowedOrigins__0:-http://localhost:3000}
+      Cors__AllowedOrigins__1: ${Cors__AllowedOrigins__1:-http://localhost:5173}
+      # AWS (opcional)
+      ApiAws__AwsAccessKeyId: ${ApiAws__AwsAccessKeyId}
+      ApiAws__AwsSecretAccessKey: ${ApiAws__AwsSecretAccessKey}
+      ApiAws__BucketName: ${ApiAws__BucketName}
+      ApiAws__DistributionId: ${ApiAws__DistributionId}
+      ApiAws__DistributionDomainName: ${ApiAws__DistributionDomainName}
+      # Tinify (opcional)
+      ApiTinify__ApiKey: ${ApiTinify__ApiKey}
+      # Certificate (opcional)
+      CertificateSettings__Path: ${CertificateSettings__Path}
+      CertificateSettings__Password: ${CertificateSettings__Password}
+    ports:
+      - "${API_PORT:-8080}:8080"
+    volumes:
+      - ./TsundokuTraducoes.Helpers/Certificados:/app/Certificados
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - tsundoku_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  tsundoku_network:
+    driver: bridge
+
+
+
