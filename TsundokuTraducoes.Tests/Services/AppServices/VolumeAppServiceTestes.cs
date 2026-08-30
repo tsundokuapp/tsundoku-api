@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Capitulo;
@@ -21,13 +22,13 @@ public class VolumeAppServiceTests
 
     public VolumeAppServiceTests()
     {
-        var config = new MapperConfiguration(cfg =>
+            var config = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile(new VolumeProfile());
             cfg.AddProfile(new CapituloProfile());
             cfg.AddProfile(new ObraProfile());
             cfg.AddProfile(new GeneroProfile());
-        });
+            }, NullLoggerFactory.Instance);
 
         _mapper = config.CreateMapper();
         _volumeServiceMock = new Mock<IVolumeService>();

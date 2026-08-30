@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using TsundokuTraducoes.Domain.Interfaces.Services;
 using TsundokuTraducoes.Entities.Entities.Obra;
@@ -25,7 +26,7 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Obra
                 cfg.AddProfile(new CapituloProfile());
                 cfg.AddProfile(new ObraProfile());
                 cfg.AddProfile(new GeneroProfile());
-            });
+            }, NullLoggerFactory.Instance);
 
             _mapper = config.CreateMapper();
             _obrasServiceMock = new Mock<IObrasService>();

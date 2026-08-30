@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HttpContextMoq;
 using HttpContextMoq.Extensions;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using TsundokuTraducoes.Api.Helpers;
 using TsundokuTraducoes.Domain.Interfaces.Services;
@@ -25,7 +26,7 @@ namespace TsundokuTraducoes.Tests.Services.AppServices.Generos
                 cfg.AddProfile(new CapituloProfile());
                 cfg.AddProfile(new ObraProfile());
                 cfg.AddProfile(new GeneroProfile());
-            });
+            }, NullLoggerFactory.Instance);
 
             _mapper = config.CreateMapper();
             _generoServiceMock = new Mock<IGeneroService>();
